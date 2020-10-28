@@ -17,7 +17,7 @@ Para mostrar los datos en el mapa utilizaremos la libreria Leaflet [^3]. Para ob
 <html>
 <head>
 	<title>Servicio de Bicing realtime</title>
-	<link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css" />
+	<link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
 		<style>
 				#map {
 						position: absolute;
@@ -31,7 +31,7 @@ Para mostrar los datos en el mapa utilizaremos la libreria Leaflet [^3]. Para ob
 <body>
 	<div id="map"></div>
 
-		<script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"></script>
+		<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
 		<script type="text/javascript">
 			var map = L.map('map');
 
@@ -56,7 +56,7 @@ Para mostrar los datos en el mapa utilizaremos la libreria Leaflet [^3]. Para ob
 <html>
 <head>
 	<title>Servicio de Bicing realtime</title>
-	<link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css" />
+	<link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
 		<style>
 				#map {
 						position: absolute;
@@ -70,7 +70,7 @@ Para mostrar los datos en el mapa utilizaremos la libreria Leaflet [^3]. Para ob
 <body>
 	<div id="map"></div>
 
-		<script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"></script>
+		<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
 		<script type="text/javascript">
 			var map = L.map('map');
 
@@ -164,7 +164,7 @@ node app.js
 <html>
 <head>
 	<title>Servicio de Bicing realtime</title>
-	<link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css" />
+	<link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
 		<style>
 				#map {
 						position: absolute;
@@ -178,7 +178,7 @@ node app.js
 <body>
 	<div id="map"></div>
 
-		<script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"></script>
+		<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js"></script>
 		<script type="text/javascript">
 			var map = L.map('map');
@@ -206,7 +206,7 @@ node app.js
 <html>
 <head>
 	<title>Servicio de Bicing realtime</title>
-	<link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css" />
+	<link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
 		<style>
 				#map {
 						position: absolute;
@@ -220,7 +220,7 @@ node app.js
 <body>
 	<div id="map"></div>
 
-		<script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"></script>
+		<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js"></script>
 		<script type="text/javascript">
 			var socket = io();
@@ -252,7 +252,7 @@ node app.js
 <html>
 <head>
 	<title>Servicio de Bicing realtime</title>
-	<link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css" />
+	<link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
 		<style>
 				#map {
 						position: absolute;
@@ -266,7 +266,7 @@ node app.js
 <body>
 	<div id="map"></div>
 
-		<script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"></script>
+		<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js"></script>
 		<script type="text/javascript">
 			var socket = io();
@@ -353,7 +353,7 @@ http.listen(3000, function(){
 <html>
 <head>
 	<title>Servicio de Bicing realtime</title>
-	<link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css" />
+	<link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
 		<style>
 				#map {
 						position: absolute;
@@ -367,7 +367,7 @@ http.listen(3000, function(){
 <body>
 	<div id="map"></div>
 
-		<script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"></script>
+		<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js"></script>
 		<script type="text/javascript">
 			var socket = io();
@@ -404,7 +404,7 @@ http.listen(3000, function(){
 <html>
 <head>
 	<title>Servicio de Bicing realtime</title>
-	<link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css" />
+	<link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
 		<style>
 				#map {
 						position: absolute;
@@ -418,7 +418,7 @@ http.listen(3000, function(){
 <body>
 	<div id="map"></div>
 
-		<script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"></script>
+		<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js"></script>
 		<script type="text/javascript">
 			var socket = io();

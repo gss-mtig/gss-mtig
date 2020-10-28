@@ -23,9 +23,7 @@ Para ver los datos de este servicio sobre un mapa crearemos un visor utilizando 
 <html>
 <head>
   <title>Servicio de WMS</title>
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css"
-   integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
-   crossorigin=""/>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"/>
   <style>
     #mapid {
     position: absolute;
@@ -39,9 +37,7 @@ Para ver los datos de este servicio sobre un mapa crearemos un visor utilizando 
 <body>
   <div id="mapid"></div>
 
-  <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"
-	integrity="sha512-gZwIG9x3wUXg2hdXF6+rVkLF/0Vi9U8D2Ntg4Ga5I5BZpVkVxlJWbSQtXPSiUTtC0TjtGOmxa1AJPuV0CPthew=="
-	crossorigin=""></script>
+  <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
   <script type="text/javascript">
     var map = L.map('mapid');
     map.setView([41.3887, 2.1777], 13);
@@ -63,9 +59,7 @@ Para ver los datos de este servicio sobre un mapa crearemos un visor utilizando 
 <html>
 <head>
   <title>Servicio de WMS</title>
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css"
-   integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
-   crossorigin=""/>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"/>
   <style>
     #mapid {
     position: absolute;
@@ -79,9 +73,7 @@ Para ver los datos de este servicio sobre un mapa crearemos un visor utilizando 
 <body>
   <div id="mapid"></div>
 
-  <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"
-	integrity="sha512-gZwIG9x3wUXg2hdXF6+rVkLF/0Vi9U8D2Ntg4Ga5I5BZpVkVxlJWbSQtXPSiUTtC0TjtGOmxa1AJPuV0CPthew=="
-	crossorigin=""></script>
+  <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
   <script type="text/javascript">
     var map = L.map('mapid');
     map.setView([41.3887, 2.1777], 13);
