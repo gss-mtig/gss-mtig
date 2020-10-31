@@ -81,35 +81,37 @@ node -v
 - Navegar hasta nuestra carpeta *visor-bicing-vt* y escribir:
 
 ```bash
-npm init
+npm init -y
 ```
 
-Con este comando estaremos creando el archivo *package.json*. Este comando solicita varios elementos como, por ejemplo, el nombre y la versión de la aplicación. Por ahora, sólo hay que pulsar ENTER para aceptar los valores predeterminados.
+Con este comando estaremos creando el archivo *package.json*. La opción -y acepta todas la opciones por defecto. Si no ponemos la opción -y este comando solicita varios elementos como, por ejemplo, el nombre y la versión de la aplicación. Sólo hay que pulsar ENTER para aceptar los valores predeterminados.
 
-- Instalar las dependencias para crear nuestro servicio de proxy [^4]. En este caso utilizaremos Express [^5] como servidor web y el módulo axios [^6].
+- Instalar las dependencias para crear nuestro servicio de proxy [^4]. En este caso utilizaremos Express [^5] como servidor web, el módulo axios [^6] y el módulo de cors [^7].
 
-- Instalar el express y guardarlo en la lista de dependencias
+- Instalar el express y los módulos y guardarlo en la lista de dependencias
 
 ```bash
-npm install express --save
+npm install --save express axios cors
 ```
 
-- Instalar el axios y guardarlo en la lista de dependencias
+Al ejecutar este comando veremos que se crea una carpeta llamada *node_modules* donde se guardan los módulos instalados.
+
+- Instalar el módulo nodemon [^8] de manera global.
 
 ```bash
-npm install axios --save
+npm install -g nodemon
 ```
-
-Al ejecutar estos comandos veremos que se crea una carpeta llamada *node_modules* donde se guardan los módulos instalados.
 
 - Crear un archivo llamado *app.js* que servirá de proxy con el servicio de Bicing. Copiar lo siguiente en este archivo.
 
 ```js
 var express  = require('express');
 var app      = express();
+var cors = require('cors');
 var axios = require('axios');
 var serverBicing = 'https://api.bsmsa.eu/ext/api/bsm/gbfs/v2/en/station_information';
 
+app.use(cors());
 app.use(express.static('public'));
 
 app.all("/bicingjson/*", function(req, res) {
@@ -152,7 +154,7 @@ app.listen(3000);
 - Probar que nuestro proxy está funcionando, escribiendo:
 
 ```bash
-node app.js
+nodemon app.js
 ```
 
 - Abrir la url de nuestro proxy http://localhost:3000/bicingjson/ en el navegador.
@@ -295,7 +297,7 @@ node app.js
 
 - Recargar la aplicación y veremos los puntos de las estaciones de bicing. Si vamos a la pestaña de red (network) en la consola de desarrollador del navegador podremos ver que cada 3 segundos se hace una llamada a nuestro proxy.
 
-- Cambiar el estilo de la capa de estaciones de bicing. Para representar las estaciones con un estilo basado en los valores de algunos de sus atributos utilizar el *data-driven style* siguiendo la especificación de estilo de Mapbox [^7]. Modificar la propiedad **paint** de la capa y escribir
+- Cambiar el estilo de la capa de estaciones de bicing. Para representar las estaciones con un estilo basado en los valores de algunos de sus atributos utilizar el *data-driven style* siguiendo la especificación de estilo de Mapbox [^9]. Modificar la propiedad **paint** de la capa y escribir
 
 ```html hl_lines="50 51 52 53 54 55 56 57 58 59 60 61 62 63 64 65 66 67 68 69 70"
 <!DOCTYPE html>
@@ -585,9 +587,9 @@ node app.js
       .setLngLat(feature.geometry.coordinates)
       .setHTML('<div id=\'popup\' class=\'popup\' style=\'z-index: 10;\'> <h5> ' + feature.properties.id + ' </h5>' +
       '<ul class=\'list-group\'>' +
-      '<li class=\'list-group-item\'> ' + feature.properties.streetName + ' </li>' +
-      '<li class=\'list-group-item\'> Bikes: ' + feature.properties.bikes + ' </li>' +
-      '<li class=\'list-group-item\'> slots: ' + feature.properties.slots + ' </li></ul></div>')
+      '<li class=\'list-group-item\'> ' + feature.properties.address + ' </li>' +
+      '<li class=\'list-group-item\'> Altitud: ' + feature.properties.altitude + ' </li>' +
+      '<li class=\'list-group-item\'> Capacidad: ' + feature.properties.capacity + ' </li></ul></div>')
       .addTo(map);
     });
 
@@ -615,13 +617,15 @@ Al abrir la url del servicio podemos ver que está el listado de las estaciones 
 
 - Agregar la url del servicio de estado de estaciones
 
-```js  hl_lines="5"
+```js  hl_lines="6"
 var express  = require('express');
 var app      = express();
+var cors = require('cors');
 var axios = require('axios');
 var serverBicing = 'https://api.bsmsa.eu/ext/api/bsm/gbfs/v2/en/station_information';
 var statusBicing = 'https://api.bsmsa.eu/ext/api/bsm/gbfs/v2/en/station_status';
 
+app.use(cors());
 app.use(express.static('public'));
 
 app.all("/bicingjson/*", function(req, res) {
@@ -663,13 +667,15 @@ app.listen(3000);
 
 - Combinar la información del estado de estaciones con la información de la estación
 
-```js  hl_lines="16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54"
+```js  hl_lines="18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56"
 var express  = require('express');
 var app      = express();
+var cors = require('cors');
 var axios = require('axios');
 var serverBicing = 'https://api.bsmsa.eu/ext/api/bsm/gbfs/v2/en/station_information';
 var statusBicing = 'https://api.bsmsa.eu/ext/api/bsm/gbfs/v2/en/station_status';
 
+app.use(cors());
 app.use(express.static('public'));
 
 app.all("/bicingjson/*", function(req, res) {
@@ -821,9 +827,123 @@ app.listen(3000);
       .setLngLat(feature.geometry.coordinates)
       .setHTML('<div id=\'popup\' class=\'popup\' style=\'z-index: 10;\'> <h5> ' + feature.properties.id + ' </h5>' +
       '<ul class=\'list-group\'>' +
-      '<li class=\'list-group-item\'> ' + feature.properties.streetName + ' </li>' +
-      '<li class=\'list-group-item\'> Bikes: ' + feature.properties.bikes + ' </li>' +
-      '<li class=\'list-group-item\'> slots: ' + feature.properties.slots + ' </li></ul></div>')
+      '<li class=\'list-group-item\'> ' + feature.properties.address + ' </li>' +
+      '<li class=\'list-group-item\'> Altitud: ' + feature.properties.altitude + ' </li>' +
+      '<li class=\'list-group-item\'> Capacidad: ' + feature.properties.capacity + ' </li></ul></div>')
+      .addTo(map);
+    });
+
+    // Use the same approach as above to indicate that the symbols are clickable
+    // by changing the cursor style to 'pointer'
+    map.on('mousemove', function(e) {
+        var features = map.queryRenderedFeatures(e.point, { layers: ['bicing'] });
+        map.getCanvas().style.cursor = features.length ? 'pointer' : '';
+    });
+  </script>
+</body>
+</html>
+```
+
+- Modificar el visor para mostrar la información del número de bicicletas disponibles
+
+```html hl_lines="95 96"
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Servicio de Bicing realtime VectorTiles</title>
+  <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+  <script src='https://api.mapbox.com/mapbox-gl-js/v1.12.0/mapbox-gl.js'></script>
+  <link href='https://api.mapbox.com/mapbox-gl-js/v1.12.0/mapbox-gl.css' rel='stylesheet' />
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+    }
+
+    #map {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      width: 100%;
+      height: 100%
+    }
+  </style>
+</head>
+<body>
+  <div id="map"></div>
+
+  <script type="text/javascript">
+    var map = new mapboxgl.Map({
+      container: 'map',
+      style: 'https://geoserveis.icgc.cat/contextmaps/icgc.json',
+      center: [2.1777, 41.3887],
+      zoom: 13,
+      maxZoom: 14,
+      hash: true,
+    });
+
+    map.on("load", function() {
+      //funcion que se llama al terminar de cargar el estilo del mapa
+
+      //agregamos la fuente de datos al mapa
+      map.addSource('bicing-source', {
+        type: 'geojson',
+        data: 'http://localhost:3000/bicingjson/'
+      });
+
+      //agregamos la capa con su estilo al mapa
+      map.addLayer({
+        "id": "bicing",
+        "type": "circle",
+        "source": "bicing-source",
+        "paint": {
+          "circle-radius": [
+            "interpolate",
+            ["linear"],
+            ["to-number", ['get','capacity']],
+            15,
+            5,
+            50,
+            33
+          ],
+          "circle-color": [
+            "interpolate",
+            ["linear"],
+            ["to-number", ["get", "num_bikes_available"]],
+            0,
+            "#ff0000",
+            15,
+            "#00ff00"
+          ],
+          "circle-opacity": 0.86
+        },
+      });
+
+      window.setInterval(function() {
+        map.getSource('bicing-source').setData('http://localhost:3000/bicingjson/');
+      }, 3000);
+    });
+
+    map.on('click', function(e) {
+      var features = map.queryRenderedFeatures(e.point, { layers: ['bicing'] });
+
+      // if the features have no info, return nothing
+      if (!features.length) {
+          return;
+      }
+
+      var feature = features[0];
+
+      // Populate the popup and set its coordinates
+      // based on the feature found
+      var popup = new mapboxgl.Popup()
+      .setLngLat(feature.geometry.coordinates)
+      .setHTML('<div id=\'popup\' class=\'popup\' style=\'z-index: 10;\'> <h5> ' + feature.properties.id + ' </h5>' +
+      '<ul class=\'list-group\'>' +
+      '<li class=\'list-group-item\'> ' + feature.properties.address + ' </li>' +
+      '<li class=\'list-group-item\'> Bicis disponibles: ' + feature.properties.num_bikes_available + ' </li>' +
+      '<li class=\'list-group-item\'> Docks disponibles: ' + feature.properties.num_docks_available + ' </li></ul></div>')
+      )
       .addTo(map);
     });
 
@@ -849,4 +969,6 @@ app.listen(3000);
 [^4]: https://es.wikipedia.org/wiki/Servidor_proxy
 [^5]: http://expressjs.com/
 [^6]: https://github.com/axios/axios
-[^7]: https://www.mapbox.com/mapbox-gl-js/style-spec
+[^7]: https://www.npmjs.com/package/cors
+[^8]: https://www.npmjs.com/package/nodemon
+[^9]: https://www.mapbox.com/mapbox-gl-js/style-spec
