@@ -8,15 +8,17 @@ Para mostrar los datos en el mapa utilizaremos la libreria Leaflet [^3]. Para ob
 
 - Crear una carpeta con el nombre de *user-realtime*.
 
-- Crear un archivo con el nombre de *index.html* dentro de la carpeta.
+- Crer una carpeta con el nombre de *public* dentro de la carpeta user-realtime.
+
+- Crear un archivo con el nombre de *index.html* dentro de la carpeta public.
 
 - Abrir el archivo index.html con un editor de texto y copiar el siguiente código.
 
-```html hl_lines="60 61"
+```html
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Servicio de Bicing realtime</title>
+	<title>Servicio compartir ubicación realtime</title>
 	<link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
 		<style>
 				#map {
@@ -47,7 +49,7 @@ Para mostrar los datos en el mapa utilizaremos la libreria Leaflet [^3]. Para ob
 </html>
 ```
 
--  Abrir el archivo index.html en el navegador para comrobar que se carga un mapa centrado en Barcelona.
+-  Abrir el archivo index.html en el navegador para comprobar que se carga un mapa centrado en Barcelona.
 
 - Capturar el evento click en el mapa. Luego de la declaración de nuestra capa escribir los siguiente:
 
@@ -55,7 +57,7 @@ Para mostrar los datos en el mapa utilizaremos la libreria Leaflet [^3]. Para ob
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Servicio de Bicing realtime</title>
+	<title>Servicio compartir ubicación realtime</title>
 	<link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
 		<style>
 				#map {
@@ -94,9 +96,9 @@ Para mostrar los datos en el mapa utilizaremos la libreria Leaflet [^3]. Para ob
 
 ## Creación del servicio que comparte la ubicación de los usuarios
 
-- Utilizaremos Nodejs [^5] para implementar nuestro servidor web y utilizaremos el módulo de socket.io para establecer la comunicación entre el cliente y nuestro servidor.
+- Utilizaremos Node.js [^5] para implementar nuestro servidor web y utilizaremos el módulo de socket.io para establecer la comunicación entre el cliente y nuestro servidor.
 
-- Instalar Node.js. Descargar la última versión LTS (en este momento es la 12.13.1 LTS) y lo instalaremos con las opciones por defecto. Una vez instalado el Node abrir la consola para verificar que se ha instalado correctamente. Escribir
+- Instalar Node.js. Descargar la última versión LTS y lo instalaremos con las opciones por defecto. Una vez instalado el Node abrir la consola para verificar que se ha instalado correctamente. Escribir
 
 ```bash
 node -v
@@ -105,38 +107,38 @@ node -v
 - Navegar hasta nuestra carpeta *user-realtime* y escribir:
 
 ```bash
-npm init
+npm init -y 
 ```
 
-Con este comando estaremos creando el archivo *package.json*. Este comando solicita varios elementos como, por ejemplo, el nombre y la versión de la aplicación. Por ahora, sólo hay que pulsar ENTER para aceptar los valores predeterminados.
+Con este comando estaremos creando el archivo *package.json* con los valores predeterminados.
 
-- Instalar las dependencias para crear nuestro servicio de proxy. En este caso utilizaremos Express [^6] como servidor web y el módulo socket.io [^7].
+- Instalar las dependencias para crear nuestro servicio de proxy. En este caso utilizaremos Express [^6] como servidor web, el módulo socket.io [^7] y el módulo de cors [^8].
 
 - Instalar el express y guardarlo en la lista de dependencias
 
 ```bash
-npm install express --save
-```
-
-- Instalar el socket.io y guardarlo en la lista de dependencias
-
-```bash
-npm install socket.io --save
+npm install --save express socket.io cors
 ```
 
 Al ejecutar estos comandos veremos que se crea una carpeta llamada *node_modules* donde se guardan los módulos instalados.
+
+- Instalar el módulo nodemon [^8] de manera global.
+
+```bash
+npm install -g nodemon
+```
 
 - Crear un archivo llamado *app.js* que contendrá nuestra aplicación que servirá de servidor web. Para ello copiar lo siguiente en este archivo.
 
 ```js
 var express  = require('express');
 var app = express();
+var cors = require('cors');
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
 
-app.get('/', function(req, res){
-	res.sendFile(__dirname + '/index.html');
-});
+app.use(cors());
+app.use(express.static('public'));
 
 io.on('connection', function(socket){
 	console.log('a user connected');
@@ -150,7 +152,7 @@ http.listen(3000, function(){
 - Probar que nuestro servidor está funcionando, escribiendo:
 
 ```bash
-node app.js
+nodemon app.js
 ```
 
 - Abrir la url de nuestro servidor http://localhost:3000/ en el navegador para ver nuestro mapa.
@@ -163,7 +165,7 @@ node app.js
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Servicio de Bicing realtime</title>
+	<title>Servicio compartir ubicación realtime</title>
 	<link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
 		<style>
 				#map {
@@ -205,7 +207,7 @@ node app.js
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Servicio de Bicing realtime</title>
+	<title>Servicio compartir ubicación realtime</title>
 	<link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
 		<style>
 				#map {
@@ -251,7 +253,7 @@ node app.js
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Servicio de Bicing realtime</title>
+	<title>Servicio compartir ubicación realtime</title>
 	<link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
 		<style>
 				#map {
@@ -297,12 +299,12 @@ node app.js
 ```js hl_lines="12 13 14"
 var express  = require('express');
 var app = express();
+var cors = require('cors');
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
 
-app.get('/', function(req, res){
-	res.sendFile(__dirname + '/index.html');
-});
+app.use(cors());
+app.use(express.static('public'));
 
 io.on('connection', function(socket){
 	console.log('a user connected');
@@ -316,8 +318,6 @@ http.listen(3000, function(){
 });
 ```
 
-- Reiniciar nuestro servidor de node en la consola presionar Crtl+c. Volver a escribir node app.js.
-
 - Recargar la página y hacer click sobre el mapa para ver que en la consola aparece las coordenadas del click. Con esto ya hemos logrado la comunicación cliente-servidor.
 
 - Lograr la comunicación servidor-cliente y que el servidor notifique a todos los cliente para esto debemos emitir un evento en nuestro servidor. Este evento lo llamaremos *new_user*. Copiar lo siguiente para emitir el evento dentro de la función que se llama en el evento *user_click*.
@@ -325,12 +325,12 @@ http.listen(3000, function(){
 ```js hl_lines="14"
 var express  = require('express');
 var app = express();
+var cors = require('cors');
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
 
-app.get('/', function(req, res){
-	res.sendFile(__dirname + '/index.html');
-});
+app.use(cors());
+app.use(express.static('public'));
 
 io.on('connection', function(socket){
 	console.log('a user connected');
@@ -352,7 +352,7 @@ http.listen(3000, function(){
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Servicio de Bicing realtime</title>
+	<title>Servicio compartir ubicación realtime</title>
 	<link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
 		<style>
 				#map {
@@ -395,7 +395,7 @@ http.listen(3000, function(){
 </html>
 ```
 
-- Recargar el servidor y recargar la página. Clicar sobre el mapa y ver las coordenadas del click tanto en el la consola del servidor como en la consola de desarrolladores del navegador.
+- Recargar la página. Clicar sobre el mapa y ver las coordenadas del click tanto en el la consola del servidor como en la consola de desarrolladores del navegador.
 
 - Mostrar un marcador en el mapa en la posición donde el usuario hace click. En nuestro html en la función que escucha el evento *new_user* agregar el siguiente código
 
@@ -403,7 +403,7 @@ http.listen(3000, function(){
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Servicio de Bicing realtime</title>
+	<title>Servicio compartir ubicación realtime</title>
 	<link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
 		<style>
 				#map {
@@ -458,3 +458,5 @@ http.listen(3000, function(){
 [^5]: https://nodejs.org/es/
 [^6]: http://expressjs.com/
 [^7]: https://github.com/socketio/socket.io
+[^8]: https://www.npmjs.com/package/cors
+[^9]: https://www.npmjs.com/package/nodemon

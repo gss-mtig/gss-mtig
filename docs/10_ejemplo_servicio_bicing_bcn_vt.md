@@ -72,7 +72,7 @@ Para ver estos datos sobre un mapa crearemos un visor utilizando Mapbox GL JS. [
 
 Crearemos un proxy que nos permita  
 
-- Instalar Node.js [^3]. Descargar la última versión LTS (en este momento es la 12.13.1 LTS) y lo instalaremos con las opciones por defecto. Una vez instalado el Node abrir la consola para verificar que se ha instalado correctamente. Escribir
+- Instalar Node.js [^3]. Descargar la última versión LTS y lo instalaremos con las opciones por defecto. Una vez instalado el Node abrir la consola para verificar que se ha instalado correctamente. Escribir
 
 ```bash
 node -v

@@ -14,7 +14,9 @@ Para crear un visor de mapas utilizaremos la librería de mapas Leaflet [^5].
 
 - Crear una carpeta con el nombre de *visor-aca*.
 
-- Crear un archivo con el nombre de *index.html* dentro de la carpeta.
+- Crer una carpeta con el nombre de *public* dentro de la carpeta visor-aca.
+
+- Crear un archivo con el nombre de *index.html* dentro de la carpeta public.
 
 - Abrir el archivo index.html con un editor de texto y copiar el siguiente código.
 
@@ -137,11 +139,11 @@ Para crear un visor de mapas utilizaremos la librería de mapas Leaflet [^5].
 </html>
 ```
 
-- Recargar la página y confirmar que no aparece ninguna información en el mapa. Abrir la consola de desarrollador del navegador (Ctrl+F12) para ver que aparece un mensaje de error *XMLHttpRequest cannot load ...* ello es debido a que estamos llamando a un servicio que no está en nuestro dominio y por lo tanto da un error de CORS [^7]. Para evitar el error de CORS necesitamos un proxy [^8] en nuestro servidor web que pueda hacer la llamada al servicio de la ACA y que nos devuelva el contenido.
+- Recargar la página y confirmar que no aparece ninguna información en el mapa. En muchas ocaciones al abrir la consola de desarrollador del navegador (Ctrl+F12) vemops que aparece un mensaje de error *XMLHttpRequest cannot load ...* ello es debido a que estamos llamando a un servicio que no está en nuestro dominio y por lo tanto da un error de CORS [^7]. Para evitar el error de CORS necesitamos un proxy [^8] en nuestro servidor web que pueda hacer la llamada al servicio de la ACA y que nos devuelva el contenido.
 
 ## Creación del proxy
 
-- Instalar Node.js [^9]. Descargar la última versión LTS (en este momento es la 12.13.1 LTS) y lo instalaremos con las opciones por defecto. Abrir la consola para verificar que se ha instalado correctamente y escribir
+- Instalar Node.js [^9]. Descargar la última versión LTS y lo instalaremos con las opciones por defecto. Abrir la consola para verificar que se ha instalado correctamente y escribir
 
 ```bash
 node -v
@@ -150,39 +152,39 @@ node -v
 - Navegar hasta nuestra carpeta *visor-aca* y escribir:
 
 ```bash
-npm init
+npm init -y
 ```
 
-Con este comando estaremos creando el archivo *package.json*, el cual solicita varios elementos como por ejemplo; el nombre y la versión de la aplicación. Por ahora, sólo hay que pulsar ENTER para aceptar los valores predeterminados.
+Con este comando estaremos creando el archivo *package.json* con los valores predeterminados.
 
-- Instalar las dependencias para crear nuestro servicio de proxy. En este caso utilizaremos Express [^10] como servidor web y el módulo http-proxy [^11].
+- Instalar las dependencias para crear nuestro servicio de proxy. En este caso utilizaremos Express [^10] como servidor web, el módulo http-proxy [^11] y el módulo de cors [^12].
 
 - Instalar el express y guardarlo en la lista de dependencias
 
 ```bash
-npm install express --save
+npm install --save express http-proxy cors
 ```
 
-- Instalar el http-proxy y guardarlo en la lista de dependencias
+Al ejecutar este comando veremos que se crea una carpeta llamada *node_modules* donde se guardan los módulos instalados.
+
+- Instalar el módulo nodemon [^8] de manera global.
 
 ```bash
-npm install http-proxy --save
+npm install -g nodemon
 ```
-
-Al ejecutar estos comandos veremos que se crea una carpeta llamada *node_modules* donde se guardan los módulos instalados.
 
 - Crear un archivo llamado *app.js* que servirá de proxy con el servicio de la ACA. Copiar lo siguiente en este archivo.
 
 ```js
 var express  = require('express');
 var app      = express();
+var cors = require('cors');
 var httpProxy = require('http-proxy');
 var apiProxy = httpProxy.createProxyServer();
 var serverAca = 'http://aca-web.gencat.cat/sdim2/apirest/catalog';
 
-app.get('/', function(req, res){
-  res.sendFile(__dirname + '/index.html');
-});
+app.use(cors());
+app.use(express.static('public'));
 
 app.all("/aca/*", function(req, res) {
   console.log('redirecting to Server1');
@@ -199,7 +201,7 @@ app.listen(3000);
 - Probar que nuestro proxy está funcionando, escribir:
 
 ```bash
-node app.js
+nodemon app.js
 ```
 
 - Abrir la url de nuestro proxy http://localhost:3000/aca/ en el navegador.
@@ -567,17 +569,17 @@ node app.js
 
 - Modificar nuestro proxy para obtener la información de un sensor. Escribir en nuestro archivo app.js justo debajo de la declaración de la variable *serverAca*
 
-```js hl_lines="6"
+```js hl_lines="7"
 var express  = require('express');
 var app      = express();
+var cors = require('cors');
 var httpProxy = require('http-proxy');
 var apiProxy = httpProxy.createProxyServer();
 var serverAca = 'http://aca-web.gencat.cat/sdim2/apirest/catalog';
 var serverAcaLastOb = 'http://aca-web.gencat.cat/sentilo-catalog-web/component/map/EMBASSAMENT-EST.';
 
-app.get('/', function(req, res){
-  res.sendFile(__dirname + '/index.html');
-});
+app.use(cors());
+app.use(express.static('public'));
 
 app.all("/aca/*", function(req, res) {
   console.log('redirecting to Server1');
@@ -596,14 +598,14 @@ app.listen(3000);
 ```js hl_lines="21 22 23 24 25 26 27 28"
 var express  = require('express');
 var app      = express();
+var cors = require('cors');
 var httpProxy = require('http-proxy');
 var apiProxy = httpProxy.createProxyServer();
 var serverAca = 'http://aca-web.gencat.cat/sdim2/apirest/catalog';
 var serverAcaLastOb = 'http://aca-web.gencat.cat/sentilo-catalog-web/component/map/EMBASSAMENT-EST.';
 
-app.get('/', function(req, res){
-  res.sendFile(__dirname + '/index.html');
-});
+app.use(cors());
+app.use(express.static('public'));
 
 app.all("/aca/*", function(req, res) {
   console.log('redirecting to Server1');
@@ -625,8 +627,6 @@ app.all("/acalast/:id", function(req, res){
 
 app.listen(3000);
 ```
-
-- Reiniciar nuestro servidor de node, ir a la consola y presionar Crtl+c. Escribir node app.js.
 
 - Abrir la url http://localhost:3000/acalast/082687-001 en el navegador para comprobar que el proxy está funcionando correctamente.
 
@@ -940,3 +940,5 @@ app.listen(3000);
 [^9]: https://nodejs.org/es/
 [^10]: http://expressjs.com/
 [^11]: https://github.com/nodejitsu/node-http-proxy
+[^12]: https://www.npmjs.com/package/cors
+[^13]: https://www.npmjs.com/package/nodemon

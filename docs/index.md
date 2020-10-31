@@ -22,9 +22,10 @@ Temario:
 * [Ejemplo servicio bicing Barcelona](https://gss-mtig.github.io/gss-mtig-19-20/9_ejemplo_servicio_bicing_bcn/)
 * [Ejemplo servicio bicing Barcelona (VectorTiles)](https://gss-mtig.github.io/gss-mtig-19-20/10_ejemplo_servicio_bicing_bcn_vt/)
 * [Consideraciones sobre servicios de Sensores](https://gss-mtig.github.io/gss-mtig-19-20/11_consideraciones_servicios_realtime_sensores/)
-* [Ejemplo Sentilo ACA](https://gss-mtig.github.io/gss-mtig-19-20/13_ejemplo_sentilo_aca/)
-* [Geoservicios realtime](https://gss-mtig.github.io/gss-mtig-19-20/14_geoservicios_realtime/)
-* [Herramientas de visualización geoservicios](https://gss-mtig.github.io/gss-mtig-19-20/15_herramientas_visualizacion_geoservicios/)
+* [Ejemplo Sentilo ACA](https://gss-mtig.github.io/gss-mtig-19-20/12_ejemplo_sentilo_aca/)
+* [Geoservicios realtime](https://gss-mtig.github.io/gss-mtig-19-20/13_geoservicios_realtime/)
+* [Herramientas de visualización geoservicios](https://gss-mtig.github.io/gss-mtig-19-20/14_herramientas_visualizacion_geoservicios/)
+* [Ejemplo Geocodificador](https://gss-mtig.github.io/gss-mtig-19-20/15_ejemplo_geocodificador/)
 * [Ejemplo Mobility](https://gss-mtig.github.io/gss-mtig-19-20/16_ejemplo_mobility/)
 * [Ejemplo servicio realtime para compartir la ubicación](https://gss-mtig.github.io/gss-mtig-19-20/17_ejemplo_geoservicio_realtime/)
 * [Ejemplo GTFS](https://gss-mtig.github.io/gss-mtig-19-20/18_ejemplo_gtfs/)
@@ -50,4 +51,3 @@ Temario:
     * CompartirIgual — Si remezcla, transforma o crea a partir del material, deberá difundir sus contribuciones bajo la misma licencia que el original.
     
     * No hay restricciones adicionales — No puede aplicar términos legales o medidas tecnológicas que legalmente restrinjan realizar aquello que la licencia permite.
-

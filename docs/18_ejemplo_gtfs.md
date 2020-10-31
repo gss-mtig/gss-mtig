@@ -10,7 +10,9 @@ Para crear un visor de mapas utilizaremos la librería de mapas Leaflet [^2]. Y 
 
 - Crear una carpeta con el nombre de *visor-gtfs*.
 
-- Crear un archivo con el nombre de *index.html* dentro de la carpeta.
+- Crer una carpeta con el nombre de *public* dentro de la carpeta visor-gtfs.
+
+- Crear un archivo con el nombre de *index.html* dentro de la carpeta public.
 
 - Abrir el archivo index.html con un editor de texto y copiar el siguiente código.
 
@@ -72,6 +74,7 @@ Para crear un visor de mapas utilizaremos la librería de mapas Leaflet [^2]. Y 
 	"license": "ISC",
 	"dependencies": {
 		"assert": "^2.0.0",
+		"cors": "^2.8.5",
 		"express": "^4.17.1",
 		"fast-csv": "^3.4.0",
 		"request": "^2.88.0",
@@ -80,7 +83,7 @@ Para crear un visor de mapas utilizaremos la librería de mapas Leaflet [^2]. Y 
 }
 ```
 
-- Instalar Node.js [^4]. Descargar la última versión LTS (en este momento es la  10.13.0 LTS) y lo instalaremos con las opciones por defecto. Abrir la consola para verificar que se ha instalado correctamente y escribir
+- Instalar Node.js [^4]. Descargar la última versión LTS y lo instalaremos con las opciones por defecto. Abrir la consola para verificar que se ha instalado correctamente y escribir
 
 ```bash
 node -v
@@ -96,20 +99,26 @@ Con este comando estamos instalando las dependencias declarades en el archivo *p
 
 Al ejecutar estos comandos veremos que se crea una carpeta llamada *node_modules* donde se guardan los módulos instalados.
 
+- Instalar el módulo nodemon [^8] de manera global.
+
+```bash
+npm install -g nodemon
+```
+
 - Crear un archivo llamado *app.js* que servirá de proxy con el servicio GTFS. Copiar lo siguiente en este archivo.
 
 ```js
 var express  = require('express');
 var app      = express();
+var cors = require('cors');
 var request = require('request');
 var path = require('path');
 var https = require('https');
 var fs = require('fs');
 var yauzl = require("yauzl");
 
-app.get('/', function(req, res){
-	res.sendFile(__dirname + '/index.html');
-});
+app.use(cors());
+app.use(express.static('public'));
 
 app.listen(3000);
 ```
@@ -117,7 +126,7 @@ app.listen(3000);
 - Probar que nuestro proxy está funcionando, escribir:
 
 ```bash
-node app.js
+nodemon app.js
 ```
 
 - Escribir en el navegador http://localhost:3000 y ver nuestro mapa.
@@ -129,6 +138,7 @@ node app.js
 ```js hl_lines="8"
 var express  = require('express');
 var app      = express();
+var cors = require('cors');
 var request = require('request');
 var path = require('path');
 var https = require('https');
@@ -136,9 +146,8 @@ var fs = require('fs');
 var yauzl = require("yauzl");
 var gtfs2geojson = require('./gtfs2geojson.js');
 
-app.get('/', function(req, res){
-	res.sendFile(__dirname + '/index.html');
-});
+app.use(cors());
+app.use(express.static('public'));
 
 app.listen(3000);
 ```
@@ -148,6 +157,7 @@ app.listen(3000);
 ```js hl_lines="10"
 var express  = require('express');
 var app      = express();
+var cors = require('cors');
 var request = require('request');
 var path = require('path');
 var https = require('https');
@@ -157,9 +167,8 @@ var gtfs2geojson = require('./gtfs2geojson.js');
 
 const url = 'https://opendata.vlci.valencia.es:8443/dataset/4645f8bf-28d7-4420-bab2-d5c5e7de2a5a/resource/11591648-a984-4d64-89e3-3730f3123403/download/googletransit.zip';
 
-app.get('/', function(req, res){
-	res.sendFile(__dirname + '/index.html');
-});
+app.use(cors());
+app.use(express.static('public'));
 
 app.listen(3000);
 ```
@@ -169,6 +178,7 @@ app.listen(3000);
 ```js hl_lines="18 19 20 21 22 23 24 25 26 27 28"
 var express  = require('express');
 var app      = express();
+var cors = require('cors');
 var request = require('request');
 var path = require('path');
 var https = require('https');
@@ -178,9 +188,8 @@ var gtfs2geojson = require('./gtfs2geojson.js');
 
 const url = 'https://opendata.vlci.valencia.es:8443/dataset/4645f8bf-28d7-4420-bab2-d5c5e7de2a5a/resource/11591648-a984-4d64-89e3-3730f3123403/download/googletransit.zip';
 
-app.get('/', function(req, res){
-	res.sendFile(__dirname + '/index.html');
-});
+app.use(cors());
+app.use(express.static('public'));
 
 app.listen(3000);
 
@@ -202,6 +211,7 @@ function getZip(url){
 ```js hl_lines="30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56 57 58 59"
 var express  = require('express');
 var app      = express();
+var cors = require('cors');
 var request = require('request');
 var path = require('path');
 var https = require('https');
@@ -211,9 +221,8 @@ var gtfs2geojson = require('./gtfs2geojson.js');
 
 const url = 'https://opendata.vlci.valencia.es:8443/dataset/4645f8bf-28d7-4420-bab2-d5c5e7de2a5a/resource/11591648-a984-4d64-89e3-3730f3123403/download/googletransit.zip';
 
-app.get('/', function(req, res){
-	res.sendFile(__dirname + '/index.html');
-});
+app.use(cors());
+app.use(express.static('public'));
 
 app.listen(3000);
 
@@ -266,6 +275,7 @@ function leerZip(archivo){
 ```js hl_lines="16 17 18 19 20 21 22"
 var express  = require('express');
 var app      = express();
+var cors = require('cors');
 var request = require('request');
 var path = require('path');
 var https = require('https');
@@ -275,9 +285,8 @@ var gtfs2geojson = require('./gtfs2geojson.js');
 
 const url = 'https://opendata.vlci.valencia.es:8443/dataset/4645f8bf-28d7-4420-bab2-d5c5e7de2a5a/resource/11591648-a984-4d64-89e3-3730f3123403/download/googletransit.zip';
 
-app.get('/', function(req, res){
-	res.sendFile(__dirname + '/index.html');
-});
+app.use(cors());
+app.use(express.static('public'));
 
 app.all("/getdata/*", function(req, res) {
 	getZip(url).then(function(){
@@ -333,8 +342,6 @@ function leerZip(archivo){
 }
 ```
 
-- Reiniciar nuestro servidor de node, ir a la consola y presionar Crtl+c. Escribir node app.js.
-
 - Abrir la url http://localhost:3000/getdata/ en el navegador para comprobar que se han descargado correctamente los archivos *gtfs.zip*, *shapes.txt* y *stops.txt*.
 
 - Leer los archivos GTFS y convertirlos a GeoJson. Escribir lo siguiente justo antes de la línea donde definimos el puerto por el cual escucha nuestro servidor
@@ -342,6 +349,7 @@ function leerZip(archivo){
 ```js hl_lines="24 25 26 27 28 29 30 31 32 33 34"
 var express  = require('express');
 var app      = express();
+var cors = require('cors');
 var request = require('request');
 var path = require('path');
 var https = require('https');
@@ -351,9 +359,8 @@ var gtfs2geojson = require('./gtfs2geojson.js');
 
 const url = 'https://opendata.vlci.valencia.es:8443/dataset/4645f8bf-28d7-4420-bab2-d5c5e7de2a5a/resource/11591648-a984-4d64-89e3-3730f3123403/download/googletransit.zip';
 
-app.get('/', function(req, res){
-	res.sendFile(__dirname + '/index.html');
-});
+app.use(cors());
+app.use(express.static('public'));
 
 app.all("/getdata/*", function(req, res) {
 	getZip(url).then(function(){
@@ -421,8 +428,6 @@ function leerZip(archivo){
 }
 ```
 
-- Reiniciar nuestro servidor de node, ir a la consola y presionar Crtl+c. Escribir node app.js.
-
 - Abrir la url http://localhost:3000/stops/ en el navegador para comprobar que se muestra un GeoJson con la información de las paradas. 
 
 ## Modificar el mapa
@@ -466,7 +471,6 @@ function leerZip(archivo){
 </body>
 </html>
 ```
-	
 
 - Utilizar el plugin para agregar la capa de paradas al mapa llamando a nuestro servidor. Agregar lo siguiente al final de nuestro código:
 
