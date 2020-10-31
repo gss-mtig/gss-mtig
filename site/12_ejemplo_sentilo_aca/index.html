@@ -1,0 +1,1653 @@
+
+
+
+<!doctype html>
+<html lang="es" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Geoservicios para Smart Cities.">
+      
+      
+        <link rel="canonical" href="https://gss-mtig.github.io/gss-mtig-20-21/12_ejemplo_sentilo_aca/">
+      
+      
+        <meta name="author" content="gss-mtig">
+      
+      <link rel="shortcut icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.1.2, mkdocs-material-5.5.12">
+    
+    
+      
+        <title>12. Ejemplo Sentilo ACA - Geoservicios para Smart Cities</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.4dd2dd8d.min.css">
+      
+      
+    
+    
+    
+      
+        <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&display=fallback">
+        <style>body,input{font-family:"Roboto",-apple-system,BlinkMacSystemFont,Helvetica,Arial,sans-serif}code,kbd,pre{font-family:"Roboto Mono",SFMono-Regular,Consolas,Menlo,monospace}</style>
+      
+    
+    
+    
+    
+      
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#ejemplo-sentilo-aca" class="md-skip">
+          Saltar a contenido
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      <header class="md-header" data-md-component="header">
+  <nav class="md-header-nav md-grid" aria-label="Cabecera">
+    <a href="https://gss-mtig.github.io/gss-mtig-20-21/" title="Geoservicios para Smart Cities" class="md-header-nav__button md-logo" aria-label="Geoservicios para Smart Cities">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 003-3 3 3 0 00-3-3 3 3 0 00-3 3 3 3 0 003 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
+
+    </a>
+    <label class="md-header-nav__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2z"/></svg>
+    </label>
+    <div class="md-header-nav__title" data-md-component="header-title">
+      
+        <div class="md-header-nav__ellipsis">
+          <span class="md-header-nav__topic md-ellipsis">
+            Geoservicios para Smart Cities
+          </span>
+          <span class="md-header-nav__topic md-ellipsis">
+            
+              12. Ejemplo Sentilo ACA
+            
+          </span>
+        </div>
+      
+    </div>
+    
+      <label class="md-header-nav__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0116 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 019.5 16 6.5 6.5 0 013 9.5 6.5 6.5 0 019.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+      </label>
+      
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Búsqueda" placeholder="Búsqueda" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" data-md-state="active">
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0116 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 019.5 16 6.5 6.5 0 013 9.5 6.5 6.5 0 019.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+      </label>
+      <button type="reset" class="md-search__icon md-icon" aria-label="Limpiar" data-md-component="search-reset" tabindex="-1">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"/></svg>
+      </button>
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header-nav__source">
+        
+<a href="https://github.com/gss-mtig/gss-mtig-20-21/" title="Ir al repositorio" class="md-source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M439.55 236.05L244 40.45a28.87 28.87 0 00-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 01-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 000 40.81l195.61 195.6a28.86 28.86 0 0040.8 0l194.69-194.69a28.86 28.86 0 000-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+        
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              <div class="md-sidebar md-sidebar--primary" data-md-component="navigation">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    <nav class="md-nav md-nav--primary" aria-label="Navegación" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="https://gss-mtig.github.io/gss-mtig-20-21/" title="Geoservicios para Smart Cities" class="md-nav__button md-logo" aria-label="Geoservicios para Smart Cities">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 003-3 3 3 0 00-3-3 3 3 0 00-3 3 3 3 0 003 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
+
+    </a>
+    Geoservicios para Smart Cities
+  </label>
+  
+    <div class="md-nav__source">
+      
+<a href="https://github.com/gss-mtig/gss-mtig-20-21/" title="Ir al repositorio" class="md-source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M439.55 236.05L244 40.45a28.87 28.87 0 00-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 01-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 000 40.81l195.61 195.6a28.86 28.86 0 0040.8 0l194.69-194.69a28.86 28.86 0 000-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href=".." title="Home" class="md-nav__link">
+      Home
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../1_introduccion_a_las_smart_cities/" title="1. Introducción a las Smart Cities" class="md-nav__link">
+      1. Introducción a las Smart Cities
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../2_conceptos_y_servicios_open_data/" title="2. API servicios Open data (CKAN y SOCRATA)" class="md-nav__link">
+      2. API servicios Open data (CKAN y SOCRATA)
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../3_conceptos_vector_tiles/" title="3. Conceptos Vector Tiles" class="md-nav__link">
+      3. Conceptos Vector Tiles
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../4_visualizacion_kepler/" title="4. Visualización con Kepler.gl" class="md-nav__link">
+      4. Visualización con Kepler.gl
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../5_herramientas_visualizacion_datos/" title="5. Herramientas de visualización de datos" class="md-nav__link">
+      5. Herramientas de visualización de datos
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../6_conceptos_geoservicios/" title="6. Conceptos básicos de Geoservicios" class="md-nav__link">
+      6. Conceptos básicos de Geoservicios
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../7_ejemplo_servicio_wms/" title="7. Ejemplo servicio WMS" class="md-nav__link">
+      7. Ejemplo servicio WMS
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../8_consideraciones_servicios_opendata/" title="8. Consideraciones sobre servicios Open data" class="md-nav__link">
+      8. Consideraciones sobre servicios Open data
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../9_ejemplo_servicio_bicing_bcn/" title="9. Ejemplo servicio bicing Barcelona" class="md-nav__link">
+      9. Ejemplo servicio bicing Barcelona
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../10_ejemplo_servicio_bicing_bcn_vt/" title="10. Ejemplo servicio bicing Barcelona (VectorTiles)" class="md-nav__link">
+      10. Ejemplo servicio bicing Barcelona (VectorTiles)
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../11_consideraciones_servicios_realtime_sensores/" title="11. Consideraciones sobre servicios de Sensores" class="md-nav__link">
+      11. Consideraciones sobre servicios de Sensores
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active">
+    
+    <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+    
+      
+    
+    
+      <label class="md-nav__link md-nav__link--active" for="__toc">
+        12. Ejemplo Sentilo ACA
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+    
+    <a href="./" title="12. Ejemplo Sentilo ACA" class="md-nav__link md-nav__link--active">
+      12. Ejemplo Sentilo ACA
+    </a>
+    
+      
+<nav class="md-nav md-nav--secondary" aria-label="Tabla de contenidos">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Tabla de contenidos
+    </label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#acceso-al-servicio-de-sensores-sentilo-de-la-aca" class="md-nav__link">
+    Acceso al servicio de sensores Sentilo de la ACA
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#creacion-de-un-visor" class="md-nav__link">
+    Creación de un visor
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#creacion-del-proxy" class="md-nav__link">
+    Creación del proxy
+  </a>
+  
+    <nav class="md-nav" aria-label="Creación del proxy">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#modificar-el-mapa" class="md-nav__link">
+    Modificar el mapa
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#modificar-el-proxy" class="md-nav__link">
+    Modificar el proxy
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#referencias" class="md-nav__link">
+    Referencias
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+    
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../13_geoservicios_realtime/" title="13. Geoservicios realtime" class="md-nav__link">
+      13. Geoservicios realtime
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../14_herramientas_visualizacion_geoservicios/" title="14. Herramientas de visualización geoservicios" class="md-nav__link">
+      14. Herramientas de visualización geoservicios
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../15_ejemplo_geocodificador/" title="15. Ejemplo Geocodificador" class="md-nav__link">
+      15. Ejemplo Geocodificador
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../16_ejemplo_mobility/" title="16. Ejemplo Mobility" class="md-nav__link">
+      16. Ejemplo Mobility
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../17_ejemplo_geoservicio_realtime/" title="17. Ejemplo servicio realtime para compartir la ubicación" class="md-nav__link">
+      17. Ejemplo servicio realtime para compartir la ubicación
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../18_ejemplo_gtfs/" title="18. Ejemplo GTFS" class="md-nav__link">
+      18. Ejemplo GTFS
+    </a>
+  </li>
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary" aria-label="Tabla de contenidos">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Tabla de contenidos
+    </label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#acceso-al-servicio-de-sensores-sentilo-de-la-aca" class="md-nav__link">
+    Acceso al servicio de sensores Sentilo de la ACA
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#creacion-de-un-visor" class="md-nav__link">
+    Creación de un visor
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#creacion-del-proxy" class="md-nav__link">
+    Creación del proxy
+  </a>
+  
+    <nav class="md-nav" aria-label="Creación del proxy">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#modificar-el-mapa" class="md-nav__link">
+    Modificar el mapa
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#modificar-el-proxy" class="md-nav__link">
+    Modificar el proxy
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#referencias" class="md-nav__link">
+    Referencias
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                  <a href="https://github.com/gss-mtig/gss-mtig-20-21/edit/master/docs/12_ejemplo_sentilo_aca.md" title="Editar esta página" class="md-content__button md-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75L3 17.25z"/></svg>
+                  </a>
+                
+                
+                  
+                
+                
+                <h1 id="ejemplo-sentilo-aca">Ejemplo Sentilo ACA</h1>
+<h2 id="acceso-al-servicio-de-sensores-sentilo-de-la-aca">Acceso al servicio de sensores Sentilo de la ACA</h2>
+<p>En el apartado de consulta de datos de la página de la ACA <sup id="fnref:1"><a class="footnote-ref" href="#fn:1">1</a></sup> encontraremos un subapartado de datos en tiempo real, estos datos los sirven utilizando la plataforma de sensores Sentilo <sup id="fnref:2"><a class="footnote-ref" href="#fn:2">2</a></sup>. Los sensores dan información sobre los diferentes embalses/pantanos que hay en Cataluña.</p>
+<p>La página tiene un acceso a un mapa con los datos de los diferentes sensores <sup id="fnref:3"><a class="footnote-ref" href="#fn:3">3</a></sup> este mapa es el que ofrece la plataforma de Sentilo y está basado en tecnología de Google Maps.</p>
+<p>También encontraremos la documentación <sup id="fnref:4"><a class="footnote-ref" href="#fn:4">4</a></sup> para usar la API, lo que nos permite acceder a los datos y generar nuestro propio visor.</p>
+<h2 id="creacion-de-un-visor">Creación de un visor</h2>
+<p>Para crear un visor de mapas utilizaremos la librería de mapas Leaflet <sup id="fnref:5"><a class="footnote-ref" href="#fn:5">5</a></sup>.  </p>
+<ul>
+<li>
+<p>Crear una carpeta con el nombre de <em>visor-aca</em>.</p>
+</li>
+<li>
+<p>Crer una carpeta con el nombre de <em>public</em> dentro de la carpeta visor-aca.</p>
+</li>
+<li>
+<p>Crear un archivo con el nombre de <em>index.html</em> dentro de la carpeta public.</p>
+</li>
+<li>
+<p>Abrir el archivo index.html con un editor de texto y copiar el siguiente código.</p>
+</li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="cp">&lt;!DOCTYPE html&gt;</span>
+<span class="p">&lt;</span><span class="nt">html</span><span class="p">&gt;</span>
+<span class="p">&lt;</span><span class="nt">head</span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="nt">meta</span> <span class="na">charset</span><span class="o">=</span><span class="s">&quot;UTF-8&quot;</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">meta</span> <span class="na">name</span><span class="o">=</span><span class="s">&quot;viewport&quot;</span> <span class="na">content</span><span class="o">=</span><span class="s">&quot;width=device-width, initial-scale=1.0&quot;</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">meta</span> <span class="na">http-equiv</span><span class="o">=</span><span class="s">&quot;X-UA-Compatible&quot;</span> <span class="na">content</span><span class="o">=</span><span class="s">&quot;ie=edge&quot;</span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="nt">title</span><span class="p">&gt;</span>Ejemplo Sentilo ACA<span class="p">&lt;/</span><span class="nt">title</span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="nt">link</span> <span class="na">rel</span><span class="o">=</span><span class="s">&quot;stylesheet&quot;</span> <span class="na">href</span><span class="o">=</span><span class="s">&quot;https://unpkg.com/leaflet@1.7.1/dist/leaflet.css&quot;</span> <span class="p">/&gt;</span>
+  <span class="p">&lt;</span><span class="nt">style</span><span class="p">&gt;</span>
+    <span class="p">#</span><span class="nn">map</span> <span class="p">{</span>
+        <span class="k">height</span><span class="p">:</span> <span class="mi">100</span><span class="kt">%</span><span class="p">;</span>
+        <span class="k">width</span><span class="p">:</span> <span class="mi">100</span><span class="kt">%</span><span class="p">;</span>
+        <span class="k">position</span><span class="p">:</span> <span class="kc">absolute</span><span class="p">;</span>
+    <span class="p">}</span>
+  <span class="p">&lt;/</span><span class="nt">style</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">head</span><span class="p">&gt;</span>
+<span class="p">&lt;</span><span class="nt">body</span><span class="p">&gt;</span>
+
+  <span class="p">&lt;</span><span class="nt">div</span> <span class="na">id</span><span class="o">=</span><span class="s">&quot;map&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+
+  <span class="p">&lt;</span><span class="nt">script</span> <span class="na">src</span><span class="o">=</span><span class="s">&quot;https://unpkg.com/leaflet@1.7.1/dist/leaflet.js&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="nt">script</span><span class="p">&gt;</span>
+    <span class="kd">var</span> <span class="nx">map</span> <span class="o">=</span> <span class="nx">L</span><span class="p">.</span><span class="nx">map</span><span class="p">(</span><span class="s1">&#39;map&#39;</span><span class="p">);</span>
+
+    <span class="nx">map</span><span class="p">.</span><span class="nx">setView</span><span class="p">([</span><span class="mf">41.5087</span><span class="p">,</span> <span class="mf">2.1777</span><span class="p">],</span> <span class="mi">8</span><span class="p">);</span>  
+
+    <span class="nx">L</span><span class="p">.</span><span class="nx">tileLayer</span><span class="p">(</span><span class="s1">&#39;http://{s}.tile.osm.org/{z}/{x}/{y}.png&#39;</span><span class="p">,</span> <span class="p">{</span>
+        <span class="nx">attribution</span><span class="o">:</span> <span class="s1">&#39;&amp;copy; &lt;a href=&quot;http://osm.org/copyright&quot;&gt;OpenStreetMap&lt;/a&gt; contributors&#39;</span>
+    <span class="p">}).</span><span class="nx">addTo</span><span class="p">(</span><span class="nx">map</span><span class="p">);</span>
+  <span class="p">&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">body</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">html</span><span class="p">&gt;</span>
+</code></pre></div>
+
+<ul>
+<li>
+<p>Abrir el archivo index.html en el navegador para confirmar que se carga un mapa centrado en Cataluña.</p>
+</li>
+<li>
+<p>Consultar la documentación de la API y buscar la url de descripción del servicio que es <a href="http://aca-web.gencat.cat/sdim2/apirest/catalog">http://aca-web.gencat.cat/sdim2/apirest/catalog</a>. Abrir esta url en el navegador y confirmar que responde un JSON con la información de los diferentes sensores.</p>
+</li>
+<li>
+<p>Revisar el JSON de salida y buscar la propiedad <em>location</em> que indica las coordenadas de la ubicación del sensor. A pesar de que el JSON tiene coordenadas no es un GeoJSON y por lo tanto no lo podemos pintar automáticamente en nuestro mapa.</p>
+</li>
+<li>
+<p>Cargar este JSON en nuestro mapa utilizando un plugin de Leaflet llamado <em>leaflet-ajax</em> <sup id="fnref:6"><a class="footnote-ref" href="#fn:6">6</a></sup>. Este plugin permite hacer una llamada AJAX a un servicio que retorne un JSON y cargar la respuesta en un mapa. Para cargar este plugin debemos agregar lo siguiente justo después de donde hemos cargado el leaflet</p>
+</li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="cp">&lt;!DOCTYPE html&gt;</span>
+<span class="p">&lt;</span><span class="nt">html</span><span class="p">&gt;</span>
+<span class="p">&lt;</span><span class="nt">head</span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="nt">meta</span> <span class="na">charset</span><span class="o">=</span><span class="s">&quot;UTF-8&quot;</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">meta</span> <span class="na">name</span><span class="o">=</span><span class="s">&quot;viewport&quot;</span> <span class="na">content</span><span class="o">=</span><span class="s">&quot;width=device-width, initial-scale=1.0&quot;</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">meta</span> <span class="na">http-equiv</span><span class="o">=</span><span class="s">&quot;X-UA-Compatible&quot;</span> <span class="na">content</span><span class="o">=</span><span class="s">&quot;ie=edge&quot;</span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="nt">title</span><span class="p">&gt;</span>Ejemplo Sentilo ACA<span class="p">&lt;/</span><span class="nt">title</span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="nt">link</span> <span class="na">rel</span><span class="o">=</span><span class="s">&quot;stylesheet&quot;</span> <span class="na">href</span><span class="o">=</span><span class="s">&quot;https://unpkg.com/leaflet@1.2.0/dist/leaflet.css&quot;</span> <span class="p">/&gt;</span>
+  <span class="p">&lt;</span><span class="nt">style</span><span class="p">&gt;</span>
+    <span class="p">#</span><span class="nn">map</span> <span class="p">{</span>
+        <span class="k">height</span><span class="p">:</span> <span class="mi">100</span><span class="kt">%</span><span class="p">;</span>
+        <span class="k">width</span><span class="p">:</span> <span class="mi">100</span><span class="kt">%</span><span class="p">;</span>
+        <span class="k">position</span><span class="p">:</span> <span class="kc">absolute</span><span class="p">;</span>
+    <span class="p">}</span>
+  <span class="p">&lt;/</span><span class="nt">style</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">head</span><span class="p">&gt;</span>
+<span class="p">&lt;</span><span class="nt">body</span><span class="p">&gt;</span>
+
+  <span class="p">&lt;</span><span class="nt">div</span> <span class="na">id</span><span class="o">=</span><span class="s">&quot;map&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+
+  <span class="p">&lt;</span><span class="nt">script</span> <span class="na">src</span><span class="o">=</span><span class="s">&quot;https://unpkg.com/leaflet@1.2.0/dist/leaflet.js&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+<span class="hll">  <span class="p">&lt;</span><span class="nt">script</span> <span class="na">src</span><span class="o">=</span><span class="s">&quot;https://calvinmetcalf.github.io/leaflet-ajax/dist/leaflet.ajax.js&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+</span>  <span class="p">&lt;</span><span class="nt">script</span><span class="p">&gt;</span>
+    <span class="kd">var</span> <span class="nx">map</span> <span class="o">=</span> <span class="nx">L</span><span class="p">.</span><span class="nx">map</span><span class="p">(</span><span class="s1">&#39;map&#39;</span><span class="p">);</span>
+
+    <span class="nx">map</span><span class="p">.</span><span class="nx">setView</span><span class="p">([</span><span class="mf">41.5087</span><span class="p">,</span> <span class="mf">2.1777</span><span class="p">],</span> <span class="mi">8</span><span class="p">);</span>  
+
+    <span class="nx">L</span><span class="p">.</span><span class="nx">tileLayer</span><span class="p">(</span><span class="s1">&#39;http://{s}.tile.osm.org/{z}/{x}/{y}.png&#39;</span><span class="p">,</span> <span class="p">{</span>
+        <span class="nx">attribution</span><span class="o">:</span> <span class="s1">&#39;&amp;copy; &lt;a href=&quot;http://osm.org/copyright&quot;&gt;OpenStreetMap&lt;/a&gt; contributors&#39;</span>
+    <span class="p">}).</span><span class="nx">addTo</span><span class="p">(</span><span class="nx">map</span><span class="p">);</span>
+  <span class="p">&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">body</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">html</span><span class="p">&gt;</span>
+</code></pre></div>
+
+<ul>
+<li>Utilizar el plugin para agregar la capa al mapa llamando a la API de la ACA. Agregar lo siguiente al final de nuestro código:</li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="cp">&lt;!DOCTYPE html&gt;</span>
+<span class="p">&lt;</span><span class="nt">html</span><span class="p">&gt;</span>
+<span class="p">&lt;</span><span class="nt">head</span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="nt">meta</span> <span class="na">charset</span><span class="o">=</span><span class="s">&quot;UTF-8&quot;</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">meta</span> <span class="na">name</span><span class="o">=</span><span class="s">&quot;viewport&quot;</span> <span class="na">content</span><span class="o">=</span><span class="s">&quot;width=device-width, initial-scale=1.0&quot;</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">meta</span> <span class="na">http-equiv</span><span class="o">=</span><span class="s">&quot;X-UA-Compatible&quot;</span> <span class="na">content</span><span class="o">=</span><span class="s">&quot;ie=edge&quot;</span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="nt">title</span><span class="p">&gt;</span>Ejemplo Sentilo ACA<span class="p">&lt;/</span><span class="nt">title</span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="nt">link</span> <span class="na">rel</span><span class="o">=</span><span class="s">&quot;stylesheet&quot;</span> <span class="na">href</span><span class="o">=</span><span class="s">&quot;https://unpkg.com/leaflet@1.2.0/dist/leaflet.css&quot;</span> <span class="p">/&gt;</span>
+  <span class="p">&lt;</span><span class="nt">style</span><span class="p">&gt;</span>
+    <span class="p">#</span><span class="nn">map</span> <span class="p">{</span>
+        <span class="k">height</span><span class="p">:</span> <span class="mi">100</span><span class="kt">%</span><span class="p">;</span>
+        <span class="k">width</span><span class="p">:</span> <span class="mi">100</span><span class="kt">%</span><span class="p">;</span>
+        <span class="k">position</span><span class="p">:</span> <span class="kc">absolute</span><span class="p">;</span>
+    <span class="p">}</span>
+  <span class="p">&lt;/</span><span class="nt">style</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">head</span><span class="p">&gt;</span>
+<span class="p">&lt;</span><span class="nt">body</span><span class="p">&gt;</span>
+
+  <span class="p">&lt;</span><span class="nt">div</span> <span class="na">id</span><span class="o">=</span><span class="s">&quot;map&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+
+  <span class="p">&lt;</span><span class="nt">script</span> <span class="na">src</span><span class="o">=</span><span class="s">&quot;https://unpkg.com/leaflet@1.2.0/dist/leaflet.js&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="nt">script</span> <span class="na">src</span><span class="o">=</span><span class="s">&quot;https://calvinmetcalf.github.io/leaflet-ajax/dist/leaflet.ajax.js&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="nt">script</span><span class="p">&gt;</span>
+    <span class="kd">var</span> <span class="nx">map</span> <span class="o">=</span> <span class="nx">L</span><span class="p">.</span><span class="nx">map</span><span class="p">(</span><span class="s1">&#39;map&#39;</span><span class="p">);</span>
+
+    <span class="nx">map</span><span class="p">.</span><span class="nx">setView</span><span class="p">([</span><span class="mf">41.5087</span><span class="p">,</span> <span class="mf">2.1777</span><span class="p">],</span> <span class="mi">8</span><span class="p">);</span>  
+
+    <span class="nx">L</span><span class="p">.</span><span class="nx">tileLayer</span><span class="p">(</span><span class="s1">&#39;http://{s}.tile.osm.org/{z}/{x}/{y}.png&#39;</span><span class="p">,</span> <span class="p">{</span>
+      <span class="nx">attribution</span><span class="o">:</span> <span class="s1">&#39;&amp;copy; &lt;a href=&quot;http://osm.org/copyright&quot;&gt;OpenStreetMap&lt;/a&gt; contributors&#39;</span>
+    <span class="p">}).</span><span class="nx">addTo</span><span class="p">(</span><span class="nx">map</span><span class="p">);</span>
+
+<span class="hll">    <span class="kd">var</span> <span class="nx">geojsonLayer</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">L</span><span class="p">.</span><span class="nx">GeoJSON</span><span class="p">.</span><span class="nx">AJAX</span><span class="p">(</span><span class="s1">&#39;http://aca-web.gencat.cat/sdim2/apirest/catalog&#39;</span><span class="p">).</span><span class="nx">addTo</span><span class="p">(</span><span class="nx">map</span><span class="p">);</span>
+</span>  <span class="p">&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">body</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">html</span><span class="p">&gt;</span>
+</code></pre></div>
+
+<ul>
+<li>Recargar la página y confirmar que no aparece ninguna información en el mapa. En muchas ocaciones al abrir la consola de desarrollador del navegador (Ctrl+F12) vemops que aparece un mensaje de error <em>XMLHttpRequest cannot load ...</em> ello es debido a que estamos llamando a un servicio que no está en nuestro dominio y por lo tanto da un error de CORS <sup id="fnref:7"><a class="footnote-ref" href="#fn:7">7</a></sup>. Para evitar el error de CORS necesitamos un proxy <sup id="fnref2:8"><a class="footnote-ref" href="#fn:8">8</a></sup> en nuestro servidor web que pueda hacer la llamada al servicio de la ACA y que nos devuelva el contenido.</li>
+</ul>
+<h2 id="creacion-del-proxy">Creación del proxy</h2>
+<ul>
+<li>Instalar Node.js <sup id="fnref:9"><a class="footnote-ref" href="#fn:9">9</a></sup>. Descargar la última versión LTS y lo instalaremos con las opciones por defecto. Abrir la consola para verificar que se ha instalado correctamente y escribir</li>
+</ul>
+<div class="highlight"><pre><span></span><code>node -v
+</code></pre></div>
+
+<ul>
+<li>Navegar hasta nuestra carpeta <em>visor-aca</em> y escribir:</li>
+</ul>
+<div class="highlight"><pre><span></span><code>npm init -y
+</code></pre></div>
+
+<p>Con este comando estaremos creando el archivo <em>package.json</em> con los valores predeterminados.</p>
+<ul>
+<li>
+<p>Instalar las dependencias para crear nuestro servicio de proxy. En este caso utilizaremos Express <sup id="fnref:10"><a class="footnote-ref" href="#fn:10">10</a></sup> como servidor web, el módulo http-proxy <sup id="fnref:11"><a class="footnote-ref" href="#fn:11">11</a></sup> y el módulo de cors <sup id="fnref:12"><a class="footnote-ref" href="#fn:12">12</a></sup>.</p>
+</li>
+<li>
+<p>Instalar el express y guardarlo en la lista de dependencias</p>
+</li>
+</ul>
+<div class="highlight"><pre><span></span><code>npm install --save express http-proxy cors
+</code></pre></div>
+
+<p>Al ejecutar este comando veremos que se crea una carpeta llamada <em>node_modules</em> donde se guardan los módulos instalados.</p>
+<ul>
+<li>Instalar el módulo nodemon <sup id="fnref:8"><a class="footnote-ref" href="#fn:8">8</a></sup> de manera global.</li>
+</ul>
+<div class="highlight"><pre><span></span><code>npm install -g nodemon
+</code></pre></div>
+
+<ul>
+<li>Crear un archivo llamado <em>app.js</em> que servirá de proxy con el servicio de la ACA. Copiar lo siguiente en este archivo.</li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="kd">var</span> <span class="nx">express</span>  <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;express&#39;</span><span class="p">);</span>
+<span class="kd">var</span> <span class="nx">app</span>      <span class="o">=</span> <span class="nx">express</span><span class="p">();</span>
+<span class="kd">var</span> <span class="nx">cors</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;cors&#39;</span><span class="p">);</span>
+<span class="kd">var</span> <span class="nx">httpProxy</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;http-proxy&#39;</span><span class="p">);</span>
+<span class="kd">var</span> <span class="nx">apiProxy</span> <span class="o">=</span> <span class="nx">httpProxy</span><span class="p">.</span><span class="nx">createProxyServer</span><span class="p">();</span>
+<span class="kd">var</span> <span class="nx">serverAca</span> <span class="o">=</span> <span class="s1">&#39;http://aca-web.gencat.cat/sdim2/apirest/catalog&#39;</span><span class="p">;</span>
+
+<span class="nx">app</span><span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="nx">cors</span><span class="p">());</span>
+<span class="nx">app</span><span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="nx">express</span><span class="p">.</span><span class="kr">static</span><span class="p">(</span><span class="s1">&#39;public&#39;</span><span class="p">));</span>
+
+<span class="nx">app</span><span class="p">.</span><span class="nx">all</span><span class="p">(</span><span class="s2">&quot;/aca/*&quot;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;redirecting to Server1&#39;</span><span class="p">);</span>
+  <span class="nx">apiProxy</span><span class="p">.</span><span class="nx">web</span><span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">,</span> <span class="p">{</span>
+    <span class="nx">target</span><span class="o">:</span> <span class="nx">serverAca</span><span class="p">,</span>
+    <span class="nx">changeOrigin</span><span class="o">:</span> <span class="kc">false</span><span class="p">,</span> 
+    <span class="nx">ignorePath</span><span class="o">:</span> <span class="kc">true</span>
+  <span class="p">});</span>
+<span class="p">});</span>
+
+<span class="nx">app</span><span class="p">.</span><span class="nx">listen</span><span class="p">(</span><span class="mi">3000</span><span class="p">);</span>
+</code></pre></div>
+
+<ul>
+<li>Probar que nuestro proxy está funcionando, escribir:</li>
+</ul>
+<div class="highlight"><pre><span></span><code>nodemon app.js
+</code></pre></div>
+
+<ul>
+<li>
+<p>Abrir la url de nuestro proxy <a href="http://localhost:3000/aca/">http://localhost:3000/aca/</a> en el navegador.</p>
+</li>
+<li>
+<p>Escribir en el navegador <a href="http://localhost:3000">http://localhost:3000</a> y ver nuestro mapa.</p>
+</li>
+</ul>
+<h3 id="modificar-el-mapa">Modificar el mapa</h3>
+<ul>
+<li>Modificar el archivo index.html para que llame al proxy que hemos creado. Cambiar la url de la capa geojsonLayer <em><a href="http://aca-web.gencat.cat/sdim2/apirest/catalog">http://aca-web.gencat.cat/sdim2/apirest/catalog</a></em> por nuestro proxy <em><a href="http://localhost:3000/aca/">http://localhost:3000/aca/</a></em> (como el proxy y la aplicación están en el mismo servidor podríamos usar <em>/aca/</em>).</li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="cp">&lt;!DOCTYPE html&gt;</span>
+<span class="p">&lt;</span><span class="nt">html</span><span class="p">&gt;</span>
+<span class="p">&lt;</span><span class="nt">head</span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="nt">meta</span> <span class="na">charset</span><span class="o">=</span><span class="s">&quot;UTF-8&quot;</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">meta</span> <span class="na">name</span><span class="o">=</span><span class="s">&quot;viewport&quot;</span> <span class="na">content</span><span class="o">=</span><span class="s">&quot;width=device-width, initial-scale=1.0&quot;</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">meta</span> <span class="na">http-equiv</span><span class="o">=</span><span class="s">&quot;X-UA-Compatible&quot;</span> <span class="na">content</span><span class="o">=</span><span class="s">&quot;ie=edge&quot;</span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="nt">title</span><span class="p">&gt;</span>Ejemplo Sentilo ACA<span class="p">&lt;/</span><span class="nt">title</span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="nt">link</span> <span class="na">rel</span><span class="o">=</span><span class="s">&quot;stylesheet&quot;</span> <span class="na">href</span><span class="o">=</span><span class="s">&quot;https://unpkg.com/leaflet@1.2.0/dist/leaflet.css&quot;</span> <span class="p">/&gt;</span>
+  <span class="p">&lt;</span><span class="nt">style</span><span class="p">&gt;</span>
+    <span class="p">#</span><span class="nn">map</span> <span class="p">{</span>
+        <span class="k">height</span><span class="p">:</span> <span class="mi">100</span><span class="kt">%</span><span class="p">;</span>
+        <span class="k">width</span><span class="p">:</span> <span class="mi">100</span><span class="kt">%</span><span class="p">;</span>
+        <span class="k">position</span><span class="p">:</span> <span class="kc">absolute</span><span class="p">;</span>
+    <span class="p">}</span>
+  <span class="p">&lt;/</span><span class="nt">style</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">head</span><span class="p">&gt;</span>
+<span class="p">&lt;</span><span class="nt">body</span><span class="p">&gt;</span>
+
+  <span class="p">&lt;</span><span class="nt">div</span> <span class="na">id</span><span class="o">=</span><span class="s">&quot;map&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+
+  <span class="p">&lt;</span><span class="nt">script</span> <span class="na">src</span><span class="o">=</span><span class="s">&quot;https://unpkg.com/leaflet@1.2.0/dist/leaflet.js&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="nt">script</span> <span class="na">src</span><span class="o">=</span><span class="s">&quot;https://calvinmetcalf.github.io/leaflet-ajax/dist/leaflet.ajax.js&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="nt">script</span><span class="p">&gt;</span>
+    <span class="kd">var</span> <span class="nx">map</span> <span class="o">=</span> <span class="nx">L</span><span class="p">.</span><span class="nx">map</span><span class="p">(</span><span class="s1">&#39;map&#39;</span><span class="p">);</span>
+
+    <span class="nx">map</span><span class="p">.</span><span class="nx">setView</span><span class="p">([</span><span class="mf">41.5087</span><span class="p">,</span> <span class="mf">2.1777</span><span class="p">],</span> <span class="mi">8</span><span class="p">);</span>  
+
+    <span class="nx">L</span><span class="p">.</span><span class="nx">tileLayer</span><span class="p">(</span><span class="s1">&#39;http://{s}.tile.osm.org/{z}/{x}/{y}.png&#39;</span><span class="p">,</span> <span class="p">{</span>
+      <span class="nx">attribution</span><span class="o">:</span> <span class="s1">&#39;&amp;copy; &lt;a href=&quot;http://osm.org/copyright&quot;&gt;OpenStreetMap&lt;/a&gt; contributors&#39;</span>
+    <span class="p">}).</span><span class="nx">addTo</span><span class="p">(</span><span class="nx">map</span><span class="p">);</span>
+
+<span class="hll">    <span class="kd">var</span> <span class="nx">geojsonLayer</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">L</span><span class="p">.</span><span class="nx">GeoJSON</span><span class="p">.</span><span class="nx">AJAX</span><span class="p">(</span><span class="s1">&#39;http://localhost:3000/aca/&#39;</span><span class="p">).</span><span class="nx">addTo</span><span class="p">(</span><span class="nx">map</span><span class="p">);</span>
+</span>  <span class="p">&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">body</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">html</span><span class="p">&gt;</span>
+</code></pre></div>
+
+<ul>
+<li>
+<p>Recargar la aplicación con Ctrl+F5 y vemos que el error ha desaparecido. Continuaremos sin ver ningún dato en nuestro mapa. Esto es debido a lo que ya mencionamos; que la API no retorna un GeoJSON. Por lo tanto tendremos que convertir la respuesta de la API en un GeoJSON.</p>
+</li>
+<li>
+<p>Convertir la respuesta en un GeoJSON utilizando la opción <em>middleware</em> que ofrece la capa GeoJSON.AJAX. Esta opción permite crear una funcion donde se pueden manipular los datos antes de agregarlos al mapa. Crear la función que transforma los datos de Sentilo de la ACA en un GeoJSON. Escribir al final de nuestro código</p>
+</li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="cp">&lt;!DOCTYPE html&gt;</span>
+<span class="p">&lt;</span><span class="nt">html</span><span class="p">&gt;</span>
+<span class="p">&lt;</span><span class="nt">head</span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="nt">meta</span> <span class="na">charset</span><span class="o">=</span><span class="s">&quot;UTF-8&quot;</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">meta</span> <span class="na">name</span><span class="o">=</span><span class="s">&quot;viewport&quot;</span> <span class="na">content</span><span class="o">=</span><span class="s">&quot;width=device-width, initial-scale=1.0&quot;</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">meta</span> <span class="na">http-equiv</span><span class="o">=</span><span class="s">&quot;X-UA-Compatible&quot;</span> <span class="na">content</span><span class="o">=</span><span class="s">&quot;ie=edge&quot;</span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="nt">title</span><span class="p">&gt;</span>Ejemplo Sentilo ACA<span class="p">&lt;/</span><span class="nt">title</span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="nt">link</span> <span class="na">rel</span><span class="o">=</span><span class="s">&quot;stylesheet&quot;</span> <span class="na">href</span><span class="o">=</span><span class="s">&quot;https://unpkg.com/leaflet@1.2.0/dist/leaflet.css&quot;</span> <span class="p">/&gt;</span>
+  <span class="p">&lt;</span><span class="nt">style</span><span class="p">&gt;</span>
+    <span class="p">#</span><span class="nn">map</span> <span class="p">{</span>
+        <span class="k">height</span><span class="p">:</span> <span class="mi">100</span><span class="kt">%</span><span class="p">;</span>
+        <span class="k">width</span><span class="p">:</span> <span class="mi">100</span><span class="kt">%</span><span class="p">;</span>
+        <span class="k">position</span><span class="p">:</span> <span class="kc">absolute</span><span class="p">;</span>
+    <span class="p">}</span>
+  <span class="p">&lt;/</span><span class="nt">style</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">head</span><span class="p">&gt;</span>
+<span class="p">&lt;</span><span class="nt">body</span><span class="p">&gt;</span>
+
+  <span class="p">&lt;</span><span class="nt">div</span> <span class="na">id</span><span class="o">=</span><span class="s">&quot;map&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+
+  <span class="p">&lt;</span><span class="nt">script</span> <span class="na">src</span><span class="o">=</span><span class="s">&quot;https://unpkg.com/leaflet@1.2.0/dist/leaflet.js&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="nt">script</span> <span class="na">src</span><span class="o">=</span><span class="s">&quot;https://calvinmetcalf.github.io/leaflet-ajax/dist/leaflet.ajax.js&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="nt">script</span><span class="p">&gt;</span>
+    <span class="kd">var</span> <span class="nx">map</span> <span class="o">=</span> <span class="nx">L</span><span class="p">.</span><span class="nx">map</span><span class="p">(</span><span class="s1">&#39;map&#39;</span><span class="p">);</span>
+
+    <span class="nx">map</span><span class="p">.</span><span class="nx">setView</span><span class="p">([</span><span class="mf">41.5087</span><span class="p">,</span> <span class="mf">2.1777</span><span class="p">],</span> <span class="mi">8</span><span class="p">);</span>  
+
+    <span class="nx">L</span><span class="p">.</span><span class="nx">tileLayer</span><span class="p">(</span><span class="s1">&#39;http://{s}.tile.osm.org/{z}/{x}/{y}.png&#39;</span><span class="p">,</span> <span class="p">{</span>
+      <span class="nx">attribution</span><span class="o">:</span> <span class="s1">&#39;&amp;copy; &lt;a href=&quot;http://osm.org/copyright&quot;&gt;OpenStreetMap&lt;/a&gt; contributors&#39;</span>
+    <span class="p">}).</span><span class="nx">addTo</span><span class="p">(</span><span class="nx">map</span><span class="p">);</span>
+
+    <span class="kd">var</span> <span class="nx">geojsonLayer</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">L</span><span class="p">.</span><span class="nx">GeoJSON</span><span class="p">.</span><span class="nx">AJAX</span><span class="p">(</span><span class="s1">&#39;http://localhost:3000/aca/&#39;</span><span class="p">).</span><span class="nx">addTo</span><span class="p">(</span><span class="nx">map</span><span class="p">);</span>
+
+<span class="hll">    <span class="kd">function</span> <span class="nx">sentiloAca2geoJSON</span><span class="p">(</span><span class="nx">data</span><span class="p">){</span>
+</span><span class="hll">      <span class="kd">var</span> <span class="nx">geojson</span> <span class="o">=</span> <span class="p">{</span>
+</span><span class="hll">        <span class="nx">type</span><span class="o">:</span> <span class="s2">&quot;FeatureCollection&quot;</span><span class="p">,</span>
+</span><span class="hll">        <span class="nx">features</span><span class="o">:</span> <span class="p">[]</span>
+</span><span class="hll">      <span class="p">};</span>
+</span><span class="hll">      <span class="kd">var</span> <span class="nx">sensors</span> <span class="o">=</span> <span class="nx">data</span><span class="p">.</span><span class="nx">providers</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nx">sensors</span><span class="p">;</span>
+</span><span class="hll">      <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="nx">sensors</span><span class="p">.</span><span class="nx">length</span> <span class="o">-</span> <span class="mi">1</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span><span class="o">--</span><span class="p">)</span> <span class="p">{</span>
+</span><span class="hll">        <span class="kd">var</span> <span class="nx">sensor</span> <span class="o">=</span> <span class="nx">sensors</span><span class="p">[</span><span class="nx">i</span><span class="p">];</span>
+</span><span class="hll">        <span class="kd">var</span> <span class="nx">location</span> <span class="o">=</span> <span class="nx">sensor</span><span class="p">.</span><span class="nx">location</span><span class="p">.</span><span class="nx">split</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">);</span>
+</span><span class="hll">        <span class="kd">var</span> <span class="nx">feature</span> <span class="o">=</span> <span class="p">{</span>
+</span><span class="hll">          <span class="nx">type</span><span class="o">:</span> <span class="s1">&#39;Feature&#39;</span><span class="p">,</span>
+</span><span class="hll">          <span class="nx">properties</span><span class="o">:</span> <span class="p">{</span>
+</span><span class="hll">            <span class="nx">description</span><span class="o">:</span> <span class="nx">sensor</span><span class="p">.</span><span class="nx">description</span><span class="p">,</span>
+</span><span class="hll">            <span class="nx">id</span><span class="o">:</span> <span class="nx">sensor</span><span class="p">.</span><span class="nx">component</span><span class="p">,</span>
+</span><span class="hll">            <span class="nx">nom</span><span class="o">:</span> <span class="nx">sensor</span><span class="p">.</span><span class="nx">componentDesc</span><span class="p">,</span>
+</span><span class="hll">            <span class="nx">info</span><span class="o">:</span> <span class="nx">sensor</span><span class="p">.</span><span class="nx">componentAdditionalInfo</span><span class="p">,</span>
+</span><span class="hll">            <span class="nx">unit</span><span class="o">:</span> <span class="nx">sensor</span><span class="p">.</span><span class="nx">unit</span>
+</span><span class="hll">          <span class="p">},</span>
+</span><span class="hll">          <span class="nx">geometry</span><span class="o">:</span> <span class="p">{</span>
+</span><span class="hll">            <span class="nx">type</span><span class="o">:</span> <span class="s1">&#39;Point&#39;</span><span class="p">,</span>
+</span><span class="hll">            <span class="nx">coordinates</span><span class="o">:</span> <span class="p">[</span><span class="nx">location</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="nx">location</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span>
+</span><span class="hll">          <span class="p">}</span>
+</span><span class="hll">      <span class="p">};</span>
+</span><span class="hll">      <span class="nx">geojson</span><span class="p">.</span><span class="nx">features</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">feature</span><span class="p">);</span>
+</span><span class="hll">      <span class="p">}</span>
+</span><span class="hll">      <span class="k">return</span> <span class="nx">geojson</span><span class="p">;</span>
+</span><span class="hll">    <span class="p">}</span>
+</span>  <span class="p">&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">body</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">html</span><span class="p">&gt;</span>
+</code></pre></div>
+
+<ul>
+<li>Modficar la capa geojsonLayer para que el middleware llame a nuestra función de transformación. Cambiar el código de la capa por lo siguiente:</li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="cp">&lt;!DOCTYPE html&gt;</span>
+<span class="p">&lt;</span><span class="nt">html</span><span class="p">&gt;</span>
+<span class="p">&lt;</span><span class="nt">head</span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="nt">meta</span> <span class="na">charset</span><span class="o">=</span><span class="s">&quot;UTF-8&quot;</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">meta</span> <span class="na">name</span><span class="o">=</span><span class="s">&quot;viewport&quot;</span> <span class="na">content</span><span class="o">=</span><span class="s">&quot;width=device-width, initial-scale=1.0&quot;</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">meta</span> <span class="na">http-equiv</span><span class="o">=</span><span class="s">&quot;X-UA-Compatible&quot;</span> <span class="na">content</span><span class="o">=</span><span class="s">&quot;ie=edge&quot;</span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="nt">title</span><span class="p">&gt;</span>Ejemplo Sentilo ACA<span class="p">&lt;/</span><span class="nt">title</span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="nt">link</span> <span class="na">rel</span><span class="o">=</span><span class="s">&quot;stylesheet&quot;</span> <span class="na">href</span><span class="o">=</span><span class="s">&quot;https://unpkg.com/leaflet@1.2.0/dist/leaflet.css&quot;</span> <span class="p">/&gt;</span>
+  <span class="p">&lt;</span><span class="nt">style</span><span class="p">&gt;</span>
+    <span class="p">#</span><span class="nn">map</span> <span class="p">{</span>
+        <span class="k">height</span><span class="p">:</span> <span class="mi">100</span><span class="kt">%</span><span class="p">;</span>
+        <span class="k">width</span><span class="p">:</span> <span class="mi">100</span><span class="kt">%</span><span class="p">;</span>
+        <span class="k">position</span><span class="p">:</span> <span class="kc">absolute</span><span class="p">;</span>
+    <span class="p">}</span>
+  <span class="p">&lt;/</span><span class="nt">style</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">head</span><span class="p">&gt;</span>
+<span class="p">&lt;</span><span class="nt">body</span><span class="p">&gt;</span>
+
+  <span class="p">&lt;</span><span class="nt">div</span> <span class="na">id</span><span class="o">=</span><span class="s">&quot;map&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+
+  <span class="p">&lt;</span><span class="nt">script</span> <span class="na">src</span><span class="o">=</span><span class="s">&quot;https://unpkg.com/leaflet@1.2.0/dist/leaflet.js&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="nt">script</span> <span class="na">src</span><span class="o">=</span><span class="s">&quot;https://calvinmetcalf.github.io/leaflet-ajax/dist/leaflet.ajax.js&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="nt">script</span><span class="p">&gt;</span>
+    <span class="kd">var</span> <span class="nx">map</span> <span class="o">=</span> <span class="nx">L</span><span class="p">.</span><span class="nx">map</span><span class="p">(</span><span class="s1">&#39;map&#39;</span><span class="p">);</span>
+
+    <span class="nx">map</span><span class="p">.</span><span class="nx">setView</span><span class="p">([</span><span class="mf">41.5087</span><span class="p">,</span> <span class="mf">2.1777</span><span class="p">],</span> <span class="mi">8</span><span class="p">);</span>  
+
+    <span class="nx">L</span><span class="p">.</span><span class="nx">tileLayer</span><span class="p">(</span><span class="s1">&#39;http://{s}.tile.osm.org/{z}/{x}/{y}.png&#39;</span><span class="p">,</span> <span class="p">{</span>
+      <span class="nx">attribution</span><span class="o">:</span> <span class="s1">&#39;&amp;copy; &lt;a href=&quot;http://osm.org/copyright&quot;&gt;OpenStreetMap&lt;/a&gt; contributors&#39;</span>
+    <span class="p">}).</span><span class="nx">addTo</span><span class="p">(</span><span class="nx">map</span><span class="p">);</span>
+
+<span class="hll">    <span class="kd">var</span> <span class="nx">geojsonLayer</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">L</span><span class="p">.</span><span class="nx">GeoJSON</span><span class="p">.</span><span class="nx">AJAX</span><span class="p">(</span><span class="s1">&#39;http://localhost:3000/aca/&#39;</span><span class="p">,</span> <span class="p">{</span>
+</span><span class="hll">      <span class="nx">middleware</span><span class="o">:</span><span class="kd">function</span><span class="p">(</span><span class="nx">data</span><span class="p">){</span>
+</span><span class="hll">        <span class="k">return</span> <span class="nx">sentiloAca2geoJSON</span><span class="p">(</span><span class="nx">data</span><span class="p">);</span>
+</span><span class="hll">      <span class="p">}</span>
+</span><span class="hll">    <span class="p">}).</span><span class="nx">addTo</span><span class="p">(</span><span class="nx">map</span><span class="p">);</span>
+</span>
+    <span class="kd">function</span> <span class="nx">sentiloAca2geoJSON</span><span class="p">(</span><span class="nx">data</span><span class="p">){</span>
+      <span class="kd">var</span> <span class="nx">geojson</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="nx">type</span><span class="o">:</span> <span class="s2">&quot;FeatureCollection&quot;</span><span class="p">,</span>
+        <span class="nx">features</span><span class="o">:</span> <span class="p">[]</span>
+      <span class="p">};</span>
+      <span class="kd">var</span> <span class="nx">sensors</span> <span class="o">=</span> <span class="nx">data</span><span class="p">.</span><span class="nx">providers</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nx">sensors</span><span class="p">;</span>
+      <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="nx">sensors</span><span class="p">.</span><span class="nx">length</span> <span class="o">-</span> <span class="mi">1</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span><span class="o">--</span><span class="p">)</span> <span class="p">{</span>
+        <span class="kd">var</span> <span class="nx">sensor</span> <span class="o">=</span> <span class="nx">sensors</span><span class="p">[</span><span class="nx">i</span><span class="p">];</span>
+        <span class="kd">var</span> <span class="nx">location</span> <span class="o">=</span> <span class="nx">sensor</span><span class="p">.</span><span class="nx">location</span><span class="p">.</span><span class="nx">split</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">);</span>
+        <span class="kd">var</span> <span class="nx">feature</span> <span class="o">=</span> <span class="p">{</span>
+          <span class="nx">type</span><span class="o">:</span> <span class="s1">&#39;Feature&#39;</span><span class="p">,</span>
+          <span class="nx">properties</span><span class="o">:</span> <span class="p">{</span>
+            <span class="nx">description</span><span class="o">:</span> <span class="nx">sensor</span><span class="p">.</span><span class="nx">description</span><span class="p">,</span>
+            <span class="nx">id</span><span class="o">:</span> <span class="nx">sensor</span><span class="p">.</span><span class="nx">component</span><span class="p">,</span>
+            <span class="nx">nom</span><span class="o">:</span> <span class="nx">sensor</span><span class="p">.</span><span class="nx">componentDesc</span><span class="p">,</span>
+            <span class="nx">info</span><span class="o">:</span> <span class="nx">sensor</span><span class="p">.</span><span class="nx">componentAdditionalInfo</span><span class="p">,</span>
+            <span class="nx">unit</span><span class="o">:</span> <span class="nx">sensor</span><span class="p">.</span><span class="nx">unit</span>
+          <span class="p">},</span>
+          <span class="nx">geometry</span><span class="o">:</span> <span class="p">{</span>
+            <span class="nx">type</span><span class="o">:</span> <span class="s1">&#39;Point&#39;</span><span class="p">,</span>
+            <span class="nx">coordinates</span><span class="o">:</span> <span class="p">[</span><span class="nx">location</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="nx">location</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span>
+          <span class="p">}</span>
+      <span class="p">};</span>
+      <span class="nx">geojson</span><span class="p">.</span><span class="nx">features</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">feature</span><span class="p">);</span>
+      <span class="p">}</span>
+      <span class="k">return</span> <span class="nx">geojson</span><span class="p">;</span>
+    <span class="p">}</span>
+  <span class="p">&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">body</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">html</span><span class="p">&gt;</span>
+</code></pre></div>
+
+<ul>
+<li>
+<p>Recargar el mapa y ver los puntos de los embalses en el mapa.</p>
+</li>
+<li>
+<p>Mostrar la información del punto. Agregar el evento click en cada unos de los puntos. Utilizar la opción de <em>onEachFeature</em> que ofrece las capa GeoJSON de Leaflet. Esta opción permite ejecutar una función en la creación de cada uno de los elementos de la capa. Es muy útil para agregar popups a los elementos ó para agregar eventos en los elementos.</p>
+</li>
+<li>
+<p>Crear una función llamada <em>eachFeature</em> que recibe como parámetros un feature (elemento del GeoJSON) y un layer (elemento de Leaflet). La función sería la siguiente</p>
+</li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="cp">&lt;!DOCTYPE html&gt;</span>
+<span class="p">&lt;</span><span class="nt">html</span><span class="p">&gt;</span>
+<span class="p">&lt;</span><span class="nt">head</span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="nt">meta</span> <span class="na">charset</span><span class="o">=</span><span class="s">&quot;UTF-8&quot;</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">meta</span> <span class="na">name</span><span class="o">=</span><span class="s">&quot;viewport&quot;</span> <span class="na">content</span><span class="o">=</span><span class="s">&quot;width=device-width, initial-scale=1.0&quot;</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">meta</span> <span class="na">http-equiv</span><span class="o">=</span><span class="s">&quot;X-UA-Compatible&quot;</span> <span class="na">content</span><span class="o">=</span><span class="s">&quot;ie=edge&quot;</span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="nt">title</span><span class="p">&gt;</span>Ejemplo Sentilo ACA<span class="p">&lt;/</span><span class="nt">title</span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="nt">link</span> <span class="na">rel</span><span class="o">=</span><span class="s">&quot;stylesheet&quot;</span> <span class="na">href</span><span class="o">=</span><span class="s">&quot;https://unpkg.com/leaflet@1.2.0/dist/leaflet.css&quot;</span> <span class="p">/&gt;</span>
+  <span class="p">&lt;</span><span class="nt">style</span><span class="p">&gt;</span>
+    <span class="p">#</span><span class="nn">map</span> <span class="p">{</span>
+        <span class="k">height</span><span class="p">:</span> <span class="mi">100</span><span class="kt">%</span><span class="p">;</span>
+        <span class="k">width</span><span class="p">:</span> <span class="mi">100</span><span class="kt">%</span><span class="p">;</span>
+        <span class="k">position</span><span class="p">:</span> <span class="kc">absolute</span><span class="p">;</span>
+    <span class="p">}</span>
+  <span class="p">&lt;/</span><span class="nt">style</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">head</span><span class="p">&gt;</span>
+<span class="p">&lt;</span><span class="nt">body</span><span class="p">&gt;</span>
+
+  <span class="p">&lt;</span><span class="nt">div</span> <span class="na">id</span><span class="o">=</span><span class="s">&quot;map&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+
+  <span class="p">&lt;</span><span class="nt">script</span> <span class="na">src</span><span class="o">=</span><span class="s">&quot;https://unpkg.com/leaflet@1.2.0/dist/leaflet.js&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="nt">script</span> <span class="na">src</span><span class="o">=</span><span class="s">&quot;https://calvinmetcalf.github.io/leaflet-ajax/dist/leaflet.ajax.js&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="nt">script</span><span class="p">&gt;</span>
+    <span class="kd">var</span> <span class="nx">map</span> <span class="o">=</span> <span class="nx">L</span><span class="p">.</span><span class="nx">map</span><span class="p">(</span><span class="s1">&#39;map&#39;</span><span class="p">);</span>
+
+    <span class="nx">map</span><span class="p">.</span><span class="nx">setView</span><span class="p">([</span><span class="mf">41.5087</span><span class="p">,</span> <span class="mf">2.1777</span><span class="p">],</span> <span class="mi">8</span><span class="p">);</span>  
+
+    <span class="nx">L</span><span class="p">.</span><span class="nx">tileLayer</span><span class="p">(</span><span class="s1">&#39;http://{s}.tile.osm.org/{z}/{x}/{y}.png&#39;</span><span class="p">,</span> <span class="p">{</span>
+      <span class="nx">attribution</span><span class="o">:</span> <span class="s1">&#39;&amp;copy; &lt;a href=&quot;http://osm.org/copyright&quot;&gt;OpenStreetMap&lt;/a&gt; contributors&#39;</span>
+    <span class="p">}).</span><span class="nx">addTo</span><span class="p">(</span><span class="nx">map</span><span class="p">);</span>
+
+    <span class="kd">var</span> <span class="nx">geojsonLayer</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">L</span><span class="p">.</span><span class="nx">GeoJSON</span><span class="p">.</span><span class="nx">AJAX</span><span class="p">(</span><span class="s1">&#39;http://localhost:3000/aca/&#39;</span><span class="p">,</span> <span class="p">{</span>
+      <span class="nx">middleware</span><span class="o">:</span><span class="kd">function</span><span class="p">(</span><span class="nx">data</span><span class="p">){</span>
+        <span class="k">return</span> <span class="nx">sentiloAca2geoJSON</span><span class="p">(</span><span class="nx">data</span><span class="p">);</span>
+      <span class="p">}</span>
+    <span class="p">}).</span><span class="nx">addTo</span><span class="p">(</span><span class="nx">map</span><span class="p">);</span>
+
+    <span class="kd">function</span> <span class="nx">sentiloAca2geoJSON</span><span class="p">(</span><span class="nx">data</span><span class="p">){</span>
+      <span class="kd">var</span> <span class="nx">geojson</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="nx">type</span><span class="o">:</span> <span class="s2">&quot;FeatureCollection&quot;</span><span class="p">,</span>
+        <span class="nx">features</span><span class="o">:</span> <span class="p">[]</span>
+      <span class="p">};</span>
+      <span class="kd">var</span> <span class="nx">sensors</span> <span class="o">=</span> <span class="nx">data</span><span class="p">.</span><span class="nx">providers</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nx">sensors</span><span class="p">;</span>
+      <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="nx">sensors</span><span class="p">.</span><span class="nx">length</span> <span class="o">-</span> <span class="mi">1</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span><span class="o">--</span><span class="p">)</span> <span class="p">{</span>
+        <span class="kd">var</span> <span class="nx">sensor</span> <span class="o">=</span> <span class="nx">sensors</span><span class="p">[</span><span class="nx">i</span><span class="p">];</span>
+        <span class="kd">var</span> <span class="nx">location</span> <span class="o">=</span> <span class="nx">sensor</span><span class="p">.</span><span class="nx">location</span><span class="p">.</span><span class="nx">split</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">);</span>
+        <span class="kd">var</span> <span class="nx">feature</span> <span class="o">=</span> <span class="p">{</span>
+          <span class="nx">type</span><span class="o">:</span> <span class="s1">&#39;Feature&#39;</span><span class="p">,</span>
+          <span class="nx">properties</span><span class="o">:</span> <span class="p">{</span>
+            <span class="nx">description</span><span class="o">:</span> <span class="nx">sensor</span><span class="p">.</span><span class="nx">description</span><span class="p">,</span>
+            <span class="nx">id</span><span class="o">:</span> <span class="nx">sensor</span><span class="p">.</span><span class="nx">component</span><span class="p">,</span>
+            <span class="nx">nom</span><span class="o">:</span> <span class="nx">sensor</span><span class="p">.</span><span class="nx">componentDesc</span><span class="p">,</span>
+            <span class="nx">info</span><span class="o">:</span> <span class="nx">sensor</span><span class="p">.</span><span class="nx">componentAdditionalInfo</span><span class="p">,</span>
+            <span class="nx">unit</span><span class="o">:</span> <span class="nx">sensor</span><span class="p">.</span><span class="nx">unit</span>
+          <span class="p">},</span>
+          <span class="nx">geometry</span><span class="o">:</span> <span class="p">{</span>
+            <span class="nx">type</span><span class="o">:</span> <span class="s1">&#39;Point&#39;</span><span class="p">,</span>
+            <span class="nx">coordinates</span><span class="o">:</span> <span class="p">[</span><span class="nx">location</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="nx">location</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span>
+          <span class="p">}</span>
+      <span class="p">};</span>
+      <span class="nx">geojson</span><span class="p">.</span><span class="nx">features</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">feature</span><span class="p">);</span>
+      <span class="p">}</span>
+      <span class="k">return</span> <span class="nx">geojson</span><span class="p">;</span>
+    <span class="p">}</span>
+
+<span class="hll">    <span class="kd">function</span> <span class="nx">eachFeature</span><span class="p">(</span><span class="nx">f</span><span class="p">,</span><span class="nx">l</span><span class="p">){</span>
+</span><span class="hll">      <span class="nx">l</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;click&#39;</span><span class="p">,</span><span class="kd">function</span><span class="p">(</span><span class="nx">ev</span><span class="p">){</span>
+</span><span class="hll">        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">f</span><span class="p">);</span>
+</span><span class="hll">        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">l</span><span class="p">);</span>
+</span><span class="hll">      <span class="p">});</span>
+</span><span class="hll">    <span class="p">}</span>
+</span>  <span class="p">&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">body</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">html</span><span class="p">&gt;</span>
+</code></pre></div>
+
+<ul>
+<li>Llamar a la funcion eachFeature en la opción <em>onEachFeature</em> de la capa geojsonLayer. Escribir lo siguiente luego de la opción del middleware</li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="cp">&lt;!DOCTYPE html&gt;</span>
+<span class="p">&lt;</span><span class="nt">html</span><span class="p">&gt;</span>
+<span class="p">&lt;</span><span class="nt">head</span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="nt">meta</span> <span class="na">charset</span><span class="o">=</span><span class="s">&quot;UTF-8&quot;</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">meta</span> <span class="na">name</span><span class="o">=</span><span class="s">&quot;viewport&quot;</span> <span class="na">content</span><span class="o">=</span><span class="s">&quot;width=device-width, initial-scale=1.0&quot;</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">meta</span> <span class="na">http-equiv</span><span class="o">=</span><span class="s">&quot;X-UA-Compatible&quot;</span> <span class="na">content</span><span class="o">=</span><span class="s">&quot;ie=edge&quot;</span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="nt">title</span><span class="p">&gt;</span>Ejemplo Sentilo ACA<span class="p">&lt;/</span><span class="nt">title</span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="nt">link</span> <span class="na">rel</span><span class="o">=</span><span class="s">&quot;stylesheet&quot;</span> <span class="na">href</span><span class="o">=</span><span class="s">&quot;https://unpkg.com/leaflet@1.2.0/dist/leaflet.css&quot;</span> <span class="p">/&gt;</span>
+  <span class="p">&lt;</span><span class="nt">style</span><span class="p">&gt;</span>
+    <span class="p">#</span><span class="nn">map</span> <span class="p">{</span>
+        <span class="k">height</span><span class="p">:</span> <span class="mi">100</span><span class="kt">%</span><span class="p">;</span>
+        <span class="k">width</span><span class="p">:</span> <span class="mi">100</span><span class="kt">%</span><span class="p">;</span>
+        <span class="k">position</span><span class="p">:</span> <span class="kc">absolute</span><span class="p">;</span>
+    <span class="p">}</span>
+  <span class="p">&lt;/</span><span class="nt">style</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">head</span><span class="p">&gt;</span>
+<span class="p">&lt;</span><span class="nt">body</span><span class="p">&gt;</span>
+
+  <span class="p">&lt;</span><span class="nt">div</span> <span class="na">id</span><span class="o">=</span><span class="s">&quot;map&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+
+  <span class="p">&lt;</span><span class="nt">script</span> <span class="na">src</span><span class="o">=</span><span class="s">&quot;https://unpkg.com/leaflet@1.2.0/dist/leaflet.js&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="nt">script</span> <span class="na">src</span><span class="o">=</span><span class="s">&quot;https://calvinmetcalf.github.io/leaflet-ajax/dist/leaflet.ajax.js&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="nt">script</span><span class="p">&gt;</span>
+    <span class="kd">var</span> <span class="nx">map</span> <span class="o">=</span> <span class="nx">L</span><span class="p">.</span><span class="nx">map</span><span class="p">(</span><span class="s1">&#39;map&#39;</span><span class="p">);</span>
+
+    <span class="nx">map</span><span class="p">.</span><span class="nx">setView</span><span class="p">([</span><span class="mf">41.5087</span><span class="p">,</span> <span class="mf">2.1777</span><span class="p">],</span> <span class="mi">8</span><span class="p">);</span>  
+
+    <span class="nx">L</span><span class="p">.</span><span class="nx">tileLayer</span><span class="p">(</span><span class="s1">&#39;http://{s}.tile.osm.org/{z}/{x}/{y}.png&#39;</span><span class="p">,</span> <span class="p">{</span>
+      <span class="nx">attribution</span><span class="o">:</span> <span class="s1">&#39;&amp;copy; &lt;a href=&quot;http://osm.org/copyright&quot;&gt;OpenStreetMap&lt;/a&gt; contributors&#39;</span>
+    <span class="p">}).</span><span class="nx">addTo</span><span class="p">(</span><span class="nx">map</span><span class="p">);</span>
+
+    <span class="kd">var</span> <span class="nx">geojsonLayer</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">L</span><span class="p">.</span><span class="nx">GeoJSON</span><span class="p">.</span><span class="nx">AJAX</span><span class="p">(</span><span class="s1">&#39;http://localhost:3000/aca/&#39;</span><span class="p">,</span> <span class="p">{</span>
+      <span class="nx">middleware</span><span class="o">:</span><span class="kd">function</span><span class="p">(</span><span class="nx">data</span><span class="p">){</span>
+        <span class="k">return</span> <span class="nx">sentiloAca2geoJSON</span><span class="p">(</span><span class="nx">data</span><span class="p">);</span>
+      <span class="p">}</span>
+<span class="hll">      <span class="p">,</span><span class="nx">onEachFeature</span><span class="o">:</span> <span class="nx">eachFeature</span>
+</span>    <span class="p">}).</span><span class="nx">addTo</span><span class="p">(</span><span class="nx">map</span><span class="p">);</span>
+
+    <span class="kd">function</span> <span class="nx">sentiloAca2geoJSON</span><span class="p">(</span><span class="nx">data</span><span class="p">){</span>
+      <span class="kd">var</span> <span class="nx">geojson</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="nx">type</span><span class="o">:</span> <span class="s2">&quot;FeatureCollection&quot;</span><span class="p">,</span>
+        <span class="nx">features</span><span class="o">:</span> <span class="p">[]</span>
+      <span class="p">};</span>
+      <span class="kd">var</span> <span class="nx">sensors</span> <span class="o">=</span> <span class="nx">data</span><span class="p">.</span><span class="nx">providers</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nx">sensors</span><span class="p">;</span>
+      <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="nx">sensors</span><span class="p">.</span><span class="nx">length</span> <span class="o">-</span> <span class="mi">1</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span><span class="o">--</span><span class="p">)</span> <span class="p">{</span>
+        <span class="kd">var</span> <span class="nx">sensor</span> <span class="o">=</span> <span class="nx">sensors</span><span class="p">[</span><span class="nx">i</span><span class="p">];</span>
+        <span class="kd">var</span> <span class="nx">location</span> <span class="o">=</span> <span class="nx">sensor</span><span class="p">.</span><span class="nx">location</span><span class="p">.</span><span class="nx">split</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">);</span>
+        <span class="kd">var</span> <span class="nx">feature</span> <span class="o">=</span> <span class="p">{</span>
+          <span class="nx">type</span><span class="o">:</span> <span class="s1">&#39;Feature&#39;</span><span class="p">,</span>
+          <span class="nx">properties</span><span class="o">:</span> <span class="p">{</span>
+            <span class="nx">description</span><span class="o">:</span> <span class="nx">sensor</span><span class="p">.</span><span class="nx">description</span><span class="p">,</span>
+            <span class="nx">id</span><span class="o">:</span> <span class="nx">sensor</span><span class="p">.</span><span class="nx">component</span><span class="p">,</span>
+            <span class="nx">nom</span><span class="o">:</span> <span class="nx">sensor</span><span class="p">.</span><span class="nx">componentDesc</span><span class="p">,</span>
+            <span class="nx">info</span><span class="o">:</span> <span class="nx">sensor</span><span class="p">.</span><span class="nx">componentAdditionalInfo</span><span class="p">,</span>
+            <span class="nx">unit</span><span class="o">:</span> <span class="nx">sensor</span><span class="p">.</span><span class="nx">unit</span>
+          <span class="p">},</span>
+          <span class="nx">geometry</span><span class="o">:</span> <span class="p">{</span>
+            <span class="nx">type</span><span class="o">:</span> <span class="s1">&#39;Point&#39;</span><span class="p">,</span>
+            <span class="nx">coordinates</span><span class="o">:</span> <span class="p">[</span><span class="nx">location</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="nx">location</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span>
+          <span class="p">}</span>
+      <span class="p">};</span>
+      <span class="nx">geojson</span><span class="p">.</span><span class="nx">features</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">feature</span><span class="p">);</span>
+      <span class="p">}</span>
+      <span class="k">return</span> <span class="nx">geojson</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="kd">function</span> <span class="nx">eachFeature</span><span class="p">(</span><span class="nx">f</span><span class="p">,</span><span class="nx">l</span><span class="p">){</span>
+      <span class="nx">l</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;click&#39;</span><span class="p">,</span><span class="kd">function</span><span class="p">(</span><span class="nx">ev</span><span class="p">){</span>
+        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">f</span><span class="p">);</span>
+        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">l</span><span class="p">);</span>
+      <span class="p">});</span>
+    <span class="p">}</span>
+  <span class="p">&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">body</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">html</span><span class="p">&gt;</span>
+</code></pre></div>
+
+<ul>
+<li>
+<p>Recargar el mapa y hacer click sobre un elemento. En la consola de desarrollador ver que aparecen 2 entradas una que corresponde al feature y otra al layer.</p>
+</li>
+<li>
+<p>Llamar a la API de la ACA para pedir la última lectura del sensor y así obtener la información. La url para obtener la última lectura es <a href="http://aca-web.gencat.cat/sentilo-catalog-web/component/map/EMBASSAMENT-EST">http://aca-web.gencat.cat/sentilo-catalog-web/component/map/EMBASSAMENT-EST</a>.<em>.<id_sensor></em>/lastOb/.</p>
+<p>Por ejemplo:</p>
+<p><a href="http://aca-web.gencat.cat/sentilo-catalog-web/component/map/EMBASSAMENT-EST.082687-001/lastOb/">http://aca-web.gencat.cat/sentilo-catalog-web/component/map/EMBASSAMENT-EST.082687-001/lastOb/</a></p>
+<p>Como estamos llamando una url que está fuera de nuestro dominio tenemos el mismo problema de CORS.</p>
+</li>
+</ul>
+<h3 id="modificar-el-proxy">Modificar el proxy</h3>
+<ul>
+<li>Modificar nuestro proxy para obtener la información de un sensor. Escribir en nuestro archivo app.js justo debajo de la declaración de la variable <em>serverAca</em></li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="kd">var</span> <span class="nx">express</span>  <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;express&#39;</span><span class="p">);</span>
+<span class="kd">var</span> <span class="nx">app</span>      <span class="o">=</span> <span class="nx">express</span><span class="p">();</span>
+<span class="kd">var</span> <span class="nx">cors</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;cors&#39;</span><span class="p">);</span>
+<span class="kd">var</span> <span class="nx">httpProxy</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;http-proxy&#39;</span><span class="p">);</span>
+<span class="kd">var</span> <span class="nx">apiProxy</span> <span class="o">=</span> <span class="nx">httpProxy</span><span class="p">.</span><span class="nx">createProxyServer</span><span class="p">();</span>
+<span class="kd">var</span> <span class="nx">serverAca</span> <span class="o">=</span> <span class="s1">&#39;http://aca-web.gencat.cat/sdim2/apirest/catalog&#39;</span><span class="p">;</span>
+<span class="hll"><span class="kd">var</span> <span class="nx">serverAcaLastOb</span> <span class="o">=</span> <span class="s1">&#39;http://aca-web.gencat.cat/sentilo-catalog-web/component/map/EMBASSAMENT-EST.&#39;</span><span class="p">;</span>
+</span>
+<span class="nx">app</span><span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="nx">cors</span><span class="p">());</span>
+<span class="nx">app</span><span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="nx">express</span><span class="p">.</span><span class="kr">static</span><span class="p">(</span><span class="s1">&#39;public&#39;</span><span class="p">));</span>
+
+<span class="nx">app</span><span class="p">.</span><span class="nx">all</span><span class="p">(</span><span class="s2">&quot;/aca/*&quot;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;redirecting to Server1&#39;</span><span class="p">);</span>
+  <span class="nx">apiProxy</span><span class="p">.</span><span class="nx">web</span><span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">,</span> <span class="p">{</span>
+    <span class="nx">target</span><span class="o">:</span> <span class="nx">serverAca</span><span class="p">,</span>
+    <span class="nx">changeOrigin</span><span class="o">:</span> <span class="kc">false</span><span class="p">,</span> 
+    <span class="nx">ignorePath</span><span class="o">:</span> <span class="kc">true</span>
+  <span class="p">});</span>
+<span class="p">});</span>
+
+<span class="nx">app</span><span class="p">.</span><span class="nx">listen</span><span class="p">(</span><span class="mi">3000</span><span class="p">);</span>
+</code></pre></div>
+
+<ul>
+<li>Agregar justo antes del app.listen el código que nos va a ser de proxy.</li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="kd">var</span> <span class="nx">express</span>  <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;express&#39;</span><span class="p">);</span>
+<span class="kd">var</span> <span class="nx">app</span>      <span class="o">=</span> <span class="nx">express</span><span class="p">();</span>
+<span class="kd">var</span> <span class="nx">cors</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;cors&#39;</span><span class="p">);</span>
+<span class="kd">var</span> <span class="nx">httpProxy</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;http-proxy&#39;</span><span class="p">);</span>
+<span class="kd">var</span> <span class="nx">apiProxy</span> <span class="o">=</span> <span class="nx">httpProxy</span><span class="p">.</span><span class="nx">createProxyServer</span><span class="p">();</span>
+<span class="kd">var</span> <span class="nx">serverAca</span> <span class="o">=</span> <span class="s1">&#39;http://aca-web.gencat.cat/sdim2/apirest/catalog&#39;</span><span class="p">;</span>
+<span class="kd">var</span> <span class="nx">serverAcaLastOb</span> <span class="o">=</span> <span class="s1">&#39;http://aca-web.gencat.cat/sentilo-catalog-web/component/map/EMBASSAMENT-EST.&#39;</span><span class="p">;</span>
+
+<span class="nx">app</span><span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="nx">cors</span><span class="p">());</span>
+<span class="nx">app</span><span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="nx">express</span><span class="p">.</span><span class="kr">static</span><span class="p">(</span><span class="s1">&#39;public&#39;</span><span class="p">));</span>
+
+<span class="nx">app</span><span class="p">.</span><span class="nx">all</span><span class="p">(</span><span class="s2">&quot;/aca/*&quot;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;redirecting to Server1&#39;</span><span class="p">);</span>
+  <span class="nx">apiProxy</span><span class="p">.</span><span class="nx">web</span><span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">,</span> <span class="p">{</span>
+    <span class="nx">target</span><span class="o">:</span> <span class="nx">serverAca</span><span class="p">,</span>
+    <span class="nx">changeOrigin</span><span class="o">:</span> <span class="kc">false</span><span class="p">,</span> 
+    <span class="nx">ignorePath</span><span class="o">:</span> <span class="kc">true</span>
+  <span class="p">});</span>
+<span class="p">});</span>
+
+<span class="hll"><span class="nx">app</span><span class="p">.</span><span class="nx">all</span><span class="p">(</span><span class="s2">&quot;/acalast/:id&quot;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">){</span>
+</span><span class="hll">  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;redirecting to Server2&#39;</span> <span class="o">+</span> <span class="nx">req</span><span class="p">.</span><span class="nx">params</span><span class="p">.</span><span class="nx">id</span><span class="p">);</span>
+</span><span class="hll">  <span class="nx">apiProxy</span><span class="p">.</span><span class="nx">web</span><span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">,</span> <span class="p">{</span>
+</span><span class="hll">    <span class="nx">target</span><span class="o">:</span> <span class="nx">serverAcaLastOb</span><span class="o">+</span><span class="nx">req</span><span class="p">.</span><span class="nx">params</span><span class="p">.</span><span class="nx">id</span><span class="o">+</span><span class="s1">&#39;/lastOb/&#39;</span><span class="p">,</span>
+</span><span class="hll">    <span class="nx">changeOrigin</span><span class="o">:</span> <span class="kc">false</span><span class="p">,</span>
+</span><span class="hll">    <span class="nx">ignorePath</span><span class="o">:</span> <span class="kc">true</span>
+</span><span class="hll">  <span class="p">});</span>
+</span><span class="hll"><span class="p">});</span>
+</span>
+<span class="nx">app</span><span class="p">.</span><span class="nx">listen</span><span class="p">(</span><span class="mi">3000</span><span class="p">);</span>
+</code></pre></div>
+
+<ul>
+<li>
+<p>Abrir la url <a href="http://localhost:3000/acalast/082687-001">http://localhost:3000/acalast/082687-001</a> en el navegador para comprobar que el proxy está funcionando correctamente.</p>
+</li>
+<li>
+<p>Modificar la función que se llama al hacer click sobre un elemento del mapa para que llame a nuestro proxy. Esta función ejecutará una llamada ajax al proxy. Modificar la función <em>eachFeature</em> con el siguiente código</p>
+</li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="cp">&lt;!DOCTYPE html&gt;</span>
+<span class="p">&lt;</span><span class="nt">html</span><span class="p">&gt;</span>
+<span class="p">&lt;</span><span class="nt">head</span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="nt">meta</span> <span class="na">charset</span><span class="o">=</span><span class="s">&quot;UTF-8&quot;</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">meta</span> <span class="na">name</span><span class="o">=</span><span class="s">&quot;viewport&quot;</span> <span class="na">content</span><span class="o">=</span><span class="s">&quot;width=device-width, initial-scale=1.0&quot;</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">meta</span> <span class="na">http-equiv</span><span class="o">=</span><span class="s">&quot;X-UA-Compatible&quot;</span> <span class="na">content</span><span class="o">=</span><span class="s">&quot;ie=edge&quot;</span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="nt">title</span><span class="p">&gt;</span>Ejemplo Sentilo ACA<span class="p">&lt;/</span><span class="nt">title</span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="nt">link</span> <span class="na">rel</span><span class="o">=</span><span class="s">&quot;stylesheet&quot;</span> <span class="na">href</span><span class="o">=</span><span class="s">&quot;https://unpkg.com/leaflet@1.2.0/dist/leaflet.css&quot;</span> <span class="p">/&gt;</span>
+  <span class="p">&lt;</span><span class="nt">style</span><span class="p">&gt;</span>
+    <span class="p">#</span><span class="nn">map</span> <span class="p">{</span>
+        <span class="k">height</span><span class="p">:</span> <span class="mi">100</span><span class="kt">%</span><span class="p">;</span>
+        <span class="k">width</span><span class="p">:</span> <span class="mi">100</span><span class="kt">%</span><span class="p">;</span>
+        <span class="k">position</span><span class="p">:</span> <span class="kc">absolute</span><span class="p">;</span>
+    <span class="p">}</span>
+  <span class="p">&lt;/</span><span class="nt">style</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">head</span><span class="p">&gt;</span>
+<span class="p">&lt;</span><span class="nt">body</span><span class="p">&gt;</span>
+
+  <span class="p">&lt;</span><span class="nt">div</span> <span class="na">id</span><span class="o">=</span><span class="s">&quot;map&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+
+  <span class="p">&lt;</span><span class="nt">script</span> <span class="na">src</span><span class="o">=</span><span class="s">&quot;https://unpkg.com/leaflet@1.2.0/dist/leaflet.js&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="nt">script</span> <span class="na">src</span><span class="o">=</span><span class="s">&quot;https://calvinmetcalf.github.io/leaflet-ajax/dist/leaflet.ajax.js&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="nt">script</span><span class="p">&gt;</span>
+    <span class="kd">var</span> <span class="nx">map</span> <span class="o">=</span> <span class="nx">L</span><span class="p">.</span><span class="nx">map</span><span class="p">(</span><span class="s1">&#39;map&#39;</span><span class="p">);</span>
+
+    <span class="nx">map</span><span class="p">.</span><span class="nx">setView</span><span class="p">([</span><span class="mf">41.5087</span><span class="p">,</span> <span class="mf">2.1777</span><span class="p">],</span> <span class="mi">8</span><span class="p">);</span>  
+
+    <span class="nx">L</span><span class="p">.</span><span class="nx">tileLayer</span><span class="p">(</span><span class="s1">&#39;http://{s}.tile.osm.org/{z}/{x}/{y}.png&#39;</span><span class="p">,</span> <span class="p">{</span>
+      <span class="nx">attribution</span><span class="o">:</span> <span class="s1">&#39;&amp;copy; &lt;a href=&quot;http://osm.org/copyright&quot;&gt;OpenStreetMap&lt;/a&gt; contributors&#39;</span>
+    <span class="p">}).</span><span class="nx">addTo</span><span class="p">(</span><span class="nx">map</span><span class="p">);</span>
+
+    <span class="kd">var</span> <span class="nx">geojsonLayer</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">L</span><span class="p">.</span><span class="nx">GeoJSON</span><span class="p">.</span><span class="nx">AJAX</span><span class="p">(</span><span class="s1">&#39;http://localhost:3000/aca/&#39;</span><span class="p">,</span> <span class="p">{</span>
+      <span class="nx">middleware</span><span class="o">:</span><span class="kd">function</span><span class="p">(</span><span class="nx">data</span><span class="p">){</span>
+        <span class="k">return</span> <span class="nx">sentiloAca2geoJSON</span><span class="p">(</span><span class="nx">data</span><span class="p">);</span>
+      <span class="p">}</span>
+      <span class="p">,</span><span class="nx">onEachFeature</span><span class="o">:</span> <span class="nx">eachFeature</span>
+    <span class="p">}).</span><span class="nx">addTo</span><span class="p">(</span><span class="nx">map</span><span class="p">);</span>
+
+    <span class="kd">function</span> <span class="nx">sentiloAca2geoJSON</span><span class="p">(</span><span class="nx">data</span><span class="p">){</span>
+      <span class="kd">var</span> <span class="nx">geojson</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="nx">type</span><span class="o">:</span> <span class="s2">&quot;FeatureCollection&quot;</span><span class="p">,</span>
+        <span class="nx">features</span><span class="o">:</span> <span class="p">[]</span>
+      <span class="p">};</span>
+      <span class="kd">var</span> <span class="nx">sensors</span> <span class="o">=</span> <span class="nx">data</span><span class="p">.</span><span class="nx">providers</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nx">sensors</span><span class="p">;</span>
+      <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="nx">sensors</span><span class="p">.</span><span class="nx">length</span> <span class="o">-</span> <span class="mi">1</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span><span class="o">--</span><span class="p">)</span> <span class="p">{</span>
+        <span class="kd">var</span> <span class="nx">sensor</span> <span class="o">=</span> <span class="nx">sensors</span><span class="p">[</span><span class="nx">i</span><span class="p">];</span>
+        <span class="kd">var</span> <span class="nx">location</span> <span class="o">=</span> <span class="nx">sensor</span><span class="p">.</span><span class="nx">location</span><span class="p">.</span><span class="nx">split</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">);</span>
+        <span class="kd">var</span> <span class="nx">feature</span> <span class="o">=</span> <span class="p">{</span>
+          <span class="nx">type</span><span class="o">:</span> <span class="s1">&#39;Feature&#39;</span><span class="p">,</span>
+          <span class="nx">properties</span><span class="o">:</span> <span class="p">{</span>
+            <span class="nx">description</span><span class="o">:</span> <span class="nx">sensor</span><span class="p">.</span><span class="nx">description</span><span class="p">,</span>
+            <span class="nx">id</span><span class="o">:</span> <span class="nx">sensor</span><span class="p">.</span><span class="nx">component</span><span class="p">,</span>
+            <span class="nx">nom</span><span class="o">:</span> <span class="nx">sensor</span><span class="p">.</span><span class="nx">componentDesc</span><span class="p">,</span>
+            <span class="nx">info</span><span class="o">:</span> <span class="nx">sensor</span><span class="p">.</span><span class="nx">componentAdditionalInfo</span><span class="p">,</span>
+            <span class="nx">unit</span><span class="o">:</span> <span class="nx">sensor</span><span class="p">.</span><span class="nx">unit</span>
+          <span class="p">},</span>
+          <span class="nx">geometry</span><span class="o">:</span> <span class="p">{</span>
+            <span class="nx">type</span><span class="o">:</span> <span class="s1">&#39;Point&#39;</span><span class="p">,</span>
+            <span class="nx">coordinates</span><span class="o">:</span> <span class="p">[</span><span class="nx">location</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="nx">location</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span>
+          <span class="p">}</span>
+      <span class="p">};</span>
+      <span class="nx">geojson</span><span class="p">.</span><span class="nx">features</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">feature</span><span class="p">);</span>
+      <span class="p">}</span>
+      <span class="k">return</span> <span class="nx">geojson</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="kd">function</span> <span class="nx">eachFeature</span><span class="p">(</span><span class="nx">f</span><span class="p">,</span><span class="nx">l</span><span class="p">){</span>
+      <span class="nx">l</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;click&#39;</span><span class="p">,</span><span class="kd">function</span><span class="p">(</span><span class="nx">ev</span><span class="p">){</span>
+<span class="hll">        <span class="kd">var</span> <span class="nx">url</span> <span class="o">=</span> <span class="s1">&#39;http://localhost:3000/acalast/&#39;</span><span class="o">+</span><span class="nx">f</span><span class="p">.</span><span class="nx">properties</span><span class="p">.</span><span class="nx">id</span><span class="p">;</span>
+</span><span class="hll">        <span class="nx">fetch</span><span class="p">(</span><span class="nx">url</span><span class="p">)</span>
+</span><span class="hll">        <span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">response</span><span class="p">)</span> <span class="p">{</span>
+</span><span class="hll">          <span class="nx">response</span><span class="p">.</span><span class="nx">json</span><span class="p">().</span><span class="nx">then</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">data</span><span class="p">){</span>
+</span><span class="hll">            <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">data</span><span class="p">);</span>
+</span><span class="hll">          <span class="p">});</span>
+</span><span class="hll">        <span class="p">})</span>
+</span><span class="hll">        <span class="p">.</span><span class="k">catch</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">myJson</span><span class="p">)</span> <span class="p">{</span>
+</span><span class="hll">          <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">myJson</span><span class="p">);</span>
+</span><span class="hll">        <span class="p">});</span>
+</span>      <span class="p">});</span>
+    <span class="p">}</span>
+  <span class="p">&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">body</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">html</span><span class="p">&gt;</span>
+</code></pre></div>
+
+<ul>
+<li>
+<p>Recargar el mapa y hacer click sobre un elemento para ver que en la consola del desarrollador aparece un objeto que contiene la respuesa del sensor con la información de la última lectura.</p>
+</li>
+<li>
+<p>Crear una función llamada <em>popUp</em> para mostrar esta información en el mapa. La función recibe como parámetros un layer de Leaflet y unos datos del sensor. Esta función muestra un popup asociado al elemento con la información del sensor. Escribir después de la función eachFeature</p>
+</li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="cp">&lt;!DOCTYPE html&gt;</span>
+<span class="p">&lt;</span><span class="nt">html</span><span class="p">&gt;</span>
+<span class="p">&lt;</span><span class="nt">head</span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="nt">meta</span> <span class="na">charset</span><span class="o">=</span><span class="s">&quot;UTF-8&quot;</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">meta</span> <span class="na">name</span><span class="o">=</span><span class="s">&quot;viewport&quot;</span> <span class="na">content</span><span class="o">=</span><span class="s">&quot;width=device-width, initial-scale=1.0&quot;</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">meta</span> <span class="na">http-equiv</span><span class="o">=</span><span class="s">&quot;X-UA-Compatible&quot;</span> <span class="na">content</span><span class="o">=</span><span class="s">&quot;ie=edge&quot;</span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="nt">title</span><span class="p">&gt;</span>Ejemplo Sentilo ACA<span class="p">&lt;/</span><span class="nt">title</span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="nt">link</span> <span class="na">rel</span><span class="o">=</span><span class="s">&quot;stylesheet&quot;</span> <span class="na">href</span><span class="o">=</span><span class="s">&quot;https://unpkg.com/leaflet@1.2.0/dist/leaflet.css&quot;</span> <span class="p">/&gt;</span>
+  <span class="p">&lt;</span><span class="nt">style</span><span class="p">&gt;</span>
+    <span class="p">#</span><span class="nn">map</span> <span class="p">{</span>
+        <span class="k">height</span><span class="p">:</span> <span class="mi">100</span><span class="kt">%</span><span class="p">;</span>
+        <span class="k">width</span><span class="p">:</span> <span class="mi">100</span><span class="kt">%</span><span class="p">;</span>
+        <span class="k">position</span><span class="p">:</span> <span class="kc">absolute</span><span class="p">;</span>
+    <span class="p">}</span>
+  <span class="p">&lt;/</span><span class="nt">style</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">head</span><span class="p">&gt;</span>
+<span class="p">&lt;</span><span class="nt">body</span><span class="p">&gt;</span>
+
+  <span class="p">&lt;</span><span class="nt">div</span> <span class="na">id</span><span class="o">=</span><span class="s">&quot;map&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+
+  <span class="p">&lt;</span><span class="nt">script</span> <span class="na">src</span><span class="o">=</span><span class="s">&quot;https://unpkg.com/leaflet@1.2.0/dist/leaflet.js&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="nt">script</span> <span class="na">src</span><span class="o">=</span><span class="s">&quot;https://calvinmetcalf.github.io/leaflet-ajax/dist/leaflet.ajax.js&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="nt">script</span><span class="p">&gt;</span>
+    <span class="kd">var</span> <span class="nx">map</span> <span class="o">=</span> <span class="nx">L</span><span class="p">.</span><span class="nx">map</span><span class="p">(</span><span class="s1">&#39;map&#39;</span><span class="p">);</span>
+
+    <span class="nx">map</span><span class="p">.</span><span class="nx">setView</span><span class="p">([</span><span class="mf">41.5087</span><span class="p">,</span> <span class="mf">2.1777</span><span class="p">],</span> <span class="mi">8</span><span class="p">);</span>  
+
+    <span class="nx">L</span><span class="p">.</span><span class="nx">tileLayer</span><span class="p">(</span><span class="s1">&#39;http://{s}.tile.osm.org/{z}/{x}/{y}.png&#39;</span><span class="p">,</span> <span class="p">{</span>
+      <span class="nx">attribution</span><span class="o">:</span> <span class="s1">&#39;&amp;copy; &lt;a href=&quot;http://osm.org/copyright&quot;&gt;OpenStreetMap&lt;/a&gt; contributors&#39;</span>
+    <span class="p">}).</span><span class="nx">addTo</span><span class="p">(</span><span class="nx">map</span><span class="p">);</span>
+
+    <span class="kd">var</span> <span class="nx">geojsonLayer</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">L</span><span class="p">.</span><span class="nx">GeoJSON</span><span class="p">.</span><span class="nx">AJAX</span><span class="p">(</span><span class="s1">&#39;http://localhost:3000/aca/&#39;</span><span class="p">,</span> <span class="p">{</span>
+      <span class="nx">middleware</span><span class="o">:</span><span class="kd">function</span><span class="p">(</span><span class="nx">data</span><span class="p">){</span>
+        <span class="k">return</span> <span class="nx">sentiloAca2geoJSON</span><span class="p">(</span><span class="nx">data</span><span class="p">);</span>
+      <span class="p">}</span>
+      <span class="p">,</span><span class="nx">onEachFeature</span><span class="o">:</span> <span class="nx">eachFeature</span>
+    <span class="p">}).</span><span class="nx">addTo</span><span class="p">(</span><span class="nx">map</span><span class="p">);</span>
+
+    <span class="kd">function</span> <span class="nx">sentiloAca2geoJSON</span><span class="p">(</span><span class="nx">data</span><span class="p">){</span>
+      <span class="kd">var</span> <span class="nx">geojson</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="nx">type</span><span class="o">:</span> <span class="s2">&quot;FeatureCollection&quot;</span><span class="p">,</span>
+        <span class="nx">features</span><span class="o">:</span> <span class="p">[]</span>
+      <span class="p">};</span>
+      <span class="kd">var</span> <span class="nx">sensors</span> <span class="o">=</span> <span class="nx">data</span><span class="p">.</span><span class="nx">providers</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nx">sensors</span><span class="p">;</span>
+      <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="nx">sensors</span><span class="p">.</span><span class="nx">length</span> <span class="o">-</span> <span class="mi">1</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span><span class="o">--</span><span class="p">)</span> <span class="p">{</span>
+        <span class="kd">var</span> <span class="nx">sensor</span> <span class="o">=</span> <span class="nx">sensors</span><span class="p">[</span><span class="nx">i</span><span class="p">];</span>
+        <span class="kd">var</span> <span class="nx">location</span> <span class="o">=</span> <span class="nx">sensor</span><span class="p">.</span><span class="nx">location</span><span class="p">.</span><span class="nx">split</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">);</span>
+        <span class="kd">var</span> <span class="nx">feature</span> <span class="o">=</span> <span class="p">{</span>
+          <span class="nx">type</span><span class="o">:</span> <span class="s1">&#39;Feature&#39;</span><span class="p">,</span>
+          <span class="nx">properties</span><span class="o">:</span> <span class="p">{</span>
+            <span class="nx">description</span><span class="o">:</span> <span class="nx">sensor</span><span class="p">.</span><span class="nx">description</span><span class="p">,</span>
+            <span class="nx">id</span><span class="o">:</span> <span class="nx">sensor</span><span class="p">.</span><span class="nx">component</span><span class="p">,</span>
+            <span class="nx">nom</span><span class="o">:</span> <span class="nx">sensor</span><span class="p">.</span><span class="nx">componentDesc</span><span class="p">,</span>
+            <span class="nx">info</span><span class="o">:</span> <span class="nx">sensor</span><span class="p">.</span><span class="nx">componentAdditionalInfo</span><span class="p">,</span>
+            <span class="nx">unit</span><span class="o">:</span> <span class="nx">sensor</span><span class="p">.</span><span class="nx">unit</span>
+          <span class="p">},</span>
+          <span class="nx">geometry</span><span class="o">:</span> <span class="p">{</span>
+            <span class="nx">type</span><span class="o">:</span> <span class="s1">&#39;Point&#39;</span><span class="p">,</span>
+            <span class="nx">coordinates</span><span class="o">:</span> <span class="p">[</span><span class="nx">location</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="nx">location</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span>
+          <span class="p">}</span>
+      <span class="p">};</span>
+      <span class="nx">geojson</span><span class="p">.</span><span class="nx">features</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">feature</span><span class="p">);</span>
+      <span class="p">}</span>
+      <span class="k">return</span> <span class="nx">geojson</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="kd">function</span> <span class="nx">eachFeature</span><span class="p">(</span><span class="nx">f</span><span class="p">,</span><span class="nx">l</span><span class="p">){</span>
+      <span class="nx">l</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;click&#39;</span><span class="p">,</span><span class="kd">function</span><span class="p">(</span><span class="nx">ev</span><span class="p">){</span>
+        <span class="kd">var</span> <span class="nx">url</span> <span class="o">=</span> <span class="s1">&#39;http://localhost:3000/acalast/&#39;</span><span class="o">+</span><span class="nx">f</span><span class="p">.</span><span class="nx">properties</span><span class="p">.</span><span class="nx">id</span><span class="p">;</span>
+        <span class="nx">fetch</span><span class="p">(</span><span class="nx">url</span><span class="p">)</span>
+        <span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">response</span><span class="p">)</span> <span class="p">{</span>
+          <span class="nx">response</span><span class="p">.</span><span class="nx">json</span><span class="p">().</span><span class="nx">then</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">data</span><span class="p">){</span>
+            <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">data</span><span class="p">);</span>
+          <span class="p">});</span>
+        <span class="p">})</span>
+        <span class="p">.</span><span class="k">catch</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">myJson</span><span class="p">)</span> <span class="p">{</span>
+          <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">myJson</span><span class="p">);</span>
+        <span class="p">});</span>
+      <span class="p">});</span>
+    <span class="p">}</span>
+
+<span class="hll">    <span class="kd">function</span> <span class="nx">popUp</span><span class="p">(</span><span class="nx">l</span><span class="p">,</span> <span class="nx">data</span><span class="p">){</span>
+</span><span class="hll">      <span class="kd">var</span> <span class="nx">out</span> <span class="o">=</span> <span class="p">[];</span>
+</span><span class="hll">      <span class="nx">out</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="s1">&#39;&lt;strong&gt;&#39;</span><span class="o">+</span><span class="nx">data</span><span class="p">.</span><span class="nx">componentDesc</span><span class="o">+</span><span class="s1">&#39;&lt;/strong&gt;&#39;</span><span class="p">);</span>
+</span><span class="hll">        <span class="k">if</span> <span class="p">(</span><span class="nx">data</span><span class="p">.</span><span class="nx">sensorLastObservations</span><span class="p">){</span>
+</span><span class="hll">          <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="nx">data</span><span class="p">.</span><span class="nx">sensorLastObservations</span><span class="p">.</span><span class="nx">length</span> <span class="o">-</span> <span class="mi">1</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span><span class="o">--</span><span class="p">)</span> <span class="p">{</span>
+</span><span class="hll">            <span class="kd">var</span> <span class="nx">observ</span> <span class="o">=</span> <span class="nx">data</span><span class="p">.</span><span class="nx">sensorLastObservations</span><span class="p">[</span><span class="nx">i</span><span class="p">];</span>
+</span><span class="hll">            <span class="nx">out</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">observ</span><span class="p">.</span><span class="nx">sensorType</span><span class="o">+</span><span class="s2">&quot;: &quot;</span><span class="o">+</span><span class="nx">observ</span><span class="p">.</span><span class="nx">value</span><span class="o">+</span><span class="s2">&quot; &quot;</span><span class="o">+</span><span class="nx">observ</span><span class="p">.</span><span class="nx">unit</span><span class="p">);</span>
+</span><span class="hll">          <span class="p">}</span>
+</span><span class="hll">        <span class="p">}</span>
+</span><span class="hll">        <span class="nx">l</span><span class="p">.</span><span class="nx">unbindPopup</span><span class="p">();</span>
+</span><span class="hll">        <span class="nx">l</span><span class="p">.</span><span class="nx">bindPopup</span><span class="p">(</span><span class="nx">out</span><span class="p">.</span><span class="nx">join</span><span class="p">(</span><span class="s2">&quot;&lt;br /&gt;&quot;</span><span class="p">)).</span><span class="nx">togglePopup</span><span class="p">();</span>
+</span><span class="hll">    <span class="p">}</span>
+</span>  <span class="p">&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">body</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">html</span><span class="p">&gt;</span>
+</code></pre></div>
+
+<ul>
+<li>Llamar a la función popUp dentro de la función que se llama en el <em>success</em> de la llamada ajax. Escribir</li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="cp">&lt;!DOCTYPE html&gt;</span>
+<span class="p">&lt;</span><span class="nt">html</span><span class="p">&gt;</span>
+<span class="p">&lt;</span><span class="nt">head</span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="nt">meta</span> <span class="na">charset</span><span class="o">=</span><span class="s">&quot;UTF-8&quot;</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">meta</span> <span class="na">name</span><span class="o">=</span><span class="s">&quot;viewport&quot;</span> <span class="na">content</span><span class="o">=</span><span class="s">&quot;width=device-width, initial-scale=1.0&quot;</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">meta</span> <span class="na">http-equiv</span><span class="o">=</span><span class="s">&quot;X-UA-Compatible&quot;</span> <span class="na">content</span><span class="o">=</span><span class="s">&quot;ie=edge&quot;</span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="nt">title</span><span class="p">&gt;</span>Ejemplo Sentilo ACA<span class="p">&lt;/</span><span class="nt">title</span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="nt">link</span> <span class="na">rel</span><span class="o">=</span><span class="s">&quot;stylesheet&quot;</span> <span class="na">href</span><span class="o">=</span><span class="s">&quot;https://unpkg.com/leaflet@1.2.0/dist/leaflet.css&quot;</span> <span class="p">/&gt;</span>
+  <span class="p">&lt;</span><span class="nt">style</span><span class="p">&gt;</span>
+    <span class="p">#</span><span class="nn">map</span> <span class="p">{</span>
+        <span class="k">height</span><span class="p">:</span> <span class="mi">100</span><span class="kt">%</span><span class="p">;</span>
+        <span class="k">width</span><span class="p">:</span> <span class="mi">100</span><span class="kt">%</span><span class="p">;</span>
+        <span class="k">position</span><span class="p">:</span> <span class="kc">absolute</span><span class="p">;</span>
+    <span class="p">}</span>
+  <span class="p">&lt;/</span><span class="nt">style</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">head</span><span class="p">&gt;</span>
+<span class="p">&lt;</span><span class="nt">body</span><span class="p">&gt;</span>
+
+  <span class="p">&lt;</span><span class="nt">div</span> <span class="na">id</span><span class="o">=</span><span class="s">&quot;map&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+
+  <span class="p">&lt;</span><span class="nt">script</span> <span class="na">src</span><span class="o">=</span><span class="s">&quot;https://unpkg.com/leaflet@1.2.0/dist/leaflet.js&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="nt">script</span> <span class="na">src</span><span class="o">=</span><span class="s">&quot;https://calvinmetcalf.github.io/leaflet-ajax/dist/leaflet.ajax.js&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="nt">script</span><span class="p">&gt;</span>
+    <span class="kd">var</span> <span class="nx">map</span> <span class="o">=</span> <span class="nx">L</span><span class="p">.</span><span class="nx">map</span><span class="p">(</span><span class="s1">&#39;map&#39;</span><span class="p">);</span>
+
+    <span class="nx">map</span><span class="p">.</span><span class="nx">setView</span><span class="p">([</span><span class="mf">41.5087</span><span class="p">,</span> <span class="mf">2.1777</span><span class="p">],</span> <span class="mi">8</span><span class="p">);</span>  
+
+    <span class="nx">L</span><span class="p">.</span><span class="nx">tileLayer</span><span class="p">(</span><span class="s1">&#39;http://{s}.tile.osm.org/{z}/{x}/{y}.png&#39;</span><span class="p">,</span> <span class="p">{</span>
+      <span class="nx">attribution</span><span class="o">:</span> <span class="s1">&#39;&amp;copy; &lt;a href=&quot;http://osm.org/copyright&quot;&gt;OpenStreetMap&lt;/a&gt; contributors&#39;</span>
+    <span class="p">}).</span><span class="nx">addTo</span><span class="p">(</span><span class="nx">map</span><span class="p">);</span>
+
+    <span class="kd">var</span> <span class="nx">geojsonLayer</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">L</span><span class="p">.</span><span class="nx">GeoJSON</span><span class="p">.</span><span class="nx">AJAX</span><span class="p">(</span><span class="s1">&#39;http://localhost:3000/aca/&#39;</span><span class="p">,</span> <span class="p">{</span>
+      <span class="nx">middleware</span><span class="o">:</span><span class="kd">function</span><span class="p">(</span><span class="nx">data</span><span class="p">){</span>
+        <span class="k">return</span> <span class="nx">sentiloAca2geoJSON</span><span class="p">(</span><span class="nx">data</span><span class="p">);</span>
+      <span class="p">}</span>
+      <span class="p">,</span><span class="nx">onEachFeature</span><span class="o">:</span> <span class="nx">eachFeature</span>
+    <span class="p">}).</span><span class="nx">addTo</span><span class="p">(</span><span class="nx">map</span><span class="p">);</span>
+
+    <span class="kd">function</span> <span class="nx">sentiloAca2geoJSON</span><span class="p">(</span><span class="nx">data</span><span class="p">){</span>
+      <span class="kd">var</span> <span class="nx">geojson</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="nx">type</span><span class="o">:</span> <span class="s2">&quot;FeatureCollection&quot;</span><span class="p">,</span>
+        <span class="nx">features</span><span class="o">:</span> <span class="p">[]</span>
+      <span class="p">};</span>
+      <span class="kd">var</span> <span class="nx">sensors</span> <span class="o">=</span> <span class="nx">data</span><span class="p">.</span><span class="nx">providers</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nx">sensors</span><span class="p">;</span>
+      <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="nx">sensors</span><span class="p">.</span><span class="nx">length</span> <span class="o">-</span> <span class="mi">1</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span><span class="o">--</span><span class="p">)</span> <span class="p">{</span>
+        <span class="kd">var</span> <span class="nx">sensor</span> <span class="o">=</span> <span class="nx">sensors</span><span class="p">[</span><span class="nx">i</span><span class="p">];</span>
+        <span class="kd">var</span> <span class="nx">location</span> <span class="o">=</span> <span class="nx">sensor</span><span class="p">.</span><span class="nx">location</span><span class="p">.</span><span class="nx">split</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">);</span>
+        <span class="kd">var</span> <span class="nx">feature</span> <span class="o">=</span> <span class="p">{</span>
+          <span class="nx">type</span><span class="o">:</span> <span class="s1">&#39;Feature&#39;</span><span class="p">,</span>
+          <span class="nx">properties</span><span class="o">:</span> <span class="p">{</span>
+            <span class="nx">description</span><span class="o">:</span> <span class="nx">sensor</span><span class="p">.</span><span class="nx">description</span><span class="p">,</span>
+            <span class="nx">id</span><span class="o">:</span> <span class="nx">sensor</span><span class="p">.</span><span class="nx">component</span><span class="p">,</span>
+            <span class="nx">nom</span><span class="o">:</span> <span class="nx">sensor</span><span class="p">.</span><span class="nx">componentDesc</span><span class="p">,</span>
+            <span class="nx">info</span><span class="o">:</span> <span class="nx">sensor</span><span class="p">.</span><span class="nx">componentAdditionalInfo</span><span class="p">,</span>
+            <span class="nx">unit</span><span class="o">:</span> <span class="nx">sensor</span><span class="p">.</span><span class="nx">unit</span>
+          <span class="p">},</span>
+          <span class="nx">geometry</span><span class="o">:</span> <span class="p">{</span>
+            <span class="nx">type</span><span class="o">:</span> <span class="s1">&#39;Point&#39;</span><span class="p">,</span>
+            <span class="nx">coordinates</span><span class="o">:</span> <span class="p">[</span><span class="nx">location</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="nx">location</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span>
+          <span class="p">}</span>
+      <span class="p">};</span>
+      <span class="nx">geojson</span><span class="p">.</span><span class="nx">features</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">feature</span><span class="p">);</span>
+      <span class="p">}</span>
+      <span class="k">return</span> <span class="nx">geojson</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="kd">function</span> <span class="nx">eachFeature</span><span class="p">(</span><span class="nx">f</span><span class="p">,</span><span class="nx">l</span><span class="p">){</span>
+      <span class="nx">l</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;click&#39;</span><span class="p">,</span><span class="kd">function</span><span class="p">(</span><span class="nx">ev</span><span class="p">){</span>
+        <span class="kd">var</span> <span class="nx">url</span> <span class="o">=</span> <span class="s1">&#39;http://localhost:3000/acalast/&#39;</span><span class="o">+</span><span class="nx">f</span><span class="p">.</span><span class="nx">properties</span><span class="p">.</span><span class="nx">id</span><span class="p">;</span>
+        <span class="nx">fetch</span><span class="p">(</span><span class="nx">url</span><span class="p">)</span>
+        <span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">response</span><span class="p">)</span> <span class="p">{</span>
+          <span class="nx">response</span><span class="p">.</span><span class="nx">json</span><span class="p">().</span><span class="nx">then</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">data</span><span class="p">){</span>
+<span class="hll">            <span class="nx">popUp</span><span class="p">(</span><span class="nx">l</span><span class="p">,</span> <span class="nx">data</span><span class="p">);</span>
+</span>          <span class="p">});</span>
+        <span class="p">})</span>
+        <span class="p">.</span><span class="k">catch</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">myJson</span><span class="p">)</span> <span class="p">{</span>
+          <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">myJson</span><span class="p">);</span>
+        <span class="p">});</span>
+      <span class="p">});</span>
+    <span class="p">}</span>
+
+    <span class="kd">function</span> <span class="nx">popUp</span><span class="p">(</span><span class="nx">l</span><span class="p">,</span> <span class="nx">data</span><span class="p">){</span>
+      <span class="kd">var</span> <span class="nx">out</span> <span class="o">=</span> <span class="p">[];</span>
+      <span class="nx">out</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="s1">&#39;&lt;strong&gt;&#39;</span><span class="o">+</span><span class="nx">data</span><span class="p">.</span><span class="nx">componentDesc</span><span class="o">+</span><span class="s1">&#39;&lt;/strong&gt;&#39;</span><span class="p">);</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nx">data</span><span class="p">.</span><span class="nx">sensorLastObservations</span><span class="p">){</span>
+          <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="nx">data</span><span class="p">.</span><span class="nx">sensorLastObservations</span><span class="p">.</span><span class="nx">length</span> <span class="o">-</span> <span class="mi">1</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span><span class="o">--</span><span class="p">)</span> <span class="p">{</span>
+            <span class="kd">var</span> <span class="nx">observ</span> <span class="o">=</span> <span class="nx">data</span><span class="p">.</span><span class="nx">sensorLastObservations</span><span class="p">[</span><span class="nx">i</span><span class="p">];</span>
+            <span class="nx">out</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">observ</span><span class="p">.</span><span class="nx">sensorType</span><span class="o">+</span><span class="s2">&quot;: &quot;</span><span class="o">+</span><span class="nx">observ</span><span class="p">.</span><span class="nx">value</span><span class="o">+</span><span class="s2">&quot; &quot;</span><span class="o">+</span><span class="nx">observ</span><span class="p">.</span><span class="nx">unit</span><span class="p">);</span>
+          <span class="p">}</span>
+        <span class="p">}</span>
+        <span class="nx">l</span><span class="p">.</span><span class="nx">unbindPopup</span><span class="p">();</span>
+        <span class="nx">l</span><span class="p">.</span><span class="nx">bindPopup</span><span class="p">(</span><span class="nx">out</span><span class="p">.</span><span class="nx">join</span><span class="p">(</span><span class="s2">&quot;&lt;br /&gt;&quot;</span><span class="p">)).</span><span class="nx">togglePopup</span><span class="p">();</span>
+    <span class="p">}</span>
+  <span class="p">&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">body</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">html</span><span class="p">&gt;</span>
+</code></pre></div>
+
+<ul>
+<li>Recargar la aplicación y clicar sobre un elemento. Debe aparecer un popup con la información de la última lectura del sensor.</li>
+</ul>
+<p><img alt="ejemplo sentilo ACA" src="../img/sentilo_aca.png" />
+<em>ejemplo sentilo ACA</em></p>
+<h2 id="referencias">Referencias</h2>
+<div class="footnote">
+<hr />
+<ol>
+<li id="fn:1">
+<p><a href="http://aca.gencat.cat/ca/laigua/consulta-de-dades/dades-obertes/">http://aca.gencat.cat/ca/laigua/consulta-de-dades/dades-obertes/</a>&#160;<a class="footnote-backref" href="#fnref:1" title="Jump back to footnote 1 in the text">&#8617;</a></p>
+</li>
+<li id="fn:2">
+<p><a href="http://www.sentilo.io/wordpress/">http://www.sentilo.io/wordpress/</a>&#160;<a class="footnote-backref" href="#fnref:2" title="Jump back to footnote 2 in the text">&#8617;</a></p>
+</li>
+<li id="fn:3">
+<p><a href="http://aca-web.gencat.cat/sentilo-catalog-web/component/map">http://aca-web.gencat.cat/sentilo-catalog-web/component/map</a>&#160;<a class="footnote-backref" href="#fnref:3" title="Jump back to footnote 3 in the text">&#8617;</a></p>
+</li>
+<li id="fn:4">
+<p><a href="http://aca.gencat.cat/web/.content/20_Aigua/08_consulta_de_dades/01_dades_obertes/us_serveis_dades_API_REST.pdf">http://aca.gencat.cat/web/.content/20_Aigua/08_consulta_de_dades/01_dades_obertes/us_serveis_dades_API_REST.pdf</a>&#160;<a class="footnote-backref" href="#fnref:4" title="Jump back to footnote 4 in the text">&#8617;</a></p>
+</li>
+<li id="fn:5">
+<p><a href="http://leafletjs.com/">http://leafletjs.com/</a>&#160;<a class="footnote-backref" href="#fnref:5" title="Jump back to footnote 5 in the text">&#8617;</a></p>
+</li>
+<li id="fn:6">
+<p><a href="https://github.com/calvinmetcalf/leaflet-ajax">https://github.com/calvinmetcalf/leaflet-ajax</a>&#160;<a class="footnote-backref" href="#fnref:6" title="Jump back to footnote 6 in the text">&#8617;</a></p>
+</li>
+<li id="fn:7">
+<p><a href="https://developer.mozilla.org/es/docs/Web/HTTP/Access_control_CORS">https://developer.mozilla.org/es/docs/Web/HTTP/Access_control_CORS</a>&#160;<a class="footnote-backref" href="#fnref:7" title="Jump back to footnote 7 in the text">&#8617;</a></p>
+</li>
+<li id="fn:8">
+<p><a href="https://es.wikipedia.org/wiki/Servidor_proxy">https://es.wikipedia.org/wiki/Servidor_proxy</a>&#160;<a class="footnote-backref" href="#fnref:8" title="Jump back to footnote 8 in the text">&#8617;</a><a class="footnote-backref" href="#fnref2:8" title="Jump back to footnote 8 in the text">&#8617;</a></p>
+</li>
+<li id="fn:9">
+<p><a href="https://nodejs.org/es/">https://nodejs.org/es/</a>&#160;<a class="footnote-backref" href="#fnref:9" title="Jump back to footnote 9 in the text">&#8617;</a></p>
+</li>
+<li id="fn:10">
+<p><a href="http://expressjs.com/">http://expressjs.com/</a>&#160;<a class="footnote-backref" href="#fnref:10" title="Jump back to footnote 10 in the text">&#8617;</a></p>
+</li>
+<li id="fn:11">
+<p><a href="https://github.com/nodejitsu/node-http-proxy">https://github.com/nodejitsu/node-http-proxy</a>&#160;<a class="footnote-backref" href="#fnref:11" title="Jump back to footnote 11 in the text">&#8617;</a></p>
+</li>
+<li id="fn:12">
+<p><a href="https://www.npmjs.com/package/cors">https://www.npmjs.com/package/cors</a>&#160;<a class="footnote-backref" href="#fnref:12" title="Jump back to footnote 12 in the text">&#8617;</a></p>
+</li>
+<li id="fn:13">
+<p><a href="https://www.npmjs.com/package/nodemon">https://www.npmjs.com/package/nodemon</a>&#160;<a class="footnote-backref" href="#fnref:13" title="Jump back to footnote 13 in the text">&#8617;</a></p>
+</li>
+</ol>
+</div>
+                
+              
+              
+                
+
+
+              
+            </article>
+          </div>
+        </div>
+      </main>
+      
+        
+<footer class="md-footer">
+  
+    <div class="md-footer-nav">
+      <nav class="md-footer-nav__inner md-grid" aria-label="Pie">
+        
+          <a href="../11_consideraciones_servicios_realtime_sensores/" title="11. Consideraciones sobre servicios de Sensores" class="md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+            <div class="md-footer-nav__button md-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+            </div>
+            <div class="md-footer-nav__title">
+              <div class="md-ellipsis">
+                <span class="md-footer-nav__direction">
+                  Anterior
+                </span>
+                11. Consideraciones sobre servicios de Sensores
+              </div>
+            </div>
+          </a>
+        
+        
+          <a href="../13_geoservicios_realtime/" title="13. Geoservicios realtime" class="md-footer-nav__link md-footer-nav__link--next" rel="next">
+            <div class="md-footer-nav__title">
+              <div class="md-ellipsis">
+                <span class="md-footer-nav__direction">
+                  Siguiente
+                </span>
+                13. Geoservicios realtime
+              </div>
+            </div>
+            <div class="md-footer-nav__button md-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    </div>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+        Made with
+        <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+          Material for MkDocs
+        </a>
+      </div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    
+      <script src="../assets/javascripts/vendor.3636a4ec.min.js"></script>
+      <script src="../assets/javascripts/bundle.e9fe3281.min.js"></script><script id="__lang" type="application/json">{"clipboard.copy": "Copiar al portapapeles", "clipboard.copied": "Copiado al portapapeles", "search.config.lang": "es", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.result.placeholder": "Teclee para comenzar b\u00fasqueda", "search.result.none": "No se encontraron documentos", "search.result.one": "1 documento encontrado", "search.result.other": "# documentos encontrados"}</script>
+      
+      <script>
+        app = initialize({
+          base: "..",
+          features: [],
+          search: Object.assign({
+            worker: "../assets/javascripts/worker/search.5eca75d3.min.js"
+          }, typeof search !== "undefined" && search)
+        })
+      </script>
+      
+    
+  </body>
+</html>
