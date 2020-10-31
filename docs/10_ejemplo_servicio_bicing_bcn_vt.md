@@ -958,8 +958,11 @@ app.listen(3000);
 </html>
 ```
 
-!!! question "Ejercicio"
-	Cambiar el estilo de los puntos de las estaciones. Cambiar los rangos del tamaño del punto y cambiar el rango de colores.
+!!! question "Ejercicios 2 pts"
+	  Cambiar el estilo de los puntos de las estaciones. 
+    
+    1. Cambiar los rangos del tamaño del punto (1 pt).
+    2. Cambiar el rango de colores (1 pt).
 
 ## Referencias
 

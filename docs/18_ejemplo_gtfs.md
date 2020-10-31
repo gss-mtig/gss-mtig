@@ -4,7 +4,7 @@
 
 La Especificación general de feeds de transporte público (GTFS) define un formato común para los horarios de transporte público y la información geográfica asociada a ellos. Los "feeds" GTFS permiten que las empresas de transporte público publiquen sus datos de transporte y que los programadores escriban aplicaciones que consuman esos datos de manera interoperable [^1].
 
-##Creación de un visor que muestre las línes y paradas de un GTFS
+## Creación de un visor que muestre las línes y paradas de un GTFS
 
 Para crear un visor de mapas utilizaremos la librería de mapas Leaflet [^2]. Y cargaremos los datos de portal de la Plataforma VLCi (Valencia SmartCity) [^3]     
 
@@ -721,13 +721,13 @@ function leerZip(archivo){
 ![ejemplo gtfs](img/mapa_gtfs.png)
 *ejemplo gtfs*
 
-!!! question "Ejercicios"
-	1. Mostrar un popup con información de la propiedad *shape_id* al hacer click en la capa de líneas 
+!!! question "Ejercicios 2,5 pts"
+	1. Mostrar un popup con información de la propiedad *shape_id* al hacer click en la capa de líneas (1 pt)
 	
 	2. Cargar datos del gtfs de FGC https://www.fgc.cat/es/opendata/  
-	En el siguiente enlace está el fichero de gtfs https://www.fgc.cat/wp-content/uploads/2018/02/google_transit.zip
+	En el siguiente enlace está el fichero de gtfs https://www.fgc.cat/wp-content/uploads/2018/02/google_transit.zip (1 pt)
 
-	3. Centrar el mapa en Barcelona
+	3. Centrar el mapa en Barcelona (0,5 pt)
 
 ## Referencias
 

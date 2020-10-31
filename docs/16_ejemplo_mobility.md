@@ -1315,10 +1315,13 @@ Para agregar un buscador utilizaremos el plugin de Leaflet *Leaflet.OpenCage.Sea
 ![ejemplo isócronas](img/mapa_isocronas.png)
 *ejemplo isócronas*
 
-!!! question "Ejercicio"
-	En la función de **crearUrlIsochrona** cambiar el modo de transporte *profile* y el alcance *range*
+!!! question "Ejercicios 2 pts"
+	En la función de **crearUrlIsochrona** 
+	
+	1. Cambiar el modo de transporte *profile* (1 pt)
+	2. Cambiar el alcance *range* (1 pt)
 
-	En el siguiente enlace se pueden ver las diferentes opciones de la API https://openrouteservice.org/dev/#/api-docs/isochrones/get
+	Ayuda: En el siguiente enlace se pueden ver las diferentes opciones de la API https://openrouteservice.org/dev/#/api-docs/isochrones/get
 
 
 ## Referencias
