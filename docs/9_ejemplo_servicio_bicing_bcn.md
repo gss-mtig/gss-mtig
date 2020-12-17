@@ -264,7 +264,7 @@ Para ver estos datos sobre un mapa crearemos un visor utilizando Leaflet. [^2]
 
 - Crear un popup para ver la información de la estación al seleccionarla. Escribir justo después de donde definimos el intervalo
 
-```html hl_lines="65 66 67 68 69 70 71 72"
+```html hl_lines="64 65 66 67 68 69 70 71 72"
 <!DOCTYPE html>
 <html>
 <head>

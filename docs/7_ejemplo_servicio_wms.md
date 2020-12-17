@@ -54,7 +54,7 @@ Para ver los datos de este servicio sobre un mapa crearemos un visor utilizando 
 
 - Agregar la capa WMS del PNOA
 
-```html hl_lines="32 33 34 35 36 37 38"
+```html hl_lines="28 29 30 31 32 33 34"
 <!DOCTYPE html>
 <html>
 <head>
