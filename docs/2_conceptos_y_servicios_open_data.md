@@ -2,17 +2,17 @@
 # API servicios Open Data (CKAN y SOCRATA)
 ## Ejemplo API CKAN
 
-El API de CKAN http://docs.ckan.org/en/latest/api/index.html no ofrece diferetes niveles y métodos para poder buscar y filtrar datasets.
+El API de CKAN https://docs.ckan.org/en/latest/api/index.html no ofrece diferetes niveles y métodos para poder buscar y filtrar datasets.
 
  
-En este ejemplo utilizaremos el método [resource_search](http://docs.ckan.org/en/latest/api/index.html#ckan.logic.action.get.resource_search) para buscar datasets en cualquier portal de CKAN
+En este ejemplo utilizaremos el método [resource_search](https://docs.ckan.org/en/latest/api/index.html#ckan.logic.action.get.resource_search) para buscar datasets en cualquier portal de CKAN
 
   
 
-Para buscar en portales CKAN necesitamos saber la URL del portal , exemplo http://demo.ckan.org y añadir el path del método a utilizar **/api/3/action/resource_search?**
+Para buscar en portales CKAN necesitamos saber la URL del portal , exemplo https://demo.ckan.org y añadir el path del método a utilizar **/api/3/action/resource_search?**
 
  
-http://demo.ckan.org/api/3/action/resource_search?
+https://demo.ckan.org/api/3/action/resource_search?
 
   
 
@@ -62,7 +62,7 @@ http://demo.ckan.org/api/3/action/resource_search?
 <div class="container">
   <h3>Resource Search example </h3>
   <p> Package Search <br>
-    <a target="_blank" href="http://docs.ckan.org/en/latest/api/">http://docs.ckan.org/en/latest/api/</a>
+    <a target="_blank" href="https://docs.ckan.org/en/latest/api/">https://docs.ckan.org/en/latest/api/</a>
   </p>
      <form id="_form">
     <div class="form-group">
@@ -240,7 +240,7 @@ Creación de un buscador
 <div class="container">
 <h3>SOCRATA Resource Search example </h3>
 <p>Discovery API <br>
-  <a target="_blank" href="http://docs.socratadiscovery.apiary.io">http://docs.socratadiscovery.apiary.io</a>
+  <a target="_blank" href="https://docs.socratadiscovery.apiary.io">https://docs.socratadiscovery.apiary.io</a>
 </p>
 <form>
   <div class="form-group">
@@ -408,7 +408,7 @@ $(document).ready(function() {
 <div class="row">
 <div class="col-md-6">
 <p>Discovery API <br>
-<a target="_blank" href="http://docs.socratadiscovery.apiary.io">http://docs.socratadiscovery.apiary.io</a>
+<a target="_blank" href="https://docs.socratadiscovery.apiary.io">https://docs.socratadiscovery.apiary.io</a>
 </p>
 <form>
 <div class="form-group">
@@ -480,20 +480,20 @@ var _LL;
 $(document).ready(function() {
 map = L.map('map').setView([41.6863, 1.8382], 8);
 esri = L.tileLayer(
-'http://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
 maxZoom: 17,
 minZoom: 1,
 attribution: 'Tiles © Esri',
 })
 
-osm = L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+osm = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
 maxZoom: 19,
 minZoom: 1,
 attribution: 'OSM'
 }).addTo(map);
 
-Stamen_Toner = L.tileLayer('http://{s}.tile.stamen.com/toner/{z}/{x}/{y}.png', {
-attribution: 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> &mdash; Map data &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+Stamen_Toner = L.tileLayer('https://{s}.tile.stamen.com/toner/{z}/{x}/{y}.png', {
+attribution: 'Map tiles by <a href="https://stamen.com">Stamen Design</a>, <a href="https://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> &mdash; Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
 subdomains: 'abcd',
 minZoom: 0,
 maxZoom: 20
@@ -537,7 +537,7 @@ $.ajax({
 					var _url2 = 'https://' + params[1] + '/api/geospatial/' + data.childViews[0] + '?method=export&format=GeoJSON';
 					sendRequestGEOJSON(_url2, true);
 			} else {
-					var _url2 = 'http://' + params[1] + '/resource/' + params[0] + '.json?$limit=30';
+					var _url2 = 'https://' + params[1] + '/resource/' + params[0] + '.json?$limit=30';
 					sendRequestGEOJSON(_url2, false);
 			}
 	},
@@ -703,7 +703,7 @@ $('#results').html("An error occured: " + xhr.status + " " + xhr.statusText);
 
 Referencias
   
-http://docs.ckan.org/en/latest/api/
-http://ckan.org
+https://docs.ckan.org/en/latest/api/
+https://ckan.org
 https://www.socrata.com
-http://docs.socratadiscovery.apiary.io
+https://docs.socratadiscovery.apiary.io
