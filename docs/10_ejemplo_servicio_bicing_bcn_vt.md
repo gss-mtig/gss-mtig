@@ -943,7 +943,6 @@ app.listen(3000);
       '<li class=\'list-group-item\'> ' + feature.properties.address + ' </li>' +
       '<li class=\'list-group-item\'> Bicis disponibles: ' + feature.properties.num_bikes_available + ' </li>' +
       '<li class=\'list-group-item\'> Docks disponibles: ' + feature.properties.num_docks_available + ' </li></ul></div>')
-      )
       .addTo(map);
     });
 
