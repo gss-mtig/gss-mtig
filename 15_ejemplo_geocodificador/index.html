@@ -587,6 +587,13 @@
 <p>Descargar en la carpeta el plugin desarrollado por el ICGC <sup id="fnref:2"><a class="footnote-ref" href="#fn:2">2</a></sup> <a href="https://github.com/OpenICGC/leaflet-geocodericgc-plugin/blob/master/js/leaflet-geocoder.js">https://github.com/OpenICGC/leaflet-geocodericgc-plugin/blob/master/js/leaflet-geocoder.js</a></p>
 </li>
 <li>
+<p>Modificar el plugin para adaptarlo a los últimos cambios. Abrir el archivo descargado leaflet-geocoder.js y modificarlo:</p>
+<ul>
+<li>Buscar el texto (línea 433) <em>var url = this.options.url  + '/search';</em> y remplazarlo por <strong>var url = this.options.url  + '/cerca';</strong></li>
+<li>Buscar el texto (línea 448) <em>var url = this.options.url + '/autocomplete';</em> y remplazarlo por <strong>var url = this.options.url + '/autocompletar';</strong></li>
+</ul>
+</li>
+<li>
 <p>Agregar el plugin al mapa</p>
 </li>
 </ul>
@@ -622,7 +629,7 @@
         <span class="p">}).</span><span class="nx">addTo</span><span class="p">(</span><span class="nx">map</span><span class="p">);</span>
 
 <span class="hll">        <span class="kd">var</span> <span class="nx">geocodingOptions</span> <span class="o">=</span> <span class="p">{</span>      
-</span><span class="hll">            <span class="nx">url</span><span class="o">:</span><span class="s1">&#39;https://aws.icgc.cat/cerca_pelias/&#39;</span><span class="p">,</span>
+</span><span class="hll">            <span class="nx">url</span><span class="o">:</span><span class="s1">&#39;https://aws.icgc.cat/geocodificador/&#39;</span><span class="p">,</span>
 </span><span class="hll">            <span class="nx">expanded</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span>
 </span><span class="hll">            <span class="nx">autocomplete</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span>
 </span><span class="hll">            <span class="nx">focus</span><span class="o">:</span><span class="kc">false</span>
@@ -675,7 +682,7 @@
         <span class="p">}).</span><span class="nx">addTo</span><span class="p">(</span><span class="nx">map</span><span class="p">);</span>
 
         <span class="kd">var</span> <span class="nx">geocodingOptions</span> <span class="o">=</span> <span class="p">{</span>      
-            <span class="nx">url</span><span class="o">:</span><span class="s1">&#39;https://aws.icgc.cat/cerca_pelias/&#39;</span><span class="p">,</span>
+            <span class="nx">url</span><span class="o">:</span><span class="s1">&#39;https://aws.icgc.cat/geocodificador/&#39;</span><span class="p">,</span>
             <span class="nx">expanded</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span>
             <span class="nx">autocomplete</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span>
             <span class="nx">focus</span><span class="o">:</span><span class="kc">false</span>
@@ -730,7 +737,7 @@
         <span class="p">}).</span><span class="nx">addTo</span><span class="p">(</span><span class="nx">map</span><span class="p">);</span>
 
         <span class="kd">var</span> <span class="nx">geocodingOptions</span> <span class="o">=</span> <span class="p">{</span>      
-            <span class="nx">url</span><span class="o">:</span><span class="s1">&#39;https://aws.icgc.cat/cerca_pelias/&#39;</span><span class="p">,</span>
+            <span class="nx">url</span><span class="o">:</span><span class="s1">&#39;https://aws.icgc.cat/geocodificador/&#39;</span><span class="p">,</span>
             <span class="nx">expanded</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span>
             <span class="nx">autocomplete</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span>
             <span class="nx">focus</span><span class="o">:</span><span class="kc">false</span>
@@ -787,7 +794,7 @@
         <span class="p">}).</span><span class="nx">addTo</span><span class="p">(</span><span class="nx">map</span><span class="p">);</span>
 
         <span class="kd">var</span> <span class="nx">geocodingOptions</span> <span class="o">=</span> <span class="p">{</span>      
-            <span class="nx">url</span><span class="o">:</span><span class="s1">&#39;https://aws.icgc.cat/cerca_pelias/&#39;</span><span class="p">,</span>
+            <span class="nx">url</span><span class="o">:</span><span class="s1">&#39;https://aws.icgc.cat/geocodificador/&#39;</span><span class="p">,</span>
             <span class="nx">expanded</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span>
             <span class="nx">autocomplete</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span>
             <span class="nx">focus</span><span class="o">:</span><span class="kc">false</span>
@@ -796,7 +803,7 @@
 
         <span class="nx">map</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;click&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">e</span><span class="p">){</span>
             <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">e</span><span class="p">);</span>
-<span class="hll">            <span class="kd">var</span> <span class="nx">url</span> <span class="o">=</span> <span class="sb">`https://aws.icgc.cat/cerca_pelias/reverse?lat=</span><span class="si">${</span><span class="nx">e</span><span class="p">.</span><span class="nx">latlng</span><span class="p">.</span><span class="nx">lat</span><span class="si">}</span><span class="sb">&amp;lon=</span><span class="si">${</span><span class="nx">e</span><span class="p">.</span><span class="nx">latlng</span><span class="p">.</span><span class="nx">lng</span><span class="si">}</span><span class="sb">`</span><span class="p">;</span>
+<span class="hll">            <span class="kd">var</span> <span class="nx">url</span> <span class="o">=</span> <span class="sb">`https://aws.icgc.cat/geocodificador/invers?lat=</span><span class="si">${</span><span class="nx">e</span><span class="p">.</span><span class="nx">latlng</span><span class="p">.</span><span class="nx">lat</span><span class="si">}</span><span class="sb">&amp;lon=</span><span class="si">${</span><span class="nx">e</span><span class="p">.</span><span class="nx">latlng</span><span class="p">.</span><span class="nx">lng</span><span class="si">}</span><span class="sb">`</span><span class="p">;</span>
 </span><span class="hll">            <span class="nx">fetch</span><span class="p">(</span><span class="nx">url</span><span class="p">)</span>
 </span><span class="hll">            <span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">response</span><span class="p">)</span> <span class="p">{</span>
 </span><span class="hll">            <span class="nx">response</span><span class="p">.</span><span class="nx">json</span><span class="p">().</span><span class="nx">then</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">data</span><span class="p">){</span>
@@ -854,7 +861,7 @@
         <span class="p">}).</span><span class="nx">addTo</span><span class="p">(</span><span class="nx">map</span><span class="p">);</span>
 
         <span class="kd">var</span> <span class="nx">geocodingOptions</span> <span class="o">=</span> <span class="p">{</span>      
-            <span class="nx">url</span><span class="o">:</span><span class="s1">&#39;https://aws.icgc.cat/cerca_pelias/&#39;</span><span class="p">,</span>
+            <span class="nx">url</span><span class="o">:</span><span class="s1">&#39;https://aws.icgc.cat/geocodificador/&#39;</span><span class="p">,</span>
             <span class="nx">expanded</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span>
             <span class="nx">autocomplete</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span>
             <span class="nx">focus</span><span class="o">:</span><span class="kc">false</span>
@@ -863,7 +870,7 @@
 
         <span class="nx">map</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;click&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">e</span><span class="p">){</span>
             <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">e</span><span class="p">);</span>
-            <span class="kd">var</span> <span class="nx">url</span> <span class="o">=</span> <span class="sb">`https://aws.icgc.cat/cerca_pelias/reverse?lat=</span><span class="si">${</span><span class="nx">e</span><span class="p">.</span><span class="nx">latlng</span><span class="p">.</span><span class="nx">lat</span><span class="si">}</span><span class="sb">&amp;lon=</span><span class="si">${</span><span class="nx">e</span><span class="p">.</span><span class="nx">latlng</span><span class="p">.</span><span class="nx">lng</span><span class="si">}</span><span class="sb">`</span><span class="p">;</span>
+            <span class="kd">var</span> <span class="nx">url</span> <span class="o">=</span> <span class="sb">`https://aws.icgc.cat/geocodificador/invers?lat=</span><span class="si">${</span><span class="nx">e</span><span class="p">.</span><span class="nx">latlng</span><span class="p">.</span><span class="nx">lat</span><span class="si">}</span><span class="sb">&amp;lon=</span><span class="si">${</span><span class="nx">e</span><span class="p">.</span><span class="nx">latlng</span><span class="p">.</span><span class="nx">lng</span><span class="si">}</span><span class="sb">`</span><span class="p">;</span>
             <span class="nx">fetch</span><span class="p">(</span><span class="nx">url</span><span class="p">)</span>
             <span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">response</span><span class="p">)</span> <span class="p">{</span>
             <span class="nx">response</span><span class="p">.</span><span class="nx">json</span><span class="p">().</span><span class="nx">then</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">data</span><span class="p">){</span>
@@ -923,7 +930,7 @@
         <span class="p">}).</span><span class="nx">addTo</span><span class="p">(</span><span class="nx">map</span><span class="p">);</span>
 
         <span class="kd">var</span> <span class="nx">geocodingOptions</span> <span class="o">=</span> <span class="p">{</span>      
-            <span class="nx">url</span><span class="o">:</span><span class="s1">&#39;https://aws.icgc.cat/cerca_pelias/&#39;</span><span class="p">,</span>
+            <span class="nx">url</span><span class="o">:</span><span class="s1">&#39;https://aws.icgc.cat/geocodificador/&#39;</span><span class="p">,</span>
             <span class="nx">expanded</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span>
             <span class="nx">autocomplete</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span>
             <span class="nx">focus</span><span class="o">:</span><span class="kc">false</span>
@@ -932,7 +939,7 @@
 
         <span class="nx">map</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;click&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">e</span><span class="p">){</span>
             <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">e</span><span class="p">);</span>
-            <span class="kd">var</span> <span class="nx">url</span> <span class="o">=</span> <span class="sb">`https://aws.icgc.cat/cerca_pelias/reverse?lat=</span><span class="si">${</span><span class="nx">e</span><span class="p">.</span><span class="nx">latlng</span><span class="p">.</span><span class="nx">lat</span><span class="si">}</span><span class="sb">&amp;lon=</span><span class="si">${</span><span class="nx">e</span><span class="p">.</span><span class="nx">latlng</span><span class="p">.</span><span class="nx">lng</span><span class="si">}</span><span class="sb">`</span><span class="p">;</span>
+            <span class="kd">var</span> <span class="nx">url</span> <span class="o">=</span> <span class="sb">`https://aws.icgc.cat/geocodificador/invers?lat=</span><span class="si">${</span><span class="nx">e</span><span class="p">.</span><span class="nx">latlng</span><span class="p">.</span><span class="nx">lat</span><span class="si">}</span><span class="sb">&amp;lon=</span><span class="si">${</span><span class="nx">e</span><span class="p">.</span><span class="nx">latlng</span><span class="p">.</span><span class="nx">lng</span><span class="si">}</span><span class="sb">`</span><span class="p">;</span>
             <span class="nx">fetch</span><span class="p">(</span><span class="nx">url</span><span class="p">)</span>
             <span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">response</span><span class="p">)</span> <span class="p">{</span>
             <span class="nx">response</span><span class="p">.</span><span class="nx">json</span><span class="p">().</span><span class="nx">then</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">data</span><span class="p">){</span>
@@ -994,7 +1001,7 @@
         <span class="p">}).</span><span class="nx">addTo</span><span class="p">(</span><span class="nx">map</span><span class="p">);</span>
 
         <span class="kd">var</span> <span class="nx">geocodingOptions</span> <span class="o">=</span> <span class="p">{</span>      
-            <span class="nx">url</span><span class="o">:</span><span class="s1">&#39;https://aws.icgc.cat/cerca_pelias/&#39;</span><span class="p">,</span>
+            <span class="nx">url</span><span class="o">:</span><span class="s1">&#39;https://aws.icgc.cat/geocodificador/&#39;</span><span class="p">,</span>
             <span class="nx">expanded</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span>
             <span class="nx">autocomplete</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span>
             <span class="nx">focus</span><span class="o">:</span><span class="kc">false</span>
@@ -1003,7 +1010,7 @@
 
         <span class="nx">map</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;click&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">e</span><span class="p">){</span>
             <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">e</span><span class="p">);</span>
-            <span class="kd">var</span> <span class="nx">url</span> <span class="o">=</span> <span class="sb">`https://aws.icgc.cat/cerca_pelias/reverse?lat=</span><span class="si">${</span><span class="nx">e</span><span class="p">.</span><span class="nx">latlng</span><span class="p">.</span><span class="nx">lat</span><span class="si">}</span><span class="sb">&amp;lon=</span><span class="si">${</span><span class="nx">e</span><span class="p">.</span><span class="nx">latlng</span><span class="p">.</span><span class="nx">lng</span><span class="si">}</span><span class="sb">`</span><span class="p">;</span>
+            <span class="kd">var</span> <span class="nx">url</span> <span class="o">=</span> <span class="sb">`https://aws.icgc.cat/geocodificador/invers?lat=</span><span class="si">${</span><span class="nx">e</span><span class="p">.</span><span class="nx">latlng</span><span class="p">.</span><span class="nx">lat</span><span class="si">}</span><span class="sb">&amp;lon=</span><span class="si">${</span><span class="nx">e</span><span class="p">.</span><span class="nx">latlng</span><span class="p">.</span><span class="nx">lng</span><span class="si">}</span><span class="sb">`</span><span class="p">;</span>
             <span class="nx">fetch</span><span class="p">(</span><span class="nx">url</span><span class="p">)</span>
             <span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">response</span><span class="p">)</span> <span class="p">{</span>
             <span class="nx">response</span><span class="p">.</span><span class="nx">json</span><span class="p">().</span><span class="nx">then</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">data</span><span class="p">){</span>
@@ -1066,7 +1073,7 @@
         <span class="p">}).</span><span class="nx">addTo</span><span class="p">(</span><span class="nx">map</span><span class="p">);</span>
 
         <span class="kd">var</span> <span class="nx">geocodingOptions</span> <span class="o">=</span> <span class="p">{</span>      
-            <span class="nx">url</span><span class="o">:</span><span class="s1">&#39;https://aws.icgc.cat/cerca_pelias/&#39;</span><span class="p">,</span>
+            <span class="nx">url</span><span class="o">:</span><span class="s1">&#39;https://aws.icgc.cat/geocodificador/&#39;</span><span class="p">,</span>
             <span class="nx">expanded</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span>
             <span class="nx">autocomplete</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span>
             <span class="nx">focus</span><span class="o">:</span><span class="kc">false</span>
@@ -1075,7 +1082,7 @@
 
         <span class="nx">map</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;click&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">e</span><span class="p">){</span>
             <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">e</span><span class="p">);</span>
-            <span class="kd">var</span> <span class="nx">url</span> <span class="o">=</span> <span class="sb">`https://aws.icgc.cat/cerca_pelias/reverse?lat=</span><span class="si">${</span><span class="nx">e</span><span class="p">.</span><span class="nx">latlng</span><span class="p">.</span><span class="nx">lat</span><span class="si">}</span><span class="sb">&amp;lon=</span><span class="si">${</span><span class="nx">e</span><span class="p">.</span><span class="nx">latlng</span><span class="p">.</span><span class="nx">lng</span><span class="si">}</span><span class="sb">`</span><span class="p">;</span>
+            <span class="kd">var</span> <span class="nx">url</span> <span class="o">=</span> <span class="sb">`https://aws.icgc.cat/geocodificador/invers?lat=</span><span class="si">${</span><span class="nx">e</span><span class="p">.</span><span class="nx">latlng</span><span class="p">.</span><span class="nx">lat</span><span class="si">}</span><span class="sb">&amp;lon=</span><span class="si">${</span><span class="nx">e</span><span class="p">.</span><span class="nx">latlng</span><span class="p">.</span><span class="nx">lng</span><span class="si">}</span><span class="sb">`</span><span class="p">;</span>
             <span class="nx">fetch</span><span class="p">(</span><span class="nx">url</span><span class="p">)</span>
             <span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">response</span><span class="p">)</span> <span class="p">{</span>
             <span class="nx">response</span><span class="p">.</span><span class="nx">json</span><span class="p">().</span><span class="nx">then</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">data</span><span class="p">){</span>
@@ -1104,7 +1111,7 @@
 <p>Mostrar la propiedad layer junto con la dirección en la etiqueta (1 pt)</p>
 </li>
 <li>
-<p>Extra: Mostrar los marcadores de los 3 primeros resultados, pero unicamente desplegar la etiqueta de la primera respuesta. (1 pt) </p>
+<p><strong>Extra</strong>: Al hacer click en el mapa mostrar los marcadores de los 3 primeros resultados, pero únicamente desplegar la etiqueta de la primera respuesta. (1 pt) </p>
 </li>
 </ol>
 </div>
