@@ -236,7 +236,7 @@ Algunos de los servicios que ofrecen el cálculo de Isócronas son: [Targomo](ht
             apiKey: API_KEY_ORS
         }).addTo(map);
 
-		map.on('click', function(e){
+		map.on('click', async function(e){
             console.log(e);
 		});
 
@@ -247,9 +247,9 @@ Algunos de los servicios que ofrecen el cálculo de Isócronas son: [Targomo](ht
 
 - Recargar la aplicación y abrir la consola del desarrollador. Hacer click sobre el mapa y ver que en la consola aparece el objeto del evento click. Inspeccionar este objeto y ver que tiene una propiedad llamada latlng que contine las coordenadas donde se ha hecho el click.
 
-- Crear una función que tenga como parámetro una posición (coordenada lat lon) y genere una url de llamada al servicio de isócronas de Openrouteservice para que haga el cálculo en la coordenada indicada. Copiar lo siguiente al final de nuestro código
+- Crear una función que tenga como parámetro una posición (coordenada lat lon) y genere una llamada al servicio de isócronas de Openrouteservice para que haga el cálculo en la coordenada indicada. Copiar lo siguiente al final de nuestro código
 
-```html hl_lines="49 50 51 52 53 54 55 56 57 58 59 60 61 62 63 64 65 66 67"
+```html hl_lines="49 50 51 52 53 54 55 56 57 58 59 60 61 62 63 64 65 66 67 68 69 70 71"
 <!DOCTYPE html>
 <html>
 <head>
@@ -294,35 +294,39 @@ Algunos de los servicios que ofrecen el cálculo de Isócronas son: [Targomo](ht
             apiKey: API_KEY_ORS
         }).addTo(map);
 
-		map.on('click', function(e){
+		map.on('click', async function(e){
             console.log(e);
 		});
 
-		function crearUrlIsochrona(latlng){
-        var lat = latlng.lat;
-        var lng = latlng.lng;
-        var url = 'https://api.openrouteservice.org/isochrones?';
-        var json = {
-          locations: lng + "," + lat,
-          range_type: "time",
-					range: 1200,
-					interval: 300,
-					profile: "cycling-regular",
-					location_type: "start",
-					api_key: API_KEY_ORS
-        };
-			var params = Object.keys(json).map(function(k) {
-				return encodeURIComponent(k) + '=' + encodeURIComponent(json[k])
-			}).join('&')
-            url += params;
-            return url;
+		async function getIsochrona(latlng){
+            var lat = latlng.lat;
+            var lng = latlng.lng;
+            var url = 'https://api.openrouteservice.org/v2/isochrones/cycling-regular';
+            var json = {
+                locations: [[lng, lat]],
+                range_type: "time",
+                range: [1200],
+                interval: 300,
+                location_type: "start"
+            };
+            const response = await fetch(url, {
+                method: 'POST',
+                mode: 'cors',
+                headers:{
+                    'Accept': 'application/json, application/geo+json, application/gpx+xml, img/png; charset=utf-8',
+                    'Content-Type': 'application/json',
+                    'Authorization': API_KEY_ORS
+                },
+                body: JSON.stringify(json)    
+            });
+            return await response.json();
         }
 	</script>
 </body>
 </html>
 ```
 
-- Llamar a la función *crearUrlIsochrona* cuando se hace click en el mapa. Escribir al final de la función del click
+- Llamar a la función *getIsochrona* cuando se hace click en el mapa. Escribir al final de la función del click
 
 ```html hl_lines="47 48"
 <!DOCTYPE html>
@@ -369,41 +373,45 @@ Algunos de los servicios que ofrecen el cálculo de Isócronas son: [Targomo](ht
             apiKey: API_KEY_ORS
         }).addTo(map);
 
-		map.on('click', function(e){
+		map.on('click', async function(e){
             console.log(e);
-			var url = crearUrlIsochrona(e.latlng);
-			console.log(url);
+			var data = await getIsochrona(e.latlng);
+            console.log(data);
 		});
 
-		function crearUrlIsochrona(latlng){
+		async function getIsochrona(latlng){
             var lat = latlng.lat;
             var lng = latlng.lng;
-            var url = 'https://api.openrouteservice.org/isochrones?';
+            var url = 'https://api.openrouteservice.org/v2/isochrones/cycling-regular';
             var json = {
-                locations: lng + "," + lat,
+                locations: [[lng, lat]],
                 range_type: "time",
-				range: 1200,
-				interval: 300,
-				profile: "cycling-regular",
-				location_type: "start",
-				api_key: API_KEY_ORS
+                range: [1200],
+                interval: 300,
+                location_type: "start"
             };
-			var params = Object.keys(json).map(function(k) {
-				return encodeURIComponent(k) + '=' + encodeURIComponent(json[k])
-			}).join('&')
-            url += params;
-            return url;
+            const response = await fetch(url, {
+                method: 'POST',
+                mode: 'cors',
+                headers:{
+                    'Accept': 'application/json, application/geo+json, application/gpx+xml, img/png; charset=utf-8',
+                    'Content-Type': 'application/json',
+                    'Authorization': API_KEY_ORS
+                },
+                body: JSON.stringify(json)    
+            });
+            return await response.json();
         }
 	</script>
 </body>
 </html>
 ```
 
-- Recargar la página y hacer click sobre el mapa para ver que en la consola aparece una url. Abrir esta url en el navegador para comprobar que responde con un GeoJSON que contiene la isócrona.
+- Recargar la página y hacer click sobre el mapa para ver que en la consola aparece un GeoJSON que contiene la isócrona.
 
-- Cargar la respuesta GeoJSON del servicio utilizando el plugin de Leaflet llamado *leaflet-ajax* [^3]. Este plugin permite hacer una llamada AJAX a un servicio que retorne un JSON y cargar la respuesta en un mapa. Agregar lo siguiente justo después de donde cargarmos el leaflet.
+- Agregar la una capa geojson que la iniciaremos vacía sin ningún elemento.
 
-```html hl_lines="26"
+```html hl_lines="45"
 <!DOCTYPE html>
 <html>
 <head>
@@ -429,7 +437,6 @@ Algunos de los servicios que ofrecen el cálculo de Isócronas son: [Targomo](ht
 	</div>
 
 	<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
-	<script src="https://calvinmetcalf.github.io/leaflet-ajax/dist/leaflet.ajax.js"></script>
 	<script src="https://cdn.jsdelivr.net/gh/trafforddatalab/leaflet.reachability@v2.0.0/leaflet.reachability.js"></script>
 
 	<script>
@@ -449,38 +456,45 @@ Algunos de los servicios que ofrecen el cálculo de Isócronas son: [Targomo](ht
             apiKey: API_KEY_ORS
         }).addTo(map);
 
+		var geojsonLayer = new L.geoJSON().addTo(map);
+
 		map.on('click', function(e){
             console.log(e);
-			var url = crearUrlIsochrona(e.latlng);
-			console.log(url);
+			var data = await getIsochrona(e.latlng);
+            console.log(data);
 		});
 
-		function crearUrlIsochrona(latlng){
+		async function getIsochrona(latlng){
             var lat = latlng.lat;
             var lng = latlng.lng;
-            var url = 'https://api.openrouteservice.org/isochrones?';
+            var url = 'https://api.openrouteservice.org/v2/isochrones/cycling-regular';
             var json = {
-                locations: lng + "," + lat,
+                locations: [[lng, lat]],
                 range_type: "time",
-				range: 1200,
-				interval: 300,
-				profile: "cycling-regular",
-				location_type: "start",
-				api_key: API_KEY_ORS
+                range: [1200],
+                interval: 300,
+                location_type: "start"
             };
-			var params = Object.keys(json).map(function(k) {
-				return encodeURIComponent(k) + '=' + encodeURIComponent(json[k])
-			}).join('&')
-            url += params;
-            return url;
+            const response = await fetch(url, {
+                method: 'POST',
+                mode: 'cors',
+                headers:{
+                    'Accept': 'application/json, application/geo+json, application/gpx+xml, img/png; charset=utf-8',
+                    'Content-Type': 'application/json',
+                    'Authorization': API_KEY_ORS
+                },
+                body: JSON.stringify(json)    
+            });
+            return await response.json();
         }
 	</script>
 </body>
 </html>
 ```
-- Agregar la capa geojsonLayer para que se inicialice vacía sin ningún elemento. 
 
-```html hl_lines="46"
+- Utilizar el método addData para actualizar la capa geojsonLayer con la respuesta GeoJSON que retorna la API.
+
+```html hl_lines="51"
 <!DOCTYPE html>
 <html>
 <head>
@@ -506,7 +520,6 @@ Algunos de los servicios que ofrecen el cálculo de Isócronas son: [Targomo](ht
 	</div>
 
 	<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
-	<script src="https://calvinmetcalf.github.io/leaflet-ajax/dist/leaflet.ajax.js"></script>
 	<script src="https://cdn.jsdelivr.net/gh/trafforddatalab/leaflet.reachability@v2.0.0/leaflet.reachability.js"></script>
 
 	<script>
@@ -526,113 +539,37 @@ Algunos de los servicios que ofrecen el cálculo de Isócronas son: [Targomo](ht
             apiKey: API_KEY_ORS
         }).addTo(map);
 
-		var geojsonLayer = new L.GeoJSON.AJAX('').addTo(map);
+		var geojsonLayer = new L.geoJSON().addTo(map);
 
 		map.on('click', function(e){
             console.log(e);
-			var url = crearUrlIsochrona(e.latlng);
-			console.log(url);
+			var data = await getIsochrona(e.latlng);
+            console.log(data);
+			geojsonLayer.addData(data);
 		});
 
-		function crearUrlIsochrona(latlng){
+		async function getIsochrona(latlng){
             var lat = latlng.lat;
             var lng = latlng.lng;
-            var url = 'https://api.openrouteservice.org/isochrones?';
+            var url = 'https://api.openrouteservice.org/v2/isochrones/cycling-regular';
             var json = {
-                locations: lng + "," + lat,
+                locations: [[lng, lat]],
                 range_type: "time",
-				range: 1200,
-				interval: 300,
-				profile: "cycling-regular",
-				location_type: "start",
-				api_key: API_KEY_ORS
+                range: [1200],
+                interval: 300,
+                location_type: "start"
             };
-			var params = Object.keys(json).map(function(k) {
-				return encodeURIComponent(k) + '=' + encodeURIComponent(json[k])
-			}).join('&')
-            url += params;
-            return url;
-        }
-	</script>
-</body>
-</html>
-```
-
-- Utilizar el método refresh para actualizar la capa geojsonLayer con la url generada al hacer click.
-
-```html hl_lines="52"
-<!DOCTYPE html>
-<html>
-<head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<meta http-equiv="X-UA-Compatible" content="ie=edge">
-	<title>Ejemplo Isócronas Mapzen</title>
-	<link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
-	<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/trafforddatalab/leaflet.reachability@v2.0.0/leaflet.reachability.css"/>
-
-	<style>
-		#map {
-			height: 100%;
-			width: 100%;
-			position: absolute;
-		}
-	</style>
-</head>
-<body>
-
-	<div id="map">
-
-	</div>
-
-	<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
-	<script src="https://calvinmetcalf.github.io/leaflet-ajax/dist/leaflet.ajax.js"></script>
-	<script src="https://cdn.jsdelivr.net/gh/trafforddatalab/leaflet.reachability@v2.0.0/leaflet.reachability.js"></script>
-
-	<script>
-		var API_KEY_ORS = '{TU_API_KEY}';
-
-		var map = L.map('map');
-
-		map.setView([41.3887, 2.1777], 13);  
-
-		L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
-			attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-		}).addTo(map);
-
-		// Initialise the reachability plugin
-        L.control.reachability({
-            // add settings/options here
-            apiKey: API_KEY_ORS
-        }).addTo(map);
-
-		var geojsonLayer = new L.GeoJSON.AJAX('').addTo(map);
-
-		map.on('click', function(e){
-            console.log(e);
-			var url = crearUrlIsochrona(e.latlng);
-			console.log(url);
-			geojsonLayer.refresh(url);
-		});
-
-		function crearUrlIsochrona(latlng){
-            var lat = latlng.lat;
-            var lng = latlng.lng;
-            var url = 'https://api.openrouteservice.org/isochrones?';
-            var json = {
-                locations: lng + "," + lat,
-                range_type: "time",
-				range: 1200,
-				interval: 300,
-				profile: "cycling-regular",
-				location_type: "start",
-				api_key: API_KEY_ORS
-            };
-			var params = Object.keys(json).map(function(k) {
-				return encodeURIComponent(k) + '=' + encodeURIComponent(json[k])
-			}).join('&')
-            url += params;
-            return url;
+            const response = await fetch(url, {
+                method: 'POST',
+                mode: 'cors',
+                headers:{
+                    'Accept': 'application/json, application/geo+json, application/gpx+xml, img/png; charset=utf-8',
+                    'Content-Type': 'application/json',
+                    'Authorization': API_KEY_ORS
+                },
+                body: JSON.stringify(json)    
+            });
+            return await response.json();
         }
 	</script>
 </body>
@@ -643,7 +580,7 @@ Algunos de los servicios que ofrecen el cálculo de Isócronas son: [Targomo](ht
 
 - Pintar la línea del color que indicamos. Por defecto se pinta la línea de color azul. Esto es debido a que el Leaflet no sabe de que color pintar la línea y utiliza el color por defecto. En la respuesta del servicio podemos ver que los elementos que nos retorna tienen unas propiedades (properties) en donde se listan una serie de atributos, uno de ellos es el *value* que corresponde con el valor del intervalo de tiempo. Lo que debemos hacer es decirle al leaflet que utilice esa propiedad para dar el color a la línea. Escribir lo siguiente en nuestra capa geojsonLayer.
 
-```html hl_lines="46 47 48 49 50 51 52 53 54 55 56 57 58 59 60 61 62 63 64 65 66 67 68"
+```html hl_lines="45 46 47 48 49 50 51 52 53 54 55 56 57 58 59 60 61 62 63 64 65 66 67"
 <!DOCTYPE html>
 <html>
 <head>
@@ -669,7 +606,6 @@ Algunos de los servicios que ofrecen el cálculo de Isócronas son: [Targomo](ht
 	</div>
 
 	<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
-	<script src="https://calvinmetcalf.github.io/leaflet-ajax/dist/leaflet.ajax.js"></script>
 	<script src="https://cdn.jsdelivr.net/gh/trafforddatalab/leaflet.reachability@v2.0.0/leaflet.reachability.js"></script>
 
 	<script>
@@ -689,7 +625,7 @@ Algunos de los servicios que ofrecen el cálculo de Isócronas son: [Targomo](ht
             apiKey: API_KEY_ORS
         }).addTo(map);
 
-		var geojsonLayer = new L.GeoJSON.AJAX('',{
+		var geojsonLayer = new L.geoJSON('',{
             style: function(geoJsonFeature){
 				var color = "#0000FF";
 				switch (geoJsonFeature.properties.value) {
@@ -715,29 +651,33 @@ Algunos de los servicios que ofrecen el cálculo de Isócronas son: [Targomo](ht
 
 		map.on('click', function(e){
             console.log(e);
-			var url = crearUrlIsochrona(e.latlng);
-			console.log(url);
-			geojsonLayer.refresh(url);
+			var data = await getIsochrona(e.latlng);
+            console.log(data);
+			geojsonLayer.addData(data);
 		});
 
-		function crearUrlIsochrona(latlng){
-		var lat = latlng.lat;
-		var lng = latlng.lng;
-		var url = 'https://api.openrouteservice.org/isochrones?';
-		var json = {
-				locations: lng + "," + lat,
-				range_type: "time",
-				range: 1200,
-				interval: 300,
-				profile: "cycling-regular",
-				location_type: "start",
-				api_key: API_KEY_ORS
-		};
-			var params = Object.keys(json).map(function(k) {
-				return encodeURIComponent(k) + '=' + encodeURIComponent(json[k])
-			}).join('&')
-            url += params;
-            return url;
+		async function getIsochrona(latlng){
+            var lat = latlng.lat;
+            var lng = latlng.lng;
+            var url = 'https://api.openrouteservice.org/v2/isochrones/cycling-regular';
+            var json = {
+                locations: [[lng, lat]],
+                range_type: "time",
+                range: [1200],
+                interval: 300,
+                location_type: "start"
+            };
+            const response = await fetch(url, {
+                method: 'POST',
+                mode: 'cors',
+                headers:{
+                    'Accept': 'application/json, application/geo+json, application/gpx+xml, img/png; charset=utf-8',
+                    'Content-Type': 'application/json',
+                    'Authorization': API_KEY_ORS
+                },
+                body: JSON.stringify(json)    
+            });
+            return await response.json();
         }
 	</script>
 </body>
@@ -752,7 +692,7 @@ Para agregar un buscador utilizaremos el plugin de Leaflet *Leaflet.OpenCage.Sea
 
 - Cargar la librería en nuestra aplicación.
 
-```html hl_lines="10 27"
+```html hl_lines="10 26"
 <!DOCTYPE html>
 <html>
 <head>
@@ -778,7 +718,6 @@ Para agregar un buscador utilizaremos el plugin de Leaflet *Leaflet.OpenCage.Sea
 	</div>
 
 	<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
-	<script src="https://calvinmetcalf.github.io/leaflet-ajax/dist/leaflet.ajax.js"></script>
 	<script src="http://rawgit.com/opencagedata/leaflet-opencage-search/master/dist/js/L.Control.OpenCageSearch.dev.js"></script>
 	<script src="https://cdn.jsdelivr.net/gh/trafforddatalab/leaflet.reachability@v2.0.0/leaflet.reachability.js"></script>
 
@@ -799,7 +738,7 @@ Para agregar un buscador utilizaremos el plugin de Leaflet *Leaflet.OpenCage.Sea
             apiKey: API_KEY_ORS
         }).addTo(map);
 
-		var geojsonLayer = new L.GeoJSON.AJAX('',{
+		var geojsonLayer = new L.geoJSON('',{
             style: function(geoJsonFeature){
 				var color = "#0000FF";
 				switch (geoJsonFeature.properties.value) {
@@ -825,29 +764,33 @@ Para agregar un buscador utilizaremos el plugin de Leaflet *Leaflet.OpenCage.Sea
 
 		map.on('click', function(e){
             console.log(e);
-			var url = crearUrlIsochrona(e.latlng);
-			console.log(url);
-			geojsonLayer.refresh(url);
+			var data = await getIsochrona(e.latlng);
+            console.log(data);
+			geojsonLayer.addData(data);
 		});
 
-		function crearUrlIsochrona(latlng){
-		var lat = latlng.lat;
-		var lng = latlng.lng;
-		var url = 'https://api.openrouteservice.org/isochrones?';
-		var json = {
-				locations: lng + "," + lat,
-				range_type: "time",
-				range: 1200,
-				interval: 300,
-				profile: "cycling-regular",
-				location_type: "start",
-				api_key: API_KEY_ORS
-		};
-			var params = Object.keys(json).map(function(k) {
-				return encodeURIComponent(k) + '=' + encodeURIComponent(json[k])
-			}).join('&')
-            url += params;
-            return url;
+		async function getIsochrona(latlng){
+            var lat = latlng.lat;
+            var lng = latlng.lng;
+            var url = 'https://api.openrouteservice.org/v2/isochrones/cycling-regular';
+            var json = {
+                locations: [[lng, lat]],
+                range_type: "time",
+                range: [1200],
+                interval: 300,
+                location_type: "start"
+            };
+            const response = await fetch(url, {
+                method: 'POST',
+                mode: 'cors',
+                headers:{
+                    'Accept': 'application/json, application/geo+json, application/gpx+xml, img/png; charset=utf-8',
+                    'Content-Type': 'application/json',
+                    'Authorization': API_KEY_ORS
+                },
+                body: JSON.stringify(json)    
+            });
+            return await response.json();
         }
 	</script>
 </body>
@@ -856,7 +799,7 @@ Para agregar un buscador utilizaremos el plugin de Leaflet *Leaflet.OpenCage.Sea
 
 - Crear la variable para la API key
 
-```html hl_lines="32"
+```html hl_lines="31"
 <!DOCTYPE html>
 <html>
 <head>
@@ -882,7 +825,6 @@ Para agregar un buscador utilizaremos el plugin de Leaflet *Leaflet.OpenCage.Sea
 	</div>
 
 	<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
-	<script src="https://calvinmetcalf.github.io/leaflet-ajax/dist/leaflet.ajax.js"></script>
 	<script src="http://rawgit.com/opencagedata/leaflet-opencage-search/master/dist/js/L.Control.OpenCageSearch.dev.js"></script>
 	<script src="https://cdn.jsdelivr.net/gh/trafforddatalab/leaflet.reachability@v2.0.0/leaflet.reachability.js"></script>
 
@@ -904,7 +846,7 @@ Para agregar un buscador utilizaremos el plugin de Leaflet *Leaflet.OpenCage.Sea
             apiKey: API_KEY_ORS
         }).addTo(map);
 
-		var geojsonLayer = new L.GeoJSON.AJAX('',{
+		var geojsonLayer = new L.geoJSON('',{
             style: function(geoJsonFeature){
 				var color = "#0000FF";
 				switch (geoJsonFeature.properties.value) {
@@ -930,29 +872,33 @@ Para agregar un buscador utilizaremos el plugin de Leaflet *Leaflet.OpenCage.Sea
 
 		map.on('click', function(e){
             console.log(e);
-			var url = crearUrlIsochrona(e.latlng);
-			console.log(url);
-			geojsonLayer.refresh(url);
+			var data = await getIsochrona(e.latlng);
+            console.log(data);
+			geojsonLayer.addData(data);
 		});
 
-		function crearUrlIsochrona(latlng){
-		var lat = latlng.lat;
-		var lng = latlng.lng;
-		var url = 'https://api.openrouteservice.org/isochrones?';
-		var json = {
-				locations: lng + "," + lat,
-				range_type: "time",
-				range: 1200,
-				interval: 300,
-				profile: "cycling-regular",
-				location_type: "start",
-				api_key: API_KEY_ORS
-		};
-			var params = Object.keys(json).map(function(k) {
-				return encodeURIComponent(k) + '=' + encodeURIComponent(json[k])
-			}).join('&')
-            url += params;
-            return url;
+		async function getIsochrona(latlng){
+            var lat = latlng.lat;
+            var lng = latlng.lng;
+            var url = 'https://api.openrouteservice.org/v2/isochrones/cycling-regular';
+            var json = {
+                locations: [[lng, lat]],
+                range_type: "time",
+                range: [1200],
+                interval: 300,
+                location_type: "start"
+            };
+            const response = await fetch(url, {
+                method: 'POST',
+                mode: 'cors',
+                headers:{
+                    'Accept': 'application/json, application/geo+json, application/gpx+xml, img/png; charset=utf-8',
+                    'Content-Type': 'application/json',
+                    'Authorization': API_KEY_ORS
+                },
+                body: JSON.stringify(json)    
+            });
+            return await response.json();
         }
 	</script>
 </body>
@@ -961,7 +907,7 @@ Para agregar un buscador utilizaremos el plugin de Leaflet *Leaflet.OpenCage.Sea
 
 - Agregar el control al mapa. Para utilizar el servicio de búsqueda también es necesario pasar nuestra API key:
 
-```html hl_lines="48 49 50 51 52"
+```html hl_lines="47 48 49 50 51"
 <!DOCTYPE html>
 <html>
 <head>
@@ -987,7 +933,6 @@ Para agregar un buscador utilizaremos el plugin de Leaflet *Leaflet.OpenCage.Sea
 	</div>
 
 	<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
-	<script src="https://calvinmetcalf.github.io/leaflet-ajax/dist/leaflet.ajax.js"></script>
 	<script src="http://rawgit.com/opencagedata/leaflet-opencage-search/master/dist/js/L.Control.OpenCageSearch.dev.js"></script>
 	<script src="https://cdn.jsdelivr.net/gh/trafforddatalab/leaflet.reachability@v2.0.0/leaflet.reachability.js"></script>
 
@@ -1015,7 +960,7 @@ Para agregar un buscador utilizaremos el plugin de Leaflet *Leaflet.OpenCage.Sea
 		};
 		var geocoder = L.Control.openCageSearch(options_g).addTo(map);
 
-		var geojsonLayer = new L.GeoJSON.AJAX('',{
+		var geojsonLayer = new L.geoJSON('',{
             style: function(geoJsonFeature){
 				var color = "#0000FF";
 				switch (geoJsonFeature.properties.value) {
@@ -1041,29 +986,33 @@ Para agregar un buscador utilizaremos el plugin de Leaflet *Leaflet.OpenCage.Sea
 
 		map.on('click', function(e){
             console.log(e);
-			var url = crearUrlIsochrona(e.latlng);
-			console.log(url);
-			geojsonLayer.refresh(url);
+			var data = await getIsochrona(e.latlng);
+            console.log(data);
+			geojsonLayer.addData(data);
 		});
 
-		function crearUrlIsochrona(latlng){
-		var lat = latlng.lat;
-		var lng = latlng.lng;
-		var url = 'https://api.openrouteservice.org/isochrones?';
-		var json = {
-				locations: lng + "," + lat,
-				range_type: "time",
-				range: 1200,
-				interval: 300,
-				profile: "cycling-regular",
-				location_type: "start",
-				api_key: API_KEY_ORS
-		};
-			var params = Object.keys(json).map(function(k) {
-				return encodeURIComponent(k) + '=' + encodeURIComponent(json[k])
-			}).join('&')
-            url += params;
-            return url;
+		async function getIsochrona(latlng){
+            var lat = latlng.lat;
+            var lng = latlng.lng;
+            var url = 'https://api.openrouteservice.org/v2/isochrones/cycling-regular';
+            var json = {
+                locations: [[lng, lat]],
+                range_type: "time",
+                range: [1200],
+                interval: 300,
+                location_type: "start"
+            };
+            const response = await fetch(url, {
+                method: 'POST',
+                mode: 'cors',
+                headers:{
+                    'Accept': 'application/json, application/geo+json, application/gpx+xml, img/png; charset=utf-8',
+                    'Content-Type': 'application/json',
+                    'Authorization': API_KEY_ORS
+                },
+                body: JSON.stringify(json)    
+            });
+            return await response.json();
         }
 	</script>
 </body>
@@ -1074,7 +1023,7 @@ Para agregar un buscador utilizaremos el plugin de Leaflet *Leaflet.OpenCage.Sea
 
 - Calcular las isócronas al seleccionar un resultado de la búsqueda. Modificar la función *_geocodeResultSelected* del control geocoder
 
-```html hl_lines="53 54 55 56 57 58"
+```html hl_lines="52 53 54 55 56 57"
 <!DOCTYPE html>
 <html>
 <head>
@@ -1100,7 +1049,6 @@ Para agregar un buscador utilizaremos el plugin de Leaflet *Leaflet.OpenCage.Sea
 	</div>
 
 	<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
-	<script src="https://calvinmetcalf.github.io/leaflet-ajax/dist/leaflet.ajax.js"></script>
 	<script src="http://rawgit.com/opencagedata/leaflet-opencage-search/master/dist/js/L.Control.OpenCageSearch.dev.js"></script>
 	<script src="https://cdn.jsdelivr.net/gh/trafforddatalab/leaflet.reachability@v2.0.0/leaflet.reachability.js"></script>
 
@@ -1127,14 +1075,14 @@ Para agregar un buscador utilizaremos el plugin de Leaflet *Leaflet.OpenCage.Sea
 			limit: 10
 		};
 		var geocoder = L.Control.openCageSearch(options_g).addTo(map);
-		geocoder._geocodeResultSelected = function(result){
+		geocoder._geocodeResultSelected = async function(result){
 			if (this.options.collapsed) {
 				this._collapse();
 			}
 			console.log(result);
 		};
 
-		var geojsonLayer = new L.GeoJSON.AJAX('',{
+		var geojsonLayer = new L.geoJSON('',{
             style: function(geoJsonFeature){
 				var color = "#0000FF";
 				switch (geoJsonFeature.properties.value) {
@@ -1160,29 +1108,33 @@ Para agregar un buscador utilizaremos el plugin de Leaflet *Leaflet.OpenCage.Sea
 
 		map.on('click', function(e){
             console.log(e);
-			var url = crearUrlIsochrona(e.latlng);
-			console.log(url);
-			geojsonLayer.refresh(url);
+			var data = await getIsochrona(e.latlng);
+            console.log(data);
+			geojsonLayer.addData(data);
 		});
 
-		function crearUrlIsochrona(latlng){
-		var lat = latlng.lat;
-		var lng = latlng.lng;
-		var url = 'https://api.openrouteservice.org/isochrones?';
-		var json = {
-				locations: lng + "," + lat,
-				range_type: "time",
-				range: 1200,
-				interval: 300,
-				profile: "cycling-regular",
-				location_type: "start",
-				api_key: API_KEY_ORS
-		};
-			var params = Object.keys(json).map(function(k) {
-				return encodeURIComponent(k) + '=' + encodeURIComponent(json[k])
-			}).join('&')
-            url += params;
-            return url;
+		async function getIsochrona(latlng){
+            var lat = latlng.lat;
+            var lng = latlng.lng;
+            var url = 'https://api.openrouteservice.org/v2/isochrones/cycling-regular';
+            var json = {
+                locations: [[lng, lat]],
+                range_type: "time",
+                range: [1200],
+                interval: 300,
+                location_type: "start"
+            };
+            const response = await fetch(url, {
+                method: 'POST',
+                mode: 'cors',
+                headers:{
+                    'Accept': 'application/json, application/geo+json, application/gpx+xml, img/png; charset=utf-8',
+                    'Content-Type': 'application/json',
+                    'Authorization': API_KEY_ORS
+                },
+                body: JSON.stringify(json)    
+            });
+            return await response.json();
         }
 	</script>
 </body>
@@ -1191,7 +1143,7 @@ Para agregar un buscador utilizaremos el plugin de Leaflet *Leaflet.OpenCage.Sea
 
 - Refrescar el mapa y abrir la consola de desarrolladores para comprobar que al seleccionar un resultado de la búsqueda aparece un objeto en la consola. Inspeccionar este objeto para ver que tiene una propiedad latlng que es lo que necesitamos para calcular las isócronas.
 
-- Llamar a nuestra función *crearUrlIsochrona* en la función del evento select para generar la url, luego refrescar la capa de *geojsonLayer*. Esto ya lo hemos hecho cuando el usuario hace click en el mapa. Copiar lo siguiente en la función
+- Llamar a nuestra función *getIsochrona* en la función del evento select para llamar a la API y luego refrescar la capa de *geojsonLayer*. Esto ya lo hemos hecho cuando el usuario hace click en el mapa. Copiar lo siguiente en la función
 
 ```html hl_lines="58 59"
 <!DOCTYPE html>
@@ -1246,16 +1198,16 @@ Para agregar un buscador utilizaremos el plugin de Leaflet *Leaflet.OpenCage.Sea
 			limit: 10
 		};
 		var geocoder = L.Control.openCageSearch(options_g).addTo(map);
-		geocoder._geocodeResultSelected = function(result){
+		geocoder._geocodeResultSelected = async function(result){
 			if (this.options.collapsed) {
 				this._collapse();
 			}
 			console.log(result);
-			var url = crearUrlIsochrona(result.center);
-			geojsonLayer.refresh(url);
+			var data = await getIsochrona(result.center);
+			geojsonLayer.addData(data);
 		};
 
-		var geojsonLayer = new L.GeoJSON.AJAX('',{
+		var geojsonLayer = new L.geoJSON('',{
             style: function(geoJsonFeature){
 				var color = "#0000FF";
 				switch (geoJsonFeature.properties.value) {
@@ -1281,29 +1233,33 @@ Para agregar un buscador utilizaremos el plugin de Leaflet *Leaflet.OpenCage.Sea
 
 		map.on('click', function(e){
             console.log(e);
-			var url = crearUrlIsochrona(e.latlng);
-			console.log(url);
-			geojsonLayer.refresh(url);
+			var data = await getIsochrona(e.latlng);
+            console.log(data);
+			geojsonLayer.addData(data);
 		});
 
-		function crearUrlIsochrona(latlng){
-		var lat = latlng.lat;
-		var lng = latlng.lng;
-		var url = 'https://api.openrouteservice.org/isochrones?';
-		var json = {
-				locations: lng + "," + lat,
-				range_type: "time",
-				range: 1200,
-				interval: 300,
-				profile: "cycling-regular",
-				location_type: "start",
-				api_key: API_KEY_ORS
-		};
-			var params = Object.keys(json).map(function(k) {
-				return encodeURIComponent(k) + '=' + encodeURIComponent(json[k])
-			}).join('&')
-            url += params;
-            return url;
+		async function getIsochrona(latlng){
+            var lat = latlng.lat;
+            var lng = latlng.lng;
+            var url = 'https://api.openrouteservice.org/v2/isochrones/cycling-regular';
+            var json = {
+                locations: [[lng, lat]],
+                range_type: "time",
+                range: [1200],
+                interval: 300,
+                location_type: "start"
+            };
+            const response = await fetch(url, {
+                method: 'POST',
+                mode: 'cors',
+                headers:{
+                    'Accept': 'application/json, application/geo+json, application/gpx+xml, img/png; charset=utf-8',
+                    'Content-Type': 'application/json',
+                    'Authorization': API_KEY_ORS
+                },
+                body: JSON.stringify(json)    
+            });
+            return await response.json();
         }
 	</script>
 </body>
@@ -1321,7 +1277,7 @@ Para agregar un buscador utilizaremos el plugin de Leaflet *Leaflet.OpenCage.Sea
 	1. Cambiar el modo de transporte *profile* (1 pt)
 	2. Cambiar el alcance *range* (1 pt)
 
-	Ayuda: En el siguiente enlace se pueden ver las diferentes opciones de la API https://openrouteservice.org/dev/#/api-docs/isochrones/get
+	Ayuda: En el siguiente enlace se pueden ver las diferentes opciones de la API https://openrouteservice.org/dev/#/api-docs/v2/isochrones/{profile}/post
 
 
 ## Referencias

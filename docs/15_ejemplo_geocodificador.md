@@ -59,6 +59,11 @@ Para crear un visor de mapas utilizaremos la librería de mapas Leaflet [^1]. Y 
 
 -  Descargar en la carpeta el plugin desarrollado por el ICGC [^2] https://github.com/OpenICGC/leaflet-geocodericgc-plugin/blob/master/js/leaflet-geocoder.js
 
+- Modificar el plugin para adaptarlo a los últimos cambios. Abrir el archivo descargado leaflet-geocoder.js y modificarlo:
+
+	- Buscar el texto (línea 433) *var url = this.options.url  + '/search';* y remplazarlo por **var url = this.options.url  + '/cerca';**
+	- Buscar el texto (línea 448) *var url = this.options.url + '/autocomplete';* y remplazarlo por **var url = this.options.url + '/autocompletar';**
+
 - Agregar el plugin al mapa
 
 ```html hl_lines="20 21 32 33 34 35 36 37 38"
@@ -94,7 +99,7 @@ Para crear un visor de mapas utilizaremos la librería de mapas Leaflet [^1]. Y 
 		}).addTo(map);
 
         var geocodingOptions = {      
-            url:'https://aws.icgc.cat/cerca_pelias/',
+            url:'https://aws.icgc.cat/geocodificador/',
             expanded: true,
             autocomplete: true,
             focus:false
@@ -144,7 +149,7 @@ Para crear un visor de mapas utilizaremos la librería de mapas Leaflet [^1]. Y 
 		}).addTo(map);
 
         var geocodingOptions = {      
-            url:'https://aws.icgc.cat/cerca_pelias/',
+            url:'https://aws.icgc.cat/geocodificador/',
             expanded: true,
             autocomplete: true,
             focus:false
@@ -201,7 +206,7 @@ Implementaremos la funcionalidad que cuando el usuaio haga click en el mapa se b
 		}).addTo(map);
 
         var geocodingOptions = {      
-            url:'https://aws.icgc.cat/cerca_pelias/',
+            url:'https://aws.icgc.cat/geocodificador/',
             expanded: true,
             autocomplete: true,
             focus:false
@@ -255,7 +260,7 @@ Implementaremos la funcionalidad que cuando el usuaio haga click en el mapa se b
 		}).addTo(map);
 
         var geocodingOptions = {      
-            url:'https://aws.icgc.cat/cerca_pelias/',
+            url:'https://aws.icgc.cat/geocodificador/',
             expanded: true,
             autocomplete: true,
             focus:false
@@ -264,7 +269,7 @@ Implementaremos la funcionalidad que cuando el usuaio haga click en el mapa se b
 
         map.on('click', function(e){
             console.log(e);
-            var url = `https://aws.icgc.cat/cerca_pelias/reverse?lat=${e.latlng.lat}&lon=${e.latlng.lng}`;
+            var url = `https://aws.icgc.cat/geocodificador/invers?lat=${e.latlng.lat}&lon=${e.latlng.lng}`;
             fetch(url)
             .then(function(response) {
             response.json().then(function(data){
@@ -319,7 +324,7 @@ Implementaremos la funcionalidad que cuando el usuaio haga click en el mapa se b
 		}).addTo(map);
 
         var geocodingOptions = {      
-            url:'https://aws.icgc.cat/cerca_pelias/',
+            url:'https://aws.icgc.cat/geocodificador/',
             expanded: true,
             autocomplete: true,
             focus:false
@@ -328,7 +333,7 @@ Implementaremos la funcionalidad que cuando el usuaio haga click en el mapa se b
 
         map.on('click', function(e){
             console.log(e);
-            var url = `https://aws.icgc.cat/cerca_pelias/reverse?lat=${e.latlng.lat}&lon=${e.latlng.lng}`;
+            var url = `https://aws.icgc.cat/geocodificador/invers?lat=${e.latlng.lat}&lon=${e.latlng.lng}`;
             fetch(url)
             .then(function(response) {
             response.json().then(function(data){
@@ -385,7 +390,7 @@ Implementaremos la funcionalidad que cuando el usuaio haga click en el mapa se b
 		}).addTo(map);
 
         var geocodingOptions = {      
-            url:'https://aws.icgc.cat/cerca_pelias/',
+            url:'https://aws.icgc.cat/geocodificador/',
             expanded: true,
             autocomplete: true,
             focus:false
@@ -394,7 +399,7 @@ Implementaremos la funcionalidad que cuando el usuaio haga click en el mapa se b
 
         map.on('click', function(e){
             console.log(e);
-            var url = `https://aws.icgc.cat/cerca_pelias/reverse?lat=${e.latlng.lat}&lon=${e.latlng.lng}`;
+            var url = `https://aws.icgc.cat/geocodificador/invers?lat=${e.latlng.lat}&lon=${e.latlng.lng}`;
             fetch(url)
             .then(function(response) {
             response.json().then(function(data){
@@ -456,7 +461,7 @@ Implementaremos la funcionalidad que cuando el usuaio haga click en el mapa se b
 		}).addTo(map);
 
         var geocodingOptions = {      
-            url:'https://aws.icgc.cat/cerca_pelias/',
+            url:'https://aws.icgc.cat/geocodificador/',
             expanded: true,
             autocomplete: true,
             focus:false
@@ -465,7 +470,7 @@ Implementaremos la funcionalidad que cuando el usuaio haga click en el mapa se b
 
         map.on('click', function(e){
             console.log(e);
-            var url = `https://aws.icgc.cat/cerca_pelias/reverse?lat=${e.latlng.lat}&lon=${e.latlng.lng}`;
+            var url = `https://aws.icgc.cat/geocodificador/invers?lat=${e.latlng.lat}&lon=${e.latlng.lng}`;
             fetch(url)
             .then(function(response) {
             response.json().then(function(data){
@@ -525,7 +530,7 @@ Implementaremos la funcionalidad que cuando el usuaio haga click en el mapa se b
 		}).addTo(map);
 
         var geocodingOptions = {      
-            url:'https://aws.icgc.cat/cerca_pelias/',
+            url:'https://aws.icgc.cat/geocodificador/',
             expanded: true,
             autocomplete: true,
             focus:false
@@ -534,7 +539,7 @@ Implementaremos la funcionalidad que cuando el usuaio haga click en el mapa se b
 
         map.on('click', function(e){
             console.log(e);
-            var url = `https://aws.icgc.cat/cerca_pelias/reverse?lat=${e.latlng.lat}&lon=${e.latlng.lng}`;
+            var url = `https://aws.icgc.cat/geocodificador/invers?lat=${e.latlng.lat}&lon=${e.latlng.lng}`;
             fetch(url)
             .then(function(response) {
             response.json().then(function(data){
@@ -559,7 +564,7 @@ Implementaremos la funcionalidad que cuando el usuaio haga click en el mapa se b
 !!! question "Ejercicios 2 pts"
 	1. Mostrar la propiedad layer junto con la dirección en la etiqueta (1 pt)
 
-    2. Extra: Mostrar los marcadores de los 3 primeros resultados, pero unicamente desplegar la etiqueta de la primera respuesta. (1 pt) 
+    2. **Extra**: Al hacer click en el mapa mostrar los marcadores de los 3 primeros resultados, pero únicamente desplegar la etiqueta de la primera respuesta. (1 pt) 
 
 ## Referencias
 
