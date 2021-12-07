@@ -1,38 +1,38 @@
-# GeoServicios para Smarts Cities 2020-2021
+# GeoServicios para Smarts Cities 2021-2022
 
 Materiales para el curso sobre Geoservicios para Smart Cities (GSS) del Màster Tecnologies de la Informació Geografica de la UAB
 
 Temario:
 
-# [https://gss-mtig.github.io/gss-mtig-20-21/](https://gss-mtig.github.io/gss-mtig-20-21/)
+# [https://gss-mtig.github.io/gss-mtig/](https://gss-mtig.github.io/gss-mtig/)
 
-* [Introducción a las Smart Cities](https://gss-mtig.github.io/gss-mtig-20-21/1_introduccion_a_las_smart_cities/)
+* [Introducción a las Smart Cities](https://gss-mtig.github.io/gss-mtig/1_introduccion_a_las_smart_cities/)
     * Conceptos Smart Cities
     * Conceptos Open Data
     * Conceptos sensores
     * Tecnologías OpenData
 
-* [API servicios Open data (CKAN y SOCRATA)](https://gss-mtig.github.io/gss-mtig-20-21/2_conceptos_y_servicios_open_data/)
-* [Conceptos Vector-Tiles](https://gss-mtig.github.io/gss-mtig-20-21/3_conceptos_vector_tiles/)
-* [Visualización con Kepler.gl](https://gss-mtig.github.io/gss-mtig-20-21/4_visualizacion_kepler/)
-* [Herramientas de visualización de datos](https://gss-mtig.github.io/gss-mtig-20-21/5_herramientas_visualizacion_datos/)
-* [Conceptos básicos de Geoservicios](https://gss-mtig.github.io/gss-mtig-20-21/6_conceptos_geoservicios/)
-* [Ejemplo servicio WMS](https://gss-mtig.github.io/gss-mtig-20-21/7_ejemplo_servicio_wms/)
-* [Consideraciones sobre servicios Open data](https://gss-mtig.github.io/gss-mtig-20-21/8_consideraciones_servicios_opendata/)
-* [Ejemplo servicio bicing Barcelona](https://gss-mtig.github.io/gss-mtig-20-21/9_ejemplo_servicio_bicing_bcn/)
-* [Ejemplo servicio bicing Barcelona (VectorTiles)](https://gss-mtig.github.io/gss-mtig-20-21/10_ejemplo_servicio_bicing_bcn_vt/)
-* [Consideraciones sobre servicios de Sensores](https://gss-mtig.github.io/gss-mtig-20-21/11_consideraciones_servicios_realtime_sensores/)
-* [Ejemplo Sentilo ACA](https://gss-mtig.github.io/gss-mtig-20-21/12_ejemplo_sentilo_aca/)
-* [Geoservicios realtime](https://gss-mtig.github.io/gss-mtig-20-21/13_geoservicios_realtime/)
-* [Herramientas de visualización geoservicios](https://gss-mtig.github.io/gss-mtig-20-21/14_herramientas_visualizacion_geoservicios/)
-* [Ejemplo Geocodificador](https://gss-mtig.github.io/gss-mtig-20-21/15_ejemplo_geocodificador/)
-* [Ejemplo Mobility](https://gss-mtig.github.io/gss-mtig-20-21/16_ejemplo_mobility/)
-* [Ejemplo servicio realtime para compartir la ubicación](https://gss-mtig.github.io/gss-mtig-20-21/17_ejemplo_geoservicio_realtime/)
-* [Ejemplo GTFS](https://gss-mtig.github.io/gss-mtig-20-21/18_ejemplo_gtfs/)
+* [API servicios Open data (CKAN y SOCRATA)](https://gss-mtig.github.io/gss-mtig/2_conceptos_y_servicios_open_data/)
+* [Conceptos Vector-Tiles](https://gss-mtig.github.io/gss-mtig/3_conceptos_vector_tiles/)
+* [Visualización con Kepler.gl](https://gss-mtig.github.io/gss-mtig/4_visualizacion_kepler/)
+* [Herramientas de visualización de datos](https://gss-mtig.github.io/gss-mtig/5_herramientas_visualizacion_datos/)
+* [Conceptos básicos de Geoservicios](https://gss-mtig.github.io/gss-mtig/6_conceptos_geoservicios/)
+* [Ejemplo servicio WMS](https://gss-mtig.github.io/gss-mtig/7_ejemplo_servicio_wms/)
+* [Consideraciones sobre servicios Open data](https://gss-mtig.github.io/gss-mtig/8_consideraciones_servicios_opendata/)
+* [Ejemplo servicio bicing Barcelona](https://gss-mtig.github.io/gss-mtig/9_ejemplo_servicio_bicing_bcn/)
+* [Ejemplo servicio bicing Barcelona (VectorTiles)](https://gss-mtig.github.io/gss-mtig/10_ejemplo_servicio_bicing_bcn_vt/)
+* [Consideraciones sobre servicios de Sensores](https://gss-mtig.github.io/gss-mtig/11_consideraciones_servicios_realtime_sensores/)
+* [Ejemplo Sentilo ACA](https://gss-mtig.github.io/gss-mtig/12_ejemplo_sentilo_aca/)
+* [Geoservicios realtime](https://gss-mtig.github.io/gss-mtig/13_geoservicios_realtime/)
+* [Herramientas de visualización geoservicios](https://gss-mtig.github.io/gss-mtig/14_herramientas_visualizacion_geoservicios/)
+* [Ejemplo Geocodificador](https://gss-mtig.github.io/gss-mtig/15_ejemplo_geocodificador/)
+* [Ejemplo Mobility](https://gss-mtig.github.io/gss-mtig/16_ejemplo_mobility/)
+* [Ejemplo servicio realtime para compartir la ubicación](https://gss-mtig.github.io/gss-mtig/17_ejemplo_geoservicio_realtime/)
+* [Ejemplo GTFS](https://gss-mtig.github.io/gss-mtig/18_ejemplo_gtfs/)
 
 ## Autores
 
-* Wladimir Szczerban (alias Bolo) *@bolosig*, [geostarter](http://betaportal.icgc.cat) (ICGC)
+* Wladimir Szczerban (alias Bolo) *@bolosig*, [MapTiler](http://maptiler.com) (Departamento de Geografía UAB)
 * Victor Pascual Ayats  *@sfggeogis*, [geostarter](http://betaportal.icgc.cat) (ICGC)
 
 !!! note "Condiciones de reutilización de estos apuntes"

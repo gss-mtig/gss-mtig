@@ -73,6 +73,12 @@ pip install mkdocs-material
 2. git push -f origin gh-pages:gh-pages # force the push of the gh-pages branch to the remote gh-pages branch at origin
 3. git branch -D gh-pages # delete the local gh-pages because you will need it: ref
 
+Para publicar en gh-pages
+
+1. mkdocs build
+2. ghp-import site
+3. git push origin gh-pages
+
 ### Layout
 
     mkdocs.yml    # El fichero de configuración.

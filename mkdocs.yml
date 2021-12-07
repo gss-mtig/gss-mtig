@@ -1,5 +1,5 @@
 site_name: Geoservicios para Smart Cities
-site_url: https://gss-mtig.github.io/gss-mtig-20-21/
+site_url: https://gss-mtig.github.io/gss-mtig/
 site_description: Geoservicios para Smart Cities.
 site_author: gss-mtig
 theme:
@@ -14,7 +14,7 @@ markdown_extensions:
   - pymdownx.magiclink
   - pymdownx.superfences
   - footnotes
-repo_url: "https://github.com/gss-mtig/gss-mtig-20-21"
+repo_url: "https://github.com/gss-mtig/gss-mtig"
 
 nav:
 - Home: index.md
