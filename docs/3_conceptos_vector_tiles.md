@@ -2,9 +2,18 @@
 
 Vector Tiles es un formato para almacenar datos geográficos en formato binario (Google Protobuf) y pensados para la visualización en navegadores web modernos que soporten webGL.
 
-Una tesela vectorial (vector tiles) contiene datos vectoriales georreferenciados (puede contener múltiples capas), recortados en teselas para facilitar su recuperación. Son equivalentes a las teselas raster tradicionales (XYZ,WMTS, TMS) pero retornan datos vectoriales en lugar de una imagen.
+Una tesela vectorial (vector tiles) contiene datos vectoriales georreferenciados (puede contener múltiples capas), recortados en teselas para facilitar su recuperación. Son equivalentes a las teselas raster tradicionales (XYZ,WMTS, TMS) pero retornan datos vectoriales en lugar de una imagen raster.
 
  Cada conjunto de teselas vectoriales tiene su propio esquema. Un esquema consiste en nombres de capas, atributos, selección de elementos.
+
+ *Ejemplo mapa raster*
+
+ [https://openicgc.github.io/exemples/leaflet/icgc-raster-leaflet-map.html](ttps://openicgc.github.io/exemples/leaflet/icgc-raster-leaflet-map.html)
+
+
+ *Ejemplo mapa vector*
+
+ [https://openicgc.github.io/exemples/maplibre/icgc-basemap-maplibre-map.html#7.4/41.706/1.146](https://openicgc.github.io/exemples/maplibre/icgc-basemap-maplibre-map.html#7.4/41.706/1.146)
 
 ## Contexto
 
@@ -63,6 +72,13 @@ Mapbox, proveedor comercial de herramientas de cartografía personalizada y de h
  * Los Tiles no tienen estilo, el estilo se aplica en cliente
  * Soporta rotación y orientación
  * Soporta extrusión y 3D
+
+
+## Ejemplos en accion
+
+
+
+https://openicgc.github.io/
 
 
 
