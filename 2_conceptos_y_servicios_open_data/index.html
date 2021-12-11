@@ -618,7 +618,7 @@
 <h4 id="creacion-de-un-buscador">Creación de un buscador</h4>
 <ul>
 <li>
-<p>Dentro de nuestor espacio de trabaj creamos un archivo con el nombre de <em>ckan.html</em>.</p>
+<p>Dentro de nuestor espacio de trabajo creamos un archivo con el nombre de <em>ckan.html</em>.</p>
 </li>
 <li>
 <p>Abrimos el archivo <em>ckan.html</em> con un editor de texto y copiamos el siguiente código.</p>
@@ -667,6 +667,9 @@
         <span class="p">&lt;</span><span class="nt">option</span> <span class="na">value</span><span class="o">=</span><span class="s">&quot;https://demo.ckan.org/api/3/action/resource_search?&quot;</span><span class="p">&gt;</span>ckan.org<span class="p">&lt;/</span><span class="nt">option</span><span class="p">&gt;</span>
         <span class="p">&lt;</span><span class="nt">option</span> <span class="na">value</span><span class="o">=</span><span class="s">&quot;https://old.datahub.io/api/3/action/resource_search?&quot;</span><span class="p">&gt;</span>old.datahub.io<span class="p">&lt;/</span><span class="nt">option</span><span class="p">&gt;</span>
                 <span class="c">&lt;!-- añadimos BCN opendata --&gt;</span>
+        <span class="c">&lt;!--</span>
+<span class="c">            &lt;option value=&quot;https://opendata-ajuntament.barcelona.cat/data/api/3/action/resource_search?&quot;&gt;OpenBCN&lt;/option&gt;</span>
+<span class="c">         --&gt;</span>        
       <span class="p">&lt;/</span><span class="nt">select</span><span class="p">&gt;</span>
     <span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
     <span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;form-group&quot;</span><span class="p">&gt;</span>
@@ -767,7 +770,7 @@
 </div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p><strong>Ejercicio 3</strong>: Descargamos CSV accidentes</p>
+<p><strong>Ejercicio 3</strong>: Buscamos name:accidents  y descargamos CSV accidentes</p>
 </div>
 <h2 id="ejemplos-api-socrata">Ejemplos API SOCRATA</h2>
 <p>El API de Socrata <a href="https://dev.socrata.com">https://dev.socrata.com</a> no ofrece diferetes niveles y métodos para poder buscar y filtra datasets.</p>
@@ -1050,7 +1053,7 @@ US API Discovery
 <span class="nx">attribution</span><span class="o">:</span> <span class="s1">&#39;OSM&#39;</span>
 <span class="p">}).</span><span class="nx">addTo</span><span class="p">(</span><span class="nx">map</span><span class="p">);</span>
 
-<span class="nx">Stamen_Toner</span> <span class="o">=</span> <span class="nx">L</span><span class="p">.</span><span class="nx">tileLayer</span><span class="p">(</span><span class="s1">&#39;https://{s}.tile.stamen.com/toner/{z}/{x}/{y}.png&#39;</span><span class="p">,</span> <span class="p">{</span>
+<span class="nx">Stamen_Toner</span> <span class="o">=</span> <span class="nx">L</span><span class="p">.</span><span class="nx">tileLayer</span><span class="p">(</span><span class="s1">&#39;http://{s}.tile.stamen.com/toner/{z}/{x}/{y}.png&#39;</span><span class="p">,</span> <span class="p">{</span>
 <span class="nx">attribution</span><span class="o">:</span> <span class="s1">&#39;Map tiles by &lt;a href=&quot;https://stamen.com&quot;&gt;Stamen Design&lt;/a&gt;, &lt;a href=&quot;https://creativecommons.org/licenses/by/3.0&quot;&gt;CC BY 3.0&lt;/a&gt; &amp;mdash; Map data &amp;copy; &lt;a href=&quot;https://www.openstreetmap.org/copyright&quot;&gt;OpenStreetMap&lt;/a&gt;&#39;</span><span class="p">,</span>
 <span class="nx">subdomains</span><span class="o">:</span> <span class="s1">&#39;abcd&#39;</span><span class="p">,</span>
 <span class="nx">minZoom</span><span class="o">:</span> <span class="mf">0</span><span class="p">,</span>
