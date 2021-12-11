@@ -135,7 +135,7 @@ nodemon app.js
 
 - Cargar en archivo en nuestra app.js. Escribir lo siguiente justo despúes de donde se carga el módulo yauzl
 
-```js hl_lines="8"
+```js hl_lines="9"
 var express  = require('express');
 var app      = express();
 var cors = require('cors');
@@ -154,7 +154,7 @@ app.listen(3000);
 
 - Crear la variable que contiene la url del servicio GTFS de Líneas, paradas, horarios de autobuses de la EMT de Valencia [^5]. Escribir lo siguiente justo despues de la variable *gtfs2geojson*
 
-```js hl_lines="10"
+```js hl_lines="11"
 var express  = require('express');
 var app      = express();
 var cors = require('cors');
@@ -165,7 +165,7 @@ var fs = require('fs');
 var yauzl = require("yauzl");
 var gtfs2geojson = require('./gtfs2geojson.js');
 
-const url = 'https://opendata.vlci.valencia.es:8443/dataset/4645f8bf-28d7-4420-bab2-d5c5e7de2a5a/resource/11591648-a984-4d64-89e3-3730f3123403/download/googletransit.zip';
+const url = 'https://opendata.vlci.valencia.es/dataset/4645f8bf-28d7-4420-bab2-d5c5e7de2a5a/resource/11591648-a984-4d64-89e3-3730f3123403/download/google_transit.zip';
 
 app.use(cors());
 app.use(express.static('public'));
@@ -186,7 +186,7 @@ var fs = require('fs');
 var yauzl = require("yauzl");
 var gtfs2geojson = require('./gtfs2geojson.js');
 
-const url = 'https://opendata.vlci.valencia.es:8443/dataset/4645f8bf-28d7-4420-bab2-d5c5e7de2a5a/resource/11591648-a984-4d64-89e3-3730f3123403/download/googletransit.zip';
+const url = 'https://opendata.vlci.valencia.es/dataset/4645f8bf-28d7-4420-bab2-d5c5e7de2a5a/resource/11591648-a984-4d64-89e3-3730f3123403/download/google_transit.zip';
 
 app.use(cors());
 app.use(express.static('public'));
@@ -219,7 +219,7 @@ var fs = require('fs');
 var yauzl = require("yauzl");
 var gtfs2geojson = require('./gtfs2geojson.js');
 
-const url = 'https://opendata.vlci.valencia.es:8443/dataset/4645f8bf-28d7-4420-bab2-d5c5e7de2a5a/resource/11591648-a984-4d64-89e3-3730f3123403/download/googletransit.zip';
+const url = 'https://opendata.vlci.valencia.es/dataset/4645f8bf-28d7-4420-bab2-d5c5e7de2a5a/resource/11591648-a984-4d64-89e3-3730f3123403/download/google_transit.zip';
 
 app.use(cors());
 app.use(express.static('public'));
@@ -283,7 +283,7 @@ var fs = require('fs');
 var yauzl = require("yauzl");
 var gtfs2geojson = require('./gtfs2geojson.js');
 
-const url = 'https://opendata.vlci.valencia.es:8443/dataset/4645f8bf-28d7-4420-bab2-d5c5e7de2a5a/resource/11591648-a984-4d64-89e3-3730f3123403/download/googletransit.zip';
+const url = 'https://opendata.vlci.valencia.es/dataset/4645f8bf-28d7-4420-bab2-d5c5e7de2a5a/resource/11591648-a984-4d64-89e3-3730f3123403/download/google_transit.zip';
 
 app.use(cors());
 app.use(express.static('public'));
@@ -357,7 +357,7 @@ var fs = require('fs');
 var yauzl = require("yauzl");
 var gtfs2geojson = require('./gtfs2geojson.js');
 
-const url = 'https://opendata.vlci.valencia.es:8443/dataset/4645f8bf-28d7-4420-bab2-d5c5e7de2a5a/resource/11591648-a984-4d64-89e3-3730f3123403/download/googletransit.zip';
+const url = 'https://opendata.vlci.valencia.es/dataset/4645f8bf-28d7-4420-bab2-d5c5e7de2a5a/resource/11591648-a984-4d64-89e3-3730f3123403/download/google_transit.zip';
 
 app.use(cors());
 app.use(express.static('public'));
@@ -458,7 +458,7 @@ function leerZip(archivo){
 	</div>
 
 	<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
-	<script src="https://calvinmetcalf.github.io/leaflet-ajax/dist/leaflet.ajax.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-ajax/2.1.0/leaflet.ajax.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 	<script>
 		var map = L.map('map');
 
@@ -498,7 +498,7 @@ function leerZip(archivo){
 	</div>
 
 	<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
-	<script src="https://calvinmetcalf.github.io/leaflet-ajax/dist/leaflet.ajax.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-ajax/2.1.0/leaflet.ajax.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 	<script>
 		var map = L.map('map');
 
@@ -556,7 +556,7 @@ function leerZip(archivo){
 	</div>
 
 	<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
-	<script src="https://calvinmetcalf.github.io/leaflet-ajax/dist/leaflet.ajax.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-ajax/2.1.0/leaflet.ajax.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 	<script>
 		var map = L.map('map');
 
@@ -618,7 +618,7 @@ function leerZip(archivo){
 	</div>
 
 	<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
-	<script src="https://calvinmetcalf.github.io/leaflet-ajax/dist/leaflet.ajax.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-ajax/2.1.0/leaflet.ajax.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/chroma-js/2.0.6/chroma.min.js"></script>
 	<script>
 		var map = L.map('map');
@@ -679,7 +679,7 @@ function leerZip(archivo){
 	</div>
 
 	<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
-	<script src="https://calvinmetcalf.github.io/leaflet-ajax/dist/leaflet.ajax.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-ajax/2.1.0/leaflet.ajax.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/chroma-js/2.0.6/chroma.min.js"></script>
 	<script>
 		var map = L.map('map');

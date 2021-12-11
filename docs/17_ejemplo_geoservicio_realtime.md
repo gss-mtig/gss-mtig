@@ -181,7 +181,7 @@ nodemon app.js
 	<div id="map"></div>
 
 		<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js"></script>
+		<script src="https://cdn.jsdelivr.net/npm/socket.io-client@4.4.0/dist/socket.io.min.js"></script>
 		<script type="text/javascript">
 			var map = L.map('map');
 
@@ -223,7 +223,7 @@ nodemon app.js
 	<div id="map"></div>
 
 		<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js"></script>
+		<script src="https://cdn.jsdelivr.net/npm/socket.io-client@4.4.0/dist/socket.io.min.js"></script>
 		<script type="text/javascript">
 			var socket = io();
 			
@@ -269,7 +269,7 @@ nodemon app.js
 	<div id="map"></div>
 
 		<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js"></script>
+		<script src="https://cdn.jsdelivr.net/npm/socket.io-client@4.4.0/dist/socket.io.min.js"></script>
 		<script type="text/javascript">
 			var socket = io();
 			
@@ -368,7 +368,7 @@ http.listen(3000, function(){
 	<div id="map"></div>
 
 		<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js"></script>
+		<script src="https://cdn.jsdelivr.net/npm/socket.io-client@4.4.0/dist/socket.io.min.js"></script>
 		<script type="text/javascript">
 			var socket = io();
 			
@@ -419,7 +419,7 @@ http.listen(3000, function(){
 	<div id="map"></div>
 
 		<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js"></script>
+		<script src="https://cdn.jsdelivr.net/npm/socket.io-client@4.4.0/dist/socket.io.min.js"></script>
 		<script type="text/javascript">
 			var socket = io();
 			

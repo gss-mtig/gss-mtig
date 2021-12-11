@@ -17,7 +17,7 @@ Mapa que utiliza este servicio, https://www.bicing.barcelona/es/mapa-de-disponib
 
 El archivo json que retorna el servicio tiene coordenadas pero no es un fichero GeoJSON. [^1]
 
-Para ver estos datos sobre un mapa crearemos un visor utilizando Mapbox GL JS. [^2]
+Para ver estos datos sobre un mapa crearemos un visor utilizando Maplibre GL JS. [^2]
 
 ## Creación de un visor
 
@@ -32,8 +32,9 @@ Para ver estos datos sobre un mapa crearemos un visor utilizando Mapbox GL JS. [
 <head>
   <title>Servicio de Bicing realtime VectorTiles</title>
   <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
-  <script src='https://api.mapbox.com/mapbox-gl-js/v1.12.0/mapbox-gl.js'></script>
-  <link href='https://api.mapbox.com/mapbox-gl-js/v1.12.0/mapbox-gl.css' rel='stylesheet' />
+  <script src='https://unpkg.com/maplibre-gl@1.15.2/dist/maplibre-gl.js'></script>
+  <link href='https://unpkg.com/maplibre-gl@1.15.2/dist/maplibre-gl.css' rel='stylesheet' />
+
   <style>
     body {
       margin: 0;
@@ -53,7 +54,7 @@ Para ver estos datos sobre un mapa crearemos un visor utilizando Mapbox GL JS. [
   <div id="map"></div>
 
   <script type="text/javascript">
-    var map = new mapboxgl.Map({
+    var map = new maplibregl.Map({
       container: 'map',
       style: 'https://geoserveis.icgc.cat/contextmaps/icgc.json',
       center: [2.1777, 41.3887],
@@ -123,7 +124,7 @@ app.all("/bicingjson/*", function(req, res) {
   axios.get(serverBicing).then(function(response){
     // handle success
     var stations = response.data.data.stations;
-    for (var i = stations.length - 1; i >= 0; i--) {
+    for (let i = stations.length - 1; i >= 0; i--) {
       var station = stations[i];
       var feature = {
         type: 'Feature',
@@ -171,8 +172,8 @@ nodemon app.js
 <head>
   <title>Servicio de Bicing realtime VectorTiles</title>
   <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
-  <script src='https://api.mapbox.com/mapbox-gl-js/v1.12.0/mapbox-gl.js'></script>
-  <link href='https://api.mapbox.com/mapbox-gl-js/v1.12.0/mapbox-gl.css' rel='stylesheet' />
+  <script src='https://unpkg.com/maplibre-gl@1.15.2/dist/maplibre-gl.js'></script>
+  <link href='https://unpkg.com/maplibre-gl@1.15.2/dist/maplibre-gl.css' rel='stylesheet' />
   <style>
     body {
       margin: 0;
@@ -192,7 +193,7 @@ nodemon app.js
   <div id="map"></div>
 
   <script type="text/javascript">
-    var map = new mapboxgl.Map({
+    var map = new maplibregl.Map({
       container: 'map',
       style: 'https://geoserveis.icgc.cat/contextmaps/icgc.json',
       center: [2.1777, 41.3887],
@@ -236,8 +237,8 @@ nodemon app.js
 <head>
   <title>Servicio de Bicing realtime VectorTiles</title>
   <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
-  <script src='https://api.mapbox.com/mapbox-gl-js/v1.12.0/mapbox-gl.js'></script>
-  <link href='https://api.mapbox.com/mapbox-gl-js/v1.12.0/mapbox-gl.css' rel='stylesheet' />
+  <script src='https://unpkg.com/maplibre-gl@1.15.2/dist/maplibre-gl.js'></script>
+  <link href='https://unpkg.com/maplibre-gl@1.15.2/dist/maplibre-gl.css' rel='stylesheet' />
   <style>
     body {
       margin: 0;
@@ -257,7 +258,7 @@ nodemon app.js
   <div id="map"></div>
 
   <script type="text/javascript">
-    var map = new mapboxgl.Map({
+    var map = new maplibregl.Map({
       container: 'map',
       style: 'https://geoserveis.icgc.cat/contextmaps/icgc.json',
       center: [2.1777, 41.3887],
@@ -297,7 +298,7 @@ nodemon app.js
 
 - Recargar la aplicación y veremos los puntos de las estaciones de bicing. Si vamos a la pestaña de red (network) en la consola de desarrollador del navegador podremos ver que cada 3 segundos se hace una llamada a nuestro proxy.
 
-- Cambiar el estilo de la capa de estaciones de bicing. Para representar las estaciones con un estilo basado en los valores de algunos de sus atributos utilizar el *data-driven style* siguiendo la especificación de estilo de Mapbox [^9]. Modificar la propiedad **paint** de la capa y escribir
+- Cambiar el estilo de la capa de estaciones de bicing. Para representar las estaciones con un estilo basado en los valores de algunos de sus atributos utilizar el *data-driven style* siguiendo la especificación de estilo de MapLibre [^9]. Modificar la propiedad **paint** de la capa y escribir
 
 ```html hl_lines="50 51 52 53 54 55 56 57 58 59 60 61 62 63 64 65 66 67 68 69 70"
 <!DOCTYPE html>
@@ -305,8 +306,8 @@ nodemon app.js
 <head>
   <title>Servicio de Bicing realtime VectorTiles</title>
   <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
-  <script src='https://api.mapbox.com/mapbox-gl-js/v1.12.0/mapbox-gl.js'></script>
-  <link href='https://api.mapbox.com/mapbox-gl-js/v1.12.0/mapbox-gl.css' rel='stylesheet' />
+  <script src='https://unpkg.com/maplibre-gl@1.15.2/dist/maplibre-gl.js'></script>
+  <link href='https://unpkg.com/maplibre-gl@1.15.2/dist/maplibre-gl.css' rel='stylesheet' />
   <style>
     body {
       margin: 0;
@@ -326,7 +327,7 @@ nodemon app.js
   <div id="map"></div>
 
   <script type="text/javascript">
-    var map = new mapboxgl.Map({
+    var map = new maplibregl.Map({
       container: 'map',
       style: 'https://geoserveis.icgc.cat/contextmaps/icgc.json',
       center: [2.1777, 41.3887],
@@ -391,8 +392,8 @@ nodemon app.js
 <head>
   <title>Servicio de Bicing realtime VectorTiles</title>
   <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
-  <script src='https://api.mapbox.com/mapbox-gl-js/v1.12.0/mapbox-gl.js'></script>
-  <link href='https://api.mapbox.com/mapbox-gl-js/v1.12.0/mapbox-gl.css' rel='stylesheet' />
+  <script src='https://unpkg.com/maplibre-gl@1.15.2/dist/maplibre-gl.js'></script>
+  <link href='https://unpkg.com/maplibre-gl@1.15.2/dist/maplibre-gl.css' rel='stylesheet' />
   <style>
     body {
       margin: 0;
@@ -412,7 +413,7 @@ nodemon app.js
   <div id="map"></div>
 
   <script type="text/javascript">
-    var map = new mapboxgl.Map({
+    var map = new maplibregl.Map({
       container: 'map',
       style: 'https://geoserveis.icgc.cat/contextmaps/icgc.json',
       center: [2.1777, 41.3887],
@@ -475,7 +476,7 @@ nodemon app.js
 
       // Populate the popup and set its coordinates
       // based on the feature found
-      var popup = new mapboxgl.Popup()
+      var popup = new maplibregl.Popup()
       .setLngLat(feature.geometry.coordinates)
       .setHTML('<div id=\'popup\' class=\'popup\' style=\'z-index: 10;\'> <h5> ' + feature.properties.id + ' </h5>' +
       '<ul class=\'list-group\'>' +
@@ -499,8 +500,8 @@ nodemon app.js
 <head>
   <title>Servicio de Bicing realtime VectorTiles</title>
   <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
-  <script src='https://api.mapbox.com/mapbox-gl-js/v1.12.0/mapbox-gl.js'></script>
-  <link href='https://api.mapbox.com/mapbox-gl-js/v1.12.0/mapbox-gl.css' rel='stylesheet' />
+  <script src='https://unpkg.com/maplibre-gl@1.15.2/dist/maplibre-gl.js'></script>
+  <link href='https://unpkg.com/maplibre-gl@1.15.2/dist/maplibre-gl.css' rel='stylesheet' />
   <style>
     body {
       margin: 0;
@@ -520,7 +521,7 @@ nodemon app.js
   <div id="map"></div>
 
   <script type="text/javascript">
-    var map = new mapboxgl.Map({
+    var map = new maplibregl.Map({
       container: 'map',
       style: 'https://geoserveis.icgc.cat/contextmaps/icgc.json',
       center: [2.1777, 41.3887],
@@ -583,7 +584,7 @@ nodemon app.js
 
       // Populate the popup and set its coordinates
       // based on the feature found
-      var popup = new mapboxgl.Popup()
+      var popup = new maplibregl.Popup()
       .setLngLat(feature.geometry.coordinates)
       .setHTML('<div id=\'popup\' class=\'popup\' style=\'z-index: 10;\'> <h5> ' + feature.properties.id + ' </h5>' +
       '<ul class=\'list-group\'>' +
@@ -739,8 +740,8 @@ app.listen(3000);
 <head>
   <title>Servicio de Bicing realtime VectorTiles</title>
   <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
-  <script src='https://api.mapbox.com/mapbox-gl-js/v1.12.0/mapbox-gl.js'></script>
-  <link href='https://api.mapbox.com/mapbox-gl-js/v1.12.0/mapbox-gl.css' rel='stylesheet' />
+  <script src='https://unpkg.com/maplibre-gl@1.15.2/dist/maplibre-gl.js'></script>
+  <link href='https://unpkg.com/maplibre-gl@1.15.2/dist/maplibre-gl.css' rel='stylesheet' />
   <style>
     body {
       margin: 0;
@@ -760,7 +761,7 @@ app.listen(3000);
   <div id="map"></div>
 
   <script type="text/javascript">
-    var map = new mapboxgl.Map({
+    var map = new maplibregl.Map({
       container: 'map',
       style: 'https://geoserveis.icgc.cat/contextmaps/icgc.json',
       center: [2.1777, 41.3887],
@@ -823,7 +824,7 @@ app.listen(3000);
 
       // Populate the popup and set its coordinates
       // based on the feature found
-      var popup = new mapboxgl.Popup()
+      var popup = new maplibregl.Popup()
       .setLngLat(feature.geometry.coordinates)
       .setHTML('<div id=\'popup\' class=\'popup\' style=\'z-index: 10;\'> <h5> ' + feature.properties.id + ' </h5>' +
       '<ul class=\'list-group\'>' +
@@ -852,8 +853,8 @@ app.listen(3000);
 <head>
   <title>Servicio de Bicing realtime VectorTiles</title>
   <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
-  <script src='https://api.mapbox.com/mapbox-gl-js/v1.12.0/mapbox-gl.js'></script>
-  <link href='https://api.mapbox.com/mapbox-gl-js/v1.12.0/mapbox-gl.css' rel='stylesheet' />
+  <script src='https://unpkg.com/maplibre-gl@1.15.2/dist/maplibre-gl.js'></script>
+  <link href='https://unpkg.com/maplibre-gl@1.15.2/dist/maplibre-gl.css' rel='stylesheet' />
   <style>
     body {
       margin: 0;
@@ -873,7 +874,7 @@ app.listen(3000);
   <div id="map"></div>
 
   <script type="text/javascript">
-    var map = new mapboxgl.Map({
+    var map = new maplibregl.Map({
       container: 'map',
       style: 'https://geoserveis.icgc.cat/contextmaps/icgc.json',
       center: [2.1777, 41.3887],
@@ -936,7 +937,7 @@ app.listen(3000);
 
       // Populate the popup and set its coordinates
       // based on the feature found
-      var popup = new mapboxgl.Popup()
+      var popup = new maplibregl.Popup()
       .setLngLat(feature.geometry.coordinates)
       .setHTML('<div id=\'popup\' class=\'popup\' style=\'z-index: 10;\'> <h5> ' + feature.properties.id + ' </h5>' +
       '<ul class=\'list-group\'>' +
@@ -966,11 +967,11 @@ app.listen(3000);
 ## Referencias
 
 [^1]: https://es.wikipedia.org/wiki/GeoJSON
-[^2]: https://www.mapbox.com/mapbox-gl-js/api/
+[^2]: https://maplibre.org/maplibre-gl-js-docs/api/
 [^3]: https://nodejs.org/es/
 [^4]: https://es.wikipedia.org/wiki/Servidor_proxy
 [^5]: http://expressjs.com/
 [^6]: https://github.com/axios/axios
 [^7]: https://www.npmjs.com/package/cors
 [^8]: https://www.npmjs.com/package/nodemon
-[^9]: https://www.mapbox.com/mapbox-gl-js/style-spec
+[^9]: https://maplibre.org/maplibre-gl-js-docs/style-spec/

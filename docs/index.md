@@ -1,4 +1,4 @@
-# GeoServicios para Smarts Cities 2021-2022
+# GeoServicios para Smarts Cities
 
 Materiales para el curso sobre Geoservicios para Smart Cities (GSS) del Màster Tecnologies de la Informació Geografica de la UAB
 

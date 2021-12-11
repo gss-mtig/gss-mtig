@@ -16,7 +16,7 @@ Si bien el formato de salida es un JSON donde tiene una propiedad *location* no 
 
 ## Ejemplo de "malas" prácticas
 
-El servicio de la DIBA https://www.diba.cat/es/web/smartregion/premis-apps-iot-for-citizens/obtenir-acces-a-sentilo-diba ya que para acceder a los servicios es necesaria una API Key y para obtenerla hay que enviar un email con nuestros datos y el motivo de uso. El simple hecho de tener que registrarse ya es una barrera.
+El servicio de la DIBA https://www.diba.cat/es/web/smartregion/ptgu ya que para acceder a los servicios es necesaria una API Key y para obtenerla hay que enviar un email con nuestros datos y el motivo de uso. El simple hecho de tener que registrarse ya es una barrera.
 
 El acceso a la aplicación http://sentilo.diba.cat/sentilo-catalog-web/ no es fácil de encontrar y no hay ninguna documentación.
 

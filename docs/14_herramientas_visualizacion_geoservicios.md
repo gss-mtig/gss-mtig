@@ -14,6 +14,8 @@ Para la visualización de datos geográficos en el la web existen diversas libre
 
 - https://www.mapbox.com/mapbox-gl-js/api/
 
+- https://maplibre.org/maplibre-gl-js-docs/api/
+
 
 ## Servicios
 
@@ -28,3 +30,6 @@ Aparte de la librerías que permiten desarrollar nuestras propias aplicaciones, 
 - https://www.giscloud.com/
 
 - https://www.instamaps.cat/
+
+- https://www.maptiler.com/
+
