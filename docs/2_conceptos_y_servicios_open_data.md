@@ -22,7 +22,7 @@ https://demo.ckan.org/api/3/action/resource_search?
 #### Creación de un buscador
 
   
-* Dentro de nuestor espacio de trabaj creamos un archivo con el nombre de *ckan.html*.
+* Dentro de nuestor espacio de trabajo creamos un archivo con el nombre de *ckan.html*.
 
 * Abrimos el archivo *ckan.html* con un editor de texto y copiamos el siguiente código.
 
@@ -72,6 +72,9 @@ https://demo.ckan.org/api/3/action/resource_search?
         <option value="https://demo.ckan.org/api/3/action/resource_search?">ckan.org</option>
         <option value="https://old.datahub.io/api/3/action/resource_search?">old.datahub.io</option>
 				<!-- añadimos BCN opendata -->
+		<!--
+  			<option value="https://opendata-ajuntament.barcelona.cat/data/api/3/action/resource_search?">OpenBCN</option>
+		 -->		
       </select>
     </div>
     <div class="form-group">
@@ -174,7 +177,7 @@ error: function (xhr) {
     **Ejercicio 2**: ¿Cómo haríamos para qué en los resultados apareciera la fecha de creación del dato?
 
 !!! note
-    **Ejercicio 3**: Descargamos CSV accidentes
+    **Ejercicio 3**: Buscamos name:accidents  y descargamos CSV accidentes
   
 
 ## Ejemplos API SOCRATA
@@ -492,7 +495,7 @@ minZoom: 1,
 attribution: 'OSM'
 }).addTo(map);
 
-Stamen_Toner = L.tileLayer('https://{s}.tile.stamen.com/toner/{z}/{x}/{y}.png', {
+Stamen_Toner = L.tileLayer('http://{s}.tile.stamen.com/toner/{z}/{x}/{y}.png', {
 attribution: 'Map tiles by <a href="https://stamen.com">Stamen Design</a>, <a href="https://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> &mdash; Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
 subdomains: 'abcd',
 minZoom: 0,
