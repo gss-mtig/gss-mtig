@@ -257,7 +257,7 @@ Implementaremos la funcionalidad que cuando el usuaio haga click en el mapa se b
 		}).addTo(map);
 
     var options = {
-			key: '95dbeb5a4d3a4ad29b36107cbf848826',
+			key: 'YOUR-API-KEY',
 			limit: 10,
 		};
 		var control = L.Control.openCageSearch(options).addTo(map);
@@ -320,7 +320,7 @@ Implementaremos la funcionalidad que cuando el usuaio haga click en el mapa se b
 		}).addTo(map);
 
     var options = {
-			key: '95dbeb5a4d3a4ad29b36107cbf848826',
+			key: 'YOUR-API-KEY',
 			limit: 10,
 		};
 		var control = L.Control.openCageSearch(options).addTo(map);
@@ -388,7 +388,7 @@ Implementaremos la funcionalidad que cuando el usuaio haga click en el mapa se b
 		}).addTo(map);
 
     var options = {
-			key: '95dbeb5a4d3a4ad29b36107cbf848826',
+			key: 'YOUR-API-KEY',
 			limit: 10,
 		};
 		var control = L.Control.openCageSearch(options).addTo(map);
