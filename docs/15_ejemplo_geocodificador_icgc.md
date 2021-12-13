@@ -9,7 +9,10 @@ Existen dos tipos de geocodificación:
 
 ## Creación de un visor que permita buscar direcciones y topónimos
 
-Para crear un visor de mapas utilizaremos la librería de mapas Leaflet [^1]. Y cargaremos los datos del Geocodificador del OpenCage [^2]
+Para crear un visor de mapas utilizaremos la librería de mapas Leaflet [^1]. Y cargaremos los datos del Geocodificador del ICGC
+
+!!! warning "Advertencia"
+	El servicio de geodificación del ICGC que utilizaremos es un servicio **beta** en fase de prueba
 
 - Crear una carpeta con el nombre de *visor-geocoder*.
 
@@ -58,13 +61,12 @@ Para crear un visor de mapas utilizaremos la librería de mapas Leaflet [^1]. Y 
 
 - Agregar el plugin al mapa
 
-```html hl_lines="6 21 32 33 34 35 36"
+```html hl_lines="20 21 32 33 34 35 36 37 38"
 <!DOCTYPE html>
 <html>
 <head>
 	<title>Ejemplo geocoder</title>
 	<link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
-	<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/opencagedata/leaflet-opencage-search@1.4.1/dist/css/L.Control.OpenCageData.Search.min.css" />
 		<style>
 				#map {
 						position: absolute;
@@ -79,7 +81,8 @@ Para crear un visor de mapas utilizaremos la librería de mapas Leaflet [^1]. Y 
 	<div id="map"></div>
 
 		<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
-  	<script src="https://cdn.jsdelivr.net/gh/opencagedata/leaflet-opencage-search@1.4.1/dist/js/L.Control.OpenCageSearch.min.js"></script>
+        <!-- Load geocoding plugin after Leaflet -->
+		<script src="leaflet-geocoder.js"></script>
 
 		<script type="text/javascript">
 			var map = L.map('map');
@@ -90,20 +93,72 @@ Para crear un visor de mapas utilizaremos la librería de mapas Leaflet [^1]. Y 
 				attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
 		}).addTo(map);
 
-    var options = {
-			key: 'YOUR-API-KEY',
-			limit: 10,
-		};
-		var control = L.Control.openCageSearch(options).addTo(map);
+        var geocodingOptions = {      
+            url:'https://eines.icgc.cat/geocodificador',
+            expanded: true,
+            autocomplete: true,
+            focus:false
+            };
+        L.control.geocoder(geocodingOptions).addTo(map);
 		
 		</script>
 </body>
 </html>
 ```
 
-- Recargamos el mapa en el navegador y podemos ver que nos aparece una cája de búsqueda en el mapa
+- Recargamos el mapa en el navegador y podemos ver que nos aparece una cája de búsqueda en el mapa (de momento si estilo)
 
-![ejemplo geocodificador](img/ejemplo_geocoder.png)
+- Cargar la hoja de estilo del plugin
+
+```html hl_lines="6"
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Ejemplo geocoder</title>
+	<link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet-geocoder-mapzen/1.9.4/leaflet-geocoder-mapzen.css">
+		<style>
+				#map {
+						position: absolute;
+						top: 0;
+						left: 0;
+						bottom: 0;
+						right: 0;
+				}
+		</style>
+</head>
+<body>
+	<div id="map"></div>
+
+		<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+        <!-- Load geocoding plugin after Leaflet -->
+		<script src="leaflet-geocoder.js"></script>
+
+		<script type="text/javascript">
+			var map = L.map('map');
+
+			map.setView([41.3887, 2.1777], 13);
+			
+		L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+				attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+		}).addTo(map);
+
+        var geocodingOptions = {      
+            url:'https://eines.icgc.cat/geocodificador',
+            expanded: true,
+            autocomplete: true,
+            focus:false
+            };
+        L.control.geocoder(geocodingOptions).addTo(map);
+		
+		</script>
+</body>
+</html>
+```
+
+- Recargamos el mapa en el navegador y vemos que el control ahora si tiene estilo
+
+![ejemplo geocodificador](img/ejemplo_geocoder_icgc.png)
 *ejemplo geocodificador*
 
 ## Geocodificación inversa
@@ -112,13 +167,13 @@ Implementaremos la funcionalidad que cuando el usuaio haga click en el mapa se b
 
 - Capturar el evento click en el mapa.
 
-```html hl_lines="38 39 40"
+```html hl_lines="41 42 43"
 <!DOCTYPE html>
 <html>
 <head>
 	<title>Ejemplo geocoder</title>
 	<link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
-	<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/opencagedata/leaflet-opencage-search@1.4.1/dist/css/L.Control.OpenCageData.Search.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet-geocoder-mapzen/1.9.4/leaflet-geocoder-mapzen.css">
 		<style>
 				#map {
 						position: absolute;
@@ -133,7 +188,8 @@ Implementaremos la funcionalidad que cuando el usuaio haga click en el mapa se b
 	<div id="map"></div>
 
 		<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
-  	<script src="https://cdn.jsdelivr.net/gh/opencagedata/leaflet-opencage-search@1.4.1/dist/js/L.Control.OpenCageSearch.min.js"></script>
+        <!-- Load geocoding plugin after Leaflet -->
+		<script src="leaflet-geocoder.js"></script>
 
 		<script type="text/javascript">
 			var map = L.map('map');
@@ -144,13 +200,15 @@ Implementaremos la funcionalidad que cuando el usuaio haga click en el mapa se b
 				attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
 		}).addTo(map);
 
-    var options = {
-			key: 'YOUR-API-KEY',
-			limit: 10,
-		};
-		var control = L.Control.openCageSearch(options).addTo(map);
+        var geocodingOptions = {      
+            url:'https://eines.icgc.cat/geocodificador',
+            expanded: true,
+            autocomplete: true,
+            focus:false
+            };
+        L.control.geocoder(geocodingOptions).addTo(map);
 
-		 map.on('click', function(e){
+        map.on('click', function(e){
             console.log(e);
 		});
 		
@@ -163,13 +221,13 @@ Implementaremos la funcionalidad que cuando el usuaio haga click en el mapa se b
 
 - Llamar al servicio de geocodificación pasandole las coordenadas del click para obtener los elementos
 
-```html hl_lines="40 41 42 43 44 45 46 47 48 49"
+```html hl_lines="43 44 45 46 47 48 49 50 51 52"
 <!DOCTYPE html>
 <html>
 <head>
 	<title>Ejemplo geocoder</title>
 	<link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
-	<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/opencagedata/leaflet-opencage-search@1.4.1/dist/css/L.Control.OpenCageData.Search.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet-geocoder-mapzen/1.9.4/leaflet-geocoder-mapzen.css">
 		<style>
 				#map {
 						position: absolute;
@@ -184,7 +242,8 @@ Implementaremos la funcionalidad que cuando el usuaio haga click en el mapa se b
 	<div id="map"></div>
 
 		<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
-  	<script src="https://cdn.jsdelivr.net/gh/opencagedata/leaflet-opencage-search@1.4.1/dist/js/L.Control.OpenCageSearch.min.js"></script>
+        <!-- Load geocoding plugin after Leaflet -->
+		<script src="leaflet-geocoder.js"></script>
 
 		<script type="text/javascript">
 			var map = L.map('map');
@@ -195,15 +254,17 @@ Implementaremos la funcionalidad que cuando el usuaio haga click en el mapa se b
 				attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
 		}).addTo(map);
 
-    var options = {
-			key: 'YOUR-API-KEY',
-			limit: 10,
-		};
-		var control = L.Control.openCageSearch(options).addTo(map);
+        var geocodingOptions = {      
+            url:'https://eines.icgc.cat/geocodificador',
+            expanded: true,
+            autocomplete: true,
+            focus:false
+            };
+        L.control.geocoder(geocodingOptions).addTo(map);
 
-		 map.on('click', function(e){
+        map.on('click', function(e){
             console.log(e);
-			var url = `https://api.opencagedata.com/geocode/v1/json?q=${e.latlng.lat}+${e.latlng.lng}&key=${options.key}`;
+            var url = `https://eines.icgc.cat/geocodificadorinvers?lat=${e.latlng.lat}&lon=${e.latlng.lng}`;
             fetch(url)
             .then(function(response) {
             response.json().then(function(data){
@@ -224,13 +285,13 @@ Implementaremos la funcionalidad que cuando el usuaio haga click en el mapa se b
 
 - Al recibir la respuesta mostrar un marcador en el mapa en la posición donde el usuario hizo el click.
 
-```html hl_lines="45 46"
+```html hl_lines="48 49"
 <!DOCTYPE html>
 <html>
 <head>
 	<title>Ejemplo geocoder</title>
 	<link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
-	<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/opencagedata/leaflet-opencage-search@1.4.1/dist/css/L.Control.OpenCageData.Search.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet-geocoder-mapzen/1.9.4/leaflet-geocoder-mapzen.css">
 		<style>
 				#map {
 						position: absolute;
@@ -245,7 +306,8 @@ Implementaremos la funcionalidad que cuando el usuaio haga click en el mapa se b
 	<div id="map"></div>
 
 		<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
-    <script src="https://cdn.jsdelivr.net/gh/opencagedata/leaflet-opencage-search@1.4.1/dist/js/L.Control.OpenCageSearch.min.js"></script>
+        <!-- Load geocoding plugin after Leaflet -->
+		<script src="leaflet-geocoder.js"></script>
 
 		<script type="text/javascript">
 			var map = L.map('map');
@@ -256,15 +318,17 @@ Implementaremos la funcionalidad que cuando el usuaio haga click en el mapa se b
 				attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
 		}).addTo(map);
 
-    var options = {
-			key: '95dbeb5a4d3a4ad29b36107cbf848826',
-			limit: 10,
-		};
-		var control = L.Control.openCageSearch(options).addTo(map);
+        var geocodingOptions = {      
+            url:'https://eines.icgc.cat/geocodificador',
+            expanded: true,
+            autocomplete: true,
+            focus:false
+            };
+        L.control.geocoder(geocodingOptions).addTo(map);
 
-    map.on('click', function(e){
+        map.on('click', function(e){
             console.log(e);
-            var url = `https://api.opencagedata.com/geocode/v1/json?q=${e.latlng.lat}+${e.latlng.lng}&key=${options.key}`;
+            var url = `https://eines.icgc.cat/geocodificadorinvers?lat=${e.latlng.lat}&lon=${e.latlng.lng}`;
             fetch(url)
             .then(function(response) {
             response.json().then(function(data){
@@ -287,13 +351,13 @@ Implementaremos la funcionalidad que cuando el usuaio haga click en el mapa se b
 
 - Mostrar la etiqueta con la dirección retornada de la primera respuesta del geocodificador.
 
-```html hl_lines="45 46 48"
+```html hl_lines="48 49 51"
 <!DOCTYPE html>
 <html>
 <head>
 	<title>Ejemplo geocoder</title>
 	<link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
-	<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/opencagedata/leaflet-opencage-search@1.4.1/dist/css/L.Control.OpenCageData.Search.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet-geocoder-mapzen/1.9.4/leaflet-geocoder-mapzen.css">
 		<style>
 				#map {
 						position: absolute;
@@ -308,7 +372,8 @@ Implementaremos la funcionalidad que cuando el usuaio haga click en el mapa se b
 	<div id="map"></div>
 
 		<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
-    <script src="https://cdn.jsdelivr.net/gh/opencagedata/leaflet-opencage-search@1.4.1/dist/js/L.Control.OpenCageSearch.min.js"></script>
+        <!-- Load geocoding plugin after Leaflet -->
+		<script src="leaflet-geocoder.js"></script>
 
 		<script type="text/javascript">
 			var map = L.map('map');
@@ -319,23 +384,25 @@ Implementaremos la funcionalidad que cuando el usuaio haga click en el mapa se b
 				attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
 		}).addTo(map);
 
-    var options = {
-			key: '95dbeb5a4d3a4ad29b36107cbf848826',
-			limit: 10,
-		};
-		var control = L.Control.openCageSearch(options).addTo(map);
+        var geocodingOptions = {      
+            url:'https://eines.icgc.cat/geocodificador',
+            expanded: true,
+            autocomplete: true,
+            focus:false
+            };
+        L.control.geocoder(geocodingOptions).addTo(map);
 
-    map.on('click', function(e){
+        map.on('click', function(e){
             console.log(e);
-            var url = `https://api.opencagedata.com/geocode/v1/json?q=${e.latlng.lat}+${e.latlng.lng}&key=${options.key}`;
+            var url = `https://eines.icgc.cat/geocodificadorinvers?lat=${e.latlng.lat}&lon=${e.latlng.lng}`;
             fetch(url)
             .then(function(response) {
             response.json().then(function(data){
                 console.log(data);
-                var etiqueta = data.results[0].formatted;
+                var etiqueta = data.features[0].properties.label;
                 var marker = new L.marker(e.latlng).bindPopup(etiqueta);
                 map.addLayer(marker);
-				marker.openPopup();
+                marker.openPopup();
             });
             })
             .catch(function(myJson) {
@@ -355,13 +422,13 @@ Implementaremos la funcionalidad que cuando el usuaio haga click en el mapa se b
 
 - Mostrar el marcador en la posición de la primera respuesta del geocodificador y no en la posición del click
 
-```html hl_lines="46 47"
+```html hl_lines="49 50"
 <!DOCTYPE html>
 <html>
 <head>
 	<title>Ejemplo geocoder</title>
 	<link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
-	<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/opencagedata/leaflet-opencage-search@1.4.1/dist/css/L.Control.OpenCageData.Search.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet-geocoder-mapzen/1.9.4/leaflet-geocoder-mapzen.css">
 		<style>
 				#map {
 						position: absolute;
@@ -376,7 +443,8 @@ Implementaremos la funcionalidad que cuando el usuaio haga click en el mapa se b
 	<div id="map"></div>
 
 		<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
-    <script src="https://cdn.jsdelivr.net/gh/opencagedata/leaflet-opencage-search@1.4.1/dist/js/L.Control.OpenCageSearch.min.js"></script>
+        <!-- Load geocoding plugin after Leaflet -->
+		<script src="leaflet-geocoder.js"></script>
 
 		<script type="text/javascript">
 			var map = L.map('map');
@@ -387,24 +455,26 @@ Implementaremos la funcionalidad que cuando el usuaio haga click en el mapa se b
 				attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
 		}).addTo(map);
 
-    var options = {
-			key: '95dbeb5a4d3a4ad29b36107cbf848826',
-			limit: 10,
-		};
-		var control = L.Control.openCageSearch(options).addTo(map);
+        var geocodingOptions = {      
+            url:'https://eines.icgc.cat/geocodificador',
+            expanded: true,
+            autocomplete: true,
+            focus:false
+            };
+        L.control.geocoder(geocodingOptions).addTo(map);
 
-    map.on('click', function(e){
+        map.on('click', function(e){
             console.log(e);
-            var url = `https://api.opencagedata.com/geocode/v1/json?q=${e.latlng.lat}+${e.latlng.lng}&key=${options.key}`;
+            var url = `https://eines.icgc.cat/geocodificadorinvers?lat=${e.latlng.lat}&lon=${e.latlng.lng}`;
             fetch(url)
             .then(function(response) {
             response.json().then(function(data){
                 console.log(data);
-                var etiqueta = data.results[0].formatted;
-                var posicion = data.results[0].geometry;
+                var etiqueta = data.features[0].properties.label;
+                var posicion = data.features[0].geometry.coordinates;
                 var marker = new L.marker(posicion).bindPopup(etiqueta);
                 map.addLayer(marker);
-								marker.openPopup();
+                marker.openPopup();
             });
             })
             .catch(function(myJson) {
@@ -417,14 +487,81 @@ Implementaremos la funcionalidad que cuando el usuaio haga click en el mapa se b
 </html>
 ```
 
-- Recargar el mapa y hacer click sobre el mapa. Vemos que se nos muestra un marcador con la etiqueta en una posición cercana a donde hemos hecho click.
+- Recargar el mapa y hacer click sobre el mapa. Vemos que se nos muestra un marcador en Africa. Esto es por que el marker espera las coordenadas en lat, lon y el geojson de respuesta del geocodificador retorna las coordenadas en lon, lat.
+
+- Cambiar el orden de coordenadas para mostrar el marker en la posición correcta
+
+```html hl_lines="50"
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Ejemplo geocoder</title>
+	<link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet-geocoder-mapzen/1.9.4/leaflet-geocoder-mapzen.css">
+		<style>
+				#map {
+						position: absolute;
+						top: 0;
+						left: 0;
+						bottom: 0;
+						right: 0;
+				}
+		</style>
+</head>
+<body>
+	<div id="map"></div>
+
+		<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+        <!-- Load geocoding plugin after Leaflet -->
+		<script src="leaflet-geocoder.js"></script>
+
+		<script type="text/javascript">
+			var map = L.map('map');
+
+			map.setView([41.3887, 2.1777], 13);
+			
+		L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+				attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+		}).addTo(map);
+
+        var geocodingOptions = {      
+            url:'https://eines.icgc.cat/geocodificador',
+            expanded: true,
+            autocomplete: true,
+            focus:false
+            };
+        L.control.geocoder(geocodingOptions).addTo(map);
+
+        map.on('click', function(e){
+            console.log(e);
+            var url = `https://eines.icgc.cat/geocodificadorinvers?lat=${e.latlng.lat}&lon=${e.latlng.lng}`;
+            fetch(url)
+            .then(function(response) {
+            response.json().then(function(data){
+                console.log(data);
+                var etiqueta = data.features[0].properties.label;
+                var posicion = data.features[0].geometry.coordinates;
+                var marker = new L.marker([posicion[1],posicion[0]]).bindPopup(etiqueta);
+                map.addLayer(marker);
+                marker.openPopup();
+            });
+            })
+            .catch(function(myJson) {
+            console.log(myJson);
+            });
+		});
+		
+		</script>
+</body>
+</html>
+```
 
 !!! question "Ejercicios 2 pts"
-	1. Mostrar la propiedad **components.municipality** junto con la dirección en la etiqueta (1 pt)
+	1. Mostrar la propiedad layer junto con la dirección en la etiqueta (1 pt)
 
     2. **Extra**: Al hacer click en el mapa mostrar los marcadores de los 3 primeros resultados, pero únicamente desplegar la etiqueta de la primera respuesta. (1 pt) 
 
 ## Referencias
 
 [^1]: http://leafletjs.com/
-[^2]: https://opencagedata.com/
+[^2]: https://github.com/OpenICGC/leaflet-geocodericgc-plugin
