@@ -13,14 +13,14 @@
         <meta name="author" content="gss-mtig">
       
       
-        <link rel="canonical" href="https://gss-mtig.github.io/gss-mtig/15_ejemplo_geocodificador/">
+        <link rel="canonical" href="https://gss-mtig.github.io/gss-mtig/15_ejemplo_geocodificador_icgc/">
       
       <link rel="shortcut icon" href="../assets/images/favicon.png">
       <meta name="generator" content="mkdocs-1.1.2, mkdocs-material-7.0.1">
     
     
       
-        <title>15. Ejemplo Geocodificador - Geoservicios para Smart Cities</title>
+        <title>Ejemplo Geocodificador - Geoservicios para Smart Cities</title>
       
     
     
@@ -96,7 +96,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              15. Ejemplo Geocodificador
+              Ejemplo Geocodificador
             
           </span>
         </div>
@@ -428,63 +428,11 @@
 
   
   
-    
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          15. Ejemplo Geocodificador
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../15_ejemplo_geocodificador/" class="md-nav__link">
         15. Ejemplo Geocodificador
       </a>
-      
-        
-<nav class="md-nav md-nav--secondary" aria-label="Tabla de contenidos">
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Tabla de contenidos
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#creacion-de-un-visor-que-permita-buscar-direcciones-y-toponimos" class="md-nav__link">
-    Creación de un visor que permita buscar direcciones y topónimos
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#geocodificacion-inversa" class="md-nav__link">
-    Geocodificación inversa
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#referencias" class="md-nav__link">
-    Referencias
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -591,7 +539,7 @@
             <article class="md-content__inner md-typeset">
               
                 
-                  <a href="https://github.com/gss-mtig/gss-mtig/edit/master/docs/15_ejemplo_geocodificador.md" title="Editar esta página" class="md-content__button md-icon">
+                  <a href="https://github.com/gss-mtig/gss-mtig/edit/master/docs/15_ejemplo_geocodificador_icgc.md" title="Editar esta página" class="md-content__button md-icon">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75L3 17.25z"/></svg>
                   </a>
                 
@@ -604,7 +552,11 @@
 <li><strong>inversa</strong> es la localización de direcciones a partir de coordenadas geográficas</li>
 </ul>
 <h2 id="creacion-de-un-visor-que-permita-buscar-direcciones-y-toponimos">Creación de un visor que permita buscar direcciones y topónimos</h2>
-<p>Para crear un visor de mapas utilizaremos la librería de mapas Leaflet <sup id="fnref:1"><a class="footnote-ref" href="#fn:1">1</a></sup>. Y cargaremos los datos del Geocodificador del OpenCage <sup id="fnref:2"><a class="footnote-ref" href="#fn:2">2</a></sup></p>
+<p>Para crear un visor de mapas utilizaremos la librería de mapas Leaflet <sup id="fnref:1"><a class="footnote-ref" href="#fn:1">1</a></sup>. Y cargaremos los datos del Geocodificador del ICGC</p>
+<div class="admonition warning">
+<p class="admonition-title">Advertencia</p>
+<p>El servicio de geodificación del ICGC que utilizaremos es un servicio <strong>beta</strong> en fase de prueba</p>
+</div>
 <ul>
 <li>
 <p>Crear una carpeta con el nombre de <em>visor-geocoder</em>.</p>
@@ -654,7 +606,7 @@
 <p>Abrir el archivo index.html en el navegador para comprobar que se carga un mapa centrado en Barcelona.</p>
 </li>
 <li>
-<p>Descargar en la carpeta el plugin desarrollado por el ICGC <sup id="fnref2:2"><a class="footnote-ref" href="#fn:2">2</a></sup> <a href="https://github.com/OpenICGC/leaflet-geocodericgc-plugin/blob/master/js/leaflet-geocoder.js">https://github.com/OpenICGC/leaflet-geocodericgc-plugin/blob/master/js/leaflet-geocoder.js</a></p>
+<p>Descargar en la carpeta el plugin desarrollado por el ICGC <sup id="fnref:2"><a class="footnote-ref" href="#fn:2">2</a></sup> <a href="https://github.com/OpenICGC/leaflet-geocodericgc-plugin/blob/master/js/leaflet-geocoder.js">https://github.com/OpenICGC/leaflet-geocodericgc-plugin/blob/master/js/leaflet-geocoder.js</a></p>
 </li>
 <li>
 <p>Agregar el plugin al mapa</p>
@@ -665,58 +617,6 @@
 <span class="p">&lt;</span><span class="nt">head</span><span class="p">&gt;</span>
     <span class="p">&lt;</span><span class="nt">title</span><span class="p">&gt;</span>Ejemplo geocoder<span class="p">&lt;/</span><span class="nt">title</span><span class="p">&gt;</span>
     <span class="p">&lt;</span><span class="nt">link</span> <span class="na">rel</span><span class="o">=</span><span class="s">&quot;stylesheet&quot;</span> <span class="na">href</span><span class="o">=</span><span class="s">&quot;https://unpkg.com/leaflet@1.7.1/dist/leaflet.css&quot;</span> <span class="p">/&gt;</span>
-<span class="hll">    <span class="p">&lt;</span><span class="nt">link</span> <span class="na">rel</span><span class="o">=</span><span class="s">&quot;stylesheet&quot;</span> <span class="na">href</span><span class="o">=</span><span class="s">&quot;https://cdn.jsdelivr.net/gh/opencagedata/leaflet-opencage-search@1.4.1/dist/css/L.Control.OpenCageData.Search.min.css&quot;</span> <span class="p">/&gt;</span>
-</span>        <span class="p">&lt;</span><span class="nt">style</span><span class="p">&gt;</span>
-                <span class="p">#</span><span class="nn">map</span> <span class="p">{</span>
-                        <span class="k">position</span><span class="p">:</span> <span class="kc">absolute</span><span class="p">;</span>
-                        <span class="k">top</span><span class="p">:</span> <span class="mi">0</span><span class="p">;</span>
-                        <span class="k">left</span><span class="p">:</span> <span class="mi">0</span><span class="p">;</span>
-                        <span class="k">bottom</span><span class="p">:</span> <span class="mi">0</span><span class="p">;</span>
-                        <span class="k">right</span><span class="p">:</span> <span class="mi">0</span><span class="p">;</span>
-                <span class="p">}</span>
-        <span class="p">&lt;/</span><span class="nt">style</span><span class="p">&gt;</span>
-<span class="p">&lt;/</span><span class="nt">head</span><span class="p">&gt;</span>
-<span class="p">&lt;</span><span class="nt">body</span><span class="p">&gt;</span>
-    <span class="p">&lt;</span><span class="nt">div</span> <span class="na">id</span><span class="o">=</span><span class="s">&quot;map&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
-
-        <span class="p">&lt;</span><span class="nt">script</span> <span class="na">src</span><span class="o">=</span><span class="s">&quot;https://unpkg.com/leaflet@1.7.1/dist/leaflet.js&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
-<span class="hll">    <span class="p">&lt;</span><span class="nt">script</span> <span class="na">src</span><span class="o">=</span><span class="s">&quot;https://cdn.jsdelivr.net/gh/opencagedata/leaflet-opencage-search@1.4.1/dist/js/L.Control.OpenCageSearch.min.js&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
-</span>
-        <span class="p">&lt;</span><span class="nt">script</span> <span class="na">type</span><span class="o">=</span><span class="s">&quot;text/javascript&quot;</span><span class="p">&gt;</span>
-            <span class="kd">var</span> <span class="nx">map</span> <span class="o">=</span> <span class="nx">L</span><span class="p">.</span><span class="nx">map</span><span class="p">(</span><span class="s1">&#39;map&#39;</span><span class="p">);</span>
-
-            <span class="nx">map</span><span class="p">.</span><span class="nx">setView</span><span class="p">([</span><span class="mf">41.3887</span><span class="p">,</span> <span class="mf">2.1777</span><span class="p">],</span> <span class="mf">13</span><span class="p">);</span>
-
-        <span class="nx">L</span><span class="p">.</span><span class="nx">tileLayer</span><span class="p">(</span><span class="s1">&#39;http://{s}.tile.osm.org/{z}/{x}/{y}.png&#39;</span><span class="p">,</span> <span class="p">{</span>
-                <span class="nx">attribution</span><span class="o">:</span> <span class="s1">&#39;&amp;copy; &lt;a href=&quot;http://osm.org/copyright&quot;&gt;OpenStreetMap&lt;/a&gt; contributors&#39;</span>
-        <span class="p">}).</span><span class="nx">addTo</span><span class="p">(</span><span class="nx">map</span><span class="p">);</span>
-
-<span class="hll">    <span class="kd">var</span> <span class="nx">options</span> <span class="o">=</span> <span class="p">{</span>
-</span><span class="hll">            <span class="nx">key</span><span class="o">:</span> <span class="s1">&#39;YOUR-API-KEY&#39;</span><span class="p">,</span>
-</span><span class="hll">            <span class="nx">limit</span><span class="o">:</span> <span class="mf">10</span><span class="p">,</span>
-</span><span class="hll">        <span class="p">};</span>
-</span><span class="hll">        <span class="kd">var</span> <span class="nx">control</span> <span class="o">=</span> <span class="nx">L</span><span class="p">.</span><span class="nx">Control</span><span class="p">.</span><span class="nx">openCageSearch</span><span class="p">(</span><span class="nx">options</span><span class="p">).</span><span class="nx">addTo</span><span class="p">(</span><span class="nx">map</span><span class="p">);</span>
-</span>
-        <span class="p">&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
-<span class="p">&lt;/</span><span class="nt">body</span><span class="p">&gt;</span>
-<span class="p">&lt;/</span><span class="nt">html</span><span class="p">&gt;</span>
-</code></pre></div>
-<ul>
-<li>Recargamos el mapa en el navegador y podemos ver que nos aparece una cája de búsqueda en el mapa</li>
-</ul>
-<p><img alt="ejemplo geocodificador" src="../img/ejemplo_geocoder.png" />
-<em>ejemplo geocodificador</em></p>
-<h2 id="geocodificacion-inversa">Geocodificación inversa</h2>
-<p>Implementaremos la funcionalidad que cuando el usuaio haga click en el mapa se busque la dirección o topónimo más cercano.</p>
-<ul>
-<li>Capturar el evento click en el mapa.</li>
-</ul>
-<div class="highlight"><pre><span></span><code><span class="cp">&lt;!DOCTYPE html&gt;</span>
-<span class="p">&lt;</span><span class="nt">html</span><span class="p">&gt;</span>
-<span class="p">&lt;</span><span class="nt">head</span><span class="p">&gt;</span>
-    <span class="p">&lt;</span><span class="nt">title</span><span class="p">&gt;</span>Ejemplo geocoder<span class="p">&lt;/</span><span class="nt">title</span><span class="p">&gt;</span>
-    <span class="p">&lt;</span><span class="nt">link</span> <span class="na">rel</span><span class="o">=</span><span class="s">&quot;stylesheet&quot;</span> <span class="na">href</span><span class="o">=</span><span class="s">&quot;https://unpkg.com/leaflet@1.7.1/dist/leaflet.css&quot;</span> <span class="p">/&gt;</span>
-    <span class="p">&lt;</span><span class="nt">link</span> <span class="na">rel</span><span class="o">=</span><span class="s">&quot;stylesheet&quot;</span> <span class="na">href</span><span class="o">=</span><span class="s">&quot;https://cdn.jsdelivr.net/gh/opencagedata/leaflet-opencage-search@1.4.1/dist/css/L.Control.OpenCageData.Search.min.css&quot;</span> <span class="p">/&gt;</span>
         <span class="p">&lt;</span><span class="nt">style</span><span class="p">&gt;</span>
                 <span class="p">#</span><span class="nn">map</span> <span class="p">{</span>
                         <span class="k">position</span><span class="p">:</span> <span class="kc">absolute</span><span class="p">;</span>
@@ -731,7 +631,60 @@
     <span class="p">&lt;</span><span class="nt">div</span> <span class="na">id</span><span class="o">=</span><span class="s">&quot;map&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
 
         <span class="p">&lt;</span><span class="nt">script</span> <span class="na">src</span><span class="o">=</span><span class="s">&quot;https://unpkg.com/leaflet@1.7.1/dist/leaflet.js&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
-    <span class="p">&lt;</span><span class="nt">script</span> <span class="na">src</span><span class="o">=</span><span class="s">&quot;https://cdn.jsdelivr.net/gh/opencagedata/leaflet-opencage-search@1.4.1/dist/js/L.Control.OpenCageSearch.min.js&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+<span class="hll">        <span class="c">&lt;!-- Load geocoding plugin after Leaflet --&gt;</span>
+</span><span class="hll">        <span class="p">&lt;</span><span class="nt">script</span> <span class="na">src</span><span class="o">=</span><span class="s">&quot;leaflet-geocoder.js&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+</span>
+        <span class="p">&lt;</span><span class="nt">script</span> <span class="na">type</span><span class="o">=</span><span class="s">&quot;text/javascript&quot;</span><span class="p">&gt;</span>
+            <span class="kd">var</span> <span class="nx">map</span> <span class="o">=</span> <span class="nx">L</span><span class="p">.</span><span class="nx">map</span><span class="p">(</span><span class="s1">&#39;map&#39;</span><span class="p">);</span>
+
+            <span class="nx">map</span><span class="p">.</span><span class="nx">setView</span><span class="p">([</span><span class="mf">41.3887</span><span class="p">,</span> <span class="mf">2.1777</span><span class="p">],</span> <span class="mf">13</span><span class="p">);</span>
+
+        <span class="nx">L</span><span class="p">.</span><span class="nx">tileLayer</span><span class="p">(</span><span class="s1">&#39;http://{s}.tile.osm.org/{z}/{x}/{y}.png&#39;</span><span class="p">,</span> <span class="p">{</span>
+                <span class="nx">attribution</span><span class="o">:</span> <span class="s1">&#39;&amp;copy; &lt;a href=&quot;http://osm.org/copyright&quot;&gt;OpenStreetMap&lt;/a&gt; contributors&#39;</span>
+        <span class="p">}).</span><span class="nx">addTo</span><span class="p">(</span><span class="nx">map</span><span class="p">);</span>
+
+<span class="hll">        <span class="kd">var</span> <span class="nx">geocodingOptions</span> <span class="o">=</span> <span class="p">{</span>      
+</span><span class="hll">            <span class="nx">url</span><span class="o">:</span><span class="s1">&#39;https://eines.icgc.cat/geocodificador&#39;</span><span class="p">,</span>
+</span><span class="hll">            <span class="nx">expanded</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span>
+</span><span class="hll">            <span class="nx">autocomplete</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span>
+</span><span class="hll">            <span class="nx">focus</span><span class="o">:</span><span class="kc">false</span>
+</span><span class="hll">            <span class="p">};</span>
+</span><span class="hll">        <span class="nx">L</span><span class="p">.</span><span class="nx">control</span><span class="p">.</span><span class="nx">geocoder</span><span class="p">(</span><span class="nx">geocodingOptions</span><span class="p">).</span><span class="nx">addTo</span><span class="p">(</span><span class="nx">map</span><span class="p">);</span>
+</span>
+        <span class="p">&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">body</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">html</span><span class="p">&gt;</span>
+</code></pre></div>
+<ul>
+<li>
+<p>Recargamos el mapa en el navegador y podemos ver que nos aparece una cája de búsqueda en el mapa (de momento si estilo)</p>
+</li>
+<li>
+<p>Cargar la hoja de estilo del plugin</p>
+</li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="cp">&lt;!DOCTYPE html&gt;</span>
+<span class="p">&lt;</span><span class="nt">html</span><span class="p">&gt;</span>
+<span class="p">&lt;</span><span class="nt">head</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">title</span><span class="p">&gt;</span>Ejemplo geocoder<span class="p">&lt;/</span><span class="nt">title</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">link</span> <span class="na">rel</span><span class="o">=</span><span class="s">&quot;stylesheet&quot;</span> <span class="na">href</span><span class="o">=</span><span class="s">&quot;https://unpkg.com/leaflet@1.7.1/dist/leaflet.css&quot;</span> <span class="p">/&gt;</span>
+<span class="hll">    <span class="p">&lt;</span><span class="nt">link</span> <span class="na">rel</span><span class="o">=</span><span class="s">&quot;stylesheet&quot;</span> <span class="na">href</span><span class="o">=</span><span class="s">&quot;https://cdnjs.cloudflare.com/ajax/libs/leaflet-geocoder-mapzen/1.9.4/leaflet-geocoder-mapzen.css&quot;</span><span class="p">&gt;</span>
+</span>        <span class="p">&lt;</span><span class="nt">style</span><span class="p">&gt;</span>
+                <span class="p">#</span><span class="nn">map</span> <span class="p">{</span>
+                        <span class="k">position</span><span class="p">:</span> <span class="kc">absolute</span><span class="p">;</span>
+                        <span class="k">top</span><span class="p">:</span> <span class="mi">0</span><span class="p">;</span>
+                        <span class="k">left</span><span class="p">:</span> <span class="mi">0</span><span class="p">;</span>
+                        <span class="k">bottom</span><span class="p">:</span> <span class="mi">0</span><span class="p">;</span>
+                        <span class="k">right</span><span class="p">:</span> <span class="mi">0</span><span class="p">;</span>
+                <span class="p">}</span>
+        <span class="p">&lt;/</span><span class="nt">style</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">head</span><span class="p">&gt;</span>
+<span class="p">&lt;</span><span class="nt">body</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">div</span> <span class="na">id</span><span class="o">=</span><span class="s">&quot;map&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+
+        <span class="p">&lt;</span><span class="nt">script</span> <span class="na">src</span><span class="o">=</span><span class="s">&quot;https://unpkg.com/leaflet@1.7.1/dist/leaflet.js&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+        <span class="c">&lt;!-- Load geocoding plugin after Leaflet --&gt;</span>
+        <span class="p">&lt;</span><span class="nt">script</span> <span class="na">src</span><span class="o">=</span><span class="s">&quot;leaflet-geocoder.js&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
 
         <span class="p">&lt;</span><span class="nt">script</span> <span class="na">type</span><span class="o">=</span><span class="s">&quot;text/javascript&quot;</span><span class="p">&gt;</span>
             <span class="kd">var</span> <span class="nx">map</span> <span class="o">=</span> <span class="nx">L</span><span class="p">.</span><span class="nx">map</span><span class="p">(</span><span class="s1">&#39;map&#39;</span><span class="p">);</span>
@@ -742,13 +695,69 @@
                 <span class="nx">attribution</span><span class="o">:</span> <span class="s1">&#39;&amp;copy; &lt;a href=&quot;http://osm.org/copyright&quot;&gt;OpenStreetMap&lt;/a&gt; contributors&#39;</span>
         <span class="p">}).</span><span class="nx">addTo</span><span class="p">(</span><span class="nx">map</span><span class="p">);</span>
 
-    <span class="kd">var</span> <span class="nx">options</span> <span class="o">=</span> <span class="p">{</span>
-            <span class="nx">key</span><span class="o">:</span> <span class="s1">&#39;YOUR-API-KEY&#39;</span><span class="p">,</span>
-            <span class="nx">limit</span><span class="o">:</span> <span class="mf">10</span><span class="p">,</span>
-        <span class="p">};</span>
-        <span class="kd">var</span> <span class="nx">control</span> <span class="o">=</span> <span class="nx">L</span><span class="p">.</span><span class="nx">Control</span><span class="p">.</span><span class="nx">openCageSearch</span><span class="p">(</span><span class="nx">options</span><span class="p">).</span><span class="nx">addTo</span><span class="p">(</span><span class="nx">map</span><span class="p">);</span>
+        <span class="kd">var</span> <span class="nx">geocodingOptions</span> <span class="o">=</span> <span class="p">{</span>      
+            <span class="nx">url</span><span class="o">:</span><span class="s1">&#39;https://eines.icgc.cat/geocodificador&#39;</span><span class="p">,</span>
+            <span class="nx">expanded</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span>
+            <span class="nx">autocomplete</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span>
+            <span class="nx">focus</span><span class="o">:</span><span class="kc">false</span>
+            <span class="p">};</span>
+        <span class="nx">L</span><span class="p">.</span><span class="nx">control</span><span class="p">.</span><span class="nx">geocoder</span><span class="p">(</span><span class="nx">geocodingOptions</span><span class="p">).</span><span class="nx">addTo</span><span class="p">(</span><span class="nx">map</span><span class="p">);</span>
 
-<span class="hll">         <span class="nx">map</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;click&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">e</span><span class="p">){</span>
+        <span class="p">&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">body</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">html</span><span class="p">&gt;</span>
+</code></pre></div>
+<ul>
+<li>Recargamos el mapa en el navegador y vemos que el control ahora si tiene estilo</li>
+</ul>
+<p><img alt="ejemplo geocodificador" src="../img/ejemplo_geocoder_icgc.png" />
+<em>ejemplo geocodificador</em></p>
+<h2 id="geocodificacion-inversa">Geocodificación inversa</h2>
+<p>Implementaremos la funcionalidad que cuando el usuaio haga click en el mapa se busque la dirección o topónimo más cercano.</p>
+<ul>
+<li>Capturar el evento click en el mapa.</li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="cp">&lt;!DOCTYPE html&gt;</span>
+<span class="p">&lt;</span><span class="nt">html</span><span class="p">&gt;</span>
+<span class="p">&lt;</span><span class="nt">head</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">title</span><span class="p">&gt;</span>Ejemplo geocoder<span class="p">&lt;/</span><span class="nt">title</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">link</span> <span class="na">rel</span><span class="o">=</span><span class="s">&quot;stylesheet&quot;</span> <span class="na">href</span><span class="o">=</span><span class="s">&quot;https://unpkg.com/leaflet@1.7.1/dist/leaflet.css&quot;</span> <span class="p">/&gt;</span>
+    <span class="p">&lt;</span><span class="nt">link</span> <span class="na">rel</span><span class="o">=</span><span class="s">&quot;stylesheet&quot;</span> <span class="na">href</span><span class="o">=</span><span class="s">&quot;https://cdnjs.cloudflare.com/ajax/libs/leaflet-geocoder-mapzen/1.9.4/leaflet-geocoder-mapzen.css&quot;</span><span class="p">&gt;</span>
+        <span class="p">&lt;</span><span class="nt">style</span><span class="p">&gt;</span>
+                <span class="p">#</span><span class="nn">map</span> <span class="p">{</span>
+                        <span class="k">position</span><span class="p">:</span> <span class="kc">absolute</span><span class="p">;</span>
+                        <span class="k">top</span><span class="p">:</span> <span class="mi">0</span><span class="p">;</span>
+                        <span class="k">left</span><span class="p">:</span> <span class="mi">0</span><span class="p">;</span>
+                        <span class="k">bottom</span><span class="p">:</span> <span class="mi">0</span><span class="p">;</span>
+                        <span class="k">right</span><span class="p">:</span> <span class="mi">0</span><span class="p">;</span>
+                <span class="p">}</span>
+        <span class="p">&lt;/</span><span class="nt">style</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">head</span><span class="p">&gt;</span>
+<span class="p">&lt;</span><span class="nt">body</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">div</span> <span class="na">id</span><span class="o">=</span><span class="s">&quot;map&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+
+        <span class="p">&lt;</span><span class="nt">script</span> <span class="na">src</span><span class="o">=</span><span class="s">&quot;https://unpkg.com/leaflet@1.7.1/dist/leaflet.js&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+        <span class="c">&lt;!-- Load geocoding plugin after Leaflet --&gt;</span>
+        <span class="p">&lt;</span><span class="nt">script</span> <span class="na">src</span><span class="o">=</span><span class="s">&quot;leaflet-geocoder.js&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+
+        <span class="p">&lt;</span><span class="nt">script</span> <span class="na">type</span><span class="o">=</span><span class="s">&quot;text/javascript&quot;</span><span class="p">&gt;</span>
+            <span class="kd">var</span> <span class="nx">map</span> <span class="o">=</span> <span class="nx">L</span><span class="p">.</span><span class="nx">map</span><span class="p">(</span><span class="s1">&#39;map&#39;</span><span class="p">);</span>
+
+            <span class="nx">map</span><span class="p">.</span><span class="nx">setView</span><span class="p">([</span><span class="mf">41.3887</span><span class="p">,</span> <span class="mf">2.1777</span><span class="p">],</span> <span class="mf">13</span><span class="p">);</span>
+
+        <span class="nx">L</span><span class="p">.</span><span class="nx">tileLayer</span><span class="p">(</span><span class="s1">&#39;http://{s}.tile.osm.org/{z}/{x}/{y}.png&#39;</span><span class="p">,</span> <span class="p">{</span>
+                <span class="nx">attribution</span><span class="o">:</span> <span class="s1">&#39;&amp;copy; &lt;a href=&quot;http://osm.org/copyright&quot;&gt;OpenStreetMap&lt;/a&gt; contributors&#39;</span>
+        <span class="p">}).</span><span class="nx">addTo</span><span class="p">(</span><span class="nx">map</span><span class="p">);</span>
+
+        <span class="kd">var</span> <span class="nx">geocodingOptions</span> <span class="o">=</span> <span class="p">{</span>      
+            <span class="nx">url</span><span class="o">:</span><span class="s1">&#39;https://eines.icgc.cat/geocodificador&#39;</span><span class="p">,</span>
+            <span class="nx">expanded</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span>
+            <span class="nx">autocomplete</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span>
+            <span class="nx">focus</span><span class="o">:</span><span class="kc">false</span>
+            <span class="p">};</span>
+        <span class="nx">L</span><span class="p">.</span><span class="nx">control</span><span class="p">.</span><span class="nx">geocoder</span><span class="p">(</span><span class="nx">geocodingOptions</span><span class="p">).</span><span class="nx">addTo</span><span class="p">(</span><span class="nx">map</span><span class="p">);</span>
+
+<span class="hll">        <span class="nx">map</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;click&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">e</span><span class="p">){</span>
 </span><span class="hll">            <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">e</span><span class="p">);</span>
 </span><span class="hll">        <span class="p">});</span>
 </span>
@@ -769,7 +778,7 @@
 <span class="p">&lt;</span><span class="nt">head</span><span class="p">&gt;</span>
     <span class="p">&lt;</span><span class="nt">title</span><span class="p">&gt;</span>Ejemplo geocoder<span class="p">&lt;/</span><span class="nt">title</span><span class="p">&gt;</span>
     <span class="p">&lt;</span><span class="nt">link</span> <span class="na">rel</span><span class="o">=</span><span class="s">&quot;stylesheet&quot;</span> <span class="na">href</span><span class="o">=</span><span class="s">&quot;https://unpkg.com/leaflet@1.7.1/dist/leaflet.css&quot;</span> <span class="p">/&gt;</span>
-    <span class="p">&lt;</span><span class="nt">link</span> <span class="na">rel</span><span class="o">=</span><span class="s">&quot;stylesheet&quot;</span> <span class="na">href</span><span class="o">=</span><span class="s">&quot;https://cdn.jsdelivr.net/gh/opencagedata/leaflet-opencage-search@1.4.1/dist/css/L.Control.OpenCageData.Search.min.css&quot;</span> <span class="p">/&gt;</span>
+    <span class="p">&lt;</span><span class="nt">link</span> <span class="na">rel</span><span class="o">=</span><span class="s">&quot;stylesheet&quot;</span> <span class="na">href</span><span class="o">=</span><span class="s">&quot;https://cdnjs.cloudflare.com/ajax/libs/leaflet-geocoder-mapzen/1.9.4/leaflet-geocoder-mapzen.css&quot;</span><span class="p">&gt;</span>
         <span class="p">&lt;</span><span class="nt">style</span><span class="p">&gt;</span>
                 <span class="p">#</span><span class="nn">map</span> <span class="p">{</span>
                         <span class="k">position</span><span class="p">:</span> <span class="kc">absolute</span><span class="p">;</span>
@@ -784,7 +793,8 @@
     <span class="p">&lt;</span><span class="nt">div</span> <span class="na">id</span><span class="o">=</span><span class="s">&quot;map&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
 
         <span class="p">&lt;</span><span class="nt">script</span> <span class="na">src</span><span class="o">=</span><span class="s">&quot;https://unpkg.com/leaflet@1.7.1/dist/leaflet.js&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
-    <span class="p">&lt;</span><span class="nt">script</span> <span class="na">src</span><span class="o">=</span><span class="s">&quot;https://cdn.jsdelivr.net/gh/opencagedata/leaflet-opencage-search@1.4.1/dist/js/L.Control.OpenCageSearch.min.js&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+        <span class="c">&lt;!-- Load geocoding plugin after Leaflet --&gt;</span>
+        <span class="p">&lt;</span><span class="nt">script</span> <span class="na">src</span><span class="o">=</span><span class="s">&quot;leaflet-geocoder.js&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
 
         <span class="p">&lt;</span><span class="nt">script</span> <span class="na">type</span><span class="o">=</span><span class="s">&quot;text/javascript&quot;</span><span class="p">&gt;</span>
             <span class="kd">var</span> <span class="nx">map</span> <span class="o">=</span> <span class="nx">L</span><span class="p">.</span><span class="nx">map</span><span class="p">(</span><span class="s1">&#39;map&#39;</span><span class="p">);</span>
@@ -795,15 +805,17 @@
                 <span class="nx">attribution</span><span class="o">:</span> <span class="s1">&#39;&amp;copy; &lt;a href=&quot;http://osm.org/copyright&quot;&gt;OpenStreetMap&lt;/a&gt; contributors&#39;</span>
         <span class="p">}).</span><span class="nx">addTo</span><span class="p">(</span><span class="nx">map</span><span class="p">);</span>
 
-    <span class="kd">var</span> <span class="nx">options</span> <span class="o">=</span> <span class="p">{</span>
-            <span class="nx">key</span><span class="o">:</span> <span class="s1">&#39;YOUR-API-KEY&#39;</span><span class="p">,</span>
-            <span class="nx">limit</span><span class="o">:</span> <span class="mf">10</span><span class="p">,</span>
-        <span class="p">};</span>
-        <span class="kd">var</span> <span class="nx">control</span> <span class="o">=</span> <span class="nx">L</span><span class="p">.</span><span class="nx">Control</span><span class="p">.</span><span class="nx">openCageSearch</span><span class="p">(</span><span class="nx">options</span><span class="p">).</span><span class="nx">addTo</span><span class="p">(</span><span class="nx">map</span><span class="p">);</span>
+        <span class="kd">var</span> <span class="nx">geocodingOptions</span> <span class="o">=</span> <span class="p">{</span>      
+            <span class="nx">url</span><span class="o">:</span><span class="s1">&#39;https://eines.icgc.cat/geocodificador&#39;</span><span class="p">,</span>
+            <span class="nx">expanded</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span>
+            <span class="nx">autocomplete</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span>
+            <span class="nx">focus</span><span class="o">:</span><span class="kc">false</span>
+            <span class="p">};</span>
+        <span class="nx">L</span><span class="p">.</span><span class="nx">control</span><span class="p">.</span><span class="nx">geocoder</span><span class="p">(</span><span class="nx">geocodingOptions</span><span class="p">).</span><span class="nx">addTo</span><span class="p">(</span><span class="nx">map</span><span class="p">);</span>
 
-         <span class="nx">map</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;click&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">e</span><span class="p">){</span>
+        <span class="nx">map</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;click&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">e</span><span class="p">){</span>
             <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">e</span><span class="p">);</span>
-<span class="hll">            <span class="kd">var</span> <span class="nx">url</span> <span class="o">=</span> <span class="sb">`https://api.opencagedata.com/geocode/v1/json?q=</span><span class="si">${</span><span class="nx">e</span><span class="p">.</span><span class="nx">latlng</span><span class="p">.</span><span class="nx">lat</span><span class="si">}</span><span class="sb">+</span><span class="si">${</span><span class="nx">e</span><span class="p">.</span><span class="nx">latlng</span><span class="p">.</span><span class="nx">lng</span><span class="si">}</span><span class="sb">&amp;key=</span><span class="si">${</span><span class="nx">options</span><span class="p">.</span><span class="nx">key</span><span class="si">}</span><span class="sb">`</span><span class="p">;</span>
+<span class="hll">            <span class="kd">var</span> <span class="nx">url</span> <span class="o">=</span> <span class="sb">`https://eines.icgc.cat/geocodificadorinvers?lat=</span><span class="si">${</span><span class="nx">e</span><span class="p">.</span><span class="nx">latlng</span><span class="p">.</span><span class="nx">lat</span><span class="si">}</span><span class="sb">&amp;lon=</span><span class="si">${</span><span class="nx">e</span><span class="p">.</span><span class="nx">latlng</span><span class="p">.</span><span class="nx">lng</span><span class="si">}</span><span class="sb">`</span><span class="p">;</span>
 </span><span class="hll">            <span class="nx">fetch</span><span class="p">(</span><span class="nx">url</span><span class="p">)</span>
 </span><span class="hll">            <span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">response</span><span class="p">)</span> <span class="p">{</span>
 </span><span class="hll">            <span class="nx">response</span><span class="p">.</span><span class="nx">json</span><span class="p">().</span><span class="nx">then</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">data</span><span class="p">){</span>
@@ -832,7 +844,7 @@
 <span class="p">&lt;</span><span class="nt">head</span><span class="p">&gt;</span>
     <span class="p">&lt;</span><span class="nt">title</span><span class="p">&gt;</span>Ejemplo geocoder<span class="p">&lt;/</span><span class="nt">title</span><span class="p">&gt;</span>
     <span class="p">&lt;</span><span class="nt">link</span> <span class="na">rel</span><span class="o">=</span><span class="s">&quot;stylesheet&quot;</span> <span class="na">href</span><span class="o">=</span><span class="s">&quot;https://unpkg.com/leaflet@1.7.1/dist/leaflet.css&quot;</span> <span class="p">/&gt;</span>
-    <span class="p">&lt;</span><span class="nt">link</span> <span class="na">rel</span><span class="o">=</span><span class="s">&quot;stylesheet&quot;</span> <span class="na">href</span><span class="o">=</span><span class="s">&quot;https://cdn.jsdelivr.net/gh/opencagedata/leaflet-opencage-search@1.4.1/dist/css/L.Control.OpenCageData.Search.min.css&quot;</span> <span class="p">/&gt;</span>
+    <span class="p">&lt;</span><span class="nt">link</span> <span class="na">rel</span><span class="o">=</span><span class="s">&quot;stylesheet&quot;</span> <span class="na">href</span><span class="o">=</span><span class="s">&quot;https://cdnjs.cloudflare.com/ajax/libs/leaflet-geocoder-mapzen/1.9.4/leaflet-geocoder-mapzen.css&quot;</span><span class="p">&gt;</span>
         <span class="p">&lt;</span><span class="nt">style</span><span class="p">&gt;</span>
                 <span class="p">#</span><span class="nn">map</span> <span class="p">{</span>
                         <span class="k">position</span><span class="p">:</span> <span class="kc">absolute</span><span class="p">;</span>
@@ -847,7 +859,8 @@
     <span class="p">&lt;</span><span class="nt">div</span> <span class="na">id</span><span class="o">=</span><span class="s">&quot;map&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
 
         <span class="p">&lt;</span><span class="nt">script</span> <span class="na">src</span><span class="o">=</span><span class="s">&quot;https://unpkg.com/leaflet@1.7.1/dist/leaflet.js&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
-    <span class="p">&lt;</span><span class="nt">script</span> <span class="na">src</span><span class="o">=</span><span class="s">&quot;https://cdn.jsdelivr.net/gh/opencagedata/leaflet-opencage-search@1.4.1/dist/js/L.Control.OpenCageSearch.min.js&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+        <span class="c">&lt;!-- Load geocoding plugin after Leaflet --&gt;</span>
+        <span class="p">&lt;</span><span class="nt">script</span> <span class="na">src</span><span class="o">=</span><span class="s">&quot;leaflet-geocoder.js&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
 
         <span class="p">&lt;</span><span class="nt">script</span> <span class="na">type</span><span class="o">=</span><span class="s">&quot;text/javascript&quot;</span><span class="p">&gt;</span>
             <span class="kd">var</span> <span class="nx">map</span> <span class="o">=</span> <span class="nx">L</span><span class="p">.</span><span class="nx">map</span><span class="p">(</span><span class="s1">&#39;map&#39;</span><span class="p">);</span>
@@ -858,15 +871,17 @@
                 <span class="nx">attribution</span><span class="o">:</span> <span class="s1">&#39;&amp;copy; &lt;a href=&quot;http://osm.org/copyright&quot;&gt;OpenStreetMap&lt;/a&gt; contributors&#39;</span>
         <span class="p">}).</span><span class="nx">addTo</span><span class="p">(</span><span class="nx">map</span><span class="p">);</span>
 
-    <span class="kd">var</span> <span class="nx">options</span> <span class="o">=</span> <span class="p">{</span>
-            <span class="nx">key</span><span class="o">:</span> <span class="s1">&#39;95dbeb5a4d3a4ad29b36107cbf848826&#39;</span><span class="p">,</span>
-            <span class="nx">limit</span><span class="o">:</span> <span class="mf">10</span><span class="p">,</span>
-        <span class="p">};</span>
-        <span class="kd">var</span> <span class="nx">control</span> <span class="o">=</span> <span class="nx">L</span><span class="p">.</span><span class="nx">Control</span><span class="p">.</span><span class="nx">openCageSearch</span><span class="p">(</span><span class="nx">options</span><span class="p">).</span><span class="nx">addTo</span><span class="p">(</span><span class="nx">map</span><span class="p">);</span>
+        <span class="kd">var</span> <span class="nx">geocodingOptions</span> <span class="o">=</span> <span class="p">{</span>      
+            <span class="nx">url</span><span class="o">:</span><span class="s1">&#39;https://eines.icgc.cat/geocodificador&#39;</span><span class="p">,</span>
+            <span class="nx">expanded</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span>
+            <span class="nx">autocomplete</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span>
+            <span class="nx">focus</span><span class="o">:</span><span class="kc">false</span>
+            <span class="p">};</span>
+        <span class="nx">L</span><span class="p">.</span><span class="nx">control</span><span class="p">.</span><span class="nx">geocoder</span><span class="p">(</span><span class="nx">geocodingOptions</span><span class="p">).</span><span class="nx">addTo</span><span class="p">(</span><span class="nx">map</span><span class="p">);</span>
 
-    <span class="nx">map</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;click&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">e</span><span class="p">){</span>
+        <span class="nx">map</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;click&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">e</span><span class="p">){</span>
             <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">e</span><span class="p">);</span>
-            <span class="kd">var</span> <span class="nx">url</span> <span class="o">=</span> <span class="sb">`https://api.opencagedata.com/geocode/v1/json?q=</span><span class="si">${</span><span class="nx">e</span><span class="p">.</span><span class="nx">latlng</span><span class="p">.</span><span class="nx">lat</span><span class="si">}</span><span class="sb">+</span><span class="si">${</span><span class="nx">e</span><span class="p">.</span><span class="nx">latlng</span><span class="p">.</span><span class="nx">lng</span><span class="si">}</span><span class="sb">&amp;key=</span><span class="si">${</span><span class="nx">options</span><span class="p">.</span><span class="nx">key</span><span class="si">}</span><span class="sb">`</span><span class="p">;</span>
+            <span class="kd">var</span> <span class="nx">url</span> <span class="o">=</span> <span class="sb">`https://eines.icgc.cat/geocodificadorinvers?lat=</span><span class="si">${</span><span class="nx">e</span><span class="p">.</span><span class="nx">latlng</span><span class="p">.</span><span class="nx">lat</span><span class="si">}</span><span class="sb">&amp;lon=</span><span class="si">${</span><span class="nx">e</span><span class="p">.</span><span class="nx">latlng</span><span class="p">.</span><span class="nx">lng</span><span class="si">}</span><span class="sb">`</span><span class="p">;</span>
             <span class="nx">fetch</span><span class="p">(</span><span class="nx">url</span><span class="p">)</span>
             <span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">response</span><span class="p">)</span> <span class="p">{</span>
             <span class="nx">response</span><span class="p">.</span><span class="nx">json</span><span class="p">().</span><span class="nx">then</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">data</span><span class="p">){</span>
@@ -897,7 +912,7 @@
 <span class="p">&lt;</span><span class="nt">head</span><span class="p">&gt;</span>
     <span class="p">&lt;</span><span class="nt">title</span><span class="p">&gt;</span>Ejemplo geocoder<span class="p">&lt;/</span><span class="nt">title</span><span class="p">&gt;</span>
     <span class="p">&lt;</span><span class="nt">link</span> <span class="na">rel</span><span class="o">=</span><span class="s">&quot;stylesheet&quot;</span> <span class="na">href</span><span class="o">=</span><span class="s">&quot;https://unpkg.com/leaflet@1.7.1/dist/leaflet.css&quot;</span> <span class="p">/&gt;</span>
-    <span class="p">&lt;</span><span class="nt">link</span> <span class="na">rel</span><span class="o">=</span><span class="s">&quot;stylesheet&quot;</span> <span class="na">href</span><span class="o">=</span><span class="s">&quot;https://cdn.jsdelivr.net/gh/opencagedata/leaflet-opencage-search@1.4.1/dist/css/L.Control.OpenCageData.Search.min.css&quot;</span> <span class="p">/&gt;</span>
+    <span class="p">&lt;</span><span class="nt">link</span> <span class="na">rel</span><span class="o">=</span><span class="s">&quot;stylesheet&quot;</span> <span class="na">href</span><span class="o">=</span><span class="s">&quot;https://cdnjs.cloudflare.com/ajax/libs/leaflet-geocoder-mapzen/1.9.4/leaflet-geocoder-mapzen.css&quot;</span><span class="p">&gt;</span>
         <span class="p">&lt;</span><span class="nt">style</span><span class="p">&gt;</span>
                 <span class="p">#</span><span class="nn">map</span> <span class="p">{</span>
                         <span class="k">position</span><span class="p">:</span> <span class="kc">absolute</span><span class="p">;</span>
@@ -912,7 +927,8 @@
     <span class="p">&lt;</span><span class="nt">div</span> <span class="na">id</span><span class="o">=</span><span class="s">&quot;map&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
 
         <span class="p">&lt;</span><span class="nt">script</span> <span class="na">src</span><span class="o">=</span><span class="s">&quot;https://unpkg.com/leaflet@1.7.1/dist/leaflet.js&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
-    <span class="p">&lt;</span><span class="nt">script</span> <span class="na">src</span><span class="o">=</span><span class="s">&quot;https://cdn.jsdelivr.net/gh/opencagedata/leaflet-opencage-search@1.4.1/dist/js/L.Control.OpenCageSearch.min.js&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+        <span class="c">&lt;!-- Load geocoding plugin after Leaflet --&gt;</span>
+        <span class="p">&lt;</span><span class="nt">script</span> <span class="na">src</span><span class="o">=</span><span class="s">&quot;leaflet-geocoder.js&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
 
         <span class="p">&lt;</span><span class="nt">script</span> <span class="na">type</span><span class="o">=</span><span class="s">&quot;text/javascript&quot;</span><span class="p">&gt;</span>
             <span class="kd">var</span> <span class="nx">map</span> <span class="o">=</span> <span class="nx">L</span><span class="p">.</span><span class="nx">map</span><span class="p">(</span><span class="s1">&#39;map&#39;</span><span class="p">);</span>
@@ -923,20 +939,22 @@
                 <span class="nx">attribution</span><span class="o">:</span> <span class="s1">&#39;&amp;copy; &lt;a href=&quot;http://osm.org/copyright&quot;&gt;OpenStreetMap&lt;/a&gt; contributors&#39;</span>
         <span class="p">}).</span><span class="nx">addTo</span><span class="p">(</span><span class="nx">map</span><span class="p">);</span>
 
-    <span class="kd">var</span> <span class="nx">options</span> <span class="o">=</span> <span class="p">{</span>
-            <span class="nx">key</span><span class="o">:</span> <span class="s1">&#39;95dbeb5a4d3a4ad29b36107cbf848826&#39;</span><span class="p">,</span>
-            <span class="nx">limit</span><span class="o">:</span> <span class="mf">10</span><span class="p">,</span>
-        <span class="p">};</span>
-        <span class="kd">var</span> <span class="nx">control</span> <span class="o">=</span> <span class="nx">L</span><span class="p">.</span><span class="nx">Control</span><span class="p">.</span><span class="nx">openCageSearch</span><span class="p">(</span><span class="nx">options</span><span class="p">).</span><span class="nx">addTo</span><span class="p">(</span><span class="nx">map</span><span class="p">);</span>
+        <span class="kd">var</span> <span class="nx">geocodingOptions</span> <span class="o">=</span> <span class="p">{</span>      
+            <span class="nx">url</span><span class="o">:</span><span class="s1">&#39;https://eines.icgc.cat/geocodificador&#39;</span><span class="p">,</span>
+            <span class="nx">expanded</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span>
+            <span class="nx">autocomplete</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span>
+            <span class="nx">focus</span><span class="o">:</span><span class="kc">false</span>
+            <span class="p">};</span>
+        <span class="nx">L</span><span class="p">.</span><span class="nx">control</span><span class="p">.</span><span class="nx">geocoder</span><span class="p">(</span><span class="nx">geocodingOptions</span><span class="p">).</span><span class="nx">addTo</span><span class="p">(</span><span class="nx">map</span><span class="p">);</span>
 
-    <span class="nx">map</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;click&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">e</span><span class="p">){</span>
+        <span class="nx">map</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;click&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">e</span><span class="p">){</span>
             <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">e</span><span class="p">);</span>
-            <span class="kd">var</span> <span class="nx">url</span> <span class="o">=</span> <span class="sb">`https://api.opencagedata.com/geocode/v1/json?q=</span><span class="si">${</span><span class="nx">e</span><span class="p">.</span><span class="nx">latlng</span><span class="p">.</span><span class="nx">lat</span><span class="si">}</span><span class="sb">+</span><span class="si">${</span><span class="nx">e</span><span class="p">.</span><span class="nx">latlng</span><span class="p">.</span><span class="nx">lng</span><span class="si">}</span><span class="sb">&amp;key=</span><span class="si">${</span><span class="nx">options</span><span class="p">.</span><span class="nx">key</span><span class="si">}</span><span class="sb">`</span><span class="p">;</span>
+            <span class="kd">var</span> <span class="nx">url</span> <span class="o">=</span> <span class="sb">`https://eines.icgc.cat/geocodificadorinvers?lat=</span><span class="si">${</span><span class="nx">e</span><span class="p">.</span><span class="nx">latlng</span><span class="p">.</span><span class="nx">lat</span><span class="si">}</span><span class="sb">&amp;lon=</span><span class="si">${</span><span class="nx">e</span><span class="p">.</span><span class="nx">latlng</span><span class="p">.</span><span class="nx">lng</span><span class="si">}</span><span class="sb">`</span><span class="p">;</span>
             <span class="nx">fetch</span><span class="p">(</span><span class="nx">url</span><span class="p">)</span>
             <span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">response</span><span class="p">)</span> <span class="p">{</span>
             <span class="nx">response</span><span class="p">.</span><span class="nx">json</span><span class="p">().</span><span class="nx">then</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">data</span><span class="p">){</span>
                 <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">data</span><span class="p">);</span>
-<span class="hll">                <span class="kd">var</span> <span class="nx">etiqueta</span> <span class="o">=</span> <span class="nx">data</span><span class="p">.</span><span class="nx">results</span><span class="p">[</span><span class="mf">0</span><span class="p">].</span><span class="nx">formatted</span><span class="p">;</span>
+<span class="hll">                <span class="kd">var</span> <span class="nx">etiqueta</span> <span class="o">=</span> <span class="nx">data</span><span class="p">.</span><span class="nx">features</span><span class="p">[</span><span class="mf">0</span><span class="p">].</span><span class="nx">properties</span><span class="p">.</span><span class="nx">label</span><span class="p">;</span>
 </span><span class="hll">                <span class="kd">var</span> <span class="nx">marker</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">L</span><span class="p">.</span><span class="nx">marker</span><span class="p">(</span><span class="nx">e</span><span class="p">.</span><span class="nx">latlng</span><span class="p">).</span><span class="nx">bindPopup</span><span class="p">(</span><span class="nx">etiqueta</span><span class="p">);</span>
 </span>                <span class="nx">map</span><span class="p">.</span><span class="nx">addLayer</span><span class="p">(</span><span class="nx">marker</span><span class="p">);</span>
 <span class="hll">                <span class="nx">marker</span><span class="p">.</span><span class="nx">openPopup</span><span class="p">();</span>
@@ -964,7 +982,7 @@
 <span class="p">&lt;</span><span class="nt">head</span><span class="p">&gt;</span>
     <span class="p">&lt;</span><span class="nt">title</span><span class="p">&gt;</span>Ejemplo geocoder<span class="p">&lt;/</span><span class="nt">title</span><span class="p">&gt;</span>
     <span class="p">&lt;</span><span class="nt">link</span> <span class="na">rel</span><span class="o">=</span><span class="s">&quot;stylesheet&quot;</span> <span class="na">href</span><span class="o">=</span><span class="s">&quot;https://unpkg.com/leaflet@1.7.1/dist/leaflet.css&quot;</span> <span class="p">/&gt;</span>
-    <span class="p">&lt;</span><span class="nt">link</span> <span class="na">rel</span><span class="o">=</span><span class="s">&quot;stylesheet&quot;</span> <span class="na">href</span><span class="o">=</span><span class="s">&quot;https://cdn.jsdelivr.net/gh/opencagedata/leaflet-opencage-search@1.4.1/dist/css/L.Control.OpenCageData.Search.min.css&quot;</span> <span class="p">/&gt;</span>
+    <span class="p">&lt;</span><span class="nt">link</span> <span class="na">rel</span><span class="o">=</span><span class="s">&quot;stylesheet&quot;</span> <span class="na">href</span><span class="o">=</span><span class="s">&quot;https://cdnjs.cloudflare.com/ajax/libs/leaflet-geocoder-mapzen/1.9.4/leaflet-geocoder-mapzen.css&quot;</span><span class="p">&gt;</span>
         <span class="p">&lt;</span><span class="nt">style</span><span class="p">&gt;</span>
                 <span class="p">#</span><span class="nn">map</span> <span class="p">{</span>
                         <span class="k">position</span><span class="p">:</span> <span class="kc">absolute</span><span class="p">;</span>
@@ -979,7 +997,8 @@
     <span class="p">&lt;</span><span class="nt">div</span> <span class="na">id</span><span class="o">=</span><span class="s">&quot;map&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
 
         <span class="p">&lt;</span><span class="nt">script</span> <span class="na">src</span><span class="o">=</span><span class="s">&quot;https://unpkg.com/leaflet@1.7.1/dist/leaflet.js&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
-    <span class="p">&lt;</span><span class="nt">script</span> <span class="na">src</span><span class="o">=</span><span class="s">&quot;https://cdn.jsdelivr.net/gh/opencagedata/leaflet-opencage-search@1.4.1/dist/js/L.Control.OpenCageSearch.min.js&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+        <span class="c">&lt;!-- Load geocoding plugin after Leaflet --&gt;</span>
+        <span class="p">&lt;</span><span class="nt">script</span> <span class="na">src</span><span class="o">=</span><span class="s">&quot;leaflet-geocoder.js&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
 
         <span class="p">&lt;</span><span class="nt">script</span> <span class="na">type</span><span class="o">=</span><span class="s">&quot;text/javascript&quot;</span><span class="p">&gt;</span>
             <span class="kd">var</span> <span class="nx">map</span> <span class="o">=</span> <span class="nx">L</span><span class="p">.</span><span class="nx">map</span><span class="p">(</span><span class="s1">&#39;map&#39;</span><span class="p">);</span>
@@ -990,24 +1009,26 @@
                 <span class="nx">attribution</span><span class="o">:</span> <span class="s1">&#39;&amp;copy; &lt;a href=&quot;http://osm.org/copyright&quot;&gt;OpenStreetMap&lt;/a&gt; contributors&#39;</span>
         <span class="p">}).</span><span class="nx">addTo</span><span class="p">(</span><span class="nx">map</span><span class="p">);</span>
 
-    <span class="kd">var</span> <span class="nx">options</span> <span class="o">=</span> <span class="p">{</span>
-            <span class="nx">key</span><span class="o">:</span> <span class="s1">&#39;95dbeb5a4d3a4ad29b36107cbf848826&#39;</span><span class="p">,</span>
-            <span class="nx">limit</span><span class="o">:</span> <span class="mf">10</span><span class="p">,</span>
-        <span class="p">};</span>
-        <span class="kd">var</span> <span class="nx">control</span> <span class="o">=</span> <span class="nx">L</span><span class="p">.</span><span class="nx">Control</span><span class="p">.</span><span class="nx">openCageSearch</span><span class="p">(</span><span class="nx">options</span><span class="p">).</span><span class="nx">addTo</span><span class="p">(</span><span class="nx">map</span><span class="p">);</span>
+        <span class="kd">var</span> <span class="nx">geocodingOptions</span> <span class="o">=</span> <span class="p">{</span>      
+            <span class="nx">url</span><span class="o">:</span><span class="s1">&#39;https://eines.icgc.cat/geocodificador&#39;</span><span class="p">,</span>
+            <span class="nx">expanded</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span>
+            <span class="nx">autocomplete</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span>
+            <span class="nx">focus</span><span class="o">:</span><span class="kc">false</span>
+            <span class="p">};</span>
+        <span class="nx">L</span><span class="p">.</span><span class="nx">control</span><span class="p">.</span><span class="nx">geocoder</span><span class="p">(</span><span class="nx">geocodingOptions</span><span class="p">).</span><span class="nx">addTo</span><span class="p">(</span><span class="nx">map</span><span class="p">);</span>
 
-    <span class="nx">map</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;click&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">e</span><span class="p">){</span>
+        <span class="nx">map</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;click&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">e</span><span class="p">){</span>
             <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">e</span><span class="p">);</span>
-            <span class="kd">var</span> <span class="nx">url</span> <span class="o">=</span> <span class="sb">`https://api.opencagedata.com/geocode/v1/json?q=</span><span class="si">${</span><span class="nx">e</span><span class="p">.</span><span class="nx">latlng</span><span class="p">.</span><span class="nx">lat</span><span class="si">}</span><span class="sb">+</span><span class="si">${</span><span class="nx">e</span><span class="p">.</span><span class="nx">latlng</span><span class="p">.</span><span class="nx">lng</span><span class="si">}</span><span class="sb">&amp;key=</span><span class="si">${</span><span class="nx">options</span><span class="p">.</span><span class="nx">key</span><span class="si">}</span><span class="sb">`</span><span class="p">;</span>
+            <span class="kd">var</span> <span class="nx">url</span> <span class="o">=</span> <span class="sb">`https://eines.icgc.cat/geocodificadorinvers?lat=</span><span class="si">${</span><span class="nx">e</span><span class="p">.</span><span class="nx">latlng</span><span class="p">.</span><span class="nx">lat</span><span class="si">}</span><span class="sb">&amp;lon=</span><span class="si">${</span><span class="nx">e</span><span class="p">.</span><span class="nx">latlng</span><span class="p">.</span><span class="nx">lng</span><span class="si">}</span><span class="sb">`</span><span class="p">;</span>
             <span class="nx">fetch</span><span class="p">(</span><span class="nx">url</span><span class="p">)</span>
             <span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">response</span><span class="p">)</span> <span class="p">{</span>
             <span class="nx">response</span><span class="p">.</span><span class="nx">json</span><span class="p">().</span><span class="nx">then</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">data</span><span class="p">){</span>
                 <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">data</span><span class="p">);</span>
-                <span class="kd">var</span> <span class="nx">etiqueta</span> <span class="o">=</span> <span class="nx">data</span><span class="p">.</span><span class="nx">results</span><span class="p">[</span><span class="mf">0</span><span class="p">].</span><span class="nx">formatted</span><span class="p">;</span>
-<span class="hll">                <span class="kd">var</span> <span class="nx">posicion</span> <span class="o">=</span> <span class="nx">data</span><span class="p">.</span><span class="nx">results</span><span class="p">[</span><span class="mf">0</span><span class="p">].</span><span class="nx">geometry</span><span class="p">;</span>
+                <span class="kd">var</span> <span class="nx">etiqueta</span> <span class="o">=</span> <span class="nx">data</span><span class="p">.</span><span class="nx">features</span><span class="p">[</span><span class="mf">0</span><span class="p">].</span><span class="nx">properties</span><span class="p">.</span><span class="nx">label</span><span class="p">;</span>
+<span class="hll">                <span class="kd">var</span> <span class="nx">posicion</span> <span class="o">=</span> <span class="nx">data</span><span class="p">.</span><span class="nx">features</span><span class="p">[</span><span class="mf">0</span><span class="p">].</span><span class="nx">geometry</span><span class="p">.</span><span class="nx">coordinates</span><span class="p">;</span>
 </span><span class="hll">                <span class="kd">var</span> <span class="nx">marker</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">L</span><span class="p">.</span><span class="nx">marker</span><span class="p">(</span><span class="nx">posicion</span><span class="p">).</span><span class="nx">bindPopup</span><span class="p">(</span><span class="nx">etiqueta</span><span class="p">);</span>
 </span>                <span class="nx">map</span><span class="p">.</span><span class="nx">addLayer</span><span class="p">(</span><span class="nx">marker</span><span class="p">);</span>
-                                <span class="nx">marker</span><span class="p">.</span><span class="nx">openPopup</span><span class="p">();</span>
+                <span class="nx">marker</span><span class="p">.</span><span class="nx">openPopup</span><span class="p">();</span>
             <span class="p">});</span>
             <span class="p">})</span>
             <span class="p">.</span><span class="k">catch</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">myJson</span><span class="p">)</span> <span class="p">{</span>
@@ -1020,13 +1041,81 @@
 <span class="p">&lt;/</span><span class="nt">html</span><span class="p">&gt;</span>
 </code></pre></div>
 <ul>
-<li>Recargar el mapa y hacer click sobre el mapa. Vemos que se nos muestra un marcador con la etiqueta en una posición cercana a donde hemos hecho click.</li>
+<li>
+<p>Recargar el mapa y hacer click sobre el mapa. Vemos que se nos muestra un marcador en Africa. Esto es por que el marker espera las coordenadas en lat, lon y el geojson de respuesta del geocodificador retorna las coordenadas en lon, lat.</p>
+</li>
+<li>
+<p>Cambiar el orden de coordenadas para mostrar el marker en la posición correcta</p>
+</li>
 </ul>
+<div class="highlight"><pre><span></span><code><span class="cp">&lt;!DOCTYPE html&gt;</span>
+<span class="p">&lt;</span><span class="nt">html</span><span class="p">&gt;</span>
+<span class="p">&lt;</span><span class="nt">head</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">title</span><span class="p">&gt;</span>Ejemplo geocoder<span class="p">&lt;/</span><span class="nt">title</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">link</span> <span class="na">rel</span><span class="o">=</span><span class="s">&quot;stylesheet&quot;</span> <span class="na">href</span><span class="o">=</span><span class="s">&quot;https://unpkg.com/leaflet@1.7.1/dist/leaflet.css&quot;</span> <span class="p">/&gt;</span>
+    <span class="p">&lt;</span><span class="nt">link</span> <span class="na">rel</span><span class="o">=</span><span class="s">&quot;stylesheet&quot;</span> <span class="na">href</span><span class="o">=</span><span class="s">&quot;https://cdnjs.cloudflare.com/ajax/libs/leaflet-geocoder-mapzen/1.9.4/leaflet-geocoder-mapzen.css&quot;</span><span class="p">&gt;</span>
+        <span class="p">&lt;</span><span class="nt">style</span><span class="p">&gt;</span>
+                <span class="p">#</span><span class="nn">map</span> <span class="p">{</span>
+                        <span class="k">position</span><span class="p">:</span> <span class="kc">absolute</span><span class="p">;</span>
+                        <span class="k">top</span><span class="p">:</span> <span class="mi">0</span><span class="p">;</span>
+                        <span class="k">left</span><span class="p">:</span> <span class="mi">0</span><span class="p">;</span>
+                        <span class="k">bottom</span><span class="p">:</span> <span class="mi">0</span><span class="p">;</span>
+                        <span class="k">right</span><span class="p">:</span> <span class="mi">0</span><span class="p">;</span>
+                <span class="p">}</span>
+        <span class="p">&lt;/</span><span class="nt">style</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">head</span><span class="p">&gt;</span>
+<span class="p">&lt;</span><span class="nt">body</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">div</span> <span class="na">id</span><span class="o">=</span><span class="s">&quot;map&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+
+        <span class="p">&lt;</span><span class="nt">script</span> <span class="na">src</span><span class="o">=</span><span class="s">&quot;https://unpkg.com/leaflet@1.7.1/dist/leaflet.js&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+        <span class="c">&lt;!-- Load geocoding plugin after Leaflet --&gt;</span>
+        <span class="p">&lt;</span><span class="nt">script</span> <span class="na">src</span><span class="o">=</span><span class="s">&quot;leaflet-geocoder.js&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+
+        <span class="p">&lt;</span><span class="nt">script</span> <span class="na">type</span><span class="o">=</span><span class="s">&quot;text/javascript&quot;</span><span class="p">&gt;</span>
+            <span class="kd">var</span> <span class="nx">map</span> <span class="o">=</span> <span class="nx">L</span><span class="p">.</span><span class="nx">map</span><span class="p">(</span><span class="s1">&#39;map&#39;</span><span class="p">);</span>
+
+            <span class="nx">map</span><span class="p">.</span><span class="nx">setView</span><span class="p">([</span><span class="mf">41.3887</span><span class="p">,</span> <span class="mf">2.1777</span><span class="p">],</span> <span class="mf">13</span><span class="p">);</span>
+
+        <span class="nx">L</span><span class="p">.</span><span class="nx">tileLayer</span><span class="p">(</span><span class="s1">&#39;http://{s}.tile.osm.org/{z}/{x}/{y}.png&#39;</span><span class="p">,</span> <span class="p">{</span>
+                <span class="nx">attribution</span><span class="o">:</span> <span class="s1">&#39;&amp;copy; &lt;a href=&quot;http://osm.org/copyright&quot;&gt;OpenStreetMap&lt;/a&gt; contributors&#39;</span>
+        <span class="p">}).</span><span class="nx">addTo</span><span class="p">(</span><span class="nx">map</span><span class="p">);</span>
+
+        <span class="kd">var</span> <span class="nx">geocodingOptions</span> <span class="o">=</span> <span class="p">{</span>      
+            <span class="nx">url</span><span class="o">:</span><span class="s1">&#39;https://eines.icgc.cat/geocodificador&#39;</span><span class="p">,</span>
+            <span class="nx">expanded</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span>
+            <span class="nx">autocomplete</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span>
+            <span class="nx">focus</span><span class="o">:</span><span class="kc">false</span>
+            <span class="p">};</span>
+        <span class="nx">L</span><span class="p">.</span><span class="nx">control</span><span class="p">.</span><span class="nx">geocoder</span><span class="p">(</span><span class="nx">geocodingOptions</span><span class="p">).</span><span class="nx">addTo</span><span class="p">(</span><span class="nx">map</span><span class="p">);</span>
+
+        <span class="nx">map</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;click&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">e</span><span class="p">){</span>
+            <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">e</span><span class="p">);</span>
+            <span class="kd">var</span> <span class="nx">url</span> <span class="o">=</span> <span class="sb">`https://eines.icgc.cat/geocodificadorinvers?lat=</span><span class="si">${</span><span class="nx">e</span><span class="p">.</span><span class="nx">latlng</span><span class="p">.</span><span class="nx">lat</span><span class="si">}</span><span class="sb">&amp;lon=</span><span class="si">${</span><span class="nx">e</span><span class="p">.</span><span class="nx">latlng</span><span class="p">.</span><span class="nx">lng</span><span class="si">}</span><span class="sb">`</span><span class="p">;</span>
+            <span class="nx">fetch</span><span class="p">(</span><span class="nx">url</span><span class="p">)</span>
+            <span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">response</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nx">response</span><span class="p">.</span><span class="nx">json</span><span class="p">().</span><span class="nx">then</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">data</span><span class="p">){</span>
+                <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">data</span><span class="p">);</span>
+                <span class="kd">var</span> <span class="nx">etiqueta</span> <span class="o">=</span> <span class="nx">data</span><span class="p">.</span><span class="nx">features</span><span class="p">[</span><span class="mf">0</span><span class="p">].</span><span class="nx">properties</span><span class="p">.</span><span class="nx">label</span><span class="p">;</span>
+                <span class="kd">var</span> <span class="nx">posicion</span> <span class="o">=</span> <span class="nx">data</span><span class="p">.</span><span class="nx">features</span><span class="p">[</span><span class="mf">0</span><span class="p">].</span><span class="nx">geometry</span><span class="p">.</span><span class="nx">coordinates</span><span class="p">;</span>
+<span class="hll">                <span class="kd">var</span> <span class="nx">marker</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">L</span><span class="p">.</span><span class="nx">marker</span><span class="p">([</span><span class="nx">posicion</span><span class="p">[</span><span class="mf">1</span><span class="p">],</span><span class="nx">posicion</span><span class="p">[</span><span class="mf">0</span><span class="p">]]).</span><span class="nx">bindPopup</span><span class="p">(</span><span class="nx">etiqueta</span><span class="p">);</span>
+</span>                <span class="nx">map</span><span class="p">.</span><span class="nx">addLayer</span><span class="p">(</span><span class="nx">marker</span><span class="p">);</span>
+                <span class="nx">marker</span><span class="p">.</span><span class="nx">openPopup</span><span class="p">();</span>
+            <span class="p">});</span>
+            <span class="p">})</span>
+            <span class="p">.</span><span class="k">catch</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">myJson</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">myJson</span><span class="p">);</span>
+            <span class="p">});</span>
+        <span class="p">});</span>
+
+        <span class="p">&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">body</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">html</span><span class="p">&gt;</span>
+</code></pre></div>
 <div class="admonition question">
 <p class="admonition-title">Ejercicios 2 pts</p>
 <ol>
 <li>
-<p>Mostrar la propiedad <strong>components.municipality</strong> junto con la dirección en la etiqueta (1 pt)</p>
+<p>Mostrar la propiedad layer junto con la dirección en la etiqueta (1 pt)</p>
 </li>
 <li>
 <p><strong>Extra</strong>: Al hacer click en el mapa mostrar los marcadores de los 3 primeros resultados, pero únicamente desplegar la etiqueta de la primera respuesta. (1 pt) </p>
@@ -1041,7 +1130,7 @@
 <p><a href="http://leafletjs.com/">http://leafletjs.com/</a>&#160;<a class="footnote-backref" href="#fnref:1" title="Jump back to footnote 1 in the text">&#8617;</a></p>
 </li>
 <li id="fn:2">
-<p><a href="https://opencagedata.com/">https://opencagedata.com/</a>&#160;<a class="footnote-backref" href="#fnref:2" title="Jump back to footnote 2 in the text">&#8617;</a><a class="footnote-backref" href="#fnref2:2" title="Jump back to footnote 2 in the text">&#8617;</a></p>
+<p><a href="https://github.com/OpenICGC/leaflet-geocodericgc-plugin">https://github.com/OpenICGC/leaflet-geocodericgc-plugin</a>&#160;<a class="footnote-backref" href="#fnref:2" title="Jump back to footnote 2 in the text">&#8617;</a></p>
 </li>
 </ol>
 </div>
@@ -1059,39 +1148,6 @@
       
         
 <footer class="md-footer">
-  
-    <nav class="md-footer__inner md-grid" aria-label="Pie">
-      
-        <a href="../14_herramientas_visualizacion_geoservicios/" class="md-footer__link md-footer__link--prev" rel="prev">
-          <div class="md-footer__button md-icon">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
-          </div>
-          <div class="md-footer__title">
-            <div class="md-ellipsis">
-              <span class="md-footer__direction">
-                Anterior
-              </span>
-              14. Herramientas de visualización geoservicios
-            </div>
-          </div>
-        </a>
-      
-      
-        <a href="../16_ejemplo_mobility/" class="md-footer__link md-footer__link--next" rel="next">
-          <div class="md-footer__title">
-            <div class="md-ellipsis">
-              <span class="md-footer__direction">
-                Siguiente
-              </span>
-              16. Ejemplo Mobility
-            </div>
-          </div>
-          <div class="md-footer__button md-icon">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4z"/></svg>
-          </div>
-        </a>
-      
-    </nav>
   
   <div class="md-footer-meta md-typeset">
     <div class="md-footer-meta__inner md-grid">
