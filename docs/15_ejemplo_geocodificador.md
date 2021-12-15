@@ -54,8 +54,6 @@ Para crear un visor de mapas utilizaremos la librería de mapas Leaflet [^1]. Y 
 
 -  Abrir el archivo index.html en el navegador para comprobar que se carga un mapa centrado en Barcelona.
 
--  Descargar en la carpeta el plugin desarrollado por el ICGC [^2] https://github.com/OpenICGC/leaflet-geocodericgc-plugin/blob/master/js/leaflet-geocoder.js
-
 - Agregar el plugin al mapa
 
 ```html hl_lines="6 21 32 33 34 35 36"
