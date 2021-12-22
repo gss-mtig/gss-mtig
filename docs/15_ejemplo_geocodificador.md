@@ -420,7 +420,9 @@ Implementaremos la funcionalidad que cuando el usuaio haga click en el mapa se b
 !!! question "Ejercicios 2 pts"
 	1. Mostrar la propiedad **components.municipality** junto con la dirección en la etiqueta (1 pt)
 
-    2. **Extra**: Al hacer click en el mapa mostrar los marcadores de los 3 primeros resultados, pero únicamente desplegar la etiqueta de la primera respuesta. (1 pt) 
+    	2. **Extra**: Mostrar el grado de confianza de la respuesta *confidence*, la categoria *components._category* y el tipo *components._type*. (1 pt). Ejemplo:
+  		<div><b>Confianza:</b>9<br><b>Categoria:</b>outdoors/recreation<br><b>Tipo:</b>leisure</div>
+
 
 ## Referencias
 
