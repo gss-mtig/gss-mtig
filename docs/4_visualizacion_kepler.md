@@ -1,11 +1,10 @@
 # Visualización con Kepler.gl
 
-Kepler.gl desrrollada por Uber, en u  principio para uso interno, para analizar y visualizar sus propios datos.
+Kepler.gl desarrollada por Uber, en un principio para uso interno, para analizar y visualizar sus propios datos.
 
 Es una aplicación basada en web GL de alto rendimiento y agnóstica de datos para la exploración visual de conjuntos de datos de geolocalización a gran escala. Construido en la parte superior de deck.gl, kepler.gl puede representar millones de puntos que representan miles de viajes y realizar agregaciones espaciales sobre la marcha.
 
 ![alt text](img/kepler.png "Kepler GL")
-
 
 ## Ejercicio de visualización con Kepler.gl
 
