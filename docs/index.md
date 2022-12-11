@@ -11,8 +11,8 @@ Temario:
     * Conceptos Open Data
     * Conceptos sensores
     * Tecnologías OpenData
-
-* [API servicios Open data (CKAN y SOCRATA)](https://gss-mtig.github.io/gss-mtig/2_conceptos_y_servicios_open_data/)
+* [Introducción al Open data](https://gss-mtig.github.io/gss-mtig/2_introduccion_open_data/)
+    * [API servicios Open data (CKAN y SOCRATA)](https://gss-mtig.github.io/gss-mtig/2_1_apìs_y_servicios_open_data/)
 * [Conceptos Vector-Tiles](https://gss-mtig.github.io/gss-mtig/3_conceptos_vector_tiles/)
 * [Visualización con Kepler.gl](https://gss-mtig.github.io/gss-mtig/4_visualizacion_kepler/)
 * [Herramientas de visualización de datos](https://gss-mtig.github.io/gss-mtig/5_herramientas_visualizacion_datos/)

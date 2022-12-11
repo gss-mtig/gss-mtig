@@ -14,12 +14,18 @@ markdown_extensions:
   - pymdownx.magiclink
   - pymdownx.superfences
   - footnotes
+  - attr_list
+  - pymdownx.emoji:
+      emoji_index: !!python/name:materialx.emoji.twemoji
+      emoji_generator: !!python/name:materialx.emoji.to_svg
 repo_url: "https://github.com/gss-mtig/gss-mtig"
 
 nav:
 - Home: index.md
 - 1. Introducción a las Smart Cities: 1_introduccion_a_las_smart_cities.md
-- 2. API servicios Open data (CKAN y SOCRATA): 2_conceptos_y_servicios_open_data.md
+- 2. Introducción al Open data: 2_introduccion_open_data.md
+- Servicios Open data:
+  - 2.1. API servicios Open data (CKAN y SOCRATA): 2_1_apis_y_servicios_open_data.md
 - 3. Conceptos Vector Tiles: 3_conceptos_vector_tiles.md
 - 4. Visualización con Kepler.gl: 4_visualizacion_kepler.md
 - 5. Herramientas de visualización de datos: 5_herramientas_visualizacion_datos.md
