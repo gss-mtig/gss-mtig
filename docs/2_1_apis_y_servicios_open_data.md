@@ -643,7 +643,7 @@ Creación de un buscador
     **Ejercicio 1**: Añadimos **attribution** y **download_count** a los resultados
 
 !!! question
-    **Ejercicio 2**: ¿Cambiamos colores y estilos de los puntos del mapa?
+    **Ejercicio 2**: ¿Cambiamos colores y estilos del mapa?
 
 ## Referencias
   
