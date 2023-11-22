@@ -6,7 +6,7 @@
 
 - Datos en formatos cerrados o no reutilizables como el pdf.
 
-- Cambio de las direcciones de los recursos. Por ejemplo, suele ocurrir que cuando se cambia el nombre de un servidor ó la técnología del portal ocasiona un cambio en las URLs y dejan de funcionar las aplicaciones y servicios que consumen esos datos.
+- Cambio de las direcciones de los recursos. Por ejemplo, suele ocurrir que cuando se cambia el nombre de un servidor ó la tecnología del portal ocasiona un cambio en las URLs y dejan de funcionar las aplicaciones y servicios que consumen esos datos.
 
 - Datos poco fiables, erróneos, inconsistentes. Falta de  normalización y homogeneidad también en los datos. Ejemplo https://analisi.transparenciacatalunya.cat/Urbanisme-infraestructures/Equipaments-de-Catalunya/8gmd-gz7i
 

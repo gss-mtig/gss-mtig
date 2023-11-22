@@ -6,7 +6,7 @@ En el portal Open data del Ayuntamiento de Barcelona podemos encontrar un datase
 
 Anteriormente tenían un servicio donde daban toda la información de la estación en tiempo real http://wservice.viabicing.cat/v2/stations. Actualmente lo han separado en dos servicios unos con la [información de las estaciones](https://opendata-ajuntament.barcelona.cat/data/es/dataset/informacio-estacions-bicing) (identificador, nombre, coordenadas, etc.) y otro con [estado de las estaciones](https://opendata-ajuntament.barcelona.cat/data/es/dataset/estat-estacions-bicing) (número de bicis disponibles, tipos de bicis, etc)
 
-Si bien el Ayuntamiento de Barcelona no ofrece explicitamente el acceso a los datos del Bicing como un servicio, si que tiene un servicio de datos en tiempo real. La url la podemos encontrar presionando el botón de Descargar del recurso json
+Si bien el Ayuntamiento de Barcelona no ofrece explícitamente el acceso a los datos del Bicing como un servicio, si que tiene un servicio de datos en tiempo real. La url la podemos encontrar presionando el botón de Descargar del recurso json
 
 ![url servicio de bicing](img/bicing.png)
 *url servicio de bicing*
@@ -59,7 +59,7 @@ Para ver estos datos sobre un mapa crearemos un visor utilizando Leaflet. [^2]
 
 - Abrir el archivo index.html en el navegador para ver que carga un mapa centrado en Barcelona.
 
-- Agregar el plugin para cargar datos en tiempo real. Para ellos utilizaremos el plugin Leaflet Realtime [^3].  Copiar lo siguiente justo después de cuando carguemos la libreria de Leaflet.
+- Agregar el plugin para cargar datos en tiempo real. Para ellos utilizaremos el plugin Leaflet Realtime [^3].  Copiar lo siguiente justo después de cuando carguemos la librería de Leaflet.
 
 ```html hl_lines="20"
 <!DOCTYPE html>

@@ -110,13 +110,13 @@ https://datahub.io
 
 #### Ejemplos API 
 
-Listado de portalas con CKAN
+Listado de portales con CKAN
 http://dataportals.org/api/data.json/
 
 Museos de Barcelona
 https://opendata-ajuntament.barcelona.cat/data/api/3/action/package_search?q=museu
 
-Barris Barcelona
+Barrios Barcelona
 https://opendata-ajuntament.barcelona.cat/data/api/3/action/resource_search?query=description:barri
 
 

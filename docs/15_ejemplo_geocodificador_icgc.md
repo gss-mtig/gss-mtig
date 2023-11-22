@@ -106,7 +106,7 @@ Para crear un visor de mapas utilizaremos la librería de mapas Leaflet [^1]. Y 
 </html>
 ```
 
-- Recargamos el mapa en el navegador y podemos ver que nos aparece una cája de búsqueda en el mapa (de momento si estilo)
+- Recargamos el mapa en el navegador y podemos ver que nos aparece una caja de búsqueda en el mapa (de momento si estilo)
 
 - Cargar la hoja de estilo del plugin
 
@@ -163,7 +163,7 @@ Para crear un visor de mapas utilizaremos la librería de mapas Leaflet [^1]. Y 
 
 ## Geocodificación inversa
 
-Implementaremos la funcionalidad que cuando el usuaio haga click en el mapa se busque la dirección o topónimo más cercano.
+Implementaremos la funcionalidad que cuando el usuario haga click en el mapa se busque la dirección o topónimo más cercano.
 
 - Capturar el evento click en el mapa.
 
@@ -217,9 +217,9 @@ Implementaremos la funcionalidad que cuando el usuaio haga click en el mapa se b
 </html>
 ```
 
-- Recargar la aplicación y abrir la consola del desarrollador, al hacer click sobre el mapa ver que en la consola aparece el objeto del evento click. Inspeccionar este objeto para ver que tiene una propiedad llamada latlng que contine las coordenadas donde se ha hecho el click.
+- Recargar la aplicación y abrir la consola del desarrollador, al hacer click sobre el mapa ver que en la consola aparece el objeto del evento click. Inspeccionar este objeto para ver que tiene una propiedad llamada latlng que contiene las coordenadas donde se ha hecho el click.
 
-- Llamar al servicio de geocodificación pasandole las coordenadas del click para obtener los elementos
+- Llamar al servicio de geocodificación pasándole las coordenadas del click para obtener los elementos
 
 ```html hl_lines="43 44 45 46 47 48 49 50 51 52"
 <!DOCTYPE html>

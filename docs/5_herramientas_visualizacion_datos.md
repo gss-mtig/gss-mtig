@@ -2,7 +2,7 @@
 
 ##Librerías
 
-Debido a que los datos que podemos encotrar en un portal de Opendata pueden variar mucho tanto en formato como en el tipo; lo mejor para visualizarlos es utilizar librerías genéricas de visualización de datos. Entre las principales tenemos: 
+Debido a que los datos que podemos encontrar en un portal de Opendata pueden variar mucho tanto en formato como en el tipo; lo mejor para visualizarlos es utilizar librerías genéricas de visualización de datos. Entre las principales tenemos: 
 
 - https://d3js.org/
 

@@ -2,13 +2,13 @@
 
 Simularemos un servicio que permita compartir la ubicación de los usuarios y ver que usuarios están en linea. Para ello utilizaremos la librería Socket.io [^1] que permite la comunicación en tiempo real en dos direcciones cliente-servidor (tipo pull) y servidor-cliente (tipo push). Esto lo hace gracias a un socket [^2].
 
-Para mostrar los datos en el mapa utilizaremos la libreria Leaflet [^3]. Para obtener la ubicación de los usuarios podemos usar el plugin *leaflet-locatecontrol* [^4], en nuestro caso vamos a simular la ubicación del usuario haciendo click sobre el mapa en lugar de utilizar la ubicación del usuario.
+Para mostrar los datos en el mapa utilizaremos la librería Leaflet [^3]. Para obtener la ubicación de los usuarios podemos usar el plugin *leaflet-locatecontrol* [^4], en nuestro caso vamos a simular la ubicación del usuario haciendo click sobre el mapa en lugar de utilizar la ubicación del usuario.
 
 ## Creación del mapa
 
 - Crear una carpeta con el nombre de *user-realtime*.
 
-- Crer una carpeta con el nombre de *public* dentro de la carpeta user-realtime.
+- Crear una carpeta con el nombre de *public* dentro de la carpeta user-realtime.
 
 - Crear un archivo con el nombre de *index.html* dentro de la carpeta public.
 
@@ -92,7 +92,7 @@ Para mostrar los datos en el mapa utilizaremos la libreria Leaflet [^3]. Para ob
 </html>
 ```
 
-- Recargar la aplicación y abrir la consola del desarrollador, al hacer click sobre el mapa ver que en la consola aparece el objeto del evento click. Inspeccionar este objeto para ver que tiene una propiedad llamada latlng que contine las coordenadas donde se ha hecho el click.
+- Recargar la aplicación y abrir la consola del desarrollador, al hacer click sobre el mapa ver que en la consola aparece el objeto del evento click. Inspeccionar este objeto para ver que tiene una propiedad llamada latlng que contiene las coordenadas donde se ha hecho el click.
 
 ## Creación del servicio que comparte la ubicación de los usuarios
 
@@ -247,7 +247,7 @@ nodemon app.js
 
 - Recargar la página y ver que en la consola aparece el mensaje de *a user connected*.
 
-- Enviar el evento click al servidor. En la funcion que se llama al hacer click sobre el mapa escribir los siguiente para enviar un evento al servidor. Este evento lo llamaremos *user_click* y le pasaremos como parámetro la posición del click.
+- Enviar el evento click al servidor. En la función que se llama al hacer click sobre el mapa escribir los siguiente para enviar un evento al servidor. Este evento lo llamaremos *user_click* y le pasaremos como parámetro la posición del click.
 
 ```html hl_lines="35"
 <!DOCTYPE html>
@@ -294,7 +294,7 @@ nodemon app.js
 
 ## Modificar el servidor
 
-- Escuchar al evento *user_click* en nuestra aplicación del servidor. Dentro de la función que se llama en el *io.on* es donde se crea el socket de conexión, por lo tando escribir nuestro código dentro de la misma. Debajo de donde escribimos el mensaje de *a user connected* escribir lo siguiente:
+- Escuchar al evento *user_click* en nuestra aplicación del servidor. Dentro de la función que se llama en el *io.on* es donde se crea el socket de conexión, por lo tanto escribir nuestro código dentro de la misma. Debajo de donde escribimos el mensaje de *a user connected* escribir lo siguiente:
 
 ```js hl_lines="12 13 14"
 var express  = require('express');

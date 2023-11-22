@@ -29,7 +29,7 @@ También creó una nueva proyección basada en mercator, llamada pseude-mercator
 
 ## Protocolos
 
- Para cargar la imágenes se ulitza una llamada HTTP rest dónde se especifica;
+ Para cargar la imágenes se utiliza una llamada HTTP rest dónde se especifica;
  
 > https://.../.../z/x/y.format
 
@@ -41,7 +41,7 @@ También creó una nueva proyección basada en mercator, llamada pseude-mercator
 
 > Formato 
 
->   Raster: Imágen png o JPEG
+>   Raster: Imagen png o JPEG
 
 >   Vector: (pbf o mvt)
 
@@ -53,24 +53,24 @@ Existen tres especificaciones para servir tiles
 
 * TMS (Tile Map Service): X Y coordenadas empiezan de debajo  izquierda (típico eje cartesiano de coordenadas)
 
-* WMTS (Web Map Tile Service): OGC estandard , corrdenadas empiezan de arriba izquierda.
+* WMTS (Web Map Tile Service): OGC estandar , coordenadas empiezan de arriba izquierda.
 
 * ZXY o "slippy map": Igual que TMS pero la Y empieza por arriba izquierda
 
 ![alt text](img/tms.png "XyZ")
 ![alt text](img/xyz.png "XyZ")
 
-### Caracteristicas
+### Características
 
 Las teselas vectoriales han sido utilizadas por el cliente Android de Google Maps desde diciembre de 2010 y en el cliente de escritorio desde 2013. Las teselas vectoriales para renderizar los datos de OpenStreetMap se propusieron por primera vez en marzo de 2013 y están soportadas por Mapnik, el renderizador de datos de OpenStreetMap más utilizado. 
-Mapbox, proveedor comercial de herramientas de cartografía personalizada y de hosting, es el máxini impulsor de esta tecnologia y ha centrado su herramienta de cartografía, Mapbox Studio, en torno a las teselas vectoriales.
+Mapbox, proveedor comercial de herramientas de cartografía personalizada y de hosting, es el máximo impulsor de esta tecnología y ha centrado su herramienta de cartografía, Mapbox Studio, en torno a las teselas vectoriales.
 
  * Cada tile es un contenedor de datos vectores y atributos
  * Los Tiles no tienen estilo, el estilo se aplica en cliente
  * Soporta rotación y orientación
  * Soporta extrusión y 3D
 
-## Ejemplos en accion
+## Ejemplos en acción
 
 https://openicgc.github.io/
 

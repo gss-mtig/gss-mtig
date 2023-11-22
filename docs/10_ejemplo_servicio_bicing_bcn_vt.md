@@ -6,7 +6,7 @@ En el portal Open data del Ayuntamiento de Barcelona podemos encontrar un datase
 
 Anteriormente tenían un servicio donde daban toda la información de la estación en tiempo real http://wservice.viabicing.cat/v2/stations. Actualmente lo han separado en dos servicios unos con la [información de las estaciones](https://opendata-ajuntament.barcelona.cat/data/es/dataset/informacio-estacions-bicing) (identificador, nombre, coordenadas, etc.) y otro con [estado de las estaciones](https://opendata-ajuntament.barcelona.cat/data/es/dataset/estat-estacions-bicing) (número de bicis disponibles, tipos de bicis, etc)
 
-Si bien el Ayuntamiento de Barcelona no ofrece explicitamente el acceso a los datos del Bicing como un servicio, si que tiene un servicio de datos en tiempo real. La url la podemos encontrar presionando el botón de Descargar del recurso json
+Si bien el Ayuntamiento de Barcelona no ofrece explícitamente el acceso a los datos del Bicing como un servicio, si que tiene un servicio de datos en tiempo real. La url la podemos encontrar presionando el botón de Descargar del recurso json
 
 ![url servicio de bicing](img/bicing.png)
 *url servicio de bicing*
@@ -17,12 +17,12 @@ Mapa que utiliza este servicio, https://www.bicing.barcelona/es/mapa-de-disponib
 
 El archivo json que retorna el servicio tiene coordenadas pero no es un fichero GeoJSON. [^1]
 
-Para ver estos datos sobre un mapa crearemos un visor utilizando Maplibre GL JS. [^2]
+Para ver estos datos sobre un mapa crearemos un visor utilizando MapLibre GL JS. [^2]
 
 ## Creación de un visor
 
-- Crer una carpeta con el nombre de *visor-bicing-vt*.
-- Crer una carpeta con el nombre de *public* dentro de la carpeta visor-bicing-vt.
+- Crear una carpeta con el nombre de *visor-bicing-vt*.
+- Crear una carpeta con el nombre de *public* dentro de la carpeta visor-bicing-vt.
 - Crear un archivo con el nombre de *index.html* dentro de la carpeta public.
 - Abrir el archivo index.html con un editor de texto y copiar el siguiente código.
 
@@ -164,7 +164,7 @@ nodemon app.js
 
 ### Modificar el visor
 
-- Modificar el archivo index.html para que llame al proxy que hemos creado y cargue la capa de bicing. Escribir justo despues de la declaración del mapa.
+- Modificar el archivo index.html para que llame al proxy que hemos creado y cargue la capa de bicing. Escribir justo después de la declaración del mapa.
 
 ```html hl_lines="36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55"
 <!DOCTYPE html>

@@ -1,6 +1,6 @@
 # Ejemplo Mobility
 
-## Creación de un visor que permita el cáculo de Isócronas
+## Creación de un visor que permita el cálculo de Isócronas
 
 Algunos de los servicios que ofrecen el cálculo de Isócronas son: [Targomo](https://www.targomo.com/en/), [ISO4APP](https://www.iso4app.net/), [Openrouteservice](https://openrouteservice.org/) y [Graphhopper](https://www.graphhopper.com/)
 
@@ -245,7 +245,7 @@ Algunos de los servicios que ofrecen el cálculo de Isócronas son: [Targomo](ht
 </html>
 ```
 
-- Recargar la aplicación y abrir la consola del desarrollador. Hacer click sobre el mapa y ver que en la consola aparece el objeto del evento click. Inspeccionar este objeto y ver que tiene una propiedad llamada latlng que contine las coordenadas donde se ha hecho el click.
+- Recargar la aplicación y abrir la consola del desarrollador. Hacer click sobre el mapa y ver que en la consola aparece el objeto del evento click. Inspeccionar este objeto y ver que tiene una propiedad llamada latlng que contiene las coordenadas donde se ha hecho el click.
 
 - Crear una función que tenga como parámetro una posición (coordenada lat lon) y genere una llamada al servicio de isócronas de Openrouteservice para que haga el cálculo en la coordenada indicada. Copiar lo siguiente al final de nuestro código
 

@@ -4,13 +4,13 @@
 
 La Especificación general de feeds de transporte público (GTFS) define un formato común para los horarios de transporte público y la información geográfica asociada a ellos. Los "feeds" GTFS permiten que las empresas de transporte público publiquen sus datos de transporte y que los programadores escriban aplicaciones que consuman esos datos de manera interoperable [^1].
 
-## Creación de un visor que muestre las línes y paradas de un GTFS
+## Creación de un visor que muestre las líneas y paradas de un GTFS
 
 Para crear un visor de mapas utilizaremos la librería de mapas Leaflet [^2]. Y cargaremos los datos de portal de la Plataforma VLCi (Valencia SmartCity) [^3]     
 
 - Crear una carpeta con el nombre de *visor-gtfs*.
 
-- Crer una carpeta con el nombre de *public* dentro de la carpeta visor-gtfs.
+- Crear una carpeta con el nombre de *public* dentro de la carpeta visor-gtfs.
 
 - Crear un archivo con el nombre de *index.html* dentro de la carpeta public.
 
@@ -95,7 +95,7 @@ node -v
 npm install
 ```
 
-Con este comando estamos instalando las dependencias declarades en el archivo *package.json*
+Con este comando estamos instalando las dependencias declaradas en el archivo *package.json*
 
 Al ejecutar estos comandos veremos que se crea una carpeta llamada *node_modules* donde se guardan los módulos instalados.
 
@@ -133,7 +133,7 @@ nodemon app.js
 
 - Crear un archivo llamado *gtfs2geojson.js*. Copiar en el archivo el código del siguiente enlace https://raw.githubusercontent.com/andrewharvey/gtfs2geojson/master/index.js este código convierte datos de un GTFS en un GeoJSON. Código basado en la librería https://github.com/andrewharvey/gtfs2geojson
 
-- Cargar en archivo en nuestra app.js. Escribir lo siguiente justo despúes de donde se carga el módulo yauzl
+- Cargar en archivo en nuestra app.js. Escribir lo siguiente justo después de donde se carga el módulo yauzl
 
 ```js hl_lines="9"
 var express  = require('express');
@@ -152,7 +152,7 @@ app.use(express.static('public'));
 app.listen(3000);
 ```
 
-- Crear la variable que contiene la url del servicio GTFS de Líneas, paradas, horarios de autobuses de la EMT de Valencia [^5]. Escribir lo siguiente justo despues de la variable *gtfs2geojson*
+- Crear la variable que contiene la url del servicio GTFS de Líneas, paradas, horarios de autobuses de la EMT de Valencia [^5]. Escribir lo siguiente justo después de la variable *gtfs2geojson*
 
 ```js hl_lines="11"
 var express  = require('express');
@@ -206,7 +206,7 @@ function getZip(url){
 }
 ```
 
-- Crear una función que extrae un archivo de un zip. La funcion recibe como parámetro el nombre del archivo que se desea extraer. Escribir lo siguiente al final del archivo app.js
+- Crear una función que extrae un archivo de un zip. La función recibe como parámetro el nombre del archivo que se desea extraer. Escribir lo siguiente al final del archivo app.js
 
 ```js hl_lines="30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56 57 58 59"
 var express  = require('express');
@@ -592,7 +592,7 @@ function leerZip(archivo){
 
 - Recargar el mapa y comprobar que aparecen las líneas del bus en el mapa.
 
-- Cargar la librería de manipulación de colores **chroma.js** [^7]. Escribir lo siguiente después de donde cargarmos el plugin de leaflet.ajax
+- Cargar la librería de manipulación de colores **chroma.js** [^7]. Escribir lo siguiente después de donde cargamos el plugin de leaflet.ajax
 
 ```html hl_lines="25"
 <!DOCTYPE html>

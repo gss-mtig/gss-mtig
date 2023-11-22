@@ -14,7 +14,7 @@ Para crear un visor de mapas utilizaremos la librería de mapas Leaflet [^5].
 
 - Crear una carpeta con el nombre de *visor-aca*.
 
-- Crer una carpeta con el nombre de *public* dentro de la carpeta visor-aca.
+- Crear una carpeta con el nombre de *public* dentro de la carpeta visor-aca.
 
 - Crear un archivo con el nombre de *index.html* dentro de la carpeta public.
 
@@ -139,7 +139,7 @@ Para crear un visor de mapas utilizaremos la librería de mapas Leaflet [^5].
 </html>
 ```
 
-- Recargar la página y confirmar que no aparece ninguna información en el mapa. En muchas ocaciones al abrir la consola de desarrollador del navegador (Ctrl+F12) vemops que aparece un mensaje de error *XMLHttpRequest cannot load ...* ello es debido a que estamos llamando a un servicio que no está en nuestro dominio y por lo tanto da un error de CORS [^7]. Para evitar el error de CORS necesitamos un proxy [^8] en nuestro servidor web que pueda hacer la llamada al servicio de la ACA y que nos devuelva el contenido.
+- Recargar la página y confirmar que no aparece ninguna información en el mapa. En muchas ocasiones al abrir la consola de desarrollador del navegador (Ctrl+F12) vemos que aparece un mensaje de error *XMLHttpRequest cannot load ...* ello es debido a que estamos llamando a un servicio que no está en nuestro dominio y por lo tanto da un error de CORS [^7]. Para evitar el error de CORS necesitamos un proxy [^8] en nuestro servidor web que pueda hacer la llamada al servicio de la ACA y que nos devuelva el contenido.
 
 ## Creación del proxy
 
@@ -252,7 +252,7 @@ nodemon app.js
 
 - Recargar la aplicación con Ctrl+F5 y vemos que el error ha desaparecido. Continuaremos sin ver ningún dato en nuestro mapa. Esto es debido a lo que ya mencionamos; que la API no retorna un GeoJSON. Por lo tanto tendremos que convertir la respuesta de la API en un GeoJSON.
 
-- Convertir la respuesta en un GeoJSON utilizando la opción *middleware* que ofrece la capa GeoJSON.AJAX. Esta opción permite crear una funcion donde se pueden manipular los datos antes de agregarlos al mapa. Crear la función que transforma los datos de Sentilo de la ACA en un GeoJSON. Escribir al final de nuestro código
+- Convertir la respuesta en un GeoJSON utilizando la opción *middleware* que ofrece la capa GeoJSON.AJAX. Esta opción permite crear una función donde se pueden manipular los datos antes de agregarlos al mapa. Crear la función que transforma los datos de Sentilo de la ACA en un GeoJSON. Escribir al final de nuestro código
 
 ```html hl_lines="34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56 57 58 59 60"
 <!DOCTYPE html>
@@ -320,7 +320,7 @@ nodemon app.js
 </html>
 ```
 
-- Modficar la capa geojsonLayer para que el middleware llame a nuestra función de transformación. Cambiar el código de la capa por lo siguiente:
+- Modificar la capa geojsonLayer para que el middleware llame a nuestra función de transformación. Cambiar el código de la capa por lo siguiente:
 
 ```html hl_lines="32 33 34 35 36"
 <!DOCTYPE html>
@@ -475,7 +475,7 @@ nodemon app.js
 </html>
 ```
 
-- Llamar a la funcion eachFeature en la opción *onEachFeature* de la capa geojsonLayer. Escribir lo siguiente luego de la opción del middleware
+- Llamar a la función eachFeature en la opción *onEachFeature* de la capa geojsonLayer. Escribir lo siguiente luego de la opción del middleware
 
 ```html hl_lines="36"
 <!DOCTYPE html>
@@ -718,7 +718,7 @@ app.listen(3000);
 </html>
 ```
 
-- Recargar el mapa y hacer click sobre un elemento para ver que en la consola del desarrollador aparece un objeto que contiene la respuesa del sensor con la información de la última lectura.
+- Recargar el mapa y hacer click sobre un elemento para ver que en la consola del desarrollador aparece un objeto que contiene la respuesta del sensor con la información de la última lectura.
 
 - Crear una función llamada *popUp* para mostrar esta información en el mapa. La función recibe como parámetros un layer de Leaflet y unos datos del sensor. Esta función muestra un popup asociado al elemento con la información del sensor. Escribir después de la función eachFeature
 

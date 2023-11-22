@@ -2,11 +2,11 @@
 # API servicios Open data (CKAN y SOCRATA)
 ## Ejemplo API CKAN
 
-El API de CKAN https://docs.ckan.org/en/latest/api/index.html no ofrece diferetes niveles y métodos para poder buscar y filtrar datasets.
+El API de CKAN https://docs.ckan.org/en/latest/api/index.html no ofrece diferentes niveles y métodos para poder buscar y filtrar datasets.
  
 En este ejemplo utilizaremos el método [resource_search](https://docs.ckan.org/en/latest/api/index.html#ckan.logic.action.get.resource_search) para buscar datasets en cualquier portal de CKAN
 
-Para buscar en portales CKAN necesitamos saber la URL del portal , exemplo https://demo.ckan.org y añadir el path del método a utilizar **/api/3/action/resource_search?**
+Para buscar en portales CKAN necesitamos saber la URL del portal , ejemplo https://demo.ckan.org y añadir el path del método a utilizar **/api/3/action/resource_search?**
  
 https://demo.ckan.org/api/3/action/resource_search?
 
@@ -14,7 +14,7 @@ https://demo.ckan.org/api/3/action/resource_search?
  
 #### Creación de un buscador
   
-* Dentro de nuestor espacio de trabajo creamos un archivo con el nombre de *ckan.html*.
+* Dentro de nuestro espacio de trabajo creamos un archivo con el nombre de *ckan.html*.
 
 * Abrimos el archivo *ckan.html* con un editor de texto y copiamos el siguiente código.
 
@@ -24,7 +24,7 @@ https://demo.ckan.org/api/3/action/resource_search?
 <head>
   <meta charset="UTF-8">
   <title>
-    Bàsic sample Resource Search API CKAN
+    Basic sample Resource Search API CKAN
   </title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet"
     crossorigin="anonymous">
@@ -151,7 +151,7 @@ https://demo.ckan.org/api/3/action/resource_search?
   </script>
 ```
 
-* Abrimos pàgina *ckan.html* y lanzamos búsquedas
+* Abrimos página *ckan.html* y lanzamos búsquedas
   
 !!! question
     **Ejercicio 1**: Añadir una o más URLs de otros portales de CKAN, por ejemplo OpenDataBCN
@@ -165,7 +165,7 @@ https://demo.ckan.org/api/3/action/resource_search?
 
 ## Ejemplos API SOCRATA
 
-El API de Socrata https://dev.socrata.com no ofrece diferetes niveles y métodos para poder buscar y filtra datasets.
+El API de Socrata https://dev.socrata.com no ofrece diferentes niveles y métodos para poder buscar y filtra datasets.
 
 En este primer ejemplo utilizaremos la **Discovery API** https://socratadiscovery.docs.apiary.io/ para buscar datasets en cualquier portal de Socrata
 
@@ -309,7 +309,7 @@ Creación de un buscador
   </script>
 ```
 
-* Abrimos pàgina socrata.html y lanzamos búsquedas
+* Abrimos página socrata.html y lanzamos búsquedas
   
 !!! question
     **Ejercicio 1**: ¿Cómo filtraríamos para qué sólo enseñara "assets" de tipo "map", **only:map**?
@@ -637,7 +637,7 @@ Creación de un buscador
   </script>
 ```  
 
-*  Abrimos pàgina socrat_mapa.html y lanzamos búsquedas
+*  Abrimos página socrat_mapa.html y lanzamos búsquedas
   
 !!! question
     **Ejercicio 1**: Añadimos **attribution** y **download_count** a los resultados

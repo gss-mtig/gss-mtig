@@ -99,14 +99,14 @@ Para crear un visor de mapas utilizaremos la librería de mapas Leaflet [^1]. Y 
 </html>
 ```
 
-- Recargamos el mapa en el navegador y podemos ver que nos aparece una cája de búsqueda en el mapa
+- Recargamos el mapa en el navegador y podemos ver que nos aparece una caja de búsqueda en el mapa
 
 ![ejemplo geocodificador](img/ejemplo_geocoder.png)
 *ejemplo geocodificador*
 
 ## Geocodificación inversa
 
-Implementaremos la funcionalidad que cuando el usuaio haga click en el mapa se busque la dirección o topónimo más cercano.
+Implementaremos la funcionalidad que cuando el usuario haga click en el mapa se busque la dirección o topónimo más cercano.
 
 - Capturar el evento click en el mapa.
 
@@ -157,9 +157,9 @@ Implementaremos la funcionalidad que cuando el usuaio haga click en el mapa se b
 </html>
 ```
 
-- Recargar la aplicación y abrir la consola del desarrollador, al hacer click sobre el mapa ver que en la consola aparece el objeto del evento click. Inspeccionar este objeto para ver que tiene una propiedad llamada latlng que contine las coordenadas donde se ha hecho el click.
+- Recargar la aplicación y abrir la consola del desarrollador, al hacer click sobre el mapa ver que en la consola aparece el objeto del evento click. Inspeccionar este objeto para ver que tiene una propiedad llamada latlng que contiene las coordenadas donde se ha hecho el click.
 
-- Llamar al servicio de geocodificación pasandole las coordenadas del click para obtener los elementos
+- Llamar al servicio de geocodificación pasándole las coordenadas del click para obtener los elementos
 
 ```html hl_lines="40 41 42 43 44 45 46 47 48 49"
 <!DOCTYPE html>
@@ -420,8 +420,8 @@ Implementaremos la funcionalidad que cuando el usuaio haga click en el mapa se b
 !!! question "Ejercicios 2 pts"
 	1. Mostrar la propiedad **components.municipality** junto con la dirección en la etiqueta (1 pt)
 
-    	2. **Extra**: Mostrar el grado de confianza de la respuesta *confidence*, la categoria *components._category* y el tipo *components._type*. (1 pt). Ejemplo:
-  		<div><b>Confianza:</b>9<br><b>Categoria:</b>outdoors/recreation<br><b>Tipo:</b>leisure</div>
+    	2. **Extra**: Mostrar el grado de confianza de la respuesta *confidence*, la categoría *components._category* y el tipo *components._type*. (1 pt). Ejemplo:
+  		<div><b>Confianza:</b>9<br><b>Categoría:</b>outdoors/recreation<br><b>Tipo:</b>leisure</div>
 
 
 ## Referencias
