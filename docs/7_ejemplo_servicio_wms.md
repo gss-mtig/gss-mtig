@@ -23,7 +23,7 @@ Para ver los datos de este servicio sobre un mapa crearemos un visor utilizando 
 <html>
 <head>
   <title>Servicio de WMS</title>
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"/>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
   <style>
     #mapid {
     position: absolute;
@@ -37,7 +37,7 @@ Para ver los datos de este servicio sobre un mapa crearemos un visor utilizando 
 <body>
   <div id="mapid"></div>
 
-  <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
   <script type="text/javascript">
     var map = L.map('mapid');
     map.setView([41.3887, 2.1777], 13);
@@ -59,7 +59,7 @@ Para ver los datos de este servicio sobre un mapa crearemos un visor utilizando 
 <html>
 <head>
   <title>Servicio de WMS</title>
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"/>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
   <style>
     #mapid {
     position: absolute;
@@ -73,7 +73,7 @@ Para ver los datos de este servicio sobre un mapa crearemos un visor utilizando 
 <body>
   <div id="mapid"></div>
 
-  <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
   <script type="text/javascript">
     var map = L.map('mapid');
     map.setView([41.3887, 2.1777], 13);

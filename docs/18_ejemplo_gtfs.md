@@ -24,7 +24,7 @@ Para crear un visor de mapas utilizaremos la librería de mapas Leaflet [^2]. Y 
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta http-equiv="X-UA-Compatible" content="ie=edge">
 	<title>Ejemplo GTFS</title>
-	<link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+	<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
 	<style>
 		#map {
 			height: 100%;
@@ -39,7 +39,7 @@ Para crear un visor de mapas utilizaremos la librería de mapas Leaflet [^2]. Y 
 
 	</div>
 
-	<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+	<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 	<script>
 		var map = L.map('map');
 
@@ -442,7 +442,7 @@ function leerZip(archivo){
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta http-equiv="X-UA-Compatible" content="ie=edge">
 	<title>Ejemplo GTFS</title>
-	<link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+	<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
 	<style>
 		#map {
 			height: 100%;
@@ -457,7 +457,7 @@ function leerZip(archivo){
 
 	</div>
 
-	<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+	<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-ajax/2.1.0/leaflet.ajax.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 	<script>
 		var map = L.map('map');
@@ -482,7 +482,7 @@ function leerZip(archivo){
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta http-equiv="X-UA-Compatible" content="ie=edge">
 	<title>Ejemplo GTFS</title>
-	<link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+	<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
 	<style>
 		#map {
 			height: 100%;
@@ -497,7 +497,7 @@ function leerZip(archivo){
 
 	</div>
 
-	<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+	<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-ajax/2.1.0/leaflet.ajax.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 	<script>
 		var map = L.map('map');
@@ -540,7 +540,7 @@ function leerZip(archivo){
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta http-equiv="X-UA-Compatible" content="ie=edge">
 	<title>Ejemplo GTFS</title>
-	<link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+	<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
 	<style>
 		#map {
 			height: 100%;
@@ -555,7 +555,7 @@ function leerZip(archivo){
 
 	</div>
 
-	<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+	<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-ajax/2.1.0/leaflet.ajax.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 	<script>
 		var map = L.map('map');
@@ -602,7 +602,7 @@ function leerZip(archivo){
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta http-equiv="X-UA-Compatible" content="ie=edge">
 	<title>Ejemplo GTFS</title>
-	<link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+	<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
 	<style>
 		#map {
 			height: 100%;
@@ -617,7 +617,7 @@ function leerZip(archivo){
 
 	</div>
 
-	<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+	<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-ajax/2.1.0/leaflet.ajax.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/chroma-js/2.0.6/chroma.min.js"></script>
 	<script>
@@ -663,7 +663,7 @@ function leerZip(archivo){
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta http-equiv="X-UA-Compatible" content="ie=edge">
 	<title>Ejemplo GTFS</title>
-	<link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+	<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
 	<style>
 		#map {
 			height: 100%;
@@ -678,7 +678,7 @@ function leerZip(archivo){
 
 	</div>
 
-	<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+	<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-ajax/2.1.0/leaflet.ajax.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/chroma-js/2.0.6/chroma.min.js"></script>
 	<script>

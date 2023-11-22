@@ -32,8 +32,8 @@ Para ver estos datos sobre un mapa crearemos un visor utilizando MapLibre GL JS.
 <head>
   <title>Servicio de Bicing realtime VectorTiles</title>
   <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
-  <script src='https://unpkg.com/maplibre-gl@1.15.2/dist/maplibre-gl.js'></script>
-  <link href='https://unpkg.com/maplibre-gl@1.15.2/dist/maplibre-gl.css' rel='stylesheet' />
+  <script src='https://unpkg.com/maplibre-gl/dist/maplibre-gl.js'></script>
+  <link href='https://unpkg.com/maplibre-gl/dist/maplibre-gl.css' rel='stylesheet' />
 
   <style>
     body {
@@ -172,8 +172,8 @@ nodemon app.js
 <head>
   <title>Servicio de Bicing realtime VectorTiles</title>
   <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
-  <script src='https://unpkg.com/maplibre-gl@1.15.2/dist/maplibre-gl.js'></script>
-  <link href='https://unpkg.com/maplibre-gl@1.15.2/dist/maplibre-gl.css' rel='stylesheet' />
+  <script src='https://unpkg.com/maplibre-gl/dist/maplibre-gl.js'></script>
+  <link href='https://unpkg.com/maplibre-gl/dist/maplibre-gl.css' rel='stylesheet' />
   <style>
     body {
       margin: 0;
@@ -237,8 +237,8 @@ nodemon app.js
 <head>
   <title>Servicio de Bicing realtime VectorTiles</title>
   <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
-  <script src='https://unpkg.com/maplibre-gl@1.15.2/dist/maplibre-gl.js'></script>
-  <link href='https://unpkg.com/maplibre-gl@1.15.2/dist/maplibre-gl.css' rel='stylesheet' />
+  <script src='https://unpkg.com/maplibre-gl/dist/maplibre-gl.js'></script>
+  <link href='https://unpkg.com/maplibre-gl/dist/maplibre-gl.css' rel='stylesheet' />
   <style>
     body {
       margin: 0;
@@ -306,8 +306,8 @@ nodemon app.js
 <head>
   <title>Servicio de Bicing realtime VectorTiles</title>
   <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
-  <script src='https://unpkg.com/maplibre-gl@1.15.2/dist/maplibre-gl.js'></script>
-  <link href='https://unpkg.com/maplibre-gl@1.15.2/dist/maplibre-gl.css' rel='stylesheet' />
+  <script src='https://unpkg.com/maplibre-gl/dist/maplibre-gl.js'></script>
+  <link href='https://unpkg.com/maplibre-gl/dist/maplibre-gl.css' rel='stylesheet' />
   <style>
     body {
       margin: 0;
@@ -392,8 +392,8 @@ nodemon app.js
 <head>
   <title>Servicio de Bicing realtime VectorTiles</title>
   <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
-  <script src='https://unpkg.com/maplibre-gl@1.15.2/dist/maplibre-gl.js'></script>
-  <link href='https://unpkg.com/maplibre-gl@1.15.2/dist/maplibre-gl.css' rel='stylesheet' />
+  <script src='https://unpkg.com/maplibre-gl/dist/maplibre-gl.js'></script>
+  <link href='https://unpkg.com/maplibre-gl/dist/maplibre-gl.css' rel='stylesheet' />
   <style>
     body {
       margin: 0;
@@ -500,8 +500,8 @@ nodemon app.js
 <head>
   <title>Servicio de Bicing realtime VectorTiles</title>
   <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
-  <script src='https://unpkg.com/maplibre-gl@1.15.2/dist/maplibre-gl.js'></script>
-  <link href='https://unpkg.com/maplibre-gl@1.15.2/dist/maplibre-gl.css' rel='stylesheet' />
+  <script src='https://unpkg.com/maplibre-gl/dist/maplibre-gl.js'></script>
+  <link href='https://unpkg.com/maplibre-gl/dist/maplibre-gl.css' rel='stylesheet' />
   <style>
     body {
       margin: 0;
@@ -740,8 +740,8 @@ app.listen(3000);
 <head>
   <title>Servicio de Bicing realtime VectorTiles</title>
   <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
-  <script src='https://unpkg.com/maplibre-gl@1.15.2/dist/maplibre-gl.js'></script>
-  <link href='https://unpkg.com/maplibre-gl@1.15.2/dist/maplibre-gl.css' rel='stylesheet' />
+  <script src='https://unpkg.com/maplibre-gl/dist/maplibre-gl.js'></script>
+  <link href='https://unpkg.com/maplibre-gl/dist/maplibre-gl.css' rel='stylesheet' />
   <style>
     body {
       margin: 0;
@@ -853,8 +853,8 @@ app.listen(3000);
 <head>
   <title>Servicio de Bicing realtime VectorTiles</title>
   <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
-  <script src='https://unpkg.com/maplibre-gl@1.15.2/dist/maplibre-gl.js'></script>
-  <link href='https://unpkg.com/maplibre-gl@1.15.2/dist/maplibre-gl.css' rel='stylesheet' />
+  <script src='https://unpkg.com/maplibre-gl/dist/maplibre-gl.js'></script>
+  <link href='https://unpkg.com/maplibre-gl/dist/maplibre-gl.css' rel='stylesheet' />
   <style>
     body {
       margin: 0;

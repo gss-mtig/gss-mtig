@@ -30,7 +30,7 @@ Para ver estos datos sobre un mapa crearemos un visor utilizando Leaflet. [^2]
 <html>
 <head>
   <title>Servicio de Bicing realtime</title>
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
   <style>
     #map {
     position: absolute;
@@ -44,7 +44,7 @@ Para ver estos datos sobre un mapa crearemos un visor utilizando Leaflet. [^2]
 <body>
   <div id="map"></div>
 
-  <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
   <script type="text/javascript">
     var map = L.map('map');
     map.setView([41.3887, 2.1777], 13);
@@ -66,7 +66,7 @@ Para ver estos datos sobre un mapa crearemos un visor utilizando Leaflet. [^2]
 <html>
 <head>
   <title>Servicio de Bicing realtime</title>
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
   <style>
     #map {
     position: absolute;
@@ -80,7 +80,7 @@ Para ver estos datos sobre un mapa crearemos un visor utilizando Leaflet. [^2]
 <body>
   <div id="map"></div>
 
-  <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-realtime/2.2.0/leaflet-realtime.min.js"></script>
   <script type="text/javascript">
     var map = L.map('map');
@@ -101,7 +101,7 @@ Para ver estos datos sobre un mapa crearemos un visor utilizando Leaflet. [^2]
 <html>
 <head>
   <title>Servicio de Bicing realtime</title>
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
   <style>
     #map {
     position: absolute;
@@ -115,7 +115,7 @@ Para ver estos datos sobre un mapa crearemos un visor utilizando Leaflet. [^2]
 <body>
   <div id="map"></div>
 
-  <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-realtime/2.2.0/leaflet-realtime.min.js"></script>
   <script type="text/javascript">
     var map = L.map('map');
@@ -146,7 +146,7 @@ Para ver estos datos sobre un mapa crearemos un visor utilizando Leaflet. [^2]
 <html>
 <head>
   <title>Servicio de Bicing realtime</title>
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
   <style>
     #map {
     position: absolute;
@@ -160,7 +160,7 @@ Para ver estos datos sobre un mapa crearemos un visor utilizando Leaflet. [^2]
 <body>
   <div id="map"></div>
 
-  <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-realtime/2.2.0/leaflet-realtime.min.js"></script>
   <script type="text/javascript">
     var map = L.map('map');
@@ -194,7 +194,7 @@ Para ver estos datos sobre un mapa crearemos un visor utilizando Leaflet. [^2]
 <html>
 <head>
   <title>Servicio de Bicing realtime</title>
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
   <style>
     #map {
     position: absolute;
@@ -208,7 +208,7 @@ Para ver estos datos sobre un mapa crearemos un visor utilizando Leaflet. [^2]
 <body>
   <div id="map"></div>
 
-  <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-realtime/2.2.0/leaflet-realtime.min.js"></script>
   <script type="text/javascript">
     var map = L.map('map');
@@ -269,7 +269,7 @@ Para ver estos datos sobre un mapa crearemos un visor utilizando Leaflet. [^2]
 <html>
 <head>
   <title>Servicio de Bicing realtime</title>
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
   <style>
     #map {
     position: absolute;
@@ -283,7 +283,7 @@ Para ver estos datos sobre un mapa crearemos un visor utilizando Leaflet. [^2]
 <body>
   <div id="map"></div>
 
-  <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-realtime/2.2.0/leaflet-realtime.min.js"></script>
   <script type="text/javascript">
     var map = L.map('map');

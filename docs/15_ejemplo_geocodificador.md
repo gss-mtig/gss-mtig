@@ -22,7 +22,7 @@ Para crear un visor de mapas utilizaremos la librería de mapas Leaflet [^1]. Y 
 <html>
 <head>
 	<title>Ejemplo geocoder</title>
-	<link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+	<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
 		<style>
 				#map {
 						position: absolute;
@@ -36,7 +36,7 @@ Para crear un visor de mapas utilizaremos la librería de mapas Leaflet [^1]. Y 
 <body>
 	<div id="map"></div>
 
-		<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+		<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 		<script type="text/javascript">
 			var map = L.map('map');
 
@@ -61,7 +61,7 @@ Para crear un visor de mapas utilizaremos la librería de mapas Leaflet [^1]. Y 
 <html>
 <head>
 	<title>Ejemplo geocoder</title>
-	<link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+	<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/opencagedata/leaflet-opencage-search@1.4.1/dist/css/L.Control.OpenCageData.Search.min.css" />
 		<style>
 				#map {
@@ -76,7 +76,7 @@ Para crear un visor de mapas utilizaremos la librería de mapas Leaflet [^1]. Y 
 <body>
 	<div id="map"></div>
 
-		<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+		<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
   	<script src="https://cdn.jsdelivr.net/gh/opencagedata/leaflet-opencage-search@1.4.1/dist/js/L.Control.OpenCageSearch.min.js"></script>
 
 		<script type="text/javascript">
@@ -115,7 +115,7 @@ Implementaremos la funcionalidad que cuando el usuario haga click en el mapa se 
 <html>
 <head>
 	<title>Ejemplo geocoder</title>
-	<link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+	<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/opencagedata/leaflet-opencage-search@1.4.1/dist/css/L.Control.OpenCageData.Search.min.css" />
 		<style>
 				#map {
@@ -130,7 +130,7 @@ Implementaremos la funcionalidad que cuando el usuario haga click en el mapa se 
 <body>
 	<div id="map"></div>
 
-		<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+		<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
   	<script src="https://cdn.jsdelivr.net/gh/opencagedata/leaflet-opencage-search@1.4.1/dist/js/L.Control.OpenCageSearch.min.js"></script>
 
 		<script type="text/javascript">
@@ -166,7 +166,7 @@ Implementaremos la funcionalidad que cuando el usuario haga click en el mapa se 
 <html>
 <head>
 	<title>Ejemplo geocoder</title>
-	<link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+	<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/opencagedata/leaflet-opencage-search@1.4.1/dist/css/L.Control.OpenCageData.Search.min.css" />
 		<style>
 				#map {
@@ -181,7 +181,7 @@ Implementaremos la funcionalidad que cuando el usuario haga click en el mapa se 
 <body>
 	<div id="map"></div>
 
-		<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+		<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
   	<script src="https://cdn.jsdelivr.net/gh/opencagedata/leaflet-opencage-search@1.4.1/dist/js/L.Control.OpenCageSearch.min.js"></script>
 
 		<script type="text/javascript">
@@ -227,7 +227,7 @@ Implementaremos la funcionalidad que cuando el usuario haga click en el mapa se 
 <html>
 <head>
 	<title>Ejemplo geocoder</title>
-	<link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+	<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/opencagedata/leaflet-opencage-search@1.4.1/dist/css/L.Control.OpenCageData.Search.min.css" />
 		<style>
 				#map {
@@ -242,7 +242,7 @@ Implementaremos la funcionalidad que cuando el usuario haga click en el mapa se 
 <body>
 	<div id="map"></div>
 
-		<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+		<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
     <script src="https://cdn.jsdelivr.net/gh/opencagedata/leaflet-opencage-search@1.4.1/dist/js/L.Control.OpenCageSearch.min.js"></script>
 
 		<script type="text/javascript">
@@ -290,7 +290,7 @@ Implementaremos la funcionalidad que cuando el usuario haga click en el mapa se 
 <html>
 <head>
 	<title>Ejemplo geocoder</title>
-	<link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+	<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/opencagedata/leaflet-opencage-search@1.4.1/dist/css/L.Control.OpenCageData.Search.min.css" />
 		<style>
 				#map {
@@ -305,7 +305,7 @@ Implementaremos la funcionalidad que cuando el usuario haga click en el mapa se 
 <body>
 	<div id="map"></div>
 
-		<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+		<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
     <script src="https://cdn.jsdelivr.net/gh/opencagedata/leaflet-opencage-search@1.4.1/dist/js/L.Control.OpenCageSearch.min.js"></script>
 
 		<script type="text/javascript">
@@ -358,7 +358,7 @@ Implementaremos la funcionalidad que cuando el usuario haga click en el mapa se 
 <html>
 <head>
 	<title>Ejemplo geocoder</title>
-	<link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+	<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/opencagedata/leaflet-opencage-search@1.4.1/dist/css/L.Control.OpenCageData.Search.min.css" />
 		<style>
 				#map {
@@ -373,7 +373,7 @@ Implementaremos la funcionalidad que cuando el usuario haga click en el mapa se 
 <body>
 	<div id="map"></div>
 
-		<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+		<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
     <script src="https://cdn.jsdelivr.net/gh/opencagedata/leaflet-opencage-search@1.4.1/dist/js/L.Control.OpenCageSearch.min.js"></script>
 
 		<script type="text/javascript">

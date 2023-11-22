@@ -19,7 +19,7 @@ Para mostrar los datos en el mapa utilizaremos la librería Leaflet [^3]. Para o
 <html>
 <head>
 	<title>Servicio compartir ubicación realtime</title>
-	<link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+	<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
 		<style>
 				#map {
 						position: absolute;
@@ -33,7 +33,7 @@ Para mostrar los datos en el mapa utilizaremos la librería Leaflet [^3]. Para o
 <body>
 	<div id="map"></div>
 
-		<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+		<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 		<script type="text/javascript">
 			var map = L.map('map');
 
@@ -58,7 +58,7 @@ Para mostrar los datos en el mapa utilizaremos la librería Leaflet [^3]. Para o
 <html>
 <head>
 	<title>Servicio compartir ubicación realtime</title>
-	<link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+	<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
 		<style>
 				#map {
 						position: absolute;
@@ -72,7 +72,7 @@ Para mostrar los datos en el mapa utilizaremos la librería Leaflet [^3]. Para o
 <body>
 	<div id="map"></div>
 
-		<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+		<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 		<script type="text/javascript">
 			var map = L.map('map');
 
@@ -166,7 +166,7 @@ nodemon app.js
 <html>
 <head>
 	<title>Servicio compartir ubicación realtime</title>
-	<link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+	<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
 		<style>
 				#map {
 						position: absolute;
@@ -180,7 +180,7 @@ nodemon app.js
 <body>
 	<div id="map"></div>
 
-		<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+		<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 		<script src="https://cdn.jsdelivr.net/npm/socket.io-client@4.4.0/dist/socket.io.min.js"></script>
 		<script type="text/javascript">
 			var map = L.map('map');
@@ -208,7 +208,7 @@ nodemon app.js
 <html>
 <head>
 	<title>Servicio compartir ubicación realtime</title>
-	<link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+	<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
 		<style>
 				#map {
 						position: absolute;
@@ -222,7 +222,7 @@ nodemon app.js
 <body>
 	<div id="map"></div>
 
-		<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+		<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 		<script src="https://cdn.jsdelivr.net/npm/socket.io-client@4.4.0/dist/socket.io.min.js"></script>
 		<script type="text/javascript">
 			var socket = io();
@@ -254,7 +254,7 @@ nodemon app.js
 <html>
 <head>
 	<title>Servicio compartir ubicación realtime</title>
-	<link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+	<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
 		<style>
 				#map {
 						position: absolute;
@@ -268,7 +268,7 @@ nodemon app.js
 <body>
 	<div id="map"></div>
 
-		<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+		<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 		<script src="https://cdn.jsdelivr.net/npm/socket.io-client@4.4.0/dist/socket.io.min.js"></script>
 		<script type="text/javascript">
 			var socket = io();
@@ -353,7 +353,7 @@ http.listen(3000, function(){
 <html>
 <head>
 	<title>Servicio compartir ubicación realtime</title>
-	<link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+	<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
 		<style>
 				#map {
 						position: absolute;
@@ -367,7 +367,7 @@ http.listen(3000, function(){
 <body>
 	<div id="map"></div>
 
-		<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+		<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 		<script src="https://cdn.jsdelivr.net/npm/socket.io-client@4.4.0/dist/socket.io.min.js"></script>
 		<script type="text/javascript">
 			var socket = io();
@@ -404,7 +404,7 @@ http.listen(3000, function(){
 <html>
 <head>
 	<title>Servicio compartir ubicación realtime</title>
-	<link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+	<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
 		<style>
 				#map {
 						position: absolute;
@@ -418,7 +418,7 @@ http.listen(3000, function(){
 <body>
 	<div id="map"></div>
 
-		<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+		<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 		<script src="https://cdn.jsdelivr.net/npm/socket.io-client@4.4.0/dist/socket.io.min.js"></script>
 		<script type="text/javascript">
 			var socket = io();

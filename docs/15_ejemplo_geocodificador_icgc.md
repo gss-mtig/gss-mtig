@@ -25,7 +25,7 @@ Para crear un visor de mapas utilizaremos la librería de mapas Leaflet [^1]. Y 
 <html>
 <head>
 	<title>Ejemplo geocoder</title>
-	<link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+	<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
 		<style>
 				#map {
 						position: absolute;
@@ -39,7 +39,7 @@ Para crear un visor de mapas utilizaremos la librería de mapas Leaflet [^1]. Y 
 <body>
 	<div id="map"></div>
 
-		<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+		<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 		<script type="text/javascript">
 			var map = L.map('map');
 
@@ -66,7 +66,7 @@ Para crear un visor de mapas utilizaremos la librería de mapas Leaflet [^1]. Y 
 <html>
 <head>
 	<title>Ejemplo geocoder</title>
-	<link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+	<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
 		<style>
 				#map {
 						position: absolute;
@@ -80,7 +80,7 @@ Para crear un visor de mapas utilizaremos la librería de mapas Leaflet [^1]. Y 
 <body>
 	<div id="map"></div>
 
-		<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+		<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
         <!-- Load geocoding plugin after Leaflet -->
 		<script src="leaflet-geocoder.js"></script>
 
@@ -115,7 +115,7 @@ Para crear un visor de mapas utilizaremos la librería de mapas Leaflet [^1]. Y 
 <html>
 <head>
 	<title>Ejemplo geocoder</title>
-	<link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+	<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet-geocoder-mapzen/1.9.4/leaflet-geocoder-mapzen.css">
 		<style>
 				#map {
@@ -130,7 +130,7 @@ Para crear un visor de mapas utilizaremos la librería de mapas Leaflet [^1]. Y 
 <body>
 	<div id="map"></div>
 
-		<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+		<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
         <!-- Load geocoding plugin after Leaflet -->
 		<script src="leaflet-geocoder.js"></script>
 
@@ -172,7 +172,7 @@ Implementaremos la funcionalidad que cuando el usuario haga click en el mapa se 
 <html>
 <head>
 	<title>Ejemplo geocoder</title>
-	<link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+	<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet-geocoder-mapzen/1.9.4/leaflet-geocoder-mapzen.css">
 		<style>
 				#map {
@@ -187,7 +187,7 @@ Implementaremos la funcionalidad que cuando el usuario haga click en el mapa se 
 <body>
 	<div id="map"></div>
 
-		<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+		<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
         <!-- Load geocoding plugin after Leaflet -->
 		<script src="leaflet-geocoder.js"></script>
 
@@ -226,7 +226,7 @@ Implementaremos la funcionalidad que cuando el usuario haga click en el mapa se 
 <html>
 <head>
 	<title>Ejemplo geocoder</title>
-	<link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+	<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet-geocoder-mapzen/1.9.4/leaflet-geocoder-mapzen.css">
 		<style>
 				#map {
@@ -241,7 +241,7 @@ Implementaremos la funcionalidad que cuando el usuario haga click en el mapa se 
 <body>
 	<div id="map"></div>
 
-		<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+		<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
         <!-- Load geocoding plugin after Leaflet -->
 		<script src="leaflet-geocoder.js"></script>
 
@@ -290,7 +290,7 @@ Implementaremos la funcionalidad que cuando el usuario haga click en el mapa se 
 <html>
 <head>
 	<title>Ejemplo geocoder</title>
-	<link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+	<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet-geocoder-mapzen/1.9.4/leaflet-geocoder-mapzen.css">
 		<style>
 				#map {
@@ -305,7 +305,7 @@ Implementaremos la funcionalidad que cuando el usuario haga click en el mapa se 
 <body>
 	<div id="map"></div>
 
-		<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+		<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
         <!-- Load geocoding plugin after Leaflet -->
 		<script src="leaflet-geocoder.js"></script>
 
@@ -356,7 +356,7 @@ Implementaremos la funcionalidad que cuando el usuario haga click en el mapa se 
 <html>
 <head>
 	<title>Ejemplo geocoder</title>
-	<link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+	<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet-geocoder-mapzen/1.9.4/leaflet-geocoder-mapzen.css">
 		<style>
 				#map {
@@ -371,7 +371,7 @@ Implementaremos la funcionalidad que cuando el usuario haga click en el mapa se 
 <body>
 	<div id="map"></div>
 
-		<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+		<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
         <!-- Load geocoding plugin after Leaflet -->
 		<script src="leaflet-geocoder.js"></script>
 
@@ -427,7 +427,7 @@ Implementaremos la funcionalidad que cuando el usuario haga click en el mapa se 
 <html>
 <head>
 	<title>Ejemplo geocoder</title>
-	<link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+	<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet-geocoder-mapzen/1.9.4/leaflet-geocoder-mapzen.css">
 		<style>
 				#map {
@@ -442,7 +442,7 @@ Implementaremos la funcionalidad que cuando el usuario haga click en el mapa se 
 <body>
 	<div id="map"></div>
 
-		<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+		<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
         <!-- Load geocoding plugin after Leaflet -->
 		<script src="leaflet-geocoder.js"></script>
 
@@ -496,7 +496,7 @@ Implementaremos la funcionalidad que cuando el usuario haga click en el mapa se 
 <html>
 <head>
 	<title>Ejemplo geocoder</title>
-	<link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+	<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet-geocoder-mapzen/1.9.4/leaflet-geocoder-mapzen.css">
 		<style>
 				#map {
@@ -511,7 +511,7 @@ Implementaremos la funcionalidad que cuando el usuario haga click en el mapa se 
 <body>
 	<div id="map"></div>
 
-		<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+		<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
         <!-- Load geocoding plugin after Leaflet -->
 		<script src="leaflet-geocoder.js"></script>
 
