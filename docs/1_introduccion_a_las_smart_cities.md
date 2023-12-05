@@ -40,9 +40,9 @@ La documentación de la API generalmente se proporciona para facilitar el uso.
 
 Webs con enlaces a diferentes APIs
 
-https://www.programmableweb.com/
-
 https://rapidapi.com/
+
+https://apislist.com/
 
 ### HTTP
 

@@ -228,8 +228,8 @@ Para ver estos datos sobre un mapa crearemos un visor utilizando Leaflet. [^2]
         .then(function(response) {
             return response.json();
         })
-        .then(function(data) {
-            var stations = data.data.stations;
+        .then(function(respuesta) {
+            var stations = respuesta.data.stations;
             for (var i = stations.length - 1; i >= 0; i--) {
                 var station = stations[i];
                 var feature = {
@@ -303,8 +303,8 @@ Para ver estos datos sobre un mapa crearemos un visor utilizando Leaflet. [^2]
         .then(function(response) {
             return response.json();
         })
-        .then(function(data) {
-            var stations = data.data.stations;
+        .then(function(respuesta) {
+            var stations = respuesta.data.stations;
             for (var i = stations.length - 1; i >= 0; i--) {
                 var station = stations[i];
                 var feature = {
