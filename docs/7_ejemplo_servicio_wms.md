@@ -98,9 +98,9 @@ Para ver los datos de este servicio sobre un mapa crearemos un visor utilizando 
 - Recargar la página para visualizar nuestra capa WMS de Ortofotos.
 
 !!! question "Ejercicios 1,5 pts"
-	  1. Agregar el servicio WMS de Ortofotos del ICGC. URL del servicio http://geoserveis.icc.cat/icc_mapesmultibase/noutm/wms/service? (1 pt)
+	  1. Agregar el servicio WMS de Ortofotos del ICGC. URL del servicio https://geoserveis.icgc.cat/servei/catalunya/mapa-base/wms? (1 pt)
     
-        Ayuda: Para ver el nombre de la capa (layers) hacer un GetCapabilities http://geoserveis.icc.cat/icc_mapesmultibase/noutm/wms/service?SERVICE=WMS&VERSION=1.3.0&REQUEST=Getcapabilities.
+        Ayuda: Para ver el nombre de la capa (layers) hacer un GetCapabilities https://geoserveis.icgc.cat/servei/catalunya/mapa-base/wms?SERVICE=WMS&VERSION=1.3.0&REQUEST=Getcapabilities.
     
     2. En el parámetro attribution de la nueva capa poner "Institut Cartogràfic i Geològic de Catalunya" (0,5 pt)
 

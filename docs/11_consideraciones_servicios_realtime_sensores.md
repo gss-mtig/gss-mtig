@@ -4,7 +4,7 @@
 
 - Existe el estándar SOS de la OGC [^1], pero tiene poca implementación, debido a que algunos de los fabricantes de sensores utilizan formatos propios, lo que dificulta la integración de sensores de diferentes proveedores en un sólo sistema.
 
-- Datos erróneos y falsos, ya sea por una mala lectura ó porque el sensor no está funcionando correctamente. No tenemos forma de saber si el dato es correcto. [Ejemplo](http://sensors.portdebarcelona.cat/widget/?name=thermometer&service=http%3A%2F%2Fsensors.portdebarcelona.cat%2Fsos%2Fjson&offering=http%3A%2F%2Fsensors.portdebarcelona.cat%2Fdef%2Fweather%2Fofferings%2310m&feature=http%3A%2F%2Fsensors.portdebarcelona.cat%2Fdef%2Fweather%2Ffeatures%23P6&property=http%3A%2F%2Fsensors.portdebarcelona.cat%2Fdef%2Fweather%2Fproperties%2332&refresh_interval=120&footnote=Nota%20al%20pie%20de%20ejemplo%20en%20el%20widget%20Term%C3%B3metro&lang=es>)
+- Datos erróneos y falsos, ya sea por una mala lectura ó porque el sensor no está funcionando correctamente. No tenemos forma de saber si el dato es correcto.
 
 ## Ejemplo de buenas prácticas
 
@@ -16,7 +16,7 @@ Si bien el formato de salida es un JSON donde tiene una propiedad *location* no 
 
 ## Ejemplo de "malas" prácticas
 
-El servicio de la DIBA https://www.diba.cat/es/web/smartregion/ptgu ya que para acceder a los servicios es necesaria una API Key y para obtenerla hay que enviar un email con nuestros datos y el motivo de uso. El simple hecho de tener que registrarse ya es una barrera.
+El servicio de la DIBA https://www.diba.cat/es/web/smartregion o https://dadesobertes.diba.cat/.
 
 El acceso a la aplicación http://sentilo.diba.cat/sentilo-catalog-web/ no es fácil de encontrar y no hay ninguna documentación.
 

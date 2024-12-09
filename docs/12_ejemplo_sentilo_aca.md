@@ -139,7 +139,7 @@ Para crear un visor de mapas utilizaremos la librería de mapas Leaflet [^5].
 </html>
 ```
 
-- Recargar la página y confirmar que no aparece ninguna información en el mapa. En muchas ocasiones al abrir la consola de desarrollador del navegador (Ctrl+F12) vemos que aparece un mensaje de error *XMLHttpRequest cannot load ...* ello es debido a que estamos llamando a un servicio que no está en nuestro dominio y por lo tanto da un error de CORS [^7]. Para evitar el error de CORS necesitamos un proxy [^8] en nuestro servidor web que pueda hacer la llamada al servicio de la ACA y que nos devuelva el contenido.
+- Recargar la aplicación y comprobamos que no tenemos ningún dato en nuestro mapa. Esto es debido a que la API no retorna un GeoJSON. Por lo tanto tendremos que convertir la respuesta de la API en un GeoJSON. Para ello crearemos un proxy [^8] en nuestro servidor web que pueda hacer la llamada al servicio de la ACA y que nos devuelva el contenido.
 
 ## Creación del proxy
 

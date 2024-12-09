@@ -71,7 +71,7 @@ Para ver estos datos sobre un mapa crearemos un visor utilizando MapLibre GL JS.
 
 ## Creación del proxy
 
-Crearemos un proxy que nos permita  
+Crearemos un proxy que nos permita hacer la llamada al servicio 
 
 - Instalar Node.js [^3]. Descargar la última versión LTS y lo instalaremos con las opciones por defecto. Una vez instalado el Node abrir la consola para verificar que se ha instalado correctamente. Escribir
 
@@ -110,18 +110,21 @@ var express  = require('express');
 var app      = express();
 var cors = require('cors');
 var axios = require('axios');
-var serverBicing = 'https://api.bsmsa.eu/ext/api/bsm/gbfs/v2/en/station_information';
+var serverBicing = "http://opendata-ajuntament.barcelona.cat/data/dataset/bd2462df-6e1e-4e37-8205-a4b8e7313b84/resource/f60e9291-5aaa-417d-9b91-612a9de800aa/download/recurs.json";
+const port = 3000;
+const token = "TOKEN OPEN DATA BARCELONA";
 
 app.use(cors());
 app.use(express.static('public'));
 
 app.all("/bicingjson/*", function(req, res) {
   console.log('redirecting to Server2');
-  var geojson = {
+  const geojson = {
     type: 'FeatureCollection',
     features: []
   };
-  axios.get(serverBicing).then(function(response){
+  //axios.get(serverBicing, { headers: { Authorization: `Bearer ${token}` } }).then(function(response){
+  axios.get(serverBicing,  { headers: { Authorization: `${token}` } }).then(function(response){
     // handle success
     var stations = response.data.data.stations;
     for (let i = stations.length - 1; i >= 0; i--) {
@@ -149,7 +152,9 @@ app.all("/bicingjson/*", function(req, res) {
   });
 });
 
-app.listen(3000);
+app.listen(port, () => {
+    console.log(`Example app listening on port ${port}`)
+});
 ```
 
 - Probar que nuestro proxy está funcionando, escribiendo:
@@ -623,22 +628,25 @@ var express  = require('express');
 var app      = express();
 var cors = require('cors');
 var axios = require('axios');
-var serverBicing = 'https://api.bsmsa.eu/ext/api/bsm/gbfs/v2/en/station_information';
-var statusBicing = 'https://api.bsmsa.eu/ext/api/bsm/gbfs/v2/en/station_status';
+var serverBicing = "http://opendata-ajuntament.barcelona.cat/data/dataset/bd2462df-6e1e-4e37-8205-a4b8e7313b84/resource/f60e9291-5aaa-417d-9b91-612a9de800aa/download/recurs.json";
+var statusBicing = "https://opendata-ajuntament.barcelona.cat/data/dataset/6aa3416d-ce1a-494d-861b-7bd07f069600/resource/1b215493-9e63-4a12-8980-2d7e0fa19f85/download/recurs.json";
+const port = 3000;
+const token = "7eef1fc18d54151743a50f643844cd33abbd27c44e4385a53eabed4d9d0bed9f";
 
 app.use(cors());
 app.use(express.static('public'));
 
 app.all("/bicingjson/*", function(req, res) {
   console.log('redirecting to Server2');
-  var geojson = {
+  const geojson = {
     type: 'FeatureCollection',
     features: []
   };
-  axios.get(serverBicing).then(function(response){
+  //axios.get(serverBicing, { headers: { Authorization: `Bearer ${token}` } }).then(function(response){
+  axios.get(serverBicing,  { headers: { Authorization: `${token}` } }).then(function(response){
     // handle success
     var stations = response.data.data.stations;
-    for (var i = stations.length - 1; i >= 0; i--) {
+    for (let i = stations.length - 1; i >= 0; i--) {
       var station = stations[i];
       var feature = {
         type: 'Feature',
@@ -663,31 +671,37 @@ app.all("/bicingjson/*", function(req, res) {
   });
 });
 
-app.listen(3000);
+app.listen(port, () => {
+    console.log(`Example app listening on port ${port}`)
+});
 ```
 
 - Combinar la información del estado de estaciones con la información de la estación
 
-```js  hl_lines="18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56"
+```js hl_lines="20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56 57 58 59 60"
 var express  = require('express');
 var app      = express();
 var cors = require('cors');
 var axios = require('axios');
-var serverBicing = 'https://api.bsmsa.eu/ext/api/bsm/gbfs/v2/en/station_information';
-var statusBicing = 'https://api.bsmsa.eu/ext/api/bsm/gbfs/v2/en/station_status';
+var serverBicing = "http://opendata-ajuntament.barcelona.cat/data/dataset/bd2462df-6e1e-4e37-8205-a4b8e7313b84/resource/f60e9291-5aaa-417d-9b91-612a9de800aa/download/recurs.json";
+var statusBicing = "https://opendata-ajuntament.barcelona.cat/data/dataset/6aa3416d-ce1a-494d-861b-7bd07f069600/resource/1b215493-9e63-4a12-8980-2d7e0fa19f85/download/recurs.json";
+const port = 3000;
+const token = "7eef1fc18d54151743a50f643844cd33abbd27c44e4385a53eabed4d9d0bed9f";
 
 app.use(cors());
 app.use(express.static('public'));
 
 app.all("/bicingjson/*", function(req, res) {
   console.log('redirecting to Server2');
-  var geojson = {
+  const geojson = {
     type: 'FeatureCollection',
     features: []
   };
-  
-  Promise.all([axios.get(serverBicing), axios.get(statusBicing)]).then((responses) => {
-	var stations = responses[0].data.data.stations;
+
+  Promise.all([
+    axios.get(serverBicing,  { headers: { Authorization: `${token}` } }), 
+    axios.get(statusBicing,  { headers: { Authorization: `${token}` } })]).then((responses) => {
+    var stations = responses[0].data.data.stations;
     for (var i = stations.length - 1; i >= 0; i--) {
       var station = stations[i];
       var feature = {
@@ -705,29 +719,31 @@ app.all("/bicingjson/*", function(req, res) {
         }
       };
       geojson.features.push(feature);
-	}
-	
-	var status = responses[1].data.data.stations;
+    }
 
-	for (var i = status.length - 1; i >= 0; i--) {
-		var stat = status[i];
-		for (var j = geojson.features.length - 1; j >= 0; j--) {
-			var feat = geojson.features[j];
-			if(feat.properties.id === stat.station_id) {
-				feat.properties.num_bikes_available = stat.num_bikes_available;
-				feat.properties.num_bikes_available_types = stat.num_bikes_available_types;
-				feat.properties.num_docks_available = stat.num_docks_available;
-			}
-		}
-	}
-	res.send(geojson);
+    var status = responses[1].data.data.stations;
+
+    for (var i = status.length - 1; i >= 0; i--) {
+        var stat = status[i];
+        for (var j = geojson.features.length - 1; j >= 0; j--) {
+            var feat = geojson.features[j];
+            if(feat.properties.id === stat.station_id) {
+                feat.properties.num_bikes_available = stat.num_bikes_available;
+                feat.properties.num_bikes_available_types = stat.num_bikes_available_types;
+                feat.properties.num_docks_available = stat.num_docks_available;
+            }
+        }
+    }
+    res.send(geojson);
   }).catch(function (error) {
     console.log(error);
     res.send(error);
   });
 });
 
-app.listen(3000);
+app.listen(port, () => {
+    console.log(`Example app listening on port ${port}`)
+});
 ``` 
 
 ### Modificar el visor
