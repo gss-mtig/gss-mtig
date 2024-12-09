@@ -528,6 +528,30 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#creacion-del-proxy" class="md-nav__link">
+    <span class="md-ellipsis">
+      Creación del proxy
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Creación del proxy">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#modificar-el-visor" class="md-nav__link">
+    <span class="md-ellipsis">
+      Modificar el visor
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#referencias" class="md-nav__link">
     <span class="md-ellipsis">
       Referencias
@@ -769,6 +793,30 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#creacion-del-proxy" class="md-nav__link">
+    <span class="md-ellipsis">
+      Creación del proxy
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Creación del proxy">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#modificar-el-visor" class="md-nav__link">
+    <span class="md-ellipsis">
+      Modificar el visor
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#referencias" class="md-nav__link">
     <span class="md-ellipsis">
       Referencias
@@ -917,19 +965,122 @@
 <span class="w">    </span><span class="p">}).</span><span class="nx">addTo</span><span class="p">(</span><span class="nx">map</span><span class="p">);</span>
 
 <span class="hll"><span class="w">    </span><span class="kd">var</span><span class="w"> </span><span class="nx">realtime</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">L</span><span class="p">.</span><span class="nx">realtime</span><span class="p">({</span>
-</span><span class="hll"><span class="w">      </span><span class="nx">url</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;https://api.bsmsa.eu/ext/api/bsm/gbfs/v2/en/station_information&#39;</span><span class="p">,</span>
+</span><span class="hll"><span class="w">      </span><span class="nx">url</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;https://www.bicing.barcelona/es/get-stations&#39;</span><span class="p">,</span>
 </span><span class="hll"><span class="w">      </span><span class="nx">crossOrigin</span><span class="o">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
 </span><span class="hll"><span class="w">      </span><span class="nx">type</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;json&#39;</span>
 </span><span class="hll"><span class="w">    </span><span class="p">},</span><span class="w"> </span><span class="p">{</span>
-</span><span class="hll"><span class="w">      </span><span class="nx">interval</span><span class="o">:</span><span class="w"> </span><span class="mf">3</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mf">1000</span>
+</span><span class="hll"><span class="w">      </span><span class="nx">interval</span><span class="o">:</span><span class="w"> </span><span class="mf">10</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mf">1000</span>
 </span><span class="hll"><span class="w">    </span><span class="p">}).</span><span class="nx">addTo</span><span class="p">(</span><span class="nx">map</span><span class="p">);</span>
 </span><span class="w">  </span><span class="p">&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
 <span class="p">&lt;/</span><span class="nt">body</span><span class="p">&gt;</span>
 <span class="p">&lt;/</span><span class="nt">html</span><span class="p">&gt;</span>
 </code></pre></div>
 <ul>
+<li>Recargar la página para visualizar nuestra capa de bicing. Observaremos que no aparece ningún dato. Abrir la consola de desarrollador del navegador presionando F12 y veremos que cada 3 segundos aparecerá un error. El error es: <em><span style="color:red">Access to fetch at <code>https://www.bicing.barcelona/es/get-stations?_=1733770062417</code> from origin <code>http://127.0.0.1:5500</code> has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource</span></em>. Este error es debido a que estamos llamando a un servicio que no está en nuestro dominio y por lo tanto da un error de CORS <sup id="fnref:7"><a class="footnote-ref" href="#fn:7">4</a></sup>. Para evitar el error de CORS necesitamos un proxy <sup id="fnref:8"><a class="footnote-ref" href="#fn:8">5</a></sup> en nuestro servidor web que pueda hacer la llamada al servicio de Bicing y que nos devuelva el contenido.</li>
+</ul>
+<h2 id="creacion-del-proxy">Creación del proxy</h2>
+<p>Crearemos un proxy que nos permita hacer la llamada al servicio </p>
+<ul>
+<li>Instalar Node.js. Descargar la última versión LTS y lo instalaremos con las opciones por defecto. Una vez instalado el Node abrir la consola para verificar que se ha instalado correctamente. Escribir</li>
+</ul>
+<div class="highlight"><pre><span></span><code>node<span class="w"> </span>-v
+</code></pre></div>
+<ul>
+<li>Navegar hasta nuestra carpeta <em>visor-bicing-vt</em> y escribir:</li>
+</ul>
+<div class="highlight"><pre><span></span><code>npm<span class="w"> </span>init<span class="w"> </span>-y
+</code></pre></div>
+<p>Con este comando estaremos creando el archivo <em>package.json</em>. La opción -y acepta todas la opciones por defecto. Si no ponemos la opción -y este comando solicita varios elementos como, por ejemplo, el nombre y la versión de la aplicación. Sólo hay que pulsar ENTER para aceptar los valores predeterminados.</p>
+<ul>
 <li>
-<p>Recargar la página para visualizar nuestra capa de bicing. Observaremos que no aparece ningún dato. Abrir la consola de desarrollador del navegador presionando F12 y veremos que cada 3 segundos aparecerá un error. El error es <em>Error: Invalid GeoJSON object.</em>. Este error es debido a lo que ya comentamos; la respuesta del servicio de Bicing no es un GeoJSON.</p>
+<p>Instalar las dependencias para crear nuestro servicio de proxy. En este caso utilizaremos Express como servidor web, el módulo axios y el módulo de cors.</p>
+</li>
+<li>
+<p>Instalar el express y los módulos y guardarlo en la lista de dependencias</p>
+</li>
+</ul>
+<div class="highlight"><pre><span></span><code>npm<span class="w"> </span>install<span class="w"> </span>--save<span class="w"> </span>express<span class="w"> </span>axios<span class="w"> </span>cors
+</code></pre></div>
+<ul>
+<li>Crear un archivo llamado <em>app.js</em> que servirá de proxy con el servicio de Bicing. Copiar lo siguiente en este archivo.</li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="kd">var</span><span class="w"> </span><span class="nx">express</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="nx">require</span><span class="p">(</span><span class="s1">&#39;express&#39;</span><span class="p">);</span>
+<span class="kd">var</span><span class="w"> </span><span class="nx">app</span><span class="w">      </span><span class="o">=</span><span class="w"> </span><span class="nx">express</span><span class="p">();</span>
+<span class="kd">var</span><span class="w"> </span><span class="nx">cors</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">require</span><span class="p">(</span><span class="s1">&#39;cors&#39;</span><span class="p">);</span>
+<span class="kd">var</span><span class="w"> </span><span class="nx">axios</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">require</span><span class="p">(</span><span class="s1">&#39;axios&#39;</span><span class="p">);</span>
+<span class="kd">var</span><span class="w"> </span><span class="nx">serverBicing</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;https://www.bicing.barcelona/es/get-stations&quot;</span><span class="p">;</span>
+<span class="kd">const</span><span class="w"> </span><span class="nx">port</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">3000</span><span class="p">;</span>
+
+<span class="nx">app</span><span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="nx">cors</span><span class="p">());</span>
+<span class="nx">app</span><span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="nx">express</span><span class="p">.</span><span class="k">static</span><span class="p">(</span><span class="s1">&#39;public&#39;</span><span class="p">));</span>
+
+<span class="nx">app</span><span class="p">.</span><span class="nx">all</span><span class="p">(</span><span class="s2">&quot;/bicingjson/*&quot;</span><span class="p">,</span><span class="w"> </span><span class="kd">function</span><span class="p">(</span><span class="nx">req</span><span class="p">,</span><span class="w"> </span><span class="nx">res</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;redirecting to Server2&#39;</span><span class="p">);</span>
+<span class="w">  </span><span class="c1">//axios.get(serverBicing, { headers: { Authorization: `Bearer ${token}` } }).then(function(response){</span>
+<span class="w">  </span><span class="nx">axios</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="nx">serverBicing</span><span class="p">).</span><span class="nx">then</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">response</span><span class="p">){</span>
+<span class="w">    </span><span class="c1">// handle success</span>
+<span class="w">    </span><span class="nx">res</span><span class="p">.</span><span class="nx">send</span><span class="p">(</span><span class="nx">response</span><span class="p">.</span><span class="nx">data</span><span class="p">);</span>
+<span class="w">  </span><span class="p">}).</span><span class="k">catch</span><span class="p">(</span><span class="kd">function</span><span class="w"> </span><span class="p">(</span><span class="nx">error</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">error</span><span class="p">);</span>
+<span class="w">    </span><span class="nx">res</span><span class="p">.</span><span class="nx">send</span><span class="p">(</span><span class="nx">error</span><span class="p">);</span>
+<span class="w">  </span><span class="p">});</span>
+<span class="p">});</span>
+
+<span class="nx">app</span><span class="p">.</span><span class="nx">listen</span><span class="p">(</span><span class="nx">port</span><span class="p">,</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="sb">`Example app listening on port </span><span class="si">${</span><span class="nx">port</span><span class="si">}</span><span class="sb">`</span><span class="p">)</span>
+<span class="p">});</span>
+</code></pre></div>
+<ul>
+<li>Probar que nuestro proxy está funcionando, escribiendo:</li>
+</ul>
+<div class="highlight"><pre><span></span><code>node<span class="w"> </span>app.js
+</code></pre></div>
+<ul>
+<li>Abrir la url de nuestro proxy <a href="http://localhost:3000/bicingjson/">http://localhost:3000/bicingjson/</a> en el navegador.</li>
+</ul>
+<h3 id="modificar-el-visor">Modificar el visor</h3>
+<div class="highlight"><pre><span></span><code><span class="cp">&lt;!DOCTYPE html&gt;</span>
+<span class="p">&lt;</span><span class="nt">html</span><span class="p">&gt;</span>
+<span class="p">&lt;</span><span class="nt">head</span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="nt">title</span><span class="p">&gt;</span>Servicio de Bicing realtime<span class="p">&lt;/</span><span class="nt">title</span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="nt">link</span> <span class="na">rel</span><span class="o">=</span><span class="s">&quot;stylesheet&quot;</span> <span class="na">href</span><span class="o">=</span><span class="s">&quot;https://unpkg.com/leaflet/dist/leaflet.css&quot;</span> <span class="p">/&gt;</span>
+  <span class="p">&lt;</span><span class="nt">style</span><span class="p">&gt;</span>
+<span class="w">    </span><span class="p">#</span><span class="nn">map</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">position</span><span class="p">:</span><span class="w"> </span><span class="kc">absolute</span><span class="p">;</span>
+<span class="w">    </span><span class="k">top</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">    </span><span class="k">left</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">    </span><span class="k">bottom</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">    </span><span class="k">right</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">&lt;/</span><span class="nt">style</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">head</span><span class="p">&gt;</span>
+<span class="p">&lt;</span><span class="nt">body</span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="nt">div</span> <span class="na">id</span><span class="o">=</span><span class="s">&quot;map&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+
+  <span class="p">&lt;</span><span class="nt">script</span> <span class="na">src</span><span class="o">=</span><span class="s">&quot;https://unpkg.com/leaflet/dist/leaflet.js&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="nt">script</span> <span class="na">src</span><span class="o">=</span><span class="s">&quot;https://cdnjs.cloudflare.com/ajax/libs/leaflet-realtime/2.2.0/leaflet-realtime.min.js&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="nt">script</span> <span class="na">type</span><span class="o">=</span><span class="s">&quot;text/javascript&quot;</span><span class="p">&gt;</span>
+<span class="w">    </span><span class="kd">var</span><span class="w"> </span><span class="nx">map</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">L</span><span class="p">.</span><span class="nx">map</span><span class="p">(</span><span class="s1">&#39;map&#39;</span><span class="p">);</span>
+<span class="w">    </span><span class="nx">map</span><span class="p">.</span><span class="nx">setView</span><span class="p">([</span><span class="mf">41.3887</span><span class="p">,</span><span class="w"> </span><span class="mf">2.1777</span><span class="p">],</span><span class="w"> </span><span class="mf">13</span><span class="p">);</span>
+
+<span class="w">    </span><span class="nx">L</span><span class="p">.</span><span class="nx">tileLayer</span><span class="p">(</span><span class="s1">&#39;http://{s}.tile.osm.org/{z}/{x}/{y}.png&#39;</span><span class="p">,</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="nx">attribution</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;&amp;copy; &lt;a href=&quot;http://osm.org/copyright&quot;&gt;OpenStreetMap&lt;/a&gt; contributors&#39;</span>
+<span class="w">    </span><span class="p">}).</span><span class="nx">addTo</span><span class="p">(</span><span class="nx">map</span><span class="p">);</span>
+
+<span class="w">    </span><span class="kd">var</span><span class="w"> </span><span class="nx">realtime</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">L</span><span class="p">.</span><span class="nx">realtime</span><span class="p">({</span>
+<span class="hll"><span class="w">      </span><span class="nx">url</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;http://localhost:3000/bicingjson/&#39;</span><span class="p">,</span>
+</span><span class="w">      </span><span class="nx">crossOrigin</span><span class="o">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
+<span class="w">      </span><span class="nx">type</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;json&#39;</span>
+<span class="w">    </span><span class="p">},</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="nx">interval</span><span class="o">:</span><span class="w"> </span><span class="mf">10</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mf">1000</span>
+<span class="w">    </span><span class="p">}).</span><span class="nx">addTo</span><span class="p">(</span><span class="nx">map</span><span class="p">);</span>
+<span class="w">  </span><span class="p">&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">body</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">html</span><span class="p">&gt;</span>
+</code></pre></div>
+<ul>
+<li>
+<p>Recargar la página para visualizar nuestra capa de bicing. Observaremos que no aparece ningún dato. Abrir la consola de desarrollador del navegador presionando F12 y veremos que cada 3 segundos aparecerá un error. El error es Error: Invalid GeoJSON object.. Este error es debido a lo que ya comentamos; la respuesta del servicio de Bicing no es un GeoJSON.</p>
 </li>
 <li>
 <p>Crear una variable llamada geojson que será la que contendrá el GeoJSON resultante de la transformación, antes de la declaración de nuestra capa de realtime</p>
@@ -969,11 +1120,11 @@
 </span><span class="hll"><span class="w">    </span><span class="p">};</span>
 </span>
 <span class="w">    </span><span class="kd">var</span><span class="w"> </span><span class="nx">realtime</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">L</span><span class="p">.</span><span class="nx">realtime</span><span class="p">({</span>
-<span class="w">      </span><span class="nx">url</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;https://corsproxy.io/?https%3A%2F%2Fwww.bicing.barcelona%2Fes%2Fget-stations&#39;</span><span class="p">,</span>
+<span class="w">      </span><span class="nx">url</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;http://localhost:3000/bicingjson/&#39;</span><span class="p">,</span>
 <span class="w">      </span><span class="nx">crossOrigin</span><span class="o">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
 <span class="w">      </span><span class="nx">type</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;json&#39;</span>
 <span class="w">    </span><span class="p">},</span><span class="w"> </span><span class="p">{</span>
-<span class="w">      </span><span class="nx">interval</span><span class="o">:</span><span class="w"> </span><span class="mf">3</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mf">1000</span>
+<span class="w">      </span><span class="nx">interval</span><span class="o">:</span><span class="w"> </span><span class="mf">10</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mf">1000</span>
 <span class="w">    </span><span class="p">}).</span><span class="nx">addTo</span><span class="p">(</span><span class="nx">map</span><span class="p">);</span>
 <span class="w">  </span><span class="p">&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
 <span class="p">&lt;/</span><span class="nt">body</span><span class="p">&gt;</span>
@@ -1016,7 +1167,7 @@
 <span class="w">    </span><span class="p">};</span>
 
 <span class="hll"><span class="w">    </span><span class="kd">var</span><span class="w"> </span><span class="nx">realtime</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">L</span><span class="p">.</span><span class="nx">realtime</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">success</span><span class="p">,</span><span class="w"> </span><span class="nx">error</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-</span><span class="hll"><span class="w">        </span><span class="nx">fetch</span><span class="p">(</span><span class="s1">&#39;https://corsproxy.io/?https%3A%2F%2Fwww.bicing.barcelona%2Fes%2Fget-stations&#39;</span><span class="p">)</span>
+</span><span class="hll"><span class="w">        </span><span class="nx">fetch</span><span class="p">(</span><span class="s1">&#39;http://localhost:3000/bicingjson/&#39;</span><span class="p">)</span>
 </span><span class="hll"><span class="w">        </span><span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">response</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
 </span><span class="hll"><span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="nx">response</span><span class="p">.</span><span class="nx">json</span><span class="p">();</span>
 </span><span class="hll"><span class="w">        </span><span class="p">})</span>
@@ -1043,7 +1194,7 @@
 </span><span class="hll"><span class="w">        </span><span class="p">})</span>
 </span><span class="hll"><span class="w">        </span><span class="p">.</span><span class="k">catch</span><span class="p">(</span><span class="nx">error</span><span class="p">);</span>
 </span><span class="hll"><span class="w">    </span><span class="p">},</span><span class="w"> </span><span class="p">{</span>
-</span><span class="hll"><span class="w">        </span><span class="nx">interval</span><span class="o">:</span><span class="w"> </span><span class="mf">3</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mf">1000</span>
+</span><span class="hll"><span class="w">        </span><span class="nx">interval</span><span class="o">:</span><span class="w"> </span><span class="mf">10</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mf">1000</span>
 </span><span class="hll"><span class="w">    </span><span class="p">}).</span><span class="nx">addTo</span><span class="p">(</span><span class="nx">map</span><span class="p">);</span>
 </span><span class="w">  </span><span class="p">&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
 <span class="p">&lt;/</span><span class="nt">body</span><span class="p">&gt;</span>
@@ -1091,7 +1242,7 @@
 <span class="w">    </span><span class="p">};</span>
 
 <span class="w">        </span><span class="kd">var</span><span class="w"> </span><span class="nx">realtime</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">L</span><span class="p">.</span><span class="nx">realtime</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">success</span><span class="p">,</span><span class="w"> </span><span class="nx">error</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<span class="w">        </span><span class="nx">fetch</span><span class="p">(</span><span class="s1">&#39;https://corsproxy.io/?https%3A%2F%2Fwww.bicing.barcelona%2Fes%2Fget-stations&#39;</span><span class="p">)</span>
+<span class="w">        </span><span class="nx">fetch</span><span class="p">(</span><span class="s1">&#39;http://localhost:3000/bicingjson/&#39;</span><span class="p">)</span>
 <span class="w">        </span><span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">response</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
 <span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="nx">response</span><span class="p">.</span><span class="nx">json</span><span class="p">();</span>
 <span class="w">        </span><span class="p">})</span>
@@ -1117,7 +1268,7 @@
 <span class="w">        </span><span class="p">})</span>
 <span class="w">        </span><span class="p">.</span><span class="k">catch</span><span class="p">(</span><span class="nx">error</span><span class="p">);</span>
 <span class="w">    </span><span class="p">},</span><span class="w"> </span><span class="p">{</span>
-<span class="hll"><span class="w">        </span><span class="nx">interval</span><span class="o">:</span><span class="w"> </span><span class="mf">3</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mf">1000</span><span class="p">,</span>
+<span class="hll"><span class="w">        </span><span class="nx">interval</span><span class="o">:</span><span class="w"> </span><span class="mf">10</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mf">1000</span><span class="p">,</span>
 </span><span class="hll"><span class="w">        </span><span class="nx">onEachFeature</span><span class="p">(</span><span class="nx">f</span><span class="p">,</span><span class="w"> </span><span class="nx">l</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
 </span><span class="hll"><span class="w">            </span><span class="nx">l</span><span class="p">.</span><span class="nx">bindPopup</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
 </span><span class="hll"><span class="w">                </span><span class="k">return</span><span class="w"> </span><span class="s1">&#39;&lt;h3&gt;&#39;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nx">f</span><span class="p">.</span><span class="nx">properties</span><span class="p">.</span><span class="nx">id</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s1">&#39;&lt;/h3&gt;&#39;</span><span class="w"> </span><span class="o">+</span>
@@ -1147,6 +1298,12 @@
 </li>
 <li id="fn:3">
 <p><a href="https://github.com/perliedman/leaflet-realtime">https://github.com/perliedman/leaflet-realtime</a>&#160;<a class="footnote-backref" href="#fnref:3" title="Jump back to footnote 3 in the text">&#8617;</a></p>
+</li>
+<li id="fn:7">
+<p><a href="https://developer.mozilla.org/es/docs/Web/HTTP/Access_control_CORS">https://developer.mozilla.org/es/docs/Web/HTTP/Access_control_CORS</a>&#160;<a class="footnote-backref" href="#fnref:7" title="Jump back to footnote 4 in the text">&#8617;</a></p>
+</li>
+<li id="fn:8">
+<p><a href="https://es.wikipedia.org/wiki/Servidor_proxy">https://es.wikipedia.org/wiki/Servidor_proxy</a>&#160;<a class="footnote-backref" href="#fnref:8" title="Jump back to footnote 5 in the text">&#8617;</a></p>
 </li>
 </ol>
 </div>

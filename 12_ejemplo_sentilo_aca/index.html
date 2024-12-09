@@ -1003,7 +1003,7 @@
 <span class="p">&lt;/</span><span class="nt">html</span><span class="p">&gt;</span>
 </code></pre></div>
 <ul>
-<li>Recargar la página y confirmar que no aparece ninguna información en el mapa. En muchas ocasiones al abrir la consola de desarrollador del navegador (Ctrl+F12) vemos que aparece un mensaje de error <em>XMLHttpRequest cannot load ...</em> ello es debido a que estamos llamando a un servicio que no está en nuestro dominio y por lo tanto da un error de CORS <sup id="fnref:7"><a class="footnote-ref" href="#fn:7">7</a></sup>. Para evitar el error de CORS necesitamos un proxy <sup id="fnref2:8"><a class="footnote-ref" href="#fn:8">8</a></sup> en nuestro servidor web que pueda hacer la llamada al servicio de la ACA y que nos devuelva el contenido.</li>
+<li>Recargar la aplicación y comprobamos que no tenemos ningún dato en nuestro mapa. Esto es debido a que la API no retorna un GeoJSON. Por lo tanto tendremos que convertir la respuesta de la API en un GeoJSON. Para ello crearemos un proxy <sup id="fnref2:8"><a class="footnote-ref" href="#fn:8">8</a></sup> en nuestro servidor web que pueda hacer la llamada al servicio de la ACA y que nos devuelva el contenido.</li>
 </ul>
 <h2 id="creacion-del-proxy">Creación del proxy</h2>
 <ul>
