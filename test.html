@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Aparcamientos PMR Zaragoza</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Leaflet CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <style>
+    #map {
+      height: 90vh;
+      width: 100%;
+    }
+  </style>
+</head>
+<body>
+  <h2 style="text-align:center">Aparcamientos para personas con discapacidad - Zaragoza</h2>
+  <div id="map"></div>
+
+  <!-- Leaflet JS -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+  <script>
+    const map = L.map('map').setView([41.65, -0.88], 13);
+
+    // Capa base
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '&copy; OpenStreetMap contributors'
+    }).addTo(map);
+
+    // URL API Zaragoza
+    const apiUrl = 'https://www.zaragoza.es/sede/servicio/urbanismo-infraestructuras/equipamiento/aparcamiento-personas-discapacidad?rf=html&start=0&rows=50';
+
+    async function loadData() {
+      const res = await fetch(apiUrl, {
+        headers: {
+          'Accept': 'application/json'
+        }
+      });
+      const data = await res.json();
+
+      if (!data.result || !data.result.length) {
+        alert("No se obtuvieron datos");
+        return;
+      }
+
+      console.log(data);
+      // Icono personalizado (usa un icono de silla de ruedas libre)
+      const iconUrl = 'https://www.svgrepo.com/show/277/parking-for-disabled-persons-sign.svg';
+      const pmrIcon = L.icon({
+        iconUrl,
+        iconSize: [32, 32],
+        iconAnchor: [16, 32],
+        popupAnchor: [0, -32]
+      });
+
+      // Recorrer los resultados
+      data.result.forEach(p => {
+        if (!p.geometry || !p.geometry.coordinates) return;
+
+        const [lon, lat] = p.geometry.coordinates;
+
+        const marker = L.marker([lat, lon], { icon: pmrIcon }).addTo(map);
+
+        marker.bindPopup(`
+          <strong>${p.tipo_reserva}</strong><br>
+          Dirección: ${p.calle_1 || 'Desconocida'}, ${p.num_calle1 || 'S/N'}<br>
+          Categoria: ${p.categoria || 'N/D'}<br>
+          Plazas: ${p.plazas || 'N/D'}
+        `);
+      });
+    }
+
+    loadData();
+  </script>
+</body>
+</html>

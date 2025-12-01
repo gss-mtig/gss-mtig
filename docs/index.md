@@ -19,6 +19,7 @@ Temario:
 * [Conceptos básicos de Geoservicios](https://gss-mtig.github.io/gss-mtig/6_conceptos_geoservicios/)
 * [Ejemplo servicio WMS](https://gss-mtig.github.io/gss-mtig/7_ejemplo_servicio_wms/)
 * [Consideraciones sobre servicios Open data](https://gss-mtig.github.io/gss-mtig/8_consideraciones_servicios_opendata/)
+* [Ejemplo servicio aparcamientos PMR Zaragoza](https://gss-mtig.github.io/gss-mtig/8_ejemplo_parking_movilidad_reducida_zaragoza)
 * [Ejemplo servicio bicing Barcelona](https://gss-mtig.github.io/gss-mtig/9_ejemplo_servicio_bicing_bcn/)
 * [Ejemplo servicio bicing Barcelona (VectorTiles)](https://gss-mtig.github.io/gss-mtig/10_ejemplo_servicio_bicing_bcn_vt/)
 * [Consideraciones sobre servicios de Sensores](https://gss-mtig.github.io/gss-mtig/11_consideraciones_servicios_realtime_sensores/)

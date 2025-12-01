@@ -32,6 +32,7 @@ nav:
 - 6. Conceptos básicos de Geoservicios: 6_conceptos_geoservicios.md
 - 7. Ejemplo servicio WMS: 7_ejemplo_servicio_wms.md
 - 8. Consideraciones sobre servicios Open data: 8_consideraciones_servicios_opendata.md
+- 9. Ejemplo servicio aparcamientos PMR Zaragoza: 8_ejemplo_parking_movilidad_reducida_zaragoza.md
 - 9. Ejemplo servicio bicing Barcelona: 9_ejemplo_servicio_bicing_bcn.md
 - 10. Ejemplo servicio bicing Barcelona (VectorTiles): 10_ejemplo_servicio_bicing_bcn_vt.md
 - 11. Consideraciones sobre servicios de Sensores: 11_consideraciones_servicios_realtime_sensores.md
