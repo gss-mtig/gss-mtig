@@ -29,7 +29,9 @@ Temario:
 * [Ejemplo Geocodificador](https://gss-mtig.github.io/gss-mtig/15_ejemplo_geocodificador/)
 * [Ejemplo Mobility](https://gss-mtig.github.io/gss-mtig/16_ejemplo_mobility/)
 * [Ejemplo servicio realtime para compartir la ubicación](https://gss-mtig.github.io/gss-mtig/17_ejemplo_geoservicio_realtime/)
+* [Ejemplo Trenes realtime](https://gss-mtig.github.io/gss-mtig/19_ejemplo_fgc_realtime/)
 * [Ejemplo GTFS](https://gss-mtig.github.io/gss-mtig/18_ejemplo_gtfs/)
+
 
 ## Autores
 

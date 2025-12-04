@@ -459,4 +459,3 @@ http.listen(3000, function(){
 [^6]: http://expressjs.com/
 [^7]: https://github.com/socketio/socket.io
 [^8]: https://www.npmjs.com/package/cors
-[^9]: https://www.npmjs.com/package/nodemon

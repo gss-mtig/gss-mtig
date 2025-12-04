@@ -1214,6 +1214,5 @@ Para agregar un buscador utilizaremos el plugin de Leaflet *Leaflet.OpenCage.Sea
 
 [^1]: https://openrouteservice.org
 [^2]: https://github.com/traffordDataLab/leaflet.reachability
-[^3]: https://github.com/calvinmetcalf/leaflet-ajax
 [^4]: https://github.com/OpenCageData/leaflet-opencage-search
 [^5]: https://opencagedata.com/

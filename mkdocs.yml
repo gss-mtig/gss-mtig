@@ -39,10 +39,11 @@ nav:
 - 12. Ejemplo Sentilo ACA: 12_ejemplo_sentilo_aca.md
 - 13. Geoservicios realtime: 13_geoservicios_realtime.md
 - 14. Herramientas de visualización geoservicios: 14_herramientas_visualizacion_geoservicios.md
-- 15. Ejemplo Geocodificador: 15_ejemplo_geocodificador.md
-- 16. Ejemplo Mobility: 16_ejemplo_mobility.md
-- 17. Ejemplo servicio realtime para compartir la ubicación: 17_ejemplo_geoservicio_realtime.md
-- 18. Ejemplo GTFS: 18_ejemplo_gtfs.md
+- 16. Ejemplo Geocodificador: 15_ejemplo_geocodificador.md
+- 17. Ejemplo Mobility: 16_ejemplo_mobility.md
+- 18. Ejemplo servicio realtime para compartir la ubicación: 17_ejemplo_geoservicio_realtime.md
+- 19. Ejemplo Trenes realtime: 19_ejemplo_fgc_realtime.md
+- 20. Ejemplo GTFS: 18_ejemplo_gtfs.md
 
 plugins:
     - search

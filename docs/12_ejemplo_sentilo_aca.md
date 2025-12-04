@@ -57,7 +57,7 @@ Para crear un visor de mapas utilizaremos la librería de mapas Leaflet [^5].
 
 - Abrir el archivo index.html en el navegador para confirmar que se carga un mapa centrado en Cataluña.
 
-- Consultar la documentación de la API y buscar la url de descripción del servicio que es http://aca-web.gencat.cat/sdim2/apirest/catalog. Abrir esta url en el navegador y confirmar que responde un JSON con la información de los diferentes sensores.
+- Consultar la documentación de la API y buscar la url de descripción del servicio que es https://aplicacions.aca.gencat.cat/sdim2/apirest/catalog. Abrir esta url en el navegador y confirmar que responde un JSON con la información de los diferentes sensores.
 
 - Revisar el JSON de salida y buscar la propiedad *location* que indica las coordenadas de la ubicación del sensor. A pesar de que el JSON tiene coordenadas no es un GeoJSON y por lo tanto no lo podemos pintar automáticamente en nuestro mapa.
 
@@ -133,7 +133,7 @@ Para crear un visor de mapas utilizaremos la librería de mapas Leaflet [^5].
       attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
     }).addTo(map);
 
-    var geojsonLayer = new L.GeoJSON.AJAX('http://aca-web.gencat.cat/sdim2/apirest/catalog').addTo(map);
+    var geojsonLayer = new L.GeoJSON.AJAX('https://aplicacions.aca.gencat.cat/sdim2/apirest/catalog').addTo(map);
   </script>
 </body>
 </html>
@@ -181,7 +181,7 @@ var app      = express();
 var cors = require('cors');
 var httpProxy = require('http-proxy');
 var apiProxy = httpProxy.createProxyServer();
-var serverAca = 'http://aca-web.gencat.cat/sdim2/apirest/catalog';
+var serverAca = 'https://aplicacions.aca.gencat.cat/sdim2/apirest/catalog';
 
 app.use(cors());
 app.use(express.static('public'));
@@ -210,7 +210,7 @@ nodemon app.js
 
 ### Modificar el mapa
 
-- Modificar el archivo index.html para que llame al proxy que hemos creado. Cambiar la url de la capa geojsonLayer *http://aca-web.gencat.cat/sdim2/apirest/catalog* por nuestro proxy *http://localhost:3000/aca/* (como el proxy y la aplicación están en el mismo servidor podríamos usar */aca/*).
+- Modificar el archivo index.html para que llame al proxy que hemos creado. Cambiar la url de la capa geojsonLayer *https://aplicacions.aca.gencat.cat/sdim2/apirest/catalog* por nuestro proxy *http://localhost:3000/aca/* (como el proxy y la aplicación están en el mismo servidor podríamos usar */aca/*).
 
 ```html hl_lines="32"
 <!DOCTYPE html>
@@ -293,7 +293,7 @@ nodemon app.js
         type: "FeatureCollection",
         features: []
       };
-      var sensors = data.providers[0].sensors;
+      var sensors = data.providers[1].sensors;
       for (var i = sensors.length - 1; i >= 0; i--) {
         var sensor = sensors[i];
         var location = sensor.location.split(" ");
@@ -365,7 +365,7 @@ nodemon app.js
         type: "FeatureCollection",
         features: []
       };
-      var sensors = data.providers[0].sensors;
+      var sensors = data.providers[1].sensors;
       for (var i = sensors.length - 1; i >= 0; i--) {
         var sensor = sensors[i];
         var location = sensor.location.split(" ");
@@ -441,7 +441,7 @@ nodemon app.js
         type: "FeatureCollection",
         features: []
       };
-      var sensors = data.providers[0].sensors;
+      var sensors = data.providers[1].sensors;
       for (var i = sensors.length - 1; i >= 0; i--) {
         var sensor = sensors[i];
         var location = sensor.location.split(" ");
@@ -521,7 +521,7 @@ nodemon app.js
         type: "FeatureCollection",
         features: []
       };
-      var sensors = data.providers[0].sensors;
+      var sensors = data.providers[1].sensors;
       for (var i = sensors.length - 1; i >= 0; i--) {
         var sensor = sensors[i];
         var location = sensor.location.split(" ");
@@ -557,11 +557,11 @@ nodemon app.js
 
 - Recargar el mapa y hacer click sobre un elemento. En la consola de desarrollador ver que aparecen 2 entradas una que corresponde al feature y otra al layer.
 
-- Llamar a la API de la ACA para pedir la última lectura del sensor y así obtener la información. La url para obtener la última lectura es http://aca-web.gencat.cat/sentilo-catalog-web/component/map/EMBASSAMENT-EST.*.<id_sensor>*/lastOb/.
+- Llamar a la API de la ACA para pedir la última lectura del sensor y así obtener la información. La url para obtener la última lectura es https://aplicacions.aca.gencat.cat/sentilo-catalog-web/component/map/EMBASSAMENT-EST.*.<id_sensor>*/lastOb/.
 
     Por ejemplo:
 
-    http://aca-web.gencat.cat/sentilo-catalog-web/component/map/EMBASSAMENT-EST.082687-001/lastOb/
+    https://aplicacions.aca.gencat.cat/sentilo-catalog-web/component/map/EMBASSAMENT-EST.082687-001/lastOb/
 
     Como estamos llamando una url que está fuera de nuestro dominio tenemos el mismo problema de CORS.
 
@@ -575,8 +575,8 @@ var app      = express();
 var cors = require('cors');
 var httpProxy = require('http-proxy');
 var apiProxy = httpProxy.createProxyServer();
-var serverAca = 'http://aca-web.gencat.cat/sdim2/apirest/catalog';
-var serverAcaLastOb = 'http://aca-web.gencat.cat/sentilo-catalog-web/component/map/EMBASSAMENT-EST.';
+var serverAca = 'https://aplicacions.aca.gencat.cat/sdim2/apirest/catalog';
+var serverAcaLastOb = 'https://aplicacions.aca.gencat.cat/sentilo-catalog-web/component/map/EMBASSAMENT-EST.';
 
 app.use(cors());
 app.use(express.static('public'));
@@ -601,8 +601,8 @@ var app      = express();
 var cors = require('cors');
 var httpProxy = require('http-proxy');
 var apiProxy = httpProxy.createProxyServer();
-var serverAca = 'http://aca-web.gencat.cat/sdim2/apirest/catalog';
-var serverAcaLastOb = 'http://aca-web.gencat.cat/sentilo-catalog-web/component/map/EMBASSAMENT-EST.';
+var serverAca = 'https://aplicacions.aca.gencat.cat/sdim2/apirest/catalog';
+var serverAcaLastOb = 'https://aplicacions.aca.gencat.cat/sentilo-catalog-web/component/map/EMBASSAMENT-EST.';
 
 app.use(cors());
 app.use(express.static('public'));
@@ -676,7 +676,7 @@ app.listen(3000);
         type: "FeatureCollection",
         features: []
       };
-      var sensors = data.providers[0].sensors;
+      var sensors = data.providers[1].sensors;
       for (var i = sensors.length - 1; i >= 0; i--) {
         var sensor = sensors[i];
         var location = sensor.location.split(" ");
@@ -766,7 +766,7 @@ app.listen(3000);
         type: "FeatureCollection",
         features: []
       };
-      var sensors = data.providers[0].sensors;
+      var sensors = data.providers[1].sensors;
       for (var i = sensors.length - 1; i >= 0; i--) {
         var sensor = sensors[i];
         var location = sensor.location.split(" ");
@@ -867,7 +867,7 @@ app.listen(3000);
         type: "FeatureCollection",
         features: []
       };
-      var sensors = data.providers[0].sensors;
+      var sensors = data.providers[1].sensors;
       for (var i = sensors.length - 1; i >= 0; i--) {
         var sensor = sensors[i];
         var location = sensor.location.split(" ");
@@ -929,16 +929,14 @@ app.listen(3000);
 
 ## Referencias
 
-[^1]: http://aca.gencat.cat/ca/laigua/consulta-de-dades/dades-obertes/
+[^1]: https://aca.gencat.cat/ca/laigua/consulta-de-dades/dades-obertes/cataleg-dades-obertes/
 [^2]: http://www.sentilo.io/wordpress/
-[^3]: http://aca-web.gencat.cat/sentilo-catalog-web/component/map
-[^4]: http://aca.gencat.cat/web/.content/20_Aigua/08_consulta_de_dades/01_dades_obertes/us_serveis_dades_API_REST.pdf
+[^3]: https://aplicacions.aca.gencat.cat/sentilo-catalog-web/component/map
+[^4]: https://aca.gencat.cat/web/.content/20_Aigua/08_consulta_de_dades/01_dades_obertes/02_dades_obertes_temps_real/us_serveis_dades_API_REST.pdf
 [^5]: http://leafletjs.com/
 [^6]: https://github.com/calvinmetcalf/leaflet-ajax
-[^7]: https://developer.mozilla.org/es/docs/Web/HTTP/Access_control_CORS
 [^8]: https://es.wikipedia.org/wiki/Servidor_proxy
 [^9]: https://nodejs.org/es/
 [^10]: http://expressjs.com/
 [^11]: https://github.com/nodejitsu/node-http-proxy
 [^12]: https://www.npmjs.com/package/cors
-[^13]: https://www.npmjs.com/package/nodemon

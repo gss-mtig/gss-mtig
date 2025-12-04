@@ -11,9 +11,6 @@ Existen dos tipos de geocodificación:
 
 Para crear un visor de mapas utilizaremos la librería de mapas Leaflet [^1]. Y cargaremos los datos del Geocodificador del ICGC
 
-!!! warning "Advertencia"
-	El servicio de geodificación del ICGC que utilizaremos es un servicio **beta** en fase de prueba
-
 - Crear una carpeta con el nombre de *visor-geocoder*.
 
 - Crear un archivo con el nombre de *index.html* dentro de la carpeta.

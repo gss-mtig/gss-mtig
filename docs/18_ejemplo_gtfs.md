@@ -722,12 +722,11 @@ function leerZip(archivo){
 *ejemplo gtfs*
 
 !!! question "Ejercicios 2,5 pts"
-	1. Mostrar un popup con información de la propiedad *shape_id* al hacer click en la capa de líneas (1 pt)
+	1. Cargar datos del gtfs de FGC https://www.fgc.cat/es/opendata/ y centrar en mapa en Catalunya para que se vean los datos(1 pt)
 	
-	2. Cargar datos del gtfs de FGC https://www.fgc.cat/es/opendata/  
-	En el siguiente enlace está el fichero de gtfs https://www.fgc.cat/wp-content/uploads/2018/02/google_transit.zip (1 pt)
+	2. Mostrar un popup con información de la propiedad *shape_id* al hacer click en la capa de líneas (0,5 pt)
 
-	3. Centrar el mapa en Barcelona (0,5 pt)
+	3. Mostrar los trenes en tiempo real (1 pt)
 
 ## Referencias
 
