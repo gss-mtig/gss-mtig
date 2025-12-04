@@ -2,94 +2,98 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
          <loc>https://gss-mtig.github.io/gss-mtig/</loc>
-         <lastmod>2025-12-01</lastmod>
+         <lastmod>2025-12-04</lastmod>
     </url>
     <url>
          <loc>https://gss-mtig.github.io/gss-mtig/10_ejemplo_servicio_bicing_bcn_vt/</loc>
-         <lastmod>2025-12-01</lastmod>
+         <lastmod>2025-12-04</lastmod>
     </url>
     <url>
          <loc>https://gss-mtig.github.io/gss-mtig/11_consideraciones_servicios_realtime_sensores/</loc>
-         <lastmod>2025-12-01</lastmod>
+         <lastmod>2025-12-04</lastmod>
     </url>
     <url>
          <loc>https://gss-mtig.github.io/gss-mtig/12_ejemplo_sentilo_aca/</loc>
-         <lastmod>2025-12-01</lastmod>
+         <lastmod>2025-12-04</lastmod>
     </url>
     <url>
          <loc>https://gss-mtig.github.io/gss-mtig/13_geoservicios_realtime/</loc>
-         <lastmod>2025-12-01</lastmod>
+         <lastmod>2025-12-04</lastmod>
     </url>
     <url>
          <loc>https://gss-mtig.github.io/gss-mtig/14_herramientas_visualizacion_geoservicios/</loc>
-         <lastmod>2025-12-01</lastmod>
+         <lastmod>2025-12-04</lastmod>
     </url>
     <url>
          <loc>https://gss-mtig.github.io/gss-mtig/15_ejemplo_geocodificador/</loc>
-         <lastmod>2025-12-01</lastmod>
+         <lastmod>2025-12-04</lastmod>
     </url>
     <url>
          <loc>https://gss-mtig.github.io/gss-mtig/15_ejemplo_geocodificador_icgc/</loc>
-         <lastmod>2025-12-01</lastmod>
+         <lastmod>2025-12-04</lastmod>
     </url>
     <url>
          <loc>https://gss-mtig.github.io/gss-mtig/16_ejemplo_mobility/</loc>
-         <lastmod>2025-12-01</lastmod>
+         <lastmod>2025-12-04</lastmod>
     </url>
     <url>
          <loc>https://gss-mtig.github.io/gss-mtig/17_ejemplo_geoservicio_realtime/</loc>
-         <lastmod>2025-12-01</lastmod>
+         <lastmod>2025-12-04</lastmod>
     </url>
     <url>
          <loc>https://gss-mtig.github.io/gss-mtig/18_ejemplo_gtfs/</loc>
-         <lastmod>2025-12-01</lastmod>
+         <lastmod>2025-12-04</lastmod>
+    </url>
+    <url>
+         <loc>https://gss-mtig.github.io/gss-mtig/19_ejemplo_fgc_realtime/</loc>
+         <lastmod>2025-12-04</lastmod>
     </url>
     <url>
          <loc>https://gss-mtig.github.io/gss-mtig/1_introduccion_a_las_smart_cities/</loc>
-         <lastmod>2025-12-01</lastmod>
+         <lastmod>2025-12-04</lastmod>
     </url>
     <url>
          <loc>https://gss-mtig.github.io/gss-mtig/2_1_apis_y_servicios_open_data/</loc>
-         <lastmod>2025-12-01</lastmod>
+         <lastmod>2025-12-04</lastmod>
     </url>
     <url>
          <loc>https://gss-mtig.github.io/gss-mtig/2_introduccion_open_data/</loc>
-         <lastmod>2025-12-01</lastmod>
+         <lastmod>2025-12-04</lastmod>
     </url>
     <url>
          <loc>https://gss-mtig.github.io/gss-mtig/3_conceptos_vector_tiles/</loc>
-         <lastmod>2025-12-01</lastmod>
+         <lastmod>2025-12-04</lastmod>
     </url>
     <url>
          <loc>https://gss-mtig.github.io/gss-mtig/4_visualizacion_kepler/</loc>
-         <lastmod>2025-12-01</lastmod>
+         <lastmod>2025-12-04</lastmod>
     </url>
     <url>
          <loc>https://gss-mtig.github.io/gss-mtig/5_herramientas_visualizacion_datos/</loc>
-         <lastmod>2025-12-01</lastmod>
+         <lastmod>2025-12-04</lastmod>
     </url>
     <url>
          <loc>https://gss-mtig.github.io/gss-mtig/6_conceptos_geoservicios/</loc>
-         <lastmod>2025-12-01</lastmod>
+         <lastmod>2025-12-04</lastmod>
     </url>
     <url>
          <loc>https://gss-mtig.github.io/gss-mtig/7_ejemplo_servicio_wms/</loc>
-         <lastmod>2025-12-01</lastmod>
+         <lastmod>2025-12-04</lastmod>
     </url>
     <url>
          <loc>https://gss-mtig.github.io/gss-mtig/8_consideraciones_servicios_opendata/</loc>
-         <lastmod>2025-12-01</lastmod>
+         <lastmod>2025-12-04</lastmod>
     </url>
     <url>
          <loc>https://gss-mtig.github.io/gss-mtig/8_ejemplo_parking_movilidad_reducida_zaragoza/</loc>
-         <lastmod>2025-12-01</lastmod>
+         <lastmod>2025-12-04</lastmod>
     </url>
     <url>
          <loc>https://gss-mtig.github.io/gss-mtig/9_ejemplo_servicio_bicing_bcn/</loc>
-         <lastmod>2025-12-01</lastmod>
+         <lastmod>2025-12-04</lastmod>
     </url>
     <url>
          <loc>https://gss-mtig.github.io/gss-mtig/ejemplos/utilizacion-servicio-opendata/javascripts/vendor/slickgrid/2.2/</loc>
-         <lastmod>2025-12-01</lastmod>
+         <lastmod>2025-12-04</lastmod>
     </url>
 </urlset>

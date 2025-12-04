@@ -751,7 +751,7 @@
   
   
   <span class="md-ellipsis">
-    15. Ejemplo Geocodificador
+    16. Ejemplo Geocodificador
     
   </span>
   
@@ -773,7 +773,7 @@
   
   
   <span class="md-ellipsis">
-    16. Ejemplo Mobility
+    17. Ejemplo Mobility
     
   </span>
   
@@ -795,7 +795,29 @@
   
   
   <span class="md-ellipsis">
-    17. Ejemplo servicio realtime para compartir la ubicación
+    18. Ejemplo servicio realtime para compartir la ubicación
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../19_ejemplo_fgc_realtime/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    19. Ejemplo Trenes realtime
     
   </span>
   
@@ -817,7 +839,7 @@
   
   
   <span class="md-ellipsis">
-    18. Ejemplo GTFS
+    20. Ejemplo GTFS
     
   </span>
   
@@ -991,7 +1013,7 @@
 <p>Abrir el archivo index.html en el navegador para confirmar que se carga un mapa centrado en Cataluña.</p>
 </li>
 <li>
-<p>Consultar la documentación de la API y buscar la url de descripción del servicio que es <a href="http://aca-web.gencat.cat/sdim2/apirest/catalog">http://aca-web.gencat.cat/sdim2/apirest/catalog</a>. Abrir esta url en el navegador y confirmar que responde un JSON con la información de los diferentes sensores.</p>
+<p>Consultar la documentación de la API y buscar la url de descripción del servicio que es <a href="https://aplicacions.aca.gencat.cat/sdim2/apirest/catalog">https://aplicacions.aca.gencat.cat/sdim2/apirest/catalog</a>. Abrir esta url en el navegador y confirmar que responde un JSON con la información de los diferentes sensores.</p>
 </li>
 <li>
 <p>Revisar el JSON de salida y buscar la propiedad <em>location</em> que indica las coordenadas de la ubicación del sensor. A pesar de que el JSON tiene coordenadas no es un GeoJSON y por lo tanto no lo podemos pintar automáticamente en nuestro mapa.</p>
@@ -1068,7 +1090,7 @@
 <span class="w">      </span><span class="nx">attribution</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;&amp;copy; &lt;a href=&quot;http://osm.org/copyright&quot;&gt;OpenStreetMap&lt;/a&gt; contributors&#39;</span>
 <span class="w">    </span><span class="p">}).</span><span class="nx">addTo</span><span class="p">(</span><span class="nx">map</span><span class="p">);</span>
 
-<span class="hll"><span class="w">    </span><span class="kd">var</span><span class="w"> </span><span class="nx">geojsonLayer</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="ow">new</span><span class="w"> </span><span class="nx">L</span><span class="p">.</span><span class="nx">GeoJSON</span><span class="p">.</span><span class="nx">AJAX</span><span class="p">(</span><span class="s1">&#39;http://aca-web.gencat.cat/sdim2/apirest/catalog&#39;</span><span class="p">).</span><span class="nx">addTo</span><span class="p">(</span><span class="nx">map</span><span class="p">);</span>
+<span class="hll"><span class="w">    </span><span class="kd">var</span><span class="w"> </span><span class="nx">geojsonLayer</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="ow">new</span><span class="w"> </span><span class="nx">L</span><span class="p">.</span><span class="nx">GeoJSON</span><span class="p">.</span><span class="nx">AJAX</span><span class="p">(</span><span class="s1">&#39;https://aplicacions.aca.gencat.cat/sdim2/apirest/catalog&#39;</span><span class="p">).</span><span class="nx">addTo</span><span class="p">(</span><span class="nx">map</span><span class="p">);</span>
 </span><span class="w">  </span><span class="p">&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
 <span class="p">&lt;/</span><span class="nt">body</span><span class="p">&gt;</span>
 <span class="p">&lt;/</span><span class="nt">html</span><span class="p">&gt;</span>
@@ -1112,7 +1134,7 @@
 <span class="kd">var</span><span class="w"> </span><span class="nx">cors</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">require</span><span class="p">(</span><span class="s1">&#39;cors&#39;</span><span class="p">);</span>
 <span class="kd">var</span><span class="w"> </span><span class="nx">httpProxy</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">require</span><span class="p">(</span><span class="s1">&#39;http-proxy&#39;</span><span class="p">);</span>
 <span class="kd">var</span><span class="w"> </span><span class="nx">apiProxy</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">httpProxy</span><span class="p">.</span><span class="nx">createProxyServer</span><span class="p">();</span>
-<span class="kd">var</span><span class="w"> </span><span class="nx">serverAca</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;http://aca-web.gencat.cat/sdim2/apirest/catalog&#39;</span><span class="p">;</span>
+<span class="kd">var</span><span class="w"> </span><span class="nx">serverAca</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;https://aplicacions.aca.gencat.cat/sdim2/apirest/catalog&#39;</span><span class="p">;</span>
 
 <span class="nx">app</span><span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="nx">cors</span><span class="p">());</span>
 <span class="nx">app</span><span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="nx">express</span><span class="p">.</span><span class="k">static</span><span class="p">(</span><span class="s1">&#39;public&#39;</span><span class="p">));</span>
@@ -1143,7 +1165,7 @@
 </ul>
 <h3 id="modificar-el-mapa">Modificar el mapa</h3>
 <ul>
-<li>Modificar el archivo index.html para que llame al proxy que hemos creado. Cambiar la url de la capa geojsonLayer <em><a href="http://aca-web.gencat.cat/sdim2/apirest/catalog">http://aca-web.gencat.cat/sdim2/apirest/catalog</a></em> por nuestro proxy <em><a href="http://localhost:3000/aca/">http://localhost:3000/aca/</a></em> (como el proxy y la aplicación están en el mismo servidor podríamos usar <em>/aca/</em>).</li>
+<li>Modificar el archivo index.html para que llame al proxy que hemos creado. Cambiar la url de la capa geojsonLayer <em><a href="https://aplicacions.aca.gencat.cat/sdim2/apirest/catalog">https://aplicacions.aca.gencat.cat/sdim2/apirest/catalog</a></em> por nuestro proxy <em><a href="http://localhost:3000/aca/">http://localhost:3000/aca/</a></em> (como el proxy y la aplicación están en el mismo servidor podríamos usar <em>/aca/</em>).</li>
 </ul>
 <div class="highlight"><pre><span></span><code><span class="cp">&lt;!DOCTYPE html&gt;</span>
 <span class="p">&lt;</span><span class="nt">html</span><span class="p">&gt;</span>
@@ -1227,7 +1249,7 @@
 </span><span class="hll"><span class="w">        </span><span class="nx">type</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;FeatureCollection&quot;</span><span class="p">,</span>
 </span><span class="hll"><span class="w">        </span><span class="nx">features</span><span class="o">:</span><span class="w"> </span><span class="p">[]</span>
 </span><span class="hll"><span class="w">      </span><span class="p">};</span>
-</span><span class="hll"><span class="w">      </span><span class="kd">var</span><span class="w"> </span><span class="nx">sensors</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">data</span><span class="p">.</span><span class="nx">providers</span><span class="p">[</span><span class="mf">0</span><span class="p">].</span><span class="nx">sensors</span><span class="p">;</span>
+</span><span class="hll"><span class="w">      </span><span class="kd">var</span><span class="w"> </span><span class="nx">sensors</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">data</span><span class="p">.</span><span class="nx">providers</span><span class="p">[</span><span class="mf">1</span><span class="p">].</span><span class="nx">sensors</span><span class="p">;</span>
 </span><span class="hll"><span class="w">      </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kd">var</span><span class="w"> </span><span class="nx">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">sensors</span><span class="p">.</span><span class="nx">length</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mf">1</span><span class="p">;</span><span class="w"> </span><span class="nx">i</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mf">0</span><span class="p">;</span><span class="w"> </span><span class="nx">i</span><span class="o">--</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
 </span><span class="hll"><span class="w">        </span><span class="kd">var</span><span class="w"> </span><span class="nx">sensor</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">sensors</span><span class="p">[</span><span class="nx">i</span><span class="p">];</span>
 </span><span class="hll"><span class="w">        </span><span class="kd">var</span><span class="w"> </span><span class="nx">location</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">sensor</span><span class="p">.</span><span class="nx">location</span><span class="p">.</span><span class="nx">split</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">);</span>
@@ -1298,7 +1320,7 @@
 <span class="w">        </span><span class="nx">type</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;FeatureCollection&quot;</span><span class="p">,</span>
 <span class="w">        </span><span class="nx">features</span><span class="o">:</span><span class="w"> </span><span class="p">[]</span>
 <span class="w">      </span><span class="p">};</span>
-<span class="w">      </span><span class="kd">var</span><span class="w"> </span><span class="nx">sensors</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">data</span><span class="p">.</span><span class="nx">providers</span><span class="p">[</span><span class="mf">0</span><span class="p">].</span><span class="nx">sensors</span><span class="p">;</span>
+<span class="w">      </span><span class="kd">var</span><span class="w"> </span><span class="nx">sensors</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">data</span><span class="p">.</span><span class="nx">providers</span><span class="p">[</span><span class="mf">1</span><span class="p">].</span><span class="nx">sensors</span><span class="p">;</span>
 <span class="w">      </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kd">var</span><span class="w"> </span><span class="nx">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">sensors</span><span class="p">.</span><span class="nx">length</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mf">1</span><span class="p">;</span><span class="w"> </span><span class="nx">i</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mf">0</span><span class="p">;</span><span class="w"> </span><span class="nx">i</span><span class="o">--</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
 <span class="w">        </span><span class="kd">var</span><span class="w"> </span><span class="nx">sensor</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">sensors</span><span class="p">[</span><span class="nx">i</span><span class="p">];</span>
 <span class="w">        </span><span class="kd">var</span><span class="w"> </span><span class="nx">location</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">sensor</span><span class="p">.</span><span class="nx">location</span><span class="p">.</span><span class="nx">split</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">);</span>
@@ -1377,7 +1399,7 @@
 <span class="w">        </span><span class="nx">type</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;FeatureCollection&quot;</span><span class="p">,</span>
 <span class="w">        </span><span class="nx">features</span><span class="o">:</span><span class="w"> </span><span class="p">[]</span>
 <span class="w">      </span><span class="p">};</span>
-<span class="w">      </span><span class="kd">var</span><span class="w"> </span><span class="nx">sensors</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">data</span><span class="p">.</span><span class="nx">providers</span><span class="p">[</span><span class="mf">0</span><span class="p">].</span><span class="nx">sensors</span><span class="p">;</span>
+<span class="w">      </span><span class="kd">var</span><span class="w"> </span><span class="nx">sensors</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">data</span><span class="p">.</span><span class="nx">providers</span><span class="p">[</span><span class="mf">1</span><span class="p">].</span><span class="nx">sensors</span><span class="p">;</span>
 <span class="w">      </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kd">var</span><span class="w"> </span><span class="nx">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">sensors</span><span class="p">.</span><span class="nx">length</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mf">1</span><span class="p">;</span><span class="w"> </span><span class="nx">i</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mf">0</span><span class="p">;</span><span class="w"> </span><span class="nx">i</span><span class="o">--</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
 <span class="w">        </span><span class="kd">var</span><span class="w"> </span><span class="nx">sensor</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">sensors</span><span class="p">[</span><span class="nx">i</span><span class="p">];</span>
 <span class="w">        </span><span class="kd">var</span><span class="w"> </span><span class="nx">location</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">sensor</span><span class="p">.</span><span class="nx">location</span><span class="p">.</span><span class="nx">split</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">);</span>
@@ -1456,7 +1478,7 @@
 <span class="w">        </span><span class="nx">type</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;FeatureCollection&quot;</span><span class="p">,</span>
 <span class="w">        </span><span class="nx">features</span><span class="o">:</span><span class="w"> </span><span class="p">[]</span>
 <span class="w">      </span><span class="p">};</span>
-<span class="w">      </span><span class="kd">var</span><span class="w"> </span><span class="nx">sensors</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">data</span><span class="p">.</span><span class="nx">providers</span><span class="p">[</span><span class="mf">0</span><span class="p">].</span><span class="nx">sensors</span><span class="p">;</span>
+<span class="w">      </span><span class="kd">var</span><span class="w"> </span><span class="nx">sensors</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">data</span><span class="p">.</span><span class="nx">providers</span><span class="p">[</span><span class="mf">1</span><span class="p">].</span><span class="nx">sensors</span><span class="p">;</span>
 <span class="w">      </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kd">var</span><span class="w"> </span><span class="nx">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">sensors</span><span class="p">.</span><span class="nx">length</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mf">1</span><span class="p">;</span><span class="w"> </span><span class="nx">i</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mf">0</span><span class="p">;</span><span class="w"> </span><span class="nx">i</span><span class="o">--</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
 <span class="w">        </span><span class="kd">var</span><span class="w"> </span><span class="nx">sensor</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">sensors</span><span class="p">[</span><span class="nx">i</span><span class="p">];</span>
 <span class="w">        </span><span class="kd">var</span><span class="w"> </span><span class="nx">location</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">sensor</span><span class="p">.</span><span class="nx">location</span><span class="p">.</span><span class="nx">split</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">);</span>
@@ -1494,9 +1516,9 @@
 <p>Recargar el mapa y hacer click sobre un elemento. En la consola de desarrollador ver que aparecen 2 entradas una que corresponde al feature y otra al layer.</p>
 </li>
 <li>
-<p>Llamar a la API de la ACA para pedir la última lectura del sensor y así obtener la información. La url para obtener la última lectura es <a href="http://aca-web.gencat.cat/sentilo-catalog-web/component/map/EMBASSAMENT-EST">http://aca-web.gencat.cat/sentilo-catalog-web/component/map/EMBASSAMENT-EST</a>.<em>.<id_sensor></em>/lastOb/.</p>
+<p>Llamar a la API de la ACA para pedir la última lectura del sensor y así obtener la información. La url para obtener la última lectura es <a href="https://aplicacions.aca.gencat.cat/sentilo-catalog-web/component/map/EMBASSAMENT-EST">https://aplicacions.aca.gencat.cat/sentilo-catalog-web/component/map/EMBASSAMENT-EST</a>.<em>.<id_sensor></em>/lastOb/.</p>
 <p>Por ejemplo:</p>
-<p><a href="http://aca-web.gencat.cat/sentilo-catalog-web/component/map/EMBASSAMENT-EST.082687-001/lastOb/">http://aca-web.gencat.cat/sentilo-catalog-web/component/map/EMBASSAMENT-EST.082687-001/lastOb/</a></p>
+<p><a href="https://aplicacions.aca.gencat.cat/sentilo-catalog-web/component/map/EMBASSAMENT-EST.082687-001/lastOb/">https://aplicacions.aca.gencat.cat/sentilo-catalog-web/component/map/EMBASSAMENT-EST.082687-001/lastOb/</a></p>
 <p>Como estamos llamando una url que está fuera de nuestro dominio tenemos el mismo problema de CORS.</p>
 </li>
 </ul>
@@ -1509,8 +1531,8 @@
 <span class="kd">var</span><span class="w"> </span><span class="nx">cors</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">require</span><span class="p">(</span><span class="s1">&#39;cors&#39;</span><span class="p">);</span>
 <span class="kd">var</span><span class="w"> </span><span class="nx">httpProxy</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">require</span><span class="p">(</span><span class="s1">&#39;http-proxy&#39;</span><span class="p">);</span>
 <span class="kd">var</span><span class="w"> </span><span class="nx">apiProxy</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">httpProxy</span><span class="p">.</span><span class="nx">createProxyServer</span><span class="p">();</span>
-<span class="kd">var</span><span class="w"> </span><span class="nx">serverAca</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;http://aca-web.gencat.cat/sdim2/apirest/catalog&#39;</span><span class="p">;</span>
-<span class="hll"><span class="kd">var</span><span class="w"> </span><span class="nx">serverAcaLastOb</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;http://aca-web.gencat.cat/sentilo-catalog-web/component/map/EMBASSAMENT-EST.&#39;</span><span class="p">;</span>
+<span class="kd">var</span><span class="w"> </span><span class="nx">serverAca</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;https://aplicacions.aca.gencat.cat/sdim2/apirest/catalog&#39;</span><span class="p">;</span>
+<span class="hll"><span class="kd">var</span><span class="w"> </span><span class="nx">serverAcaLastOb</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;https://aplicacions.aca.gencat.cat/sentilo-catalog-web/component/map/EMBASSAMENT-EST.&#39;</span><span class="p">;</span>
 </span>
 <span class="nx">app</span><span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="nx">cors</span><span class="p">());</span>
 <span class="nx">app</span><span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="nx">express</span><span class="p">.</span><span class="k">static</span><span class="p">(</span><span class="s1">&#39;public&#39;</span><span class="p">));</span>
@@ -1534,8 +1556,8 @@
 <span class="kd">var</span><span class="w"> </span><span class="nx">cors</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">require</span><span class="p">(</span><span class="s1">&#39;cors&#39;</span><span class="p">);</span>
 <span class="kd">var</span><span class="w"> </span><span class="nx">httpProxy</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">require</span><span class="p">(</span><span class="s1">&#39;http-proxy&#39;</span><span class="p">);</span>
 <span class="kd">var</span><span class="w"> </span><span class="nx">apiProxy</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">httpProxy</span><span class="p">.</span><span class="nx">createProxyServer</span><span class="p">();</span>
-<span class="kd">var</span><span class="w"> </span><span class="nx">serverAca</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;http://aca-web.gencat.cat/sdim2/apirest/catalog&#39;</span><span class="p">;</span>
-<span class="kd">var</span><span class="w"> </span><span class="nx">serverAcaLastOb</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;http://aca-web.gencat.cat/sentilo-catalog-web/component/map/EMBASSAMENT-EST.&#39;</span><span class="p">;</span>
+<span class="kd">var</span><span class="w"> </span><span class="nx">serverAca</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;https://aplicacions.aca.gencat.cat/sdim2/apirest/catalog&#39;</span><span class="p">;</span>
+<span class="kd">var</span><span class="w"> </span><span class="nx">serverAcaLastOb</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;https://aplicacions.aca.gencat.cat/sentilo-catalog-web/component/map/EMBASSAMENT-EST.&#39;</span><span class="p">;</span>
 
 <span class="nx">app</span><span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="nx">cors</span><span class="p">());</span>
 <span class="nx">app</span><span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="nx">express</span><span class="p">.</span><span class="k">static</span><span class="p">(</span><span class="s1">&#39;public&#39;</span><span class="p">));</span>
@@ -1611,7 +1633,7 @@
 <span class="w">        </span><span class="nx">type</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;FeatureCollection&quot;</span><span class="p">,</span>
 <span class="w">        </span><span class="nx">features</span><span class="o">:</span><span class="w"> </span><span class="p">[]</span>
 <span class="w">      </span><span class="p">};</span>
-<span class="w">      </span><span class="kd">var</span><span class="w"> </span><span class="nx">sensors</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">data</span><span class="p">.</span><span class="nx">providers</span><span class="p">[</span><span class="mf">0</span><span class="p">].</span><span class="nx">sensors</span><span class="p">;</span>
+<span class="w">      </span><span class="kd">var</span><span class="w"> </span><span class="nx">sensors</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">data</span><span class="p">.</span><span class="nx">providers</span><span class="p">[</span><span class="mf">1</span><span class="p">].</span><span class="nx">sensors</span><span class="p">;</span>
 <span class="w">      </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kd">var</span><span class="w"> </span><span class="nx">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">sensors</span><span class="p">.</span><span class="nx">length</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mf">1</span><span class="p">;</span><span class="w"> </span><span class="nx">i</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mf">0</span><span class="p">;</span><span class="w"> </span><span class="nx">i</span><span class="o">--</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
 <span class="w">        </span><span class="kd">var</span><span class="w"> </span><span class="nx">sensor</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">sensors</span><span class="p">[</span><span class="nx">i</span><span class="p">];</span>
 <span class="w">        </span><span class="kd">var</span><span class="w"> </span><span class="nx">location</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">sensor</span><span class="p">.</span><span class="nx">location</span><span class="p">.</span><span class="nx">split</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">);</span>
@@ -1703,7 +1725,7 @@
 <span class="w">        </span><span class="nx">type</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;FeatureCollection&quot;</span><span class="p">,</span>
 <span class="w">        </span><span class="nx">features</span><span class="o">:</span><span class="w"> </span><span class="p">[]</span>
 <span class="w">      </span><span class="p">};</span>
-<span class="w">      </span><span class="kd">var</span><span class="w"> </span><span class="nx">sensors</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">data</span><span class="p">.</span><span class="nx">providers</span><span class="p">[</span><span class="mf">0</span><span class="p">].</span><span class="nx">sensors</span><span class="p">;</span>
+<span class="w">      </span><span class="kd">var</span><span class="w"> </span><span class="nx">sensors</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">data</span><span class="p">.</span><span class="nx">providers</span><span class="p">[</span><span class="mf">1</span><span class="p">].</span><span class="nx">sensors</span><span class="p">;</span>
 <span class="w">      </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kd">var</span><span class="w"> </span><span class="nx">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">sensors</span><span class="p">.</span><span class="nx">length</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mf">1</span><span class="p">;</span><span class="w"> </span><span class="nx">i</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mf">0</span><span class="p">;</span><span class="w"> </span><span class="nx">i</span><span class="o">--</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
 <span class="w">        </span><span class="kd">var</span><span class="w"> </span><span class="nx">sensor</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">sensors</span><span class="p">[</span><span class="nx">i</span><span class="p">];</span>
 <span class="w">        </span><span class="kd">var</span><span class="w"> </span><span class="nx">location</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">sensor</span><span class="p">.</span><span class="nx">location</span><span class="p">.</span><span class="nx">split</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">);</span>
@@ -1803,7 +1825,7 @@
 <span class="w">        </span><span class="nx">type</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;FeatureCollection&quot;</span><span class="p">,</span>
 <span class="w">        </span><span class="nx">features</span><span class="o">:</span><span class="w"> </span><span class="p">[]</span>
 <span class="w">      </span><span class="p">};</span>
-<span class="w">      </span><span class="kd">var</span><span class="w"> </span><span class="nx">sensors</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">data</span><span class="p">.</span><span class="nx">providers</span><span class="p">[</span><span class="mf">0</span><span class="p">].</span><span class="nx">sensors</span><span class="p">;</span>
+<span class="w">      </span><span class="kd">var</span><span class="w"> </span><span class="nx">sensors</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">data</span><span class="p">.</span><span class="nx">providers</span><span class="p">[</span><span class="mf">1</span><span class="p">].</span><span class="nx">sensors</span><span class="p">;</span>
 <span class="w">      </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kd">var</span><span class="w"> </span><span class="nx">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">sensors</span><span class="p">.</span><span class="nx">length</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mf">1</span><span class="p">;</span><span class="w"> </span><span class="nx">i</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mf">0</span><span class="p">;</span><span class="w"> </span><span class="nx">i</span><span class="o">--</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
 <span class="w">        </span><span class="kd">var</span><span class="w"> </span><span class="nx">sensor</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">sensors</span><span class="p">[</span><span class="nx">i</span><span class="p">];</span>
 <span class="w">        </span><span class="kd">var</span><span class="w"> </span><span class="nx">location</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">sensor</span><span class="p">.</span><span class="nx">location</span><span class="p">.</span><span class="nx">split</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">);</span>
@@ -1867,16 +1889,16 @@
 <hr />
 <ol>
 <li id="fn:1">
-<p><a href="http://aca.gencat.cat/ca/laigua/consulta-de-dades/dades-obertes/">http://aca.gencat.cat/ca/laigua/consulta-de-dades/dades-obertes/</a>&#160;<a class="footnote-backref" href="#fnref:1" title="Jump back to footnote 1 in the text">&#8617;</a></p>
+<p><a href="https://aca.gencat.cat/ca/laigua/consulta-de-dades/dades-obertes/cataleg-dades-obertes/">https://aca.gencat.cat/ca/laigua/consulta-de-dades/dades-obertes/cataleg-dades-obertes/</a>&#160;<a class="footnote-backref" href="#fnref:1" title="Jump back to footnote 1 in the text">&#8617;</a></p>
 </li>
 <li id="fn:2">
 <p><a href="http://www.sentilo.io/wordpress/">http://www.sentilo.io/wordpress/</a>&#160;<a class="footnote-backref" href="#fnref:2" title="Jump back to footnote 2 in the text">&#8617;</a></p>
 </li>
 <li id="fn:3">
-<p><a href="http://aca-web.gencat.cat/sentilo-catalog-web/component/map">http://aca-web.gencat.cat/sentilo-catalog-web/component/map</a>&#160;<a class="footnote-backref" href="#fnref:3" title="Jump back to footnote 3 in the text">&#8617;</a></p>
+<p><a href="https://aplicacions.aca.gencat.cat/sentilo-catalog-web/component/map">https://aplicacions.aca.gencat.cat/sentilo-catalog-web/component/map</a>&#160;<a class="footnote-backref" href="#fnref:3" title="Jump back to footnote 3 in the text">&#8617;</a></p>
 </li>
 <li id="fn:4">
-<p><a href="http://aca.gencat.cat/web/.content/20_Aigua/08_consulta_de_dades/01_dades_obertes/us_serveis_dades_API_REST.pdf">http://aca.gencat.cat/web/.content/20_Aigua/08_consulta_de_dades/01_dades_obertes/us_serveis_dades_API_REST.pdf</a>&#160;<a class="footnote-backref" href="#fnref:4" title="Jump back to footnote 4 in the text">&#8617;</a></p>
+<p><a href="https://aca.gencat.cat/web/.content/20_Aigua/08_consulta_de_dades/01_dades_obertes/02_dades_obertes_temps_real/us_serveis_dades_API_REST.pdf">https://aca.gencat.cat/web/.content/20_Aigua/08_consulta_de_dades/01_dades_obertes/02_dades_obertes_temps_real/us_serveis_dades_API_REST.pdf</a>&#160;<a class="footnote-backref" href="#fnref:4" title="Jump back to footnote 4 in the text">&#8617;</a></p>
 </li>
 <li id="fn:5">
 <p><a href="http://leafletjs.com/">http://leafletjs.com/</a>&#160;<a class="footnote-backref" href="#fnref:5" title="Jump back to footnote 5 in the text">&#8617;</a></p>
@@ -1898,12 +1920,6 @@
 </li>
 <li id="fn:12">
 <p><a href="https://www.npmjs.com/package/cors">https://www.npmjs.com/package/cors</a>&#160;<a class="footnote-backref" href="#fnref:12" title="Jump back to footnote 11 in the text">&#8617;</a></p>
-</li>
-<li id="fn:7">
-<p><a href="https://developer.mozilla.org/es/docs/Web/HTTP/Access_control_CORS">https://developer.mozilla.org/es/docs/Web/HTTP/Access_control_CORS</a>&#160;<a class="footnote-backref" href="#fnref:7" title="Jump back to footnote 12 in the text">&#8617;</a></p>
-</li>
-<li id="fn:13">
-<p><a href="https://www.npmjs.com/package/nodemon">https://www.npmjs.com/package/nodemon</a>&#160;<a class="footnote-backref" href="#fnref:13" title="Jump back to footnote 13 in the text">&#8617;</a></p>
 </li>
 </ol>
 </div>
