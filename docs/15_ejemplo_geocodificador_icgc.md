@@ -1,564 +1,205 @@
-# Ejemplo Geocodificador
+# Geocodificador ICGC (opcional)
 
-La geocodificación de direcciones consiste en la localización espacial de una dirección específica.
+Este ejemplo opcional permite comparar OpenCage con un servicio público especializado en direcciones y topónimos de Cataluña. El [Geocodificador ICGC](https://www.icgc.cat/es/Herramientas-y-visores/Herramientas/Geocodificador-ICGC) expone operaciones REST para búsqueda directa, autocompletado y búsqueda inversa. Aquí usaremos búsqueda directa y búsqueda inversa.
 
-Existen dos tipos de geocodificación: 
+**Resultado final:** [abre la aplicación del ICGC](ejemplos/geocodificador-icgc/index.html).
 
-* **directa** es la obtención de coordenadas a partir de una dirección postal
-* **inversa** es la localización de direcciones a partir de coordenadas geográficas
+La aplicación no necesita una clave API. Descarga [index.html](ejemplos/geocodificador-icgc/index.html) y [app.js](ejemplos/geocodificador-icgc/app.js), guárdalos juntos y ejecuta un servidor local:
 
-## Creación de un visor que permita buscar direcciones y topónimos
+```bash
+python3 -m http.server 8000
+```
 
-Para crear un visor de mapas utilizaremos la librería de mapas Leaflet [^1]. Y cargaremos los datos del Geocodificador del ICGC
+Después abre [http://localhost:8000](http://localhost:8000). La búsqueda directa consulta `/cerca` con el texto, las capas y el número máximo de resultados; al hacer clic en el mapa se consulta `/invers` con latitud y longitud. Ambas operaciones devuelven GeoJSON en orden de coordenadas longitud-latitud; Leaflet interpreta ese orden al cargar una entidad GeoJSON.
 
-- Crear una carpeta con el nombre de *visor-geocoder*.
+## Código completo
 
-- Crear un archivo con el nombre de *index.html* dentro de la carpeta.
-
-- Abrir el archivo index.html con un editor de texto y copiar el siguiente código.
+### Código de `index.html`
 
 ```html
-<!DOCTYPE html>
-<html>
+<!doctype html>
+<html lang="es">
 <head>
-	<title>Ejemplo geocoder</title>
-	<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
-		<style>
-				#map {
-						position: absolute;
-						top: 0;
-						left: 0;
-						bottom: 0;
-						right: 0;
-				}
-		</style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Geocodificador ICGC</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+  <style>
+    * { box-sizing: border-box; }
+    html, body { height: 100%; margin: 0; font: 16px/1.45 system-ui, sans-serif; }
+    #app { display: grid; grid-template-columns: minmax(280px, 360px) 1fr; height: 100%; }
+    aside { overflow: auto; padding: 1rem; border-right: 1px solid #d1d5db; }
+    h1 { margin-top: 0; font-size: 1.4rem; }
+    label { display: block; margin: 1rem 0 .3rem; font-weight: 600; }
+    input, button { width: 100%; padding: .65rem; font: inherit; }
+    button { cursor: pointer; }
+    form button { margin-top: .6rem; }
+    #status { min-height: 3rem; padding: .5rem 0; }
+    #results { padding-left: 1.5rem; }
+    #results li { margin: .5rem 0; }
+    #results button { text-align: left; border: 1px solid #d1d5db; border-radius: .3rem; background: #fff; }
+    #results button:hover { background: #f3f4f6; }
+    #map { min-height: 360px; }
+    @media (max-width: 700px) {
+      #app { grid-template-columns: 1fr; grid-template-rows: minmax(260px, 42vh) 1fr; }
+      aside { grid-row: 2; border-right: 0; border-top: 1px solid #d1d5db; }
+      #map { grid-row: 1; }
+    }
+  </style>
 </head>
 <body>
-	<div id="map"></div>
-
-		<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-		<script type="text/javascript">
-			var map = L.map('map');
-
-			map.setView([41.3887, 2.1777], 13);
-			
-
-		L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
-				attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-		}).addTo(map);
-		
-		</script>
+  <main id="app">
+    <aside>
+      <h1>Geocodificador ICGC</h1>
+      <p>Busca direcciones y topónimos de Cataluña. Haz clic en el mapa para localizar el elemento más cercano.</p>
+      <form id="search-form">
+        <label for="query">Dirección o topónimo</label>
+        <input id="query" value="Plaça de Catalunya, Barcelona" required>
+        <button type="submit">Buscar</button>
+      </form>
+      <div id="status" role="status" aria-live="polite">Escribe una dirección o un topónimo para comenzar.</div>
+      <ol id="results"></ol>
+    </aside>
+    <div id="map" aria-label="Mapa interactivo"></div>
+  </main>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="app.js"></script>
 </body>
 </html>
 ```
 
--  Abrir el archivo index.html en el navegador para comprobar que se carga un mapa centrado en Barcelona.
+### Código de `app.js`
 
--  Descargar en la carpeta el plugin desarrollado por el ICGC [^2] https://github.com/OpenICGC/leaflet-geocodericgc-plugin/blob/master/js/leaflet-geocoder.js
+```js
+const serviceUrl = "https://eines.icgc.cat/geocodificador";
+const map = L.map("map").setView([41.65, 1.7], 8);
+const queryInput = document.getElementById("query");
+const statusElement = document.getElementById("status");
+const resultsElement = document.getElementById("results");
+const resultLayer = L.geoJSON(null, {
+  pointToLayer: (_feature, latlng) => L.marker(latlng),
+}).addTo(map);
 
-- Agregar el plugin al mapa
+L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
+  attribution: "© OpenStreetMap contributors",
+  maxZoom: 19,
+}).addTo(map);
 
-```html hl_lines="20 21 32 33 34 35 36 37 38"
-<!DOCTYPE html>
-<html>
-<head>
-	<title>Ejemplo geocoder</title>
-	<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
-		<style>
-				#map {
-						position: absolute;
-						top: 0;
-						left: 0;
-						bottom: 0;
-						right: 0;
-				}
-		</style>
-</head>
-<body>
-	<div id="map"></div>
+async function requestFeatures(operation, parameters) {
+  const url = new URL(`${serviceUrl}/${operation}`);
+  Object.entries(parameters).forEach(([name, value]) => url.searchParams.set(name, value));
 
-		<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-        <!-- Load geocoding plugin after Leaflet -->
-		<script src="leaflet-geocoder.js"></script>
+  const response = await fetch(url);
+  if (!response.ok) throw new Error(`Error HTTP ${response.status} al consultar el ICGC.`);
+  const data = await response.json();
+  if (data.type !== "FeatureCollection" || !Array.isArray(data.features)) {
+    throw new Error("La respuesta del ICGC no tiene la estructura GeoJSON esperada.");
+  }
+  return data.features;
+}
 
-		<script type="text/javascript">
-			var map = L.map('map');
+function featureLabel(feature) {
+  const properties = feature.properties || {};
+  return properties.etiqueta || properties.label || properties.nom || "Resultado del ICGC";
+}
 
-			map.setView([41.3887, 2.1777], 13);
-			
-		L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
-				attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-		}).addTo(map);
+function showFeatures(features, emptyMessage) {
+  resultsElement.replaceChildren();
+  resultLayer.clearLayers();
 
-        var geocodingOptions = {      
-            url:'https://eines.icgc.cat/geocodificador',
-            expanded: true,
-            autocomplete: true,
-            focus:false
-            };
-        L.control.geocoder(geocodingOptions).addTo(map);
-		
-		</script>
-</body>
-</html>
+  if (features.length === 0) {
+    statusElement.textContent = emptyMessage;
+    return;
+  }
+
+  const validFeatures = features.filter((feature) =>
+    feature.geometry?.type === "Point" &&
+    Array.isArray(feature.geometry.coordinates) &&
+    feature.geometry.coordinates.length >= 2 &&
+    feature.geometry.coordinates.every(Number.isFinite),
+  );
+  if (validFeatures.length === 0) {
+    statusElement.textContent = "La respuesta no contiene puntos con coordenadas válidas.";
+    return;
+  }
+
+  resultLayer.addData({ type: "FeatureCollection", features: validFeatures });
+  resultLayer.eachLayer((layer) => {
+    const feature = layer.feature;
+    const label = featureLabel(feature);
+    const popup = document.createElement("div");
+    popup.textContent = label;
+    layer.bindPopup(popup);
+
+    const item = document.createElement("li");
+    const button = document.createElement("button");
+    button.type = "button";
+    button.textContent = label;
+    button.addEventListener("click", () => {
+      map.setView(layer.getLatLng(), 16);
+      layer.openPopup();
+    });
+    item.append(button);
+    resultsElement.append(item);
+  });
+
+  statusElement.textContent = `${validFeatures.length} resultado(s). Selecciona uno para centrar el mapa.`;
+  if (validFeatures.length === 1) map.fitBounds(resultLayer.getBounds().pad(0.2));
+  else map.fitBounds(resultLayer.getBounds(), { padding: [24, 24] });
+}
+
+document.getElementById("search-form").addEventListener("submit", async (event) => {
+  event.preventDefault();
+  const text = queryInput.value.trim();
+  if (text.length < 2) {
+    statusElement.textContent = "Escribe al menos dos caracteres para buscar.";
+    return;
+  }
+
+  statusElement.textContent = "Buscando en el ICGC…";
+  try {
+    const features = await requestFeatures("cerca", {
+      text,
+      layers: "address,topo1,topo2",
+      size: "5",
+    });
+    showFeatures(features, "No se encontraron resultados. Prueba con otra dirección o topónimo de Cataluña.");
+  } catch (error) {
+    statusElement.textContent = error.message;
+  }
+});
+
+map.on("click", async (event) => {
+  statusElement.textContent = "Buscando la dirección o el topónimo más cercano…";
+  try {
+    const features = await requestFeatures("invers", {
+      lat: String(event.latlng.lat),
+      lon: String(event.latlng.lng),
+      layers: "address,topo1,topo2",
+      size: "1",
+    });
+    showFeatures(features, "No se encontraron direcciones ni topónimos próximos a ese punto.");
+  } catch (error) {
+    statusElement.textContent = error.message;
+  }
+});
 ```
 
-- Recargamos el mapa en el navegador y podemos ver que nos aparece una caja de búsqueda en el mapa (de momento si estilo)
+!!! question "Prueba opcional · 5–10 minutos"
 
-- Cargar la hoja de estilo del plugin
+    Busca una dirección con municipio, por ejemplo **Carrer Nou 10, Girona**, y después haz clic en el mapa. Compara el formato y los atributos de la respuesta con OpenCage. Comprueba que GeoJSON almacena las coordenadas como longitud-latitud aunque Leaflet muestre los marcadores en el lugar correcto.
 
-```html hl_lines="6"
-<!DOCTYPE html>
-<html>
-<head>
-	<title>Ejemplo geocoder</title>
-	<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet-geocoder-mapzen/1.9.4/leaflet-geocoder-mapzen.css">
-		<style>
-				#map {
-						position: absolute;
-						top: 0;
-						left: 0;
-						bottom: 0;
-						right: 0;
-				}
-		</style>
-</head>
-<body>
-	<div id="map"></div>
+!!! exercise "Ejercicio entregable · 2 puntos"
 
-		<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-        <!-- Load geocoding plugin after Leaflet -->
-		<script src="leaflet-geocoder.js"></script>
+    Modifica la aplicación y entrega los archivos `index.html` y `app.js`:
 
-		<script type="text/javascript">
-			var map = L.map('map');
-
-			map.setView([41.3887, 2.1777], 13);
-			
-		L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
-				attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-		}).addTo(map);
-
-        var geocodingOptions = {      
-            url:'https://eines.icgc.cat/geocodificador',
-            expanded: true,
-            autocomplete: true,
-            focus:false
-            };
-        L.control.geocoder(geocodingOptions).addTo(map);
-		
-		</script>
-</body>
-</html>
-```
-
-- Recargamos el mapa en el navegador y vemos que el control ahora si tiene estilo
-
-![ejemplo geocodificador](img/ejemplo_geocoder_icgc.png)
-*ejemplo geocodificador*
-
-## Geocodificación inversa
-
-Implementaremos la funcionalidad que cuando el usuario haga click en el mapa se busque la dirección o topónimo más cercano.
-
-- Capturar el evento click en el mapa.
-
-```html hl_lines="41 42 43"
-<!DOCTYPE html>
-<html>
-<head>
-	<title>Ejemplo geocoder</title>
-	<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet-geocoder-mapzen/1.9.4/leaflet-geocoder-mapzen.css">
-		<style>
-				#map {
-						position: absolute;
-						top: 0;
-						left: 0;
-						bottom: 0;
-						right: 0;
-				}
-		</style>
-</head>
-<body>
-	<div id="map"></div>
-
-		<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-        <!-- Load geocoding plugin after Leaflet -->
-		<script src="leaflet-geocoder.js"></script>
-
-		<script type="text/javascript">
-			var map = L.map('map');
-
-			map.setView([41.3887, 2.1777], 13);
-			
-		L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
-				attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-		}).addTo(map);
-
-        var geocodingOptions = {      
-            url:'https://eines.icgc.cat/geocodificador',
-            expanded: true,
-            autocomplete: true,
-            focus:false
-            };
-        L.control.geocoder(geocodingOptions).addTo(map);
-
-        map.on('click', function(e){
-            console.log(e);
-		});
-		
-		</script>
-</body>
-</html>
-```
-
-- Recargar la aplicación y abrir la consola del desarrollador, al hacer click sobre el mapa ver que en la consola aparece el objeto del evento click. Inspeccionar este objeto para ver que tiene una propiedad llamada latlng que contiene las coordenadas donde se ha hecho el click.
-
-- Llamar al servicio de geocodificación pasándole las coordenadas del click para obtener los elementos
-
-```html hl_lines="43 44 45 46 47 48 49 50 51 52"
-<!DOCTYPE html>
-<html>
-<head>
-	<title>Ejemplo geocoder</title>
-	<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet-geocoder-mapzen/1.9.4/leaflet-geocoder-mapzen.css">
-		<style>
-				#map {
-						position: absolute;
-						top: 0;
-						left: 0;
-						bottom: 0;
-						right: 0;
-				}
-		</style>
-</head>
-<body>
-	<div id="map"></div>
-
-		<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-        <!-- Load geocoding plugin after Leaflet -->
-		<script src="leaflet-geocoder.js"></script>
-
-		<script type="text/javascript">
-			var map = L.map('map');
-
-			map.setView([41.3887, 2.1777], 13);
-			
-		L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
-				attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-		}).addTo(map);
-
-        var geocodingOptions = {      
-            url:'https://eines.icgc.cat/geocodificador',
-            expanded: true,
-            autocomplete: true,
-            focus:false
-            };
-        L.control.geocoder(geocodingOptions).addTo(map);
-
-        map.on('click', function(e){
-            console.log(e);
-            var url = `https://eines.icgc.cat/geocodificadorinvers?lat=${e.latlng.lat}&lon=${e.latlng.lng}`;
-            fetch(url)
-            .then(function(response) {
-            response.json().then(function(data){
-                console.log(data);
-            });
-            })
-            .catch(function(myJson) {
-            console.log(myJson);
-            });
-		});
-		
-		</script>
-</body>
-</html>
-```
-
-- Recargar la aplicación y abrir la consola del desarrollador, al hacer click sobre el mapa ver que en la consola aparece el objeto de respuesta del geocodificador. 
-
-- Al recibir la respuesta mostrar un marcador en el mapa en la posición donde el usuario hizo el click.
-
-```html hl_lines="48 49"
-<!DOCTYPE html>
-<html>
-<head>
-	<title>Ejemplo geocoder</title>
-	<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet-geocoder-mapzen/1.9.4/leaflet-geocoder-mapzen.css">
-		<style>
-				#map {
-						position: absolute;
-						top: 0;
-						left: 0;
-						bottom: 0;
-						right: 0;
-				}
-		</style>
-</head>
-<body>
-	<div id="map"></div>
-
-		<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-        <!-- Load geocoding plugin after Leaflet -->
-		<script src="leaflet-geocoder.js"></script>
-
-		<script type="text/javascript">
-			var map = L.map('map');
-
-			map.setView([41.3887, 2.1777], 13);
-			
-		L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
-				attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-		}).addTo(map);
-
-        var geocodingOptions = {      
-            url:'https://eines.icgc.cat/geocodificador',
-            expanded: true,
-            autocomplete: true,
-            focus:false
-            };
-        L.control.geocoder(geocodingOptions).addTo(map);
-
-        map.on('click', function(e){
-            console.log(e);
-            var url = `https://eines.icgc.cat/geocodificadorinvers?lat=${e.latlng.lat}&lon=${e.latlng.lng}`;
-            fetch(url)
-            .then(function(response) {
-            response.json().then(function(data){
-                console.log(data);
-                var marker = new L.marker(e.latlng);
-                map.addLayer(marker);
-            });
-            })
-            .catch(function(myJson) {
-            console.log(myJson);
-            });
-		});
-		
-		</script>
-</body>
-</html>
-```
-
-- Recargar el mapa y ver que aparece un marcador al hacer click sobre el mapa.
-
-- Mostrar la etiqueta con la dirección retornada de la primera respuesta del geocodificador.
-
-```html hl_lines="48 49 51"
-<!DOCTYPE html>
-<html>
-<head>
-	<title>Ejemplo geocoder</title>
-	<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet-geocoder-mapzen/1.9.4/leaflet-geocoder-mapzen.css">
-		<style>
-				#map {
-						position: absolute;
-						top: 0;
-						left: 0;
-						bottom: 0;
-						right: 0;
-				}
-		</style>
-</head>
-<body>
-	<div id="map"></div>
-
-		<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-        <!-- Load geocoding plugin after Leaflet -->
-		<script src="leaflet-geocoder.js"></script>
-
-		<script type="text/javascript">
-			var map = L.map('map');
-
-			map.setView([41.3887, 2.1777], 13);
-			
-		L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
-				attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-		}).addTo(map);
-
-        var geocodingOptions = {      
-            url:'https://eines.icgc.cat/geocodificador',
-            expanded: true,
-            autocomplete: true,
-            focus:false
-            };
-        L.control.geocoder(geocodingOptions).addTo(map);
-
-        map.on('click', function(e){
-            console.log(e);
-            var url = `https://eines.icgc.cat/geocodificadorinvers?lat=${e.latlng.lat}&lon=${e.latlng.lng}`;
-            fetch(url)
-            .then(function(response) {
-            response.json().then(function(data){
-                console.log(data);
-                var etiqueta = data.features[0].properties.label;
-                var marker = new L.marker(e.latlng).bindPopup(etiqueta);
-                map.addLayer(marker);
-                marker.openPopup();
-            });
-            })
-            .catch(function(myJson) {
-            console.log(myJson);
-            });
-		});
-		
-		</script>
-</body>
-</html>
-```
-
-- Recargar el mapa y ver que aparece la etiqueta.
-
-![ejemplo etiqueta geocodificador](img/ejemplo_geocoder_etiqueta.png)
-*ejemplo etiqueta geocodificador*
-
-- Mostrar el marcador en la posición de la primera respuesta del geocodificador y no en la posición del click
-
-```html hl_lines="49 50"
-<!DOCTYPE html>
-<html>
-<head>
-	<title>Ejemplo geocoder</title>
-	<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet-geocoder-mapzen/1.9.4/leaflet-geocoder-mapzen.css">
-		<style>
-				#map {
-						position: absolute;
-						top: 0;
-						left: 0;
-						bottom: 0;
-						right: 0;
-				}
-		</style>
-</head>
-<body>
-	<div id="map"></div>
-
-		<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-        <!-- Load geocoding plugin after Leaflet -->
-		<script src="leaflet-geocoder.js"></script>
-
-		<script type="text/javascript">
-			var map = L.map('map');
-
-			map.setView([41.3887, 2.1777], 13);
-			
-		L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
-				attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-		}).addTo(map);
-
-        var geocodingOptions = {      
-            url:'https://eines.icgc.cat/geocodificador',
-            expanded: true,
-            autocomplete: true,
-            focus:false
-            };
-        L.control.geocoder(geocodingOptions).addTo(map);
-
-        map.on('click', function(e){
-            console.log(e);
-            var url = `https://eines.icgc.cat/geocodificadorinvers?lat=${e.latlng.lat}&lon=${e.latlng.lng}`;
-            fetch(url)
-            .then(function(response) {
-            response.json().then(function(data){
-                console.log(data);
-                var etiqueta = data.features[0].properties.label;
-                var posicion = data.features[0].geometry.coordinates;
-                var marker = new L.marker(posicion).bindPopup(etiqueta);
-                map.addLayer(marker);
-                marker.openPopup();
-            });
-            })
-            .catch(function(myJson) {
-            console.log(myJson);
-            });
-		});
-		
-		</script>
-</body>
-</html>
-```
-
-- Recargar el mapa y hacer click sobre el mapa. Vemos que se nos muestra un marcador en Africa. Esto es por que el marker espera las coordenadas en lat, lon y el geojson de respuesta del geocodificador retorna las coordenadas en lon, lat.
-
-- Cambiar el orden de coordenadas para mostrar el marker en la posición correcta
-
-```html hl_lines="50"
-<!DOCTYPE html>
-<html>
-<head>
-	<title>Ejemplo geocoder</title>
-	<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet-geocoder-mapzen/1.9.4/leaflet-geocoder-mapzen.css">
-		<style>
-				#map {
-						position: absolute;
-						top: 0;
-						left: 0;
-						bottom: 0;
-						right: 0;
-				}
-		</style>
-</head>
-<body>
-	<div id="map"></div>
-
-		<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-        <!-- Load geocoding plugin after Leaflet -->
-		<script src="leaflet-geocoder.js"></script>
-
-		<script type="text/javascript">
-			var map = L.map('map');
-
-			map.setView([41.3887, 2.1777], 13);
-			
-		L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
-				attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-		}).addTo(map);
-
-        var geocodingOptions = {      
-            url:'https://eines.icgc.cat/geocodificador',
-            expanded: true,
-            autocomplete: true,
-            focus:false
-            };
-        L.control.geocoder(geocodingOptions).addTo(map);
-
-        map.on('click', function(e){
-            console.log(e);
-            var url = `https://eines.icgc.cat/geocodificadorinvers?lat=${e.latlng.lat}&lon=${e.latlng.lng}`;
-            fetch(url)
-            .then(function(response) {
-            response.json().then(function(data){
-                console.log(data);
-                var etiqueta = data.features[0].properties.label;
-                var posicion = data.features[0].geometry.coordinates;
-                var marker = new L.marker([posicion[1],posicion[0]]).bindPopup(etiqueta);
-                map.addLayer(marker);
-                marker.openPopup();
-            });
-            })
-            .catch(function(myJson) {
-            console.log(myJson);
-            });
-		});
-		
-		</script>
-</body>
-</html>
-```
-
-!!! question "Ejercicios 2 pts"
-	1. Mostrar la propiedad layer junto con la dirección en la etiqueta (1 pt)
-
-    2. **Extra**: Al hacer click en el mapa mostrar los marcadores de los 3 primeros resultados, pero únicamente desplegar la etiqueta de la primera respuesta. (1 pt) 
+    1. Muestra la propiedad `layer` del resultado junto con la etiqueta o dirección en el popup (1 punto).
+    2. En la búsqueda inversa, representa los tres primeros resultados como marcadores y abre automáticamente solo el popup del primero (1 punto).
 
 ## Referencias
 
-[^1]: http://leafletjs.com/
-[^2]: https://github.com/OpenICGC/leaflet-geocodericgc-plugin
+- [Geocodificador ICGC: información en español](https://www.icgc.cat/es/Herramientas-y-visores/Herramientas/Geocodificador-ICGC)
+- [Documentación del Geocodificador ICGC en español](https://openicgc.github.io/geocodificador-doc_es/)
+- [Parámetros de búsqueda directa](https://openicgc.github.io/geocodificador-doc_es/parametres_cerca.es/)
+- [Parámetros de búsqueda inversa](https://openicgc.github.io/geocodificador-doc_es/parametres_invers.es/)
+- [Leaflet: referencia de la API (inglés)](https://leafletjs.com/reference.html)

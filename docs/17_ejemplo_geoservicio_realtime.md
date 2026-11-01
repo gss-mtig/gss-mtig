@@ -1,461 +1,541 @@
-#Ejemplo servicio realtime para compartir la ubicación
+# Mapa colaborativo: expedición urbana en tiempo real
 
-Simularemos un servicio que permita compartir la ubicación de los usuarios y ver que usuarios están en linea. Para ello utilizaremos la librería Socket.io [^1] que permite la comunicación en tiempo real en dos direcciones cliente-servidor (tipo pull) y servidor-cliente (tipo push). Esto lo hace gracias a un socket [^2].
+En este ejemplo cada persona entra en una expedición con un alias y un avatar. Al hacer clic en el mapa, mueve su marcador y el resto de participantes ve la nueva posición al instante. Usaremos posiciones simuladas; la página no solicita acceso al GPS.
 
-Para mostrar los datos en el mapa utilizaremos la librería Leaflet [^3]. Para obtener la ubicación de los usuarios podemos usar el plugin *leaflet-locatecontrol* [^4], en nuestro caso vamos a simular la ubicación del usuario haciendo click sobre el mapa en lugar de utilizar la ubicación del usuario.
+**Resultado final:** [abre la vista previa de la expedición](https://mapa-expedicion-realtime.bolosig.workers.dev/cloudflare).
 
-## Creación del mapa
+La aplicación usa Leaflet para el mapa y [Socket.IO](https://socket.io/) para intercambiar eventos entre el navegador y el servidor. El servidor guarda el alias, el avatar y la última posición de cada conexión. Cuando llega un cambio, lo retransmite a los demás clientes.
 
-- Crear una carpeta con el nombre de *user-realtime*.
+## Qué veremos en el mapa
 
-- Crear una carpeta con el nombre de *public* dentro de la carpeta user-realtime.
+- Cada persona elige un alias y uno de los avatares disponibles.
+- La lista indica quién está conectado y quién ya ha elegido una posición.
+- Un clic mueve el marcador existente de esa persona; no añade un punto nuevo.
+- Quienes se conectan más tarde reciben la lista y las posiciones que ya están guardadas.
+- Al cerrar una pestaña, el servidor elimina a esa persona y actualiza la lista.
 
-- Crear un archivo con el nombre de *index.html* dentro de la carpeta public.
+Las posiciones solo viven en la memoria del servidor y desaparecen cuando se detiene. Para la demostración local se pueden abrir varias pestañas; para que participe toda la clase, los equipos deben abrir la dirección de un mismo servidor accesible en la red local.
 
-- Abrir el archivo index.html con un editor de texto y copiar el siguiente código.
+## Construir la aplicación paso a paso
+
+Crea una carpeta `mapa-expedicion-realtime` con un archivo `server.js` y una carpeta `public` que contenga `index.html` y `app.js`. El proyecto descargable ya incluye esos archivos y su `package.json`.
+
+### 1. Crear el mapa y el formulario de entrada
+
+El HTML tiene un panel para elegir alias y avatar, una lista de participantes y un contenedor para el mapa. Leaflet dibuja el mapa centrado en Barcelona:
 
 ```html
-<!DOCTYPE html>
-<html>
-<head>
-	<title>Servicio compartir ubicación realtime</title>
-	<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
-		<style>
-				#map {
-						position: absolute;
-						top: 0;
-						left: 0;
-						bottom: 0;
-						right: 0;
-				}
-		</style>
-</head>
-<body>
-	<div id="map"></div>
-
-		<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-		<script type="text/javascript">
-			var map = L.map('map');
-
-			map.setView([41.3887, 2.1777], 13);
-			
-
-		L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
-				attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-		}).addTo(map);
-		
-		</script>
-</body>
-</html>
+<form id="join-form">
+  <label for="name">Tu alias</label>
+  <input id="name" maxlength="24" required />
+  <label for="avatar">Tu avatar</label>
+  <select id="avatar">
+    <option value="🦊">Zorro</option>
+    <option value="🐼">Panda</option>
+    <option value="🐢">Tortuga</option>
+  </select>
+  <button type="submit">Entrar en la expedición</button>
+</form>
+<div id="map"></div>
 ```
-
--  Abrir el archivo index.html en el navegador para comprobar que se carga un mapa centrado en Barcelona.
-
-- Capturar el evento click en el mapa. Luego de la declaración de nuestra capa escribir los siguiente:
-
-```html hl_lines="30 31 32"
-<!DOCTYPE html>
-<html>
-<head>
-	<title>Servicio compartir ubicación realtime</title>
-	<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
-		<style>
-				#map {
-						position: absolute;
-						top: 0;
-						left: 0;
-						bottom: 0;
-						right: 0;
-				}
-		</style>
-</head>
-<body>
-	<div id="map"></div>
-
-		<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-		<script type="text/javascript">
-			var map = L.map('map');
-
-			map.setView([41.3887, 2.1777], 13);
-			
-
-		L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
-				attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-		}).addTo(map);
-		
-		map.on('click', function(e){
-            console.log(e);
-		});
-
-		</script>
-</body>
-</html>
-```
-
-- Recargar la aplicación y abrir la consola del desarrollador, al hacer click sobre el mapa ver que en la consola aparece el objeto del evento click. Inspeccionar este objeto para ver que tiene una propiedad llamada latlng que contiene las coordenadas donde se ha hecho el click.
-
-## Creación del servicio que comparte la ubicación de los usuarios
-
-- Utilizaremos Node.js [^5] para implementar nuestro servidor web y utilizaremos el módulo de socket.io para establecer la comunicación entre el cliente y nuestro servidor.
-
-- Instalar Node.js. Descargar la última versión LTS y lo instalaremos con las opciones por defecto. Una vez instalado el Node abrir la consola para verificar que se ha instalado correctamente. Escribir
-
-```bash
-node -v
-```
-
-- Navegar hasta nuestra carpeta *user-realtime* y escribir:
-
-```bash
-npm init -y 
-```
-
-Con este comando estaremos creando el archivo *package.json* con los valores predeterminados.
-
-- Instalar las dependencias para crear nuestro servicio de proxy. En este caso utilizaremos Express [^6] como servidor web, el módulo socket.io [^7] y el módulo de cors [^8].
-
-- Instalar el express y guardarlo en la lista de dependencias
-
-```bash
-npm install --save express socket.io cors
-```
-
-Al ejecutar estos comandos veremos que se crea una carpeta llamada *node_modules* donde se guardan los módulos instalados.
-
-- Instalar el módulo nodemon [^8] de manera global.
-
-```bash
-npm install -g nodemon
-```
-
-- Crear un archivo llamado *app.js* que contendrá nuestra aplicación que servirá de servidor web. Para ello copiar lo siguiente en este archivo.
 
 ```js
-var express  = require('express');
-var app = express();
-var cors = require('cors');
-var http = require('http').Server(app);
-var io = require('socket.io')(http);
+const map = L.map("map").setView([41.387, 2.17], 13);
+L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
+  attribution: "© OpenStreetMap contributors",
+}).addTo(map);
+```
 
-app.use(cors());
-app.use(express.static('public'));
+### 2. Conectar el navegador con Socket.IO
 
-io.on('connection', function(socket){
-	console.log('a user connected');
-});
+El servidor sirve el cliente de Socket.IO en `/socket.io/socket.io.js`. Al cargar la página, `io()` se conecta al mismo servidor que entregó el HTML:
 
-http.listen(3000, function(){
-	console.log('listening on *:3000');
+```html
+<script src="/socket.io/socket.io.js"></script>
+<script src="app.js"></script>
+```
+
+```js
+const socket = io();
+```
+
+El cliente y el servidor intercambian eventos con nombres acordados. En este ejemplo usaremos `participant:join`, `participant:move` y `participants:snapshot`.
+
+### 3. Registrar participantes y enviar el estado inicial
+
+El servidor mantiene un `Map` en memoria, usando el identificador de conexión como clave. Cuando un cliente se conecta, recibe una copia del estado actual; cuando entra con un alias, el servidor agrega su perfil y difunde la nueva lista:
+
+```js
+const participants = new Map();
+
+io.on("connection", (socket) => {
+  socket.emit("participants:snapshot", Array.from(participants.values()));
+
+  socket.on("participant:join", (profile, acknowledge) => {
+    const participant = {
+      id: socket.id,
+      name: profile.name,
+      avatar: profile.avatar,
+      position: null,
+    };
+    participants.set(socket.id, participant);
+    acknowledge({ ok: true, id: socket.id });
+    io.emit("participants:snapshot", Array.from(participants.values()));
+  });
 });
 ```
 
-- Probar que nuestro servidor está funcionando, escribiendo:
+El navegador envía el alias y el avatar elegidos al enviar el formulario. El servidor limita el alias y acepta solo los avatares previstos para evitar introducir contenido HTML arbitrario.
+
+### 4. Enviar la posición cuando alguien pulsa el mapa
+
+Leaflet entrega el punto pulsado como latitud y longitud. El cliente lo envía como el evento `participant:move`:
+
+```js
+map.on("click", (event) => {
+  socket.emit("participant:move", {
+    lat: event.latlng.lat,
+    lng: event.latlng.lng,
+  });
+});
+```
+
+El servidor comprueba que existe un participante conectado y que las coordenadas están dentro de los límites geográficos antes de actualizar su posición y emitir `participant:moved` a todos.
+
+### 5. Mover el avatar y mostrar quién está conectado
+
+En el navegador, otro `Map` relaciona cada identificador de participante con su marcador Leaflet. Si ya existe, se cambia su posición; si es la primera vez, se crea el marcador:
+
+```js
+let marker = markers.get(participant.id);
+const coordinates = [participant.position.lat, participant.position.lng];
+
+if (marker) {
+  marker.setLatLng(coordinates);
+} else {
+  marker = L.marker(coordinates, { icon }).addTo(map);
+  markers.set(participant.id, marker);
+}
+```
+
+Cada `participants:snapshot` actualiza el contador y la lista. Si alguien se desconecta, el servidor lo quita de su `Map` y vuelve a difundir la lista; los navegadores eliminan su marcador.
+
+### 6. Instalar y ejecutar el servidor
+
+Necesitas [Node.js](https://nodejs.org/es/) 18 o posterior. Abre una terminal en la carpeta del proyecto y ejecuta:
 
 ```bash
-nodemon app.js
+npm install
+npm start
 ```
 
-- Abrir la url de nuestro servidor http://localhost:3000/ en el navegador para ver nuestro mapa.
+Abre `http://localhost:3000`, entra con un alias y pulsa el mapa. Abre una segunda pestaña en la misma dirección y entra con otro alias: verás cómo ambos avatares aparecen y se mueven en las dos pestañas.
 
-## Modificar el mapa
+Para una demostración en varios equipos, inicia el servidor en un ordenador accesible para la clase y abre desde los demás la dirección de ese ordenador, por ejemplo `http://192.168.1.20:3000`. Todos deben estar conectados al mismo servidor.
 
-- Agregar la librería cliente de socket.io. Escribir en el archivo *index.html* justo debajo de donde cargamos el leaflet
+## Código completo
 
-```html hl_lines="20"
-<!DOCTYPE html>
-<html>
-<head>
-	<title>Servicio compartir ubicación realtime</title>
-	<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
-		<style>
-				#map {
-						position: absolute;
-						top: 0;
-						left: 0;
-						bottom: 0;
-						right: 0;
-				}
-		</style>
-</head>
-<body>
-	<div id="map"></div>
+El código completo coincide con los archivos del [ejemplo descargable](ejemplos/mapa-expedicion-realtime/README.md). Conserva la validación de coordenadas, la lista de participantes, las reconexiones y el diseño adaptable.
 
-		<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-		<script src="https://cdn.jsdelivr.net/npm/socket.io-client@4.4.0/dist/socket.io.min.js"></script>
-		<script type="text/javascript">
-			var map = L.map('map');
+### Código de `server.js`
 
-			map.setView([41.3887, 2.1777], 13);
-			
+```js
+const express = require("express");
+const http = require("node:http");
+const path = require("node:path");
+const { Server } = require("socket.io");
 
-		L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
-				attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-		}).addTo(map);
-		
-		map.on('click', function(e){
-            console.log(e);
-		});
+const app = express();
+const httpServer = http.createServer(app);
+const io = new Server(httpServer);
+const participants = new Map();
+const allowedAvatars = new Set(["🦊", "🐼", "🐢", "🐙", "🐝", "🦉"]);
 
-		</script>
-</body>
-</html>
-```
+app.use(express.static(path.join(__dirname, "public")));
 
-- Declarar la variable que va a tener el objeto socket.io al inicio de nuestro código antes de la declaración del mapa escribir los siguiente:
+function participantList() {
+  return Array.from(participants.values());
+}
 
-```html hl_lines="22"
-<!DOCTYPE html>
-<html>
-<head>
-	<title>Servicio compartir ubicación realtime</title>
-	<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
-		<style>
-				#map {
-						position: absolute;
-						top: 0;
-						left: 0;
-						bottom: 0;
-						right: 0;
-				}
-		</style>
-</head>
-<body>
-	<div id="map"></div>
+function validPosition(position) {
+  if (!position || typeof position !== "object") return null;
+  const lat = Number(position.lat);
+  const lng = Number(position.lng);
+  if (!Number.isFinite(lat) || !Number.isFinite(lng)) return null;
+  if (lat < -90 || lat > 90 || lng < -180 || lng > 180) return null;
+  return { lat, lng };
+}
 
-		<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-		<script src="https://cdn.jsdelivr.net/npm/socket.io-client@4.4.0/dist/socket.io.min.js"></script>
-		<script type="text/javascript">
-			var socket = io();
-			
-			var map = L.map('map');
+io.on("connection", (socket) => {
+  socket.emit("participants:snapshot", participantList());
 
-			map.setView([41.3887, 2.1777], 13);
-			
+  socket.on("participant:join", (payload, acknowledge) => {
+    const name =
+      String(payload?.name || "")
+        .trim()
+        .slice(0, 24) || "Explorador";
+    const avatar = allowedAvatars.has(payload?.avatar) ? payload.avatar : "🦊";
+    const participant = { id: socket.id, name, avatar, position: null };
+    participants.set(socket.id, participant);
 
-		L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
-				attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-		}).addTo(map);
-		
-		map.on('click', function(e){
-            console.log(e);
-		});
+    if (typeof acknowledge === "function") {
+      acknowledge({ ok: true, id: socket.id });
+    }
+    io.emit("participants:snapshot", participantList());
+  });
 
-		</script>
-</body>
-</html>
-```
+  socket.on("participant:move", (position) => {
+    const participant = participants.get(socket.id);
+    const safePosition = validPosition(position);
+    if (!participant || !safePosition) return;
 
-- Recargar la página y ver que en la consola aparece el mensaje de *a user connected*.
+    participant.position = safePosition;
+    io.emit("participant:moved", participant);
+  });
 
-- Enviar el evento click al servidor. En la función que se llama al hacer click sobre el mapa escribir los siguiente para enviar un evento al servidor. Este evento lo llamaremos *user_click* y le pasaremos como parámetro la posición del click.
-
-```html hl_lines="35"
-<!DOCTYPE html>
-<html>
-<head>
-	<title>Servicio compartir ubicación realtime</title>
-	<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
-		<style>
-				#map {
-						position: absolute;
-						top: 0;
-						left: 0;
-						bottom: 0;
-						right: 0;
-				}
-		</style>
-</head>
-<body>
-	<div id="map"></div>
-
-		<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-		<script src="https://cdn.jsdelivr.net/npm/socket.io-client@4.4.0/dist/socket.io.min.js"></script>
-		<script type="text/javascript">
-			var socket = io();
-			
-			var map = L.map('map');
-
-			map.setView([41.3887, 2.1777], 13);
-			
-
-		L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
-				attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-		}).addTo(map);
-		
-		map.on('click', function(e){
-			console.log(e);
-			socket.emit('user_click', e.latlng);
-		});
-
-		</script>
-</body>
-</html>
-```
-
-## Modificar el servidor
-
-- Escuchar al evento *user_click* en nuestra aplicación del servidor. Dentro de la función que se llama en el *io.on* es donde se crea el socket de conexión, por lo tanto escribir nuestro código dentro de la misma. Debajo de donde escribimos el mensaje de *a user connected* escribir lo siguiente:
-
-```js hl_lines="12 13 14"
-var express  = require('express');
-var app = express();
-var cors = require('cors');
-var http = require('http').Server(app);
-var io = require('socket.io')(http);
-
-app.use(cors());
-app.use(express.static('public'));
-
-io.on('connection', function(socket){
-	console.log('a user connected');
-	socket.on('user_click', function(msg){
-		console.log(msg);
-	});
+  socket.on("disconnect", () => {
+    if (participants.delete(socket.id)) {
+      io.emit("participants:snapshot", participantList());
+    }
+  });
 });
 
-http.listen(3000, function(){
-	console.log('listening on *:3000');
+const port = Number(process.env.PORT || 3000);
+const host = process.env.HOST || "0.0.0.0";
+httpServer.listen(port, host, () => {
+  console.log(`Mapa de la expedición disponible en http://localhost:${port}`);
+  console.log(
+    `Para otros equipos de la red local, usa la IP de este ordenador y el puerto ${port}.`,
+  );
 });
 ```
 
-- Recargar la página y hacer click sobre el mapa para ver que en la consola aparece las coordenadas del click. Con esto ya hemos logrado la comunicación cliente-servidor.
+### Código de `public/index.html`
 
-- Lograr la comunicación servidor-cliente y que el servidor notifique a todos los cliente para esto debemos emitir un evento en nuestro servidor. Este evento lo llamaremos *new_user*. Copiar lo siguiente para emitir el evento dentro de la función que se llama en el evento *user_click*.
+```html
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>La expedición urbana de la clase</title>
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    />
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        height: 100%;
+        margin: 0;
+        font:
+          16px/1.45 system-ui,
+          sans-serif;
+        color: #172033;
+      }
+      #app {
+        display: grid;
+        grid-template-columns: minmax(280px, 350px) minmax(0, 1fr);
+        height: 100vh;
+      }
+      aside {
+        overflow: auto;
+        padding: 1.1rem;
+        background: #f5f8fc;
+        border-right: 1px solid #d6dfeb;
+      }
+      h1 {
+        margin: 0 0 0.45rem;
+        font-size: 1.4rem;
+      }
+      p {
+        margin: 0.5rem 0;
+      }
+      label {
+        display: block;
+        margin-top: 0.8rem;
+        font-weight: 650;
+      }
+      input,
+      select,
+      button {
+        width: 100%;
+        min-height: 2.5rem;
+        margin-top: 0.3rem;
+        padding: 0.5rem 0.6rem;
+        font: inherit;
+      }
+      button {
+        border: 0;
+        border-radius: 0.4rem;
+        color: white;
+        background: #1457a6;
+        cursor: pointer;
+      }
+      button:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
+      #status {
+        min-height: 2.6rem;
+        margin-top: 0.8rem;
+        padding: 0.55rem;
+        border-radius: 0.35rem;
+        background: white;
+      }
+      #roster {
+        padding-left: 1.4rem;
+      }
+      #roster li {
+        margin: 0.35rem 0;
+      }
+      #map {
+        min-width: 0;
+        height: 100vh;
+      }
+      .avatar-marker {
+        display: grid;
+        place-items: center;
+        width: 38px;
+        height: 38px;
+        border: 2px solid white;
+        border-radius: 50%;
+        background: #1457a6;
+        box-shadow: 0 1px 7px #17203366;
+        font-size: 23px;
+      }
+      .note {
+        color: #475569;
+        font-size: 0.9rem;
+      }
+      @media (max-width: 700px) {
+        #app {
+          grid-template-columns: minmax(0, 1fr);
+          grid-template-rows: minmax(320px, 52vh) auto;
+          height: auto;
+          min-height: 100vh;
+        }
+        #map {
+          grid-column: 1;
+          grid-row: 1;
+          height: 52vh;
+          min-height: 320px;
+        }
+        aside {
+          grid-column: 1;
+          grid-row: 2;
+          border-right: 0;
+          border-top: 1px solid #d6dfeb;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main id="app">
+      <aside>
+        <h1>🧭 Expedición urbana</h1>
+        <p>
+          Elige un alias y un avatar. Haz clic en el mapa para mover tu
+          posición; el resto de la clase verá el cambio al instante.
+        </p>
 
-```js hl_lines="14"
-var express  = require('express');
-var app = express();
-var cors = require('cors');
-var http = require('http').Server(app);
-var io = require('socket.io')(http);
+        <form id="join-form">
+          <label for="name">Tu alias</label>
+          <input
+            id="name"
+            maxlength="24"
+            placeholder="Por ejemplo, Alex"
+            required
+          />
+          <label for="avatar">Tu avatar</label>
+          <select id="avatar">
+            <option value="🦊">🦊 Zorro</option>
+            <option value="🐼">🐼 Panda</option>
+            <option value="🐢">🐢 Tortuga</option>
+            <option value="🐙">🐙 Pulpo</option>
+            <option value="🐝">🐝 Abeja</option>
+            <option value="🦉">🦉 Búho</option>
+          </select>
+          <button id="join-button" type="submit" disabled>Conectando…</button>
+        </form>
 
-app.use(cors());
-app.use(express.static('public'));
+        <p id="status" role="status" aria-live="polite">
+          Conectando con el servidor…
+        </p>
+        <h2>En la expedición: <span id="count">0</span></h2>
+        <ol id="roster"></ol>
+        <p class="note">
+          La posición se simula con clics; la página no solicita tu ubicación
+          GPS. Abre otra pestaña u otro equipo para simular más participantes.
+        </p>
+      </aside>
+      <div id="map" aria-label="Mapa colaborativo de la clase"></div>
+    </main>
 
-io.on('connection', function(socket){
-	console.log('a user connected');
-	socket.on('user_click', function(msg){
-		console.log(msg);
-		io.emit('new_user', msg);
-	});
-});
-
-http.listen(3000, function(){
-	console.log('listening on *:3000');
-});
-```
-## Modificar el mapa
-
-- Escuchar el evento *new_user* en nuestro cliente. Al final de nuestro código html escribir
-
-```html hl_lines="38 39 40"
-<!DOCTYPE html>
-<html>
-<head>
-	<title>Servicio compartir ubicación realtime</title>
-	<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
-		<style>
-				#map {
-						position: absolute;
-						top: 0;
-						left: 0;
-						bottom: 0;
-						right: 0;
-				}
-		</style>
-</head>
-<body>
-	<div id="map"></div>
-
-		<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-		<script src="https://cdn.jsdelivr.net/npm/socket.io-client@4.4.0/dist/socket.io.min.js"></script>
-		<script type="text/javascript">
-			var socket = io();
-			
-			var map = L.map('map');
-
-			map.setView([41.3887, 2.1777], 13);
-			
-
-		L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
-				attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-		}).addTo(map);
-		
-		map.on('click', function(e){
-			console.log(e);
-			socket.emit('user_click', e.latlng);
-		});
-
-		socket.on('new_user', function(msg){
-			console.log(msg);
-		});
-
-		</script>
-</body>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="app.js"></script>
+  </body>
 </html>
 ```
 
-- Recargar la página. Clicar sobre el mapa y ver las coordenadas del click tanto en el la consola del servidor como en la consola de desarrolladores del navegador.
+### Código de `public/app.js`
 
-- Mostrar un marcador en el mapa en la posición donde el usuario hace click. En nuestro html en la función que escucha el evento *new_user* agregar el siguiente código
+```js
+const map = L.map("map").setView([41.387, 2.17], 13);
+const socket = io();
+const markers = new Map();
+const participants = new Map();
+const joinForm = document.getElementById("join-form");
+const nameInput = document.getElementById("name");
+const avatarInput = document.getElementById("avatar");
+const joinButton = document.getElementById("join-button");
+const statusElement = document.getElementById("status");
+const countElement = document.getElementById("count");
+const rosterElement = document.getElementById("roster");
+let currentUserId = null;
+let profile = null;
 
-```html hl_lines="40"
-<!DOCTYPE html>
-<html>
-<head>
-	<title>Servicio compartir ubicación realtime</title>
-	<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
-		<style>
-				#map {
-						position: absolute;
-						top: 0;
-						left: 0;
-						bottom: 0;
-						right: 0;
-				}
-		</style>
-</head>
-<body>
-	<div id="map"></div>
+L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
+  attribution: "© OpenStreetMap contributors",
+  maxZoom: 19,
+}).addTo(map);
 
-		<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-		<script src="https://cdn.jsdelivr.net/npm/socket.io-client@4.4.0/dist/socket.io.min.js"></script>
-		<script type="text/javascript">
-			var socket = io();
-			
-			var map = L.map('map');
+function showParticipant(participant) {
+  if (!participant.position) return;
+  const coordinates = [participant.position.lat, participant.position.lng];
+  let marker = markers.get(participant.id);
 
-			map.setView([41.3887, 2.1777], 13);
-			
+  if (!marker) {
+    const icon = L.divIcon({
+      className: "",
+      html: `<span class="avatar-marker">${participant.avatar}</span>`,
+      iconSize: [38, 38],
+      iconAnchor: [19, 19],
+    });
+    marker = L.marker(coordinates, { icon }).addTo(map);
+    const popup = document.createElement("span");
+    popup.textContent = `${participant.avatar} ${participant.name}`;
+    marker.bindPopup(popup);
+    markers.set(participant.id, marker);
+  } else {
+    marker.setLatLng(coordinates);
+  }
+}
 
-		L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
-				attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-		}).addTo(map);
-		
-		map.on('click', function(e){
-			console.log(e);
-			socket.emit('user_click', e.latlng);
-		});
+function renderParticipants(list) {
+  const activeIds = new Set(list.map((participant) => participant.id));
+  for (const [id, marker] of markers) {
+    if (!activeIds.has(id)) {
+      map.removeLayer(marker);
+      markers.delete(id);
+    }
+  }
 
-		socket.on('new_user', function(msg){
-			console.log(msg);
-			L.marker([msg.lat, msg.lng]).addTo(map);
-		});
+  participants.clear();
+  list.forEach((participant) => {
+    participants.set(participant.id, participant);
+    showParticipant(participant);
+  });
 
-		</script>
-</body>
-</html>
+  countElement.textContent = String(participants.size);
+  rosterElement.replaceChildren();
+  for (const participant of participants.values()) {
+    const item = document.createElement("li");
+    const positionStatus = participant.position
+      ? "en el mapa"
+      : "elige una posición";
+    item.textContent = `${participant.avatar} ${participant.name} — ${positionStatus}`;
+    rosterElement.append(item);
+  }
+}
+
+function joinExpedition() {
+  if (!profile || !socket.connected) return;
+  currentUserId = socket.id;
+  socket.emit("participant:join", profile, (result) => {
+    if (!result?.ok) {
+      statusElement.textContent =
+        "No se pudo entrar en la expedición. Inténtalo de nuevo.";
+      return;
+    }
+    statusElement.textContent =
+      "Ya estás dentro. Haz clic en el mapa para mover tu avatar.";
+    joinButton.disabled = true;
+    joinButton.textContent = "Ya estás en la expedición";
+  });
+}
+
+joinForm.addEventListener("submit", (event) => {
+  event.preventDefault();
+  const name = nameInput.value.trim();
+  if (!name) {
+    statusElement.textContent = "Escribe un alias antes de entrar.";
+    nameInput.focus();
+    return;
+  }
+  profile = { name: name.slice(0, 24), avatar: avatarInput.value };
+  joinButton.disabled = true;
+  joinButton.textContent = "Entrando…";
+  joinExpedition();
+});
+
+map.on("click", (event) => {
+  if (!currentUserId || !socket.connected) {
+    statusElement.textContent =
+      "Entra con un alias antes de elegir tu posición.";
+    return;
+  }
+  socket.emit("participant:move", {
+    lat: event.latlng.lat,
+    lng: event.latlng.lng,
+  });
+});
+
+socket.on("connect", () => {
+  statusElement.textContent =
+    "Conectado al servidor. Elige un alias para entrar.";
+  joinButton.disabled = false;
+  joinButton.textContent = profile
+    ? "Volver a la expedición"
+    : "Entrar en la expedición";
+  if (profile) joinExpedition();
+});
+
+socket.on("disconnect", () => {
+  currentUserId = null;
+  if (profile) {
+    joinButton.disabled = false;
+    joinButton.textContent = "Reconectando…";
+  }
+  statusElement.textContent = "Se perdió la conexión. Esperando al servidor…";
+});
+
+socket.on("participants:snapshot", renderParticipants);
+
+socket.on("participant:moved", (participant) => {
+  participants.set(participant.id, participant);
+  showParticipant(participant);
+  renderParticipants(Array.from(participants.values()));
+});
 ```
 
-- Recargar nuestra aplicación y abrir otra pestaña con nuestra aplicación para simular que somos dos usuarios distintos. Hacer click en el mapa en cualquiera de las pestañas y ver que nos aparece el marcador en ambas pestañas.
+## Prueba breve en clase
+
+!!! question "5–10 minutos · sin entregar"
+Abre dos pestañas, entra con dos alias distintos y mueve ambos avatares hasta un punto de encuentro. Cierra una pestaña y observa cómo cambian la lista de participantes y el contador en la otra.
+
+## Ejercicio opcional para casa
+
+Añade un botón **Centrar en la expedición** que ajuste el mapa para mostrar a todos los participantes que ya eligieron posición. Comprueba el comportamiento con al menos dos navegadores conectados.
 
 ## Referencias
 
-[^1]: https://socket.io/
-[^2]: https://es.wikipedia.org/wiki/Socket_de_Internet
-[^3]: http://leafletjs.com/
-[^4]: https://github.com/domoritz/leaflet-locatecontrol
-[^5]: https://nodejs.org/es/
-[^6]: http://expressjs.com/
-[^7]: https://github.com/socketio/socket.io
-[^8]: https://www.npmjs.com/package/cors
+- [Socket.IO: introducción y documentación oficial (inglés)](https://socket.io/docs/v4/)
+- [Socket.IO: inicializar el cliente (inglés)](https://socket.io/docs/v4/client-initialization/)
+- [Node.js: sitio oficial en español](https://nodejs.org/es/)
+- [Leaflet: referencia de la API (inglés)](https://leafletjs.com/reference.html)
+- [OpenStreetMap: atribución](https://www.openstreetmap.org/copyright)

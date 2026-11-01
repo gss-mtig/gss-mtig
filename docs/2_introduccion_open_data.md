@@ -1,136 +1,184 @@
-# Introducción al Open data
+# Introducción a los datos abiertos
 
-El concepto **datos abiertos** (**open data**, en inglés) es una filosofía y práctica que persigue que determinados tipos de datos estén disponibles de forma libre para todo el mundo, sin restricciones de derechos de autor, de patentes o de otros mecanismos de control.​ Tiene una ética similar a otros movimientos y comunidades abiertos, como el software libre, el código abierto (open source, en inglés) y el acceso libre (open access, en inglés). [^1]
+## ¿Qué significa que un dato sea abierto?
 
-## Modelos Open data
+Los **datos abiertos** son datos que cualquier persona puede consultar, reutilizar, adaptar y compartir, con pocas condiciones, como citar la fuente o compartir las adaptaciones con la misma licencia. Que un dato se pueda ver o descargar no basta para saber si es abierto: hay que comprobar su licencia.
 
-![Modelos Open data](img/modelos_open_data.png "Modelos Open data")
+La apertura tiene dos dimensiones:
 
-### Representar y Exponer
+- **Legal:** la licencia permite reutilizar y compartir los datos.
+- **Técnica:** los datos están disponibles en un formato que puede procesarse con herramientas informáticas.
 
-![Equilibrio entre representar y exponer](img/open_data_exponer.png "Equilibrio entre representar y exponer")
+La [Definición de Conocimiento Abierto](https://opendefinition.org/od/2.1/es/) describe estos principios con más detalle.
 
-Las nuevas plataformas de publicación de Open data equilibran la barra de los esfuerzos entre representar/exponer y consumir/reutilizar.
+!!! exercise "Ejercicio en clase · 5 minutos"
 
-:star: publica tus datos en la Web (con cualquier formato) y bajo una licencia abierta
+    Decidid qué información falta para valorar estos dos casos:
 
-:star: :star: publícalos como datos estructurados (ej: Excel en vez de una imagen de una tabla escaneada)
+    1. Un ayuntamiento publica una tabla como imagen escaneada y no indica ninguna licencia.
+    2. Un portal ofrece un CSV descargable, pero la página del conjunto no indica la licencia.
 
-:star: :star: :star: usa formatos no propietarios (ej: CSV en vez de Excel)
+    ¿Podemos afirmar que alguno de los dos conjuntos es abierto? ¿Qué preguntaríais o buscaríais antes de reutilizarlo? No hace falta entregar el ejercicio.
 
-:star: :star: :star: :star: usa URIs para denotar cosas, así la gente puede apuntar a estas
+## Apertura y facilidad de reutilización
 
-:star: :star: :star: :star: :star: enlaza tus datos a otros datos para proveer contexto
+Un conjunto puede ser legalmente reutilizable y, aun así, resultar difícil de aprovechar. Para valorar su utilidad, conviene comprobar al menos:
 
-## Linked data
+| Qué revisar | Pregunta práctica |
+|---|---|
+| **Licencia** | ¿Se permite reutilizar y compartir los datos? ¿Hay que atribuir la fuente? |
+| **Formato** | ¿Los datos están estructurados y se pueden procesar? Por ejemplo, ¿la tabla está en CSV o solo en una imagen? |
+| **Descripción** | ¿Se explican los campos, las unidades y el significado de los valores? |
+| **Componente geográfica** | ¿Se indica qué representan las coordenadas y en qué sistema de referencia están? |
+| **Actualización y cobertura** | ¿Se indica de cuándo son los datos, con qué frecuencia cambian y qué zona cubren? |
+| **Acceso** | ¿Se pueden descargar? ¿Hay también una API? ¿Se explican sus límites o requisitos? |
 
-En informática, los datos enlazados o datos vinculados (a menudo referidos en inglés como linked data) describe un método de publicación de datos estructurados para que puedan ser interconectados y más útiles. Se basa en tecnologías Web estándar, tales como HTTP, RDF, RDFa y los URI,​ pero en vez de utilizarlos para servir páginas web para los lectores humanos, las extiende para compartir información de una manera que puede ser leída automáticamente por ordenadores. Esto permite que sean conectados y consultados datos de diferentes fuentes.[^2]
+Una **API facilita el acceso automático**, pero no es un requisito para que los datos sean abiertos. Algunos conjuntos solo ofrecen una descarga; otros permiten descargar los datos y consultarlos mediante una API.
 
-![Linked data](img/linked_data.png "Linked data")
+!!! exercise "Ejercicio en clase · 5–10 minutos"
 
-https://lod-cloud.net/
+    Elegid un conjunto de datos de un portal Open Data. Revisad su página y anotad la licencia, el formato, la fecha de actualización y una limitación o dato que no quede claro. Si hay API, localizad dónde se indica.
 
-## Plataformas Open data
+    Podéis usar un portal conocido por el grupo. No hace falta descargar datos ni entregar el análisis.
 
-![Arquitectura portales Open data](img/arquitectura_portales.png "Arquitectura portales Open data")
+## Enfoques para publicar datos abiertos
 
-### Socrata
+Las etiquetas «modelo estadounidense» y «modelo británico» se usan aquí como **referencias históricas** a dos iniciativas de finales de la década de 2000. No describen de forma completa las políticas actuales de esos países: en la práctica, los enfoques se combinan.
 
-Socrata era una empresa de software adquirida por Tyler Technologies en 2018. Socrata proporciona herramientas de visualización y análisis de datos basadas en la nube para abrir datos gubernamentales. Originalmente llamada Blist, Socrata se fundó en febrero de 2007. Socrata se dirige a usuarios de Internet no técnicos que desean ver y compartir datos gubernamentales, de salud, energía, educación o medio ambiente. Sus productos se emiten bajo una licencia propietaria, cerrada y exclusiva.
+![Comparación histórica entre los enfoques de Data.gov y data.gov.uk](img/modelos_open_data.png "Dos referencias históricas de publicación de datos abiertos")
 
-**Sede:**  Seattle, Washington, USA
+### Publicar conjuntos de datos: la referencia inicial de Estados Unidos
 
-**Fundada:** 2007 
+La iniciativa federal estadounidense [Data.gov](https://data.gov/open-gov/index.html), lanzada en 2009, puso el foco en publicar y hacer encontrables conjuntos de datos del Gobierno. La transparencia, la rendición de cuentas y la posibilidad de que otras personas reutilizaran la información eran objetivos centrales. La [directiva de Gobierno Abierto](https://obamawhitehouse.archives.gov/open/documents/open-government-directive) pedía publicar información en formatos abiertos que se pudieran descargar, analizar y visualizar.
 
-**Modelo negocio:** Software-as-a-Service bajo licencia. API y SDK’s (acceso a datos) OpenSource.
+**Ventajas:** permite empezar a publicar con rapidez y ofrece datos que ciudadanía, investigación, empresas y otras administraciones pueden reutilizar.
 
-https://www.tylertech.com/products/socrata
+**Límites:** un catálogo grande no garantiza por sí solo que los conjuntos estén bien descritos, actualizados, sean comparables o respondan a necesidades concretas. Publicar archivos es un primer paso, no todo el trabajo de apertura.
 
-http://dev.socrata.com/
+### Enlazar datos: la referencia inicial del Reino Unido
 
-https://github.com/socrata
+Cuando [data.gov.uk se presentó en 2010](https://www.w3.org/news/2010/uk-government-launches-open-data-site/), mostró también tecnologías de **datos enlazados**. Este enfoque promueve identificadores persistentes y estándares que permiten relacionar datos de distintas fuentes y darles más contexto.
 
-**Portal global:** https://www.opendatanetwork.com
+**Ventajas:** si distintas fuentes describen lugares, organizaciones o conceptos de manera compatible, resulta más fácil combinar y procesar sus datos automáticamente.
 
-**Discovery API:** https://socratadiscovery.docs.apiary.io/#
+**Límites:** diseñar y mantener identificadores, vocabularios y relaciones requiere conocimientos y coordinación. Aplicar tecnologías semánticas a todos los conjuntos puede añadir trabajo sin mejorar su uso; no es un requisito para publicar datos abiertos.
 
-**SODA API (Socrata Open Data API):** https://dev.socrata.com/consumers/getting-started.html
+### Interoperabilidad y reglas comunes: el enfoque europeo
 
-#### Portales con Socrata:
+La Unión Europea combina la reutilización de información pública con requisitos comunes. La [Directiva europea sobre datos abiertos](https://eur-lex.europa.eu/legal-content/ES/ALL/?uri=CELEX%3A32019L1024) y las reglas sobre [conjuntos de alto valor](https://datos.gob.es/sites/default/files/blog/file/conjunto-datos-alto-valor-es-doble.pdf) impulsan formatos legibles por máquina y, para esos conjuntos, el acceso mediante API y descarga masiva cuando corresponda. Para la información geográfica, [INSPIRE](https://eur-lex.europa.eu/ES/legal-content/summary/the-eu-s-infrastructure-for-spatial-information-inspire.html) establece requisitos de metadatos, servicios e interoperabilidad para poder descubrir y combinar datos entre distintas administraciones.
 
-https://analisi.transparenciacatalunya.cat/
+**Ventajas:** los requisitos comunes ayudan a que datos de distintos organismos se puedan descubrir, comparar y utilizar conjuntamente; también dan previsibilidad a quienes los reutilizan.
 
-https://opendata.rubi.cat/es/browse
+**Límites:** aplicar normas y armonizar datos puede exigir tiempo, coordinación y recursos. Cumplir una especificación no garantiza por sí solo que un servicio sea fácil de encontrar o consumir. Además, **INSPIRE e “información abierta” no son sinónimos**: las condiciones de acceso y reutilización dependen de cada dato y de sus restricciones legales.
 
-### OpenDataSoft
+### Publicar según las necesidades de reutilización
 
-OpenDataSoft es una empresa privada de software especializada en transformar datos estructurados en API y visualizaciones. Fundada en 2011, OpenDataSoft se dirige a usuarios no técnicos que desean compartir y visualizar datos gubernamentales, de salud, energéticos y medioambientales. OpenDataSoft permite ecosistemas de intercambio restringido y abierto como portales de datos abiertos.
+Otro enfoque complementario consiste en preguntar a quienes podrían reutilizar los datos qué necesitan y priorizar conjuntos de acuerdo con su utilidad pública y sus posibles usos. La demanda puede conocerse mediante consultas, solicitudes recibidas, colaboración con usuarios o análisis de aplicaciones existentes.
 
-**Sede:**  Paris, Fr
+Esto ayuda a priorizar datos útiles y a mejorar su documentación. Si solo se atienden las peticiones más frecuentes o las de los grupos con más recursos, pueden quedar fuera necesidades menos visibles. Por eso, la demanda debe complementar los criterios de interés público y las obligaciones de publicación.
 
-**Fundada:** 2011 
+### ¿Qué combinación resulta más útil?
 
-**Modelo negocio:** Software-as-a-Service bajo licencia. API y SDK’s (acceso a datos) OpenSource. Gratuito para “nonprofit” y ONG
+No hace falta elegir un único modelo. Una iniciativa práctica puede combinar sus ventajas:
 
-https://www.opendatasoft.com/
+1. **Publicar** datos con una licencia clara, en un formato procesable y con documentación suficiente.
+2. **Facilitar el acceso** con descarga y, cuando aporte valor —por ejemplo, para datos dinámicos o consultas frecuentes—, una API.
+3. **Usar estándares e identificadores comunes** cuando ayuden a combinar datos de distintas fuentes; reservar Linked Data para los casos en que justifique su coste.
+4. **Escuchar a quienes los reutilizan** y mantener los conjuntos, corrigiendo errores y explicando cambios.
+5. **Proteger lo que no se puede abrir**, como información personal o datos sujetos a restricciones legítimas.
 
-https://www.opendatasoft.com/open-data-solutions/
+El objetivo no es publicar el mayor número posible de archivos ni aplicar la tecnología más compleja a todos los datos. Es conseguir que la información de interés público se pueda encontrar, entender y reutilizar de forma segura y sostenible.
 
-https://github.com/opendatasoft
+!!! exercise "Ejercicio en clase · 8–10 minutos"
 
-**Portal global:** https://public.opendatasoft.com/explore/?sort=modified
+    Una ciudad quiere publicar datos sobre la accesibilidad de las paradas de autobús. En grupos, decidid qué pasos daríais primero:
 
-**API:** https://public.opendatasoft.com/api/v1/console/datasets/1.0/search/
+    - publicar un archivo descargable;
+    - añadir una licencia, descripción y fecha de actualización;
+    - ofrecer una API y una descarga completa;
+    - acordar identificadores comunes para las paradas y las líneas;
+    - consultar a personas usuarias y a quienes mantienen el transporte.
 
-### Ckan
+    Elegid tres pasos, ordenadlos y explicad una ventaja y un coste de vuestra propuesta. No hay un único orden correcto y no hace falta entregar el ejercicio.
 
-Open Knowledge International (OKI) (conocida como Open Knowledge Foundation (OKF) hasta abril de 2014, luego Open Knowledge hasta mayo de 2016) es una red global sin fines de lucro que promueve y comparte información sin cargo, incluida tanto el contenido como los datos. Fue fundada por Rufus Pollock el 24 de mayo de 2004 en Cambridge, Reino Unido.
+## Portales y plataformas de publicación
 
-**Sede:**  Cambrigde, UK
+Un **portal de datos abiertos** permite descubrir conjuntos de datos y consultar su descripción, licencia y recursos disponibles. El portal también puede proporcionar enlaces de descarga, visualizaciones o APIs.
 
-**Fundada:** 2004
+### Portales Open Data e IDE: diferencias y relación
 
-**Modelo negocio:** Fundación Open Knowledge International. Todo OpenSource pero también ofrecen servicio (de pago) de Hosting.
+Un portal Open Data y una **Infraestructura de Datos Espaciales (IDE)** pueden publicar y dar acceso a información geográfica, pero tienen alcances distintos. El portal Open Data se centra en que los datos públicos puedan encontrarse y reutilizarse; una IDE organiza la publicación y el acceso interoperable a información geográfica mediante datos, metadatos, servicios, normas y acuerdos entre las organizaciones participantes.
 
-https://ckan.org
+| Aspecto | Portal Open Data | IDE |
+|---|---|---|
+| **Alcance** | Datos de muchos temas: presupuestos, transporte, salud, medio ambiente, cartografía, entre otros. | Información geográfica y los componentes necesarios para descubrirla y utilizarla de forma interoperable. |
+| **Recursos habituales** | Fichas de conjuntos, licencias, archivos descargables, APIs y, a veces, visualizaciones. | Datos geográficos, metadatos, catálogos y servicios de visualización, descarga o procesamiento; también normas y acuerdos de coordinación. |
+| **Interoperabilidad** | Puede facilitarla con formatos, metadatos y APIs comunes, pero su grado varía según el portal y el conjunto. | Es uno de sus objetivos explícitos: que datos y servicios geográficos de diferentes nodos puedan descubrirse y combinarse. |
+| **Tipo de información** | Puede incluir datos geográficos y no geográficos. | Se ocupa específicamente de información geográfica; su existencia no implica que todos los datos sean abiertos. |
 
-https://github.com/ckan/ckan
+**Se parecen y se complementan:** ambos pueden incluir catálogos, metadatos y enlaces a datos o servicios. Un conjunto geográfico puede aparecer en un portal Open Data como descarga, y también describirse en un catálogo de una IDE que enlaza a un servicio de mapas o descarga. Los catálogos nacionales y europeos pueden reunir metadatos de fuentes distintas, sin que necesariamente almacenen una copia de los datos.
 
-https://datahub.io
+**¿Siguen siendo necesarias las IDE? Sí.** Un portal Open Data no sustituye por sí solo una IDE: publicar un archivo para descargar no resuelve automáticamente cómo describir su referencia espacial, localizar servicios geográficos, combinar capas de distintas administraciones o mantener su interoperabilidad. A la vez, una IDE no sustituye a un portal Open Data general, que puede hacer accesibles datos de muchos ámbitos y destacar sus condiciones de reutilización. En la práctica, algunos portales comparten componentes o funciones; importa el servicio que ofrecen, no solo el nombre que reciben.
 
-**Portal global:** http://dataportals.org/
+La apertura tampoco se deduce de que un dato esté en una IDE o en un portal Open Data: hay que revisar la licencia y las condiciones de acceso de cada recurso. En España, la [definición de IDE del Instituto Geográfico Nacional](https://www.ign.es/web/ign/portal/preguntas-frecuentes) incluye datos georreferenciados, metadatos, servicios interoperables, normas y acuerdos de coordinación. El [geoportal de la IDEE](https://www.idee.es/) permite explorar un ejemplo de esta infraestructura. En el curso de IDE se estudian con más detalle sus normas, metadatos y servicios; aquí nos centraremos en descubrir y consumir datos abiertos.
 
-**API:** http://docs.ckan.org/en/latest/api/index.html
+!!! exercise "Ejercicio en clase · 5 minutos"
 
-* CKAN es OpenSource
-* Puedo instalarlo en mi servidor o utilizar servicio web
-* Puedo automatizar la gestión de datasets
-* Todos los Datasets están expuestos via API
+    Para buscar las paradas de autobús de una ciudad, ¿empezarías por su portal Open Data, por el catálogo de una IDE o por ambos? Indicad qué esperaríais encontrar en cada sitio y qué revisaríais antes de utilizar los datos. No hace falta entregar el ejercicio.
 
+### Ejemplos de portales y directorios
 
-#### Ejemplos API 
+Para localizar datos, suele ser más eficaz empezar por un catálogo oficial de la zona o del organismo responsable y ampliar la búsqueda a otros portales si hace falta. Estos ejemplos ilustran distintos niveles:
 
-Listado de portales con CKAN
-http://dataportals.org/api/data.json/
+| Tipo | Ejemplo | Qué permite explorar |
+|---|---|---|
+| **Municipal** | [Open Data BCN](https://opendata-ajuntament.barcelona.cat/data/es/dataset) | Conjuntos publicados por el Ayuntamiento de Barcelona, con temas urbanos como movilidad, población y servicios municipales. |
+| **Estatal** | [Catálogo de datos.gob.es](https://datos.gob.es/es/catalogo/servicios-datos) | Datos de organismos públicos españoles y recursos asociados; el catálogo incluye conjuntos y servicios de datos. |
+| **Europeo y federado** | [data.europa.eu](https://data.europa.eu/es) | Búsqueda de conjuntos y catálogos procedentes de instituciones y países europeos. Sirve como punto de descubrimiento y puede enlazar con la fuente original. |
+| **Internacional** | [Data.gov](https://data.gov/) | Catálogo de datos del Gobierno de Estados Unidos. |
+| **Geoespacial (IDE)** | [Infraestructura de Datos Espaciales de España (IDEE)](https://www.idee.es/) y [geoportal del IGN](https://www.ign.es/web/ign/portal/ide-area-nodo-ide-ign) | Catálogos, metadatos y servicios de información geográfica; son referencias para buscar recursos espaciales interoperables. |
 
-Museos de Barcelona
-https://opendata-ajuntament.barcelona.cat/data/api/3/action/package_search?q=museu
+Si todavía no sabes qué país, administración o plataforma publica el dato, estos directorios ayudan a descubrir portales:
 
-Barrios Barcelona
-https://opendata-ajuntament.barcelona.cat/data/api/3/action/resource_search?query=description:barri
+- [Catálogo de datos.gob.es](https://datos.gob.es/es/catalogo/servicios-datos): catálogo nacional que integra metadatos de organismos y catálogos federados en España.
+- [data.europa.eu](https://data.europa.eu/es): catálogo europeo que agrupa conjuntos y catálogos de distintos países y organizaciones.
+- [DataPortals.org](https://dataportals.org/search): directorio comunitario internacional de portales. Es útil para encontrar candidatos, pero conviene comprobar que cada enlace y portal siga activo y que el catálogo sea oficial para el organismo que buscamos.
 
+Los directorios no garantizan que todos los portales estén incluidos ni que sus conjuntos estén actualizados. Una vez encontrado un conjunto, abre su ficha en el portal de origen y comprueba licencia, fecha, cobertura, formato y mecanismo de acceso.
 
-#### Portales con Ckan:
+CKAN y Socrata son plataformas utilizadas para publicar y gestionar catálogos de datos. En este curso las veremos como formas distintas de localizar y consultar datos:
 
-https://opendata-ajuntament.barcelona.cat/
+| Plataforma | Qué veremos en este curso |
+|---|---|
+| **CKAN** | Buscar conjuntos en el catálogo y reconocer sus recursos. Algunas instalaciones permiten consultar registros directamente mediante la DataStore API; en otras, el recurso se descarga o se sirve desde otro sistema. |
+| **Socrata** | Localizar el endpoint de un conjunto y consultar datos mediante la SODA API. |
 
-https://www.seu-e.cat/es/web/rubi/dades-obertes
+La disponibilidad de una API y sus funciones dependen de cómo esté configurada cada plataforma y de cómo se haya publicado el conjunto. En la [siguiente página](2_1_api_socrata.md) seguiremos un ejemplo completo con Socrata. Después, quien quiera comparar otra plataforma puede consultar la página [opcional sobre CKAN](2_2_api_ckan_opcional.md).
 
-https://data.gov.uk/
+!!! exercise "Ejercicio en clase · 5 minutos"
 
+    En un portal Open Data, localizad un conjunto de datos y seguid el camino desde su ficha hasta el archivo o servicio que contiene los datos. ¿Qué información de la ficha os ayuda a decidir si podéis utilizarlo?
 
+    No hace falta llamar a la API ni entregar el ejercicio.
+
+## Ampliación: datos enlazados
+
+Los [**datos enlazados**](https://es.wikipedia.org/wiki/Datos_enlazados) (*Linked Data*) usan identificadores web y enlaces para relacionar información publicada en distintos conjuntos. Por ejemplo, un registro de una parada de autobús podría enlazar con la información del barrio donde está situada.
+
+El modelo de cinco estrellas de [datos abiertos enlazados](https://datos.gob.es/sites/default/files/doc/file/guia-publicacion-datos-enlazados_3.pdf) describe una progresión desde publicar datos en la Web con una licencia abierta hasta enlazarlos con otros datos. Es una ampliación conceptual; en este curso nos centraremos en localizar, evaluar y consumir los datos.
 
 ## Referencias
 
-[^1]: https://es.wikipedia.org/wiki/Datos_abiertos
-[^2]: https://es.wikipedia.org/wiki/Datos_enlazados
+- [Definición de Conocimiento Abierto (español)](https://opendefinition.org/od/2.1/es/)
+- [Guía para la publicación de APIs, con apartados sobre CKAN y Socrata (datos.gob.es, español)](https://datos.gob.es/sites/default/files/doc/file/guia_publicacion_apis.pdf)
+- [Directiva europea sobre datos abiertos y reutilización de la información del sector público (texto en español)](https://eur-lex.europa.eu/legal-content/ES/ALL/?uri=CELEX%3A32019L1024)
+- [Data.gov: iniciativa de datos abiertos del Gobierno de Estados Unidos (inglés)](https://data.gov/open-gov/index.html)
+- [Directiva de Gobierno Abierto de Estados Unidos (archivo de la Casa Blanca, inglés)](https://obamawhitehouse.archives.gov/open/documents/open-government-directive)
+- [Presentación de data.gov.uk y tecnologías de datos enlazados (W3C, inglés)](https://www.w3.org/news/2010/uk-government-launches-open-data-site/)
+- [API de CKAN (documentación oficial, inglés)](https://docs.ckan.org/en/latest/api/)
+- [DataStore de CKAN (documentación oficial, inglés)](https://docs.ckan.org/en/latest/maintaining/datastore.html)
+- [Introducción a la SODA API de Socrata (documentación oficial, inglés)](https://dev.socrata.com/consumers/getting-started)
+- [Preguntas frecuentes sobre las IDE (Instituto Geográfico Nacional)](https://www.ign.es/web/ign/portal/preguntas-frecuentes)
+- [Infraestructura de Datos Espaciales de España (IDEE)](https://www.idee.es/)
+- [Federar un catálogo con datos.gob.es](https://datos.gob.es/es/preguntas-frecuentes/como-federar-mi-catalogo-de-datos-abiertos-con-datosgobes)
+- [DataPortals.org: directorio internacional de portales](https://dataportals.org/about/)

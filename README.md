@@ -73,7 +73,7 @@ Desinstalar versiones anteriores de mkdocs:
 E instalar con el comando:
 
 ```bash
-pip install mkdocs-material
+python -m pip install mkdocs mkdocs-material
 ```
 
 ### Comandos mkdocs

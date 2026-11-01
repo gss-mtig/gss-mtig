@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Geocodificador ICGC</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+  <style>
+    * { box-sizing: border-box; }
+    html, body { height: 100%; margin: 0; font: 16px/1.45 system-ui, sans-serif; }
+    #app { display: grid; grid-template-columns: minmax(280px, 360px) 1fr; height: 100%; }
+    aside { overflow: auto; padding: 1rem; border-right: 1px solid #d1d5db; }
+    h1 { margin-top: 0; font-size: 1.4rem; }
+    label { display: block; margin: 1rem 0 .3rem; font-weight: 600; }
+    input, button { width: 100%; padding: .65rem; font: inherit; }
+    button { cursor: pointer; }
+    form button { margin-top: .6rem; }
+    #status { min-height: 3rem; padding: .5rem 0; }
+    #results { padding-left: 1.5rem; }
+    #results li { margin: .5rem 0; }
+    #results button { text-align: left; border: 1px solid #d1d5db; border-radius: .3rem; background: #fff; }
+    #results button:hover { background: #f3f4f6; }
+    #map { min-height: 360px; }
+    @media (max-width: 700px) {
+      #app { grid-template-columns: 1fr; grid-template-rows: minmax(260px, 42vh) 1fr; }
+      aside { grid-row: 2; border-right: 0; border-top: 1px solid #d1d5db; }
+      #map { grid-row: 1; }
+    }
+  </style>
+</head>
+<body>
+  <main id="app">
+    <aside>
+      <h1>Geocodificador ICGC</h1>
+      <p>Busca direcciones y topónimos de Cataluña. Haz clic en el mapa para localizar el elemento más cercano.</p>
+      <form id="search-form">
+        <label for="query">Dirección o topónimo</label>
+        <input id="query" value="Plaça de Catalunya, Barcelona" required>
+        <button type="submit">Buscar</button>
+      </form>
+      <div id="status" role="status" aria-live="polite">Escribe una dirección o un topónimo para comenzar.</div>
+      <ol id="results"></ol>
+    </aside>
+    <div id="map" aria-label="Mapa interactivo"></div>
+  </main>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

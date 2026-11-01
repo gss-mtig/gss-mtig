@@ -1,993 +1,397 @@
-# Ejemplo servicio bicing Barcelona VectorTiles
+# Bicing con MapLibre: Vector Tiles y datos en tiempo real
 
-## Acceso al servicio de datos del Bicing de Barcelona
+En los ejemplos anteriores hemos usado Leaflet para crear mapas web. Aquí veremos otra forma de trabajar con **MapLibre GL JS**: un mapa base servido como Vector Tiles, sobre el que añadiremos las estaciones de Bicing y su disponibilidad actual.
 
-En el portal Open data del Ayuntamiento de Barcelona podemos encontrar un dataset (conjunto de datos) que contiene las [estaciones del servicio de Bicing](https://opendata-ajuntament.barcelona.cat/data/es/dataset?q=bicing&sort=fecha_publicacion+desc)
+El ejercicio enseña dos fuentes distintas en un mismo mapa:
 
-Anteriormente tenían un servicio donde daban toda la información de la estación en tiempo real http://wservice.viabicing.cat/v2/stations. Actualmente lo han separado en dos servicios unos con la [información de las estaciones](https://opendata-ajuntament.barcelona.cat/data/es/dataset/informacio-estacions-bicing) (identificador, nombre, coordenadas, etc.) y otro con [estado de las estaciones](https://opendata-ajuntament.barcelona.cat/data/es/dataset/estat-estacions-bicing) (número de bicis disponibles, tipos de bicis, etc)
+- el **mapa base** del ICGC, definido mediante un estilo cartográfico que utiliza fuentes vectoriales;
+- las **estaciones y su estado**, que consultaremos en dos feeds GBFS y convertiremos a GeoJSON en el navegador.
 
-Si bien el Ayuntamiento de Barcelona no ofrece explícitamente el acceso a los datos del Bicing como un servicio, si que tiene un servicio de datos en tiempo real. La url la podemos encontrar presionando el botón de Descargar del recurso json
+Las estaciones de Bicing **no** se sirven aquí como Vector Tiles. MapLibre dibuja el mapa base vectorial y permite superponer datos de otros tipos. Esta distinción ayuda a entender que el estilo del mapa, la fuente de datos y la capa que los representa son piezas separadas.
 
-![url servicio de bicing](img/bicing.png)
-*url servicio de bicing*
+Nos centraremos en el cliente MapLibre y en cómo organiza estilos y capas. La especificación y publicación de Vector Tiles se estudian en la materia de IDES.
 
-Al abrir la url https://api.bsmsa.eu/ext/api/bsm/gbfs/v2/en/station_information en nuestro navegador observaremos que la respuesta es un archivo json con un conjunto de elementos que tienen las coordenadas de la localización de la estación de bicing, la dirección, la capacidad, etc.
+**Resultado final:** [abre el visor de Bicing con MapLibre](ejemplos/bicing-maplibre/index.html).
 
-Mapa que utiliza este servicio, https://www.bicing.barcelona/es/mapa-de-disponibilidad-provisional
+## Qué cambia respecto a Leaflet
 
-El archivo json que retorna el servicio tiene coordenadas pero no es un fichero GeoJSON. [^1]
+Leaflet y MapLibre permiten añadir datos, estilos e interacción. No hay una herramienta que sea mejor para todos los mapas; la elección depende de los datos y del resultado buscado.
 
-Para ver estos datos sobre un mapa crearemos un visor utilizando MapLibre GL JS. [^2]
+| En este ejemplo  | Leaflet                                                             | MapLibre GL JS                                                                                               |
+| ---------------- | ------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------ |
+| Mapa base        | Se suele configurar una capa de teselas y añadirla al mapa.         | Se carga un estilo que describe fuentes y capas cartográficas. Aquí usamos el estilo vectorial del ICGC.     |
+| Capa de datos    | Se crean capas, por ejemplo con `L.geoJSON` o marcadores.           | Se declara una fuente con `addSource` y una capa visual con `addLayer`.                                      |
+| Estilo por datos | Se configura con opciones o funciones de estilo.                    | Las expresiones permiten variar tamaño y color según atributos o nivel de zoom.                              |
+| Renderizado      | Flexible y fácil de empezar; admite distintas capas y complementos. | Utiliza WebGL y está especialmente preparado para estilos basados en datos y mapas vectoriales interactivos. |
 
-## Creación de un visor
+En el ejemplo PMR construimos un mapa con Leaflet y marcadores. En este ejemplo observaremos cómo MapLibre mantiene una fuente de datos y modifica el estilo de sus capas sin reconstruir el mapa completo. Las dos bibliotecas pueden mostrar datos GeoJSON; MapLibre también puede representar fuentes vectoriales en el mapa base.
 
-- Crear una carpeta con el nombre de *visor-bicing-vt*.
-- Crear una carpeta con el nombre de *public* dentro de la carpeta visor-bicing-vt.
-- Crear un archivo con el nombre de *index.html* dentro de la carpeta public.
-- Abrir el archivo index.html con un editor de texto y copiar el siguiente código.
+## Datos de Bicing
+
+El [portal Open Data BCN](https://opendata-ajuntament.barcelona.cat/data/es/dataset/informacio-estacions-bicing) publica información del servicio. Para esta demostración usaremos la API de [CityBikes](https://docs.citybik.es/api/gbfs/), que distribuye feeds GBFS de varios sistemas de bicicleta compartida, incluido Bicing. Es un servicio intermediario: si necesitas una fuente oficial para una aplicación operativa, comprueba las condiciones y el acceso que publica Bicing o el Ayuntamiento.
+
+La API ofrece dos feeds separados:
+
+- [`station_information`](https://api.citybik.es/gbfs/2/bicing/station_information.json): identificador, nombre y coordenadas de las estaciones;
+- [`station_status`](https://api.citybik.es/gbfs/2/bicing/station_status.json): bicicletas y anclajes disponibles, entre otros datos de estado.
+
+El formato recibido es JSON con una lista de estaciones, no una colección GeoJSON lista para MapLibre. El código unirá ambos feeds usando el identificador de estación y construirá una `FeatureCollection` con puntos. Este feed de información no incluye un campo `capacity`; calcularemos una capacidad estimada sumando las bicicletas y los anclajes disponibles que devuelve el feed de estado. Es una aproximación del total disponible en ese momento, no un aforo fijo de la estación. Solicitaremos el estado cada minuto; esta frecuencia evita hacer peticiones continuas y se puede ajustar según la finalidad y las condiciones de uso del servicio.
+
+## Construir el mapa paso a paso
+
+Crea una carpeta llamada `bicing-maplibre` y dentro un archivo `index.html`. Añadiremos el código por etapas; el archivo completo que puedes copiar y ejecutar está al final de esta sección.
+
+### 1. Crear el mapa base con MapLibre
+
+MapLibre necesita un contenedor y un estilo cartográfico. El estilo del ICGC define las fuentes y capas vectoriales del mapa base; en este paso todavía no aparecen las estaciones.
 
 ```html
-<!DOCTYPE html>
-<html>
-<head>
-  <title>Servicio de Bicing realtime VectorTiles</title>
-  <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
-  <script src='https://unpkg.com/maplibre-gl/dist/maplibre-gl.js'></script>
-  <link href='https://unpkg.com/maplibre-gl/dist/maplibre-gl.css' rel='stylesheet' />
-
-  <style>
-    body {
-      margin: 0;
-      padding: 0;
-    }
-
-    #map {
-      position: absolute;
-      top: 0;
-      bottom: 0;
-      width: 100%;
-      height: 100%
-    }
-  </style>
-</head>
-<body>
-  <div id="map"></div>
-
-  <script type="text/javascript">
-    var map = new maplibregl.Map({
-      container: 'map',
-      style: 'https://geoserveis.icgc.cat/contextmaps/icgc.json',
-      center: [2.1777, 41.3887],
-      zoom: 13,
-      maxZoom: 14,
-      hash: true,
-    });
-  </script>
-</body>
-</html>
+<div id="map"></div>
 ```
-
-- Abrir el archivo index.html en el navegador para ver que carga un mapa centrado en Barcelona.
-
-## Creación del proxy
-
-Crearemos un proxy que nos permita hacer la llamada al servicio 
-
-- Instalar Node.js [^3]. Descargar la última versión LTS y lo instalaremos con las opciones por defecto. Una vez instalado el Node abrir la consola para verificar que se ha instalado correctamente. Escribir
-
-```bash
-node -v
-```
-
-- Navegar hasta nuestra carpeta *visor-bicing-vt* y escribir:
-
-```bash
-npm init -y
-```
-
-Con este comando estaremos creando el archivo *package.json*. La opción -y acepta todas la opciones por defecto. Si no ponemos la opción -y este comando solicita varios elementos como, por ejemplo, el nombre y la versión de la aplicación. Sólo hay que pulsar ENTER para aceptar los valores predeterminados.
-
-- Instalar las dependencias para crear nuestro servicio de proxy [^4]. En este caso utilizaremos Express [^5] como servidor web, el módulo axios [^6] y el módulo de cors [^7].
-
-- Instalar el express y los módulos y guardarlo en la lista de dependencias
-
-```bash
-npm install --save express axios cors
-```
-
-Al ejecutar este comando veremos que se crea una carpeta llamada *node_modules* donde se guardan los módulos instalados.
-
-- Instalar el módulo nodemon [^8] de manera global.
-
-```bash
-npm install -g nodemon
-```
-
-- Crear un archivo llamado *app.js* que servirá de proxy con el servicio de Bicing. Copiar lo siguiente en este archivo.
 
 ```js
-var express  = require('express');
-var app      = express();
-var cors = require('cors');
-var axios = require('axios');
-var serverBicing = "http://opendata-ajuntament.barcelona.cat/data/dataset/bd2462df-6e1e-4e37-8205-a4b8e7313b84/resource/f60e9291-5aaa-417d-9b91-612a9de800aa/download/recurs.json";
-const port = 3000;
-const token = "TOKEN OPEN DATA BARCELONA";
-
-app.use(cors());
-app.use(express.static('public'));
-
-app.all("/bicingjson/*", function(req, res) {
-  console.log('redirecting to Server2');
-  const geojson = {
-    type: 'FeatureCollection',
-    features: []
-  };
-  //axios.get(serverBicing, { headers: { Authorization: `Bearer ${token}` } }).then(function(response){
-  axios.get(serverBicing,  { headers: { Authorization: `${token}` } }).then(function(response){
-    // handle success
-    var stations = response.data.data.stations;
-    for (let i = stations.length - 1; i >= 0; i--) {
-      var station = stations[i];
-      var feature = {
-        type: 'Feature',
-        properties: {
-          altitude: station.altitude,
-          id: station.station_id,
-          address: station.address,
-          post_code: station.post_code,
-          capacity: station.capacity
-        },
-        geometry: {
-          type: 'Point',
-          coordinates: [station.lon, station.lat]
-        }
-      };
-      geojson.features.push(feature);
-    }
-    res.send(geojson);
-  }).catch(function (error) {
-    console.log(error);
-    res.send(error);
-  });
+const map = new maplibregl.Map({
+  container: "map",
+  style: "https://geoserveis.icgc.cat/contextmaps/icgc.json",
+  center: [2.17, 41.39],
+  zoom: 12,
 });
 
-app.listen(port, () => {
-    console.log(`Example app listening on port ${port}`)
+map.addControl(new maplibregl.NavigationControl(), "top-right");
+```
+
+Incluye la hoja de estilos y el archivo JavaScript de MapLibre en el HTML. El contenedor `#map` debe tener alto y ancho definidos para que el mapa sea visible.
+
+### 2. Descargar los dos feeds
+
+La información de las estaciones y su estado se obtiene en peticiones separadas. `Promise.all` espera ambas respuestas; comprobamos los estados HTTP antes de interpretar el JSON:
+
+```js
+const responses = await Promise.all([
+  fetch(informationUrl),
+  fetch(statusUrl),
+]);
+
+if (!responses[0].ok || !responses[1].ok) {
+  throw new Error("La API no ha podido devolver los dos feeds.");
+}
+
+const [information, status] = await Promise.all(
+  responses.map((response) => response.json()),
+);
+```
+
+El bloque debe ejecutarse después de que cargue el mapa. Los datos de estaciones y disponibilidad se reciben como JSON.
+
+### 3. Relacionar estaciones y crear GeoJSON
+
+Los dos feeds comparten el identificador `station_id`. Creamos una tabla para encontrar el estado de cada estación, calculamos una capacidad estimada con las bicis y anclajes disponibles y preparamos una entidad GeoJSON por punto:
+
+```js
+const statusById = new Map(
+  status.data.stations.map((station) => [station.station_id, station]),
+);
+
+const features = information.data.stations.map((station) => {
+  const currentStatus = statusById.get(station.station_id);
+  const bikes = currentStatus?.num_bikes_available ?? 0;
+  const docks = currentStatus?.num_docks_available ?? 0;
+
+  return {
+    type: "Feature",
+    properties: {
+      id: station.station_id,
+      name: station.name,
+      capacity: bikes + docks,
+      bikes,
+      docks,
+    },
+    geometry: {
+      type: "Point",
+      coordinates: [station.lon, station.lat],
+    },
+  };
+});
+
+const stationsGeoJSON = { type: "FeatureCollection", features };
+```
+
+GeoJSON guarda las coordenadas en orden **longitud, latitud**. El campo `capacity` de esta aplicación es una estimación calculada; no viene incluido en el feed de información ni representa necesariamente la capacidad fija de la estación.
+
+### 4. Añadir una fuente y una capa de puntos
+
+MapLibre separa la fuente de datos del estilo de la capa. Añadimos la colección como una fuente GeoJSON y luego declaramos una capa de círculos. El tamaño y el color se basan en atributos de cada estación:
+
+```js
+map.addSource("bicing-stations", {
+  type: "geojson",
+  data: stationsGeoJSON,
+});
+
+map.addLayer({
+  id: "bicing-points",
+  type: "circle",
+  source: "bicing-stations",
+  paint: {
+    "circle-radius": ["interpolate", ["linear"], ["get", "capacity"], 0, 4, 50, 11],
+    "circle-color": ["interpolate", ["linear"], ["get", "bikes"], 0, "#d73027", 20, "#1a9850"],
+    "circle-stroke-color": "#ffffff",
+    "circle-stroke-width": 1,
+  },
 });
 ```
 
-- Probar que nuestro proxy está funcionando, escribiendo:
+Las expresiones `interpolate` definen cómo cambian tamaño y color a medida que cambian los valores. El ejercicio puntuable pide modificar esos rangos.
+
+### 5. Añadir interacción y actualizar los datos
+
+Al pulsar un punto, mostramos el nombre de la estación y los valores actuales. El mapa vuelve a consultar los feeds cada minuto; en las actualizaciones siguientes usa `setData` para cambiar los datos de la fuente existente:
+
+```js
+map.on("click", "bicing-points", (event) => {
+  const feature = event.features?.[0];
+  if (!feature) return;
+
+  const content = document.createElement("div");
+  content.textContent =
+    `${feature.properties.name}\n` +
+    `Bicicletas disponibles: ${feature.properties.bikes}\n` +
+    `Anclajes disponibles: ${feature.properties.docks}`;
+
+  new maplibregl.Popup()
+    .setLngLat(feature.geometry.coordinates)
+    .setDOMContent(content)
+    .addTo(map);
+});
+```
+
+La aplicación también cambia el cursor al pasar sobre una estación. La función completa comprueba si la fuente ya existe para decidir entre crearla por primera vez o actualizarla.
+
+### 6. Ejecutar y probar la aplicación
+
+Guarda los fragmentos en `index.html`. Desde una terminal abierta en la carpeta `bicing-maplibre`, sirve la aplicación localmente:
+
+Desde una terminal abierta en la carpeta `bicing-maplibre`, ejecuta:
 
 ```bash
-nodemon app.js
+python3 -m http.server 8000
 ```
 
-- Abrir la url de nuestro proxy http://localhost:3000/bicingjson/ en el navegador.
+Abre `http://localhost:8000` en el navegador. Necesitas conexión a Internet para descargar MapLibre, el estilo del ICGC y los feeds de CityBikes. Al pasar el puntero por una estación cambia el cursor; al hacer clic aparece el número de bicicletas y anclajes disponibles.
 
-- Escribir en el navegador http://localhost:3000 para ver nuestro mapa.
+## Código completo
 
-### Modificar el visor
+Guarda el archivo completo como `index.html`. Este es el mismo código del [visor de Bicing](ejemplos/bicing-maplibre/index.html).
 
-- Modificar el archivo index.html para que llame al proxy que hemos creado y cargue la capa de bicing. Escribir justo después de la declaración del mapa.
-
-```html hl_lines="36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55"
-<!DOCTYPE html>
-<html>
-<head>
-  <title>Servicio de Bicing realtime VectorTiles</title>
-  <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
-  <script src='https://unpkg.com/maplibre-gl/dist/maplibre-gl.js'></script>
-  <link href='https://unpkg.com/maplibre-gl/dist/maplibre-gl.css' rel='stylesheet' />
-  <style>
-    body {
-      margin: 0;
-      padding: 0;
-    }
-
-    #map {
-      position: absolute;
-      top: 0;
-      bottom: 0;
-      width: 100%;
-      height: 100%
-    }
-  </style>
-</head>
-<body>
-  <div id="map"></div>
-
-  <script type="text/javascript">
-    var map = new maplibregl.Map({
-      container: 'map',
-      style: 'https://geoserveis.icgc.cat/contextmaps/icgc.json',
-      center: [2.1777, 41.3887],
-      zoom: 13,
-      maxZoom: 14,
-      hash: true,
-    });
-
-    map.on("load", function() {
-      //funcion que se llama al terminar de cargar el estilo del mapa
-
-      //agregamos la fuente de datos al mapa
-      map.addSource('bicing-source', {
-        type: 'geojson',
-        data: 'http://localhost:3000/bicingjson/'
-      });
-
-      //agregamos la capa con su estilo al mapa
-      map.addLayer({
-        "id": "bicing",
-        "type": "circle",
-        "source": "bicing-source",
-        "paint": {
-            "circle-radius": 6,
-            "circle-color": "#B42222"
-        },
-      });
-    });
-  </script>
-</body>
-</html>
-```
-
-- Recargar la aplicación y veremos los puntos de las estaciones de bicing.
-
-- Actualizar los datos del mapa. Para actualizar los datos del mapa se debe recargar la capa de estaciones de bicing cada X tiempo. Para recargar la capa cada 3 segundos escribir los siguiente al final de la función que se llama al terminar de cargar el estilo del mapa.
-
-```html hl_lines="56 57 58"
-<!DOCTYPE html>
-<html>
-<head>
-  <title>Servicio de Bicing realtime VectorTiles</title>
-  <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
-  <script src='https://unpkg.com/maplibre-gl/dist/maplibre-gl.js'></script>
-  <link href='https://unpkg.com/maplibre-gl/dist/maplibre-gl.css' rel='stylesheet' />
-  <style>
-    body {
-      margin: 0;
-      padding: 0;
-    }
-
-    #map {
-      position: absolute;
-      top: 0;
-      bottom: 0;
-      width: 100%;
-      height: 100%
-    }
-  </style>
-</head>
-<body>
-  <div id="map"></div>
-
-  <script type="text/javascript">
-    var map = new maplibregl.Map({
-      container: 'map',
-      style: 'https://geoserveis.icgc.cat/contextmaps/icgc.json',
-      center: [2.1777, 41.3887],
-      zoom: 13,
-      maxZoom: 14,
-      hash: true,
-    });
-
-    map.on("load", function() {
-      //funcion que se llama al terminar de cargar el estilo del mapa
-
-      //agregamos la fuente de datos al mapa
-      map.addSource('bicing-source', {
-        type: 'geojson',
-        data: 'http://localhost:3000/bicingjson/'
-      });
-
-      //agregamos la capa con su estilo al mapa
-      map.addLayer({
-        "id": "bicing",
-        "type": "circle",
-        "source": "bicing-source",
-        "paint": {
-            "circle-radius": 6,
-            "circle-color": "#B42222"
-        },
-      });
-
-      window.setInterval(function() {
-        map.getSource('bicing-source').setData('http://localhost:3000/bicingjson/');
-      }, 3000);
-    });
-  </script>
-</body>
-</html>
-```
-
-- Recargar la aplicación y veremos los puntos de las estaciones de bicing. Si vamos a la pestaña de red (network) en la consola de desarrollador del navegador podremos ver que cada 3 segundos se hace una llamada a nuestro proxy.
-
-- Cambiar el estilo de la capa de estaciones de bicing. Para representar las estaciones con un estilo basado en los valores de algunos de sus atributos utilizar el *data-driven style* siguiendo la especificación de estilo de MapLibre [^9]. Modificar la propiedad **paint** de la capa y escribir
-
-```html hl_lines="50 51 52 53 54 55 56 57 58 59 60 61 62 63 64 65 66 67 68 69 70"
-<!DOCTYPE html>
-<html>
-<head>
-  <title>Servicio de Bicing realtime VectorTiles</title>
-  <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
-  <script src='https://unpkg.com/maplibre-gl/dist/maplibre-gl.js'></script>
-  <link href='https://unpkg.com/maplibre-gl/dist/maplibre-gl.css' rel='stylesheet' />
-  <style>
-    body {
-      margin: 0;
-      padding: 0;
-    }
-
-    #map {
-      position: absolute;
-      top: 0;
-      bottom: 0;
-      width: 100%;
-      height: 100%
-    }
-  </style>
-</head>
-<body>
-  <div id="map"></div>
-
-  <script type="text/javascript">
-    var map = new maplibregl.Map({
-      container: 'map',
-      style: 'https://geoserveis.icgc.cat/contextmaps/icgc.json',
-      center: [2.1777, 41.3887],
-      zoom: 13,
-      maxZoom: 14,
-      hash: true,
-    });
-
-    map.on("load", function() {
-      //funcion que se llama al terminar de cargar el estilo del mapa
-
-      //agregamos la fuente de datos al mapa
-      map.addSource('bicing-source', {
-        type: 'geojson',
-        data: 'http://localhost:3000/bicingjson/'
-      });
-
-      //agregamos la capa con su estilo al mapa
-      map.addLayer({
-        "id": "bicing",
-        "type": "circle",
-        "source": "bicing-source",
-        "paint": {
-          "circle-radius": [
-            "interpolate",
-            ["linear"],
-            ["to-number", ['get','capacity']],
-            15,
-            5,
-            50,
-            33
-          ],
-          "circle-color": [
-            "interpolate",
-            ["linear"],
-            ["to-number", ["get", "altitude"]],
-            0,
-            "hsl(0, 88%, 55%)",
-            50,
-            "hsl(108, 93%, 59%)"
-          ],
-          "circle-opacity": 0.86
-        },
-      });
-
-      window.setInterval(function() {
-        map.getSource('bicing-source').setData('http://localhost:3000/bicingjson/');
-      }, 3000);
-    });
-  </script>
-</body>
-</html>
-```
-
-- Recargar la aplicación y veremos el cambio de estilo de los puntos de las estaciones de bicing.
-
-- Crear un popup para ver la información de la estación al seleccionarla. Escribir después de donde definimos el onload
-
-```html hl_lines="78 79 80 81 82 83 84 85 86 87 88 89 90 91 92 93 94 95 96 97 98"
-<!DOCTYPE html>
-<html>
-<head>
-  <title>Servicio de Bicing realtime VectorTiles</title>
-  <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
-  <script src='https://unpkg.com/maplibre-gl/dist/maplibre-gl.js'></script>
-  <link href='https://unpkg.com/maplibre-gl/dist/maplibre-gl.css' rel='stylesheet' />
-  <style>
-    body {
-      margin: 0;
-      padding: 0;
-    }
-
-    #map {
-      position: absolute;
-      top: 0;
-      bottom: 0;
-      width: 100%;
-      height: 100%
-    }
-  </style>
-</head>
-<body>
-  <div id="map"></div>
-
-  <script type="text/javascript">
-    var map = new maplibregl.Map({
-      container: 'map',
-      style: 'https://geoserveis.icgc.cat/contextmaps/icgc.json',
-      center: [2.1777, 41.3887],
-      zoom: 13,
-      maxZoom: 14,
-      hash: true,
-    });
-
-    map.on("load", function() {
-      //funcion que se llama al terminar de cargar el estilo del mapa
-
-      //agregamos la fuente de datos al mapa
-      map.addSource('bicing-source', {
-        type: 'geojson',
-        data: 'http://localhost:3000/bicingjson/'
-      });
-
-      //agregamos la capa con su estilo al mapa
-      map.addLayer({
-        "id": "bicing",
-        "type": "circle",
-        "source": "bicing-source",
-        "paint": {
-          "circle-radius": [
-            "interpolate",
-            ["linear"],
-            ["to-number", ['get','capacity']],
-            15,
-            5,
-            50,
-            33
-          ],
-          "circle-color": [
-            "interpolate",
-            ["linear"],
-            ["to-number", ["get", "altitude"]],
-            0,
-            "hsl(0, 88%, 55%)",
-            50,
-            "hsl(108, 93%, 59%)"
-          ],
-          "circle-opacity": 0.86
-        },
-      });
-
-      window.setInterval(function() {
-        map.getSource('bicing-source').setData('http://localhost:3000/bicingjson/');
-      }, 3000);
-    });
-
-    map.on('click', function(e) {
-      var features = map.queryRenderedFeatures(e.point, { layers: ['bicing'] });
-
-      // if the features have no info, return nothing
-      if (!features.length) {
-          return;
+```html
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Disponibilidad de Bicing · MapLibre</title>
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/maplibre-gl@5.12.0/dist/maplibre-gl.css"
+    />
+    <style>
+      html,
+      body,
+      #map {
+        height: 100%;
+        margin: 0;
       }
-
-      var feature = features[0];
-
-      // Populate the popup and set its coordinates
-      // based on the feature found
-      var popup = new maplibregl.Popup()
-      .setLngLat(feature.geometry.coordinates)
-      .setHTML('<div id=\'popup\' class=\'popup\' style=\'z-index: 10;\'> <h5> ' + feature.properties.id + ' </h5>' +
-      '<ul class=\'list-group\'>' +
-      '<li class=\'list-group-item\'> ' + feature.properties.address + ' </li>' +
-      '<li class=\'list-group-item\'> Altitud: ' + feature.properties.altitude + ' </li>' +
-      '<li class=\'list-group-item\'> Capacidad: ' + feature.properties.capacity + ' </li></ul></div>')
-      .addTo(map);
-    });
-  </script>
-</body>
-</html>
-```
-
-- Recargar la página y hacer click sobre alguna estación para ver su información en tiempo real.
-
-- Cambiar el tipo de cursor al pasar sobre una estación. Escribir después de donde definimos el onload
-
-```html hl_lines="100 101 102 103 104 105"
-<!DOCTYPE html>
-<html>
-<head>
-  <title>Servicio de Bicing realtime VectorTiles</title>
-  <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
-  <script src='https://unpkg.com/maplibre-gl/dist/maplibre-gl.js'></script>
-  <link href='https://unpkg.com/maplibre-gl/dist/maplibre-gl.css' rel='stylesheet' />
-  <style>
-    body {
-      margin: 0;
-      padding: 0;
-    }
-
-    #map {
-      position: absolute;
-      top: 0;
-      bottom: 0;
-      width: 100%;
-      height: 100%
-    }
-  </style>
-</head>
-<body>
-  <div id="map"></div>
-
-  <script type="text/javascript">
-    var map = new maplibregl.Map({
-      container: 'map',
-      style: 'https://geoserveis.icgc.cat/contextmaps/icgc.json',
-      center: [2.1777, 41.3887],
-      zoom: 13,
-      maxZoom: 14,
-      hash: true,
-    });
-
-    map.on("load", function() {
-      //funcion que se llama al terminar de cargar el estilo del mapa
-
-      //agregamos la fuente de datos al mapa
-      map.addSource('bicing-source', {
-        type: 'geojson',
-        data: 'http://localhost:3000/bicingjson/'
-      });
-
-      //agregamos la capa con su estilo al mapa
-      map.addLayer({
-        "id": "bicing",
-        "type": "circle",
-        "source": "bicing-source",
-        "paint": {
-          "circle-radius": [
-            "interpolate",
-            ["linear"],
-            ["to-number", ['get','capacity']],
-            15,
-            5,
-            50,
-            33
-          ],
-          "circle-color": [
-            "interpolate",
-            ["linear"],
-            ["to-number", ["get", "altitude"]],
-            0,
-            "hsl(0, 88%, 55%)",
-            50,
-            "hsl(108, 93%, 59%)"
-          ],
-          "circle-opacity": 0.86
-        },
-      });
-
-      window.setInterval(function() {
-        map.getSource('bicing-source').setData('http://localhost:3000/bicingjson/');
-      }, 3000);
-    });
-
-    map.on('click', function(e) {
-      var features = map.queryRenderedFeatures(e.point, { layers: ['bicing'] });
-
-      // if the features have no info, return nothing
-      if (!features.length) {
-          return;
+      #status {
+        position: absolute;
+        z-index: 1;
+        top: 12px;
+        left: 12px;
+        max-width: min(360px, calc(100% - 48px));
+        padding: 8px 10px;
+        border-radius: 4px;
+        background: white;
+        font:
+          14px/1.4 system-ui,
+          sans-serif;
       }
+      .station-popup {
+        white-space: pre-line;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="map"></div>
+    <div id="status" role="status">Cargando estaciones…</div>
 
-      var feature = features[0];
+    <script src="https://unpkg.com/maplibre-gl@5.12.0/dist/maplibre-gl.js"></script>
+    <script>
+      const map = new maplibregl.Map({
+        container: "map",
+        style: "https://geoserveis.icgc.cat/contextmaps/icgc.json",
+        center: [2.17, 41.39],
+        zoom: 12,
+      });
 
-      // Populate the popup and set its coordinates
-      // based on the feature found
-      var popup = new maplibregl.Popup()
-      .setLngLat(feature.geometry.coordinates)
-      .setHTML('<div id=\'popup\' class=\'popup\' style=\'z-index: 10;\'> <h5> ' + feature.properties.id + ' </h5>' +
-      '<ul class=\'list-group\'>' +
-      '<li class=\'list-group-item\'> ' + feature.properties.address + ' </li>' +
-      '<li class=\'list-group-item\'> Altitud: ' + feature.properties.altitude + ' </li>' +
-      '<li class=\'list-group-item\'> Capacidad: ' + feature.properties.capacity + ' </li></ul></div>')
-      .addTo(map);
-    });
+      map.addControl(new maplibregl.NavigationControl(), "top-right");
 
-    // Use the same approach as above to indicate that the symbols are clickable
-    // by changing the cursor style to 'pointer'
-    map.on('mousemove', function(e) {
-        var features = map.queryRenderedFeatures(e.point, { layers: ['bicing'] });
-        map.getCanvas().style.cursor = features.length ? 'pointer' : '';
-    });
-  </script>
-</body>
-</html>
-```
+      const informationUrl =
+        "https://api.citybik.es/gbfs/2/bicing/station_information.json";
+      const statusUrl =
+        "https://api.citybik.es/gbfs/2/bicing/station_status.json";
+      const statusElement = document.getElementById("status");
 
-- Recargar la página y pasar sobre alguna estación para ver el cambio del cursor.
+      async function updateStations() {
+        statusElement.textContent = "Actualizando disponibilidad…";
 
-![mapa de servicio de bicing](img/mapa_bicing_vt.png)
-*mapa de servicio de bicing*
+        try {
+          const responses = await Promise.all([
+            fetch(informationUrl),
+            fetch(statusUrl),
+          ]);
 
-### Modificar el proxy
+          if (!responses[0].ok || !responses[1].ok) {
+            throw new Error("La API no ha podido devolver los dos feeds.");
+          }
 
-Modificaremos el proxy para agregar los datos de disponibilidad de bicis en las estaciones. Para ello debemos llamar al servicio de [estado de estaciones](https://api.bsmsa.eu/ext/api/bsm/gbfs/v2/en/station_status).
+          const [information, status] = await Promise.all(
+            responses.map((response) => response.json()),
+          );
 
-Al abrir la url del servicio podemos ver que está el listado de las estaciones con una serie de datos. En este caso no hay datos de posición, ni de descripción sólo datos del estado de la estación. Podemos ver que también hay un campo con el *station_id* que nos servirá para vincular los datos de estado de la estación con la estación correspondiente.
+          const statusById = new Map(
+            status.data.stations.map((station) => [
+              station.station_id,
+              station,
+            ]),
+          );
 
-- Agregar la url del servicio de estado de estaciones
+          const features = information.data.stations.map((station) => {
+            const currentStatus = statusById.get(station.station_id);
+            const bikes = currentStatus?.num_bikes_available ?? 0;
+            const docks = currentStatus?.num_docks_available ?? 0;
 
-```js  hl_lines="6"
-var express  = require('express');
-var app      = express();
-var cors = require('cors');
-var axios = require('axios');
-var serverBicing = "http://opendata-ajuntament.barcelona.cat/data/dataset/bd2462df-6e1e-4e37-8205-a4b8e7313b84/resource/f60e9291-5aaa-417d-9b91-612a9de800aa/download/recurs.json";
-var statusBicing = "https://opendata-ajuntament.barcelona.cat/data/dataset/6aa3416d-ce1a-494d-861b-7bd07f069600/resource/1b215493-9e63-4a12-8980-2d7e0fa19f85/download/recurs.json";
-const port = 3000;
-const token = "7eef1fc18d54151743a50f643844cd33abbd27c44e4385a53eabed4d9d0bed9f";
+            return {
+              type: "Feature",
+              properties: {
+                id: station.station_id,
+                name: station.name,
+                capacity: bikes + docks,
+                bikes,
+                docks,
+              },
+              geometry: {
+                type: "Point",
+                coordinates: [station.lon, station.lat],
+              },
+            };
+          });
 
-app.use(cors());
-app.use(express.static('public'));
+          const stationsGeoJSON = {
+            type: "FeatureCollection",
+            features,
+          };
 
-app.all("/bicingjson/*", function(req, res) {
-  console.log('redirecting to Server2');
-  const geojson = {
-    type: 'FeatureCollection',
-    features: []
-  };
-  //axios.get(serverBicing, { headers: { Authorization: `Bearer ${token}` } }).then(function(response){
-  axios.get(serverBicing,  { headers: { Authorization: `${token}` } }).then(function(response){
-    // handle success
-    var stations = response.data.data.stations;
-    for (let i = stations.length - 1; i >= 0; i--) {
-      var station = stations[i];
-      var feature = {
-        type: 'Feature',
-        properties: {
-          altitude: station.altitude,
-          id: station.station_id,
-          address: station.address,
-          post_code: station.post_code,
-          capacity: station.capacity
-        },
-        geometry: {
-          type: 'Point',
-          coordinates: [station.lon, station.lat]
+          const source = map.getSource("bicing-stations");
+          if (source) {
+            source.setData(stationsGeoJSON);
+          } else {
+            map.addSource("bicing-stations", {
+              type: "geojson",
+              data: stationsGeoJSON,
+            });
+
+            map.addLayer({
+              id: "bicing-points",
+              type: "circle",
+              source: "bicing-stations",
+              paint: {
+                "circle-radius": [
+                  "interpolate",
+                  ["linear"],
+                  ["get", "capacity"],
+                  0,
+                  4,
+                  50,
+                  11,
+                ],
+                "circle-color": [
+                  "interpolate",
+                  ["linear"],
+                  ["get", "bikes"],
+                  0,
+                  "#d73027",
+                  20,
+                  "#1a9850",
+                ],
+                "circle-stroke-color": "#ffffff",
+                "circle-stroke-width": 1,
+              },
+            });
+
+            map.on("click", "bicing-points", (event) => {
+              const feature = event.features?.[0];
+              if (!feature) return;
+
+              const content = document.createElement("div");
+              content.className = "station-popup";
+              content.textContent =
+                `${feature.properties.name}\n` +
+                `Bicicletas disponibles: ${feature.properties.bikes}\n` +
+                `Anclajes disponibles: ${feature.properties.docks}`;
+
+              new maplibregl.Popup()
+                .setLngLat(feature.geometry.coordinates)
+                .setDOMContent(content)
+                .addTo(map);
+            });
+
+            map.on("mouseenter", "bicing-points", () => {
+              map.getCanvas().style.cursor = "pointer";
+            });
+            map.on("mouseleave", "bicing-points", () => {
+              map.getCanvas().style.cursor = "";
+            });
+          }
+
+          statusElement.textContent = `${features.length} estaciones · actualización cada minuto`;
+        } catch (error) {
+          console.error(error);
+          statusElement.textContent =
+            "No se han podido cargar los datos. Revisa la conexión o la consola.";
         }
-      };
-      geojson.features.push(feature);
-    }
-    res.send(geojson);
-  }).catch(function (error) {
-    console.log(error);
-    res.send(error);
-  });
-});
-
-app.listen(port, () => {
-    console.log(`Example app listening on port ${port}`)
-});
-```
-
-- Combinar la información del estado de estaciones con la información de la estación
-
-```js hl_lines="20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56 57 58 59 60"
-var express  = require('express');
-var app      = express();
-var cors = require('cors');
-var axios = require('axios');
-var serverBicing = "http://opendata-ajuntament.barcelona.cat/data/dataset/bd2462df-6e1e-4e37-8205-a4b8e7313b84/resource/f60e9291-5aaa-417d-9b91-612a9de800aa/download/recurs.json";
-var statusBicing = "https://opendata-ajuntament.barcelona.cat/data/dataset/6aa3416d-ce1a-494d-861b-7bd07f069600/resource/1b215493-9e63-4a12-8980-2d7e0fa19f85/download/recurs.json";
-const port = 3000;
-const token = "7eef1fc18d54151743a50f643844cd33abbd27c44e4385a53eabed4d9d0bed9f";
-
-app.use(cors());
-app.use(express.static('public'));
-
-app.all("/bicingjson/*", function(req, res) {
-  console.log('redirecting to Server2');
-  const geojson = {
-    type: 'FeatureCollection',
-    features: []
-  };
-
-  Promise.all([
-    axios.get(serverBicing,  { headers: { Authorization: `${token}` } }), 
-    axios.get(statusBicing,  { headers: { Authorization: `${token}` } })]).then((responses) => {
-    var stations = responses[0].data.data.stations;
-    for (var i = stations.length - 1; i >= 0; i--) {
-      var station = stations[i];
-      var feature = {
-        type: 'Feature',
-        properties: {
-          altitude: station.altitude,
-          id: station.station_id,
-          address: station.address,
-          post_code: station.post_code,
-          capacity: station.capacity
-        },
-        geometry: {
-          type: 'Point',
-          coordinates: [station.lon, station.lat]
-        }
-      };
-      geojson.features.push(feature);
-    }
-
-    var status = responses[1].data.data.stations;
-
-    for (var i = status.length - 1; i >= 0; i--) {
-        var stat = status[i];
-        for (var j = geojson.features.length - 1; j >= 0; j--) {
-            var feat = geojson.features[j];
-            if(feat.properties.id === stat.station_id) {
-                feat.properties.num_bikes_available = stat.num_bikes_available;
-                feat.properties.num_bikes_available_types = stat.num_bikes_available_types;
-                feat.properties.num_docks_available = stat.num_docks_available;
-            }
-        }
-    }
-    res.send(geojson);
-  }).catch(function (error) {
-    console.log(error);
-    res.send(error);
-  });
-});
-
-app.listen(port, () => {
-    console.log(`Example app listening on port ${port}`)
-});
-``` 
-
-### Modificar el visor
-
-- Modificaremos el visor para cambiar el color del círculo dependiendo del númere de bicis disponibles en la estación
-
-```html hl_lines="60 61 62 63 64 65 66 67 68"
-<!DOCTYPE html>
-<html>
-<head>
-  <title>Servicio de Bicing realtime VectorTiles</title>
-  <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
-  <script src='https://unpkg.com/maplibre-gl/dist/maplibre-gl.js'></script>
-  <link href='https://unpkg.com/maplibre-gl/dist/maplibre-gl.css' rel='stylesheet' />
-  <style>
-    body {
-      margin: 0;
-      padding: 0;
-    }
-
-    #map {
-      position: absolute;
-      top: 0;
-      bottom: 0;
-      width: 100%;
-      height: 100%
-    }
-  </style>
-</head>
-<body>
-  <div id="map"></div>
-
-  <script type="text/javascript">
-    var map = new maplibregl.Map({
-      container: 'map',
-      style: 'https://geoserveis.icgc.cat/contextmaps/icgc.json',
-      center: [2.1777, 41.3887],
-      zoom: 13,
-      maxZoom: 14,
-      hash: true,
-    });
-
-    map.on("load", function() {
-      //funcion que se llama al terminar de cargar el estilo del mapa
-
-      //agregamos la fuente de datos al mapa
-      map.addSource('bicing-source', {
-        type: 'geojson',
-        data: 'http://localhost:3000/bicingjson/'
-      });
-
-      //agregamos la capa con su estilo al mapa
-      map.addLayer({
-        "id": "bicing",
-        "type": "circle",
-        "source": "bicing-source",
-        "paint": {
-          "circle-radius": [
-            "interpolate",
-            ["linear"],
-            ["to-number", ['get','capacity']],
-            15,
-            5,
-            50,
-            33
-          ],
-          "circle-color": [
-            "interpolate",
-            ["linear"],
-            ["to-number", ["get", "num_bikes_available"]],
-            0,
-            "#ff0000",
-            15,
-            "#00ff00"
-          ],
-          "circle-opacity": 0.86
-        },
-      });
-
-      window.setInterval(function() {
-        map.getSource('bicing-source').setData('http://localhost:3000/bicingjson/');
-      }, 3000);
-    });
-
-    map.on('click', function(e) {
-      var features = map.queryRenderedFeatures(e.point, { layers: ['bicing'] });
-
-      // if the features have no info, return nothing
-      if (!features.length) {
-          return;
       }
 
-      var feature = features[0];
-
-      // Populate the popup and set its coordinates
-      // based on the feature found
-      var popup = new maplibregl.Popup()
-      .setLngLat(feature.geometry.coordinates)
-      .setHTML('<div id=\'popup\' class=\'popup\' style=\'z-index: 10;\'> <h5> ' + feature.properties.id + ' </h5>' +
-      '<ul class=\'list-group\'>' +
-      '<li class=\'list-group-item\'> ' + feature.properties.address + ' </li>' +
-      '<li class=\'list-group-item\'> Altitud: ' + feature.properties.altitude + ' </li>' +
-      '<li class=\'list-group-item\'> Capacidad: ' + feature.properties.capacity + ' </li></ul></div>')
-      .addTo(map);
-    });
-
-    // Use the same approach as above to indicate that the symbols are clickable
-    // by changing the cursor style to 'pointer'
-    map.on('mousemove', function(e) {
-        var features = map.queryRenderedFeatures(e.point, { layers: ['bicing'] });
-        map.getCanvas().style.cursor = features.length ? 'pointer' : '';
-    });
-  </script>
-</body>
+      map.on("load", () => {
+        updateStations();
+        window.setInterval(updateStations, 60_000);
+      });
+    </script>
+  </body>
 </html>
 ```
 
-- Modificar el visor para mostrar la información del número de bicicletas disponibles
+!!! question "Prueba breve en clase · 5–10 minutos"
 
-```html hl_lines="95 96"
-<!DOCTYPE html>
-<html>
-<head>
-  <title>Servicio de Bicing realtime VectorTiles</title>
-  <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
-  <script src='https://unpkg.com/maplibre-gl/dist/maplibre-gl.js'></script>
-  <link href='https://unpkg.com/maplibre-gl/dist/maplibre-gl.css' rel='stylesheet' />
-  <style>
-    body {
-      margin: 0;
-      padding: 0;
-    }
+    Moved el centro del mapa y el nivel de zoom inicial. No hace falta entregar el ejercicio.
 
-    #map {
-      position: absolute;
-      top: 0;
-      bottom: 0;
-      width: 100%;
-      height: 100%
-    }
-  </style>
-</head>
-<body>
-  <div id="map"></div>
+## Fuentes, actualización y límites
 
-  <script type="text/javascript">
-    var map = new maplibregl.Map({
-      container: 'map',
-      style: 'https://geoserveis.icgc.cat/contextmaps/icgc.json',
-      center: [2.1777, 41.3887],
-      zoom: 13,
-      maxZoom: 14,
-      hash: true,
-    });
+- La API de CityBikes actúa como intermediaria y puede tener un retraso respecto al servicio oficial. El mapa sirve para explorar disponibilidad; no debe usarse para tomar decisiones operativas sin comprobar los datos y sus condiciones.
+- Las coordenadas vienen del feed de información de estaciones; la disponibilidad procede del feed de estado. Se unen por el identificador de estación.
+- El mapa base del ICGC incluye su propia atribución. La página indica también que los datos de estaciones proceden de Bicing y llegan mediante CityBikes.
+- La frecuencia de actualización del navegador no controla la frecuencia con que el proveedor actualiza los feeds.
 
-    map.on("load", function() {
-      //funcion que se llama al terminar de cargar el estilo del mapa
+## Para ampliar
 
-      //agregamos la fuente de datos al mapa
-      map.addSource('bicing-source', {
-        type: 'geojson',
-        data: 'http://localhost:3000/bicingjson/'
-      });
+- [Bicing: mapa oficial de disponibilidad](https://www.bicing.barcelona/es/mapa-de-disponibilidad)
+- [Open Data BCN: información de las estaciones](https://opendata-ajuntament.barcelona.cat/data/es/dataset/informacio-estacions-bicing)
+- [CityBikes: documentación de su API GBFS (inglés)](https://docs.citybik.es/api/gbfs/)
+- [MapLibre GL JS: ejemplos oficiales (inglés)](https://maplibre.org/maplibre-gl-js/docs/examples/)
+- [MapLibre GL JS: guía de migración desde Leaflet (inglés)](https://maplibre.org/maplibre-gl-js/docs/guides/leaflet-migration-guide/)
+- [MapLibre GL JS: actualizar una fuente GeoJSON (inglés)](https://maplibre.org/maplibre-gl-js/docs/API/classes/GeoJSONSource/)
 
-      //agregamos la capa con su estilo al mapa
-      map.addLayer({
-        "id": "bicing",
-        "type": "circle",
-        "source": "bicing-source",
-        "paint": {
-          "circle-radius": [
-            "interpolate",
-            ["linear"],
-            ["to-number", ['get','capacity']],
-            15,
-            5,
-            50,
-            33
-          ],
-          "circle-color": [
-            "interpolate",
-            ["linear"],
-            ["to-number", ["get", "num_bikes_available"]],
-            0,
-            "#ff0000",
-            15,
-            "#00ff00"
-          ],
-          "circle-opacity": 0.86
-        },
-      });
+!!! question "Ejercicio entregable · 2 puntos"
 
-      window.setInterval(function() {
-        map.getSource('bicing-source').setData('http://localhost:3000/bicingjson/');
-      }, 3000);
-    });
+    Modifica el estilo de los puntos de las estaciones y entrega el archivo `index.html` actualizado:
 
-    map.on('click', function(e) {
-      var features = map.queryRenderedFeatures(e.point, { layers: ['bicing'] });
-
-      // if the features have no info, return nothing
-      if (!features.length) {
-          return;
-      }
-
-      var feature = features[0];
-
-      // Populate the popup and set its coordinates
-      // based on the feature found
-      var popup = new maplibregl.Popup()
-      .setLngLat(feature.geometry.coordinates)
-      .setHTML('<div id=\'popup\' class=\'popup\' style=\'z-index: 10;\'> <h5> ' + feature.properties.id + ' </h5>' +
-      '<ul class=\'list-group\'>' +
-      '<li class=\'list-group-item\'> ' + feature.properties.address + ' </li>' +
-      '<li class=\'list-group-item\'> Bicis disponibles: ' + feature.properties.num_bikes_available + ' </li>' +
-      '<li class=\'list-group-item\'> Docks disponibles: ' + feature.properties.num_docks_available + ' </li></ul></div>')
-      .addTo(map);
-    });
-
-    // Use the same approach as above to indicate that the symbols are clickable
-    // by changing the cursor style to 'pointer'
-    map.on('mousemove', function(e) {
-        var features = map.queryRenderedFeatures(e.point, { layers: ['bicing'] });
-        map.getCanvas().style.cursor = features.length ? 'pointer' : '';
-    });
-  </script>
-</body>
-</html>
-```
-
-!!! question "Ejercicios 2 pts"
-	  Cambiar el estilo de los puntos de las estaciones. 
-    
-    1. Cambiar los rangos del tamaño del punto (1 pt).
-    2. Cambiar el rango de colores (1 pt).
-
-## Referencias
-
-[^1]: https://es.wikipedia.org/wiki/GeoJSON
-[^2]: https://maplibre.org/maplibre-gl-js-docs/api/
-[^3]: https://nodejs.org/es/
-[^4]: https://es.wikipedia.org/wiki/Servidor_proxy
-[^5]: http://expressjs.com/
-[^6]: https://github.com/axios/axios
-[^7]: https://www.npmjs.com/package/cors
-[^8]: https://www.npmjs.com/package/nodemon
-[^9]: https://maplibre.org/maplibre-gl-js-docs/style-spec/
+    1. Cambia los valores de la expresión `circle-radius` para ajustar los rangos del tamaño de los puntos según la capacidad estimada de cada estación (1 punto).
+    2. Cambia los valores de la expresión `circle-color` para definir un rango de colores distinto según las bicicletas disponibles (1 punto).

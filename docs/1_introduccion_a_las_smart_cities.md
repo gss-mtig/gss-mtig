@@ -1,87 +1,109 @@
 # Introducción a las Smart Cities
 
->Una ciudad inteligente es un área urbana que utiliza **diferentes tipos de sensores electrónicos** de recopilación de datos para suministrar información utilizada para administrar recursos de manera eficiente. Esto incluye datos recopilados de **ciudadanos, dispositivos** y activos que se procesan y analizan para monitorear y administrar el tráfico y los sistemas de transporte, centrales eléctricas, redes de suministro de agua, gestión de desechos, cumplimiento de la ley, sistemas de información, escuelas, bibliotecas, hospitales y otros **servicios** comunitarios.
+## ¿Qué entendemos por Smart City?
 
->[https://es.wikipedia.org/wiki/Ciudad_inteligente](https://es.wikipedia.org/wiki/Ciudad_inteligente)
+Una **Smart City** o ciudad inteligente utiliza información, tecnología y participación ciudadana para mejorar servicios y responder a necesidades urbanas. No consiste solo en instalar sensores: también importa qué problema se quiere resolver, quién usa la información y cómo afecta la solución a las personas.
 
-## **Smart cities** es tecnología de la información
+![Componentes de una Smart City](img/smart_city.png "Componentes de una Smart City")
 
-![Componentes de Smart City](img/smart_city.png "Componentes de Smart City")
+Por ejemplo, una ciudad puede medir la humedad del suelo de un parque para ayudar a decidir cuándo regar. El sensor produce datos, pero el servicio solo es útil si esos datos llegan a los equipos responsables y les ayudan a tomar una decisión.
 
-### **Smart city:** ejemplo Barcelona
+La tecnología es una parte del sistema. También hay que considerar la gestión, la sostenibilidad, la accesibilidad, la privacidad y las necesidades de quienes viven y trabajan en la ciudad.
 
-Barcelona ha establecido una serie de proyectos que pueden considerarse aplicaciones de 'ciudad inteligente' dentro de su estrategia ["CityOS"](https://ajuntament.barcelona.cat/imi/es/proyectos/cityos). Por ejemplo, se ha implementado **tecnología de sensores en el sistema de riego** del Parc del Centre de Poblenou, donde se transmiten datos en tiempo real a los equipos de jardinería sobre el nivel de agua necesario para las plantas. Barcelona también ha diseñado una **nueva red de autobuses** basada en el análisis de datos de los flujos de tráfico más comunes en Barcelona, ​​utilizando principalmente rutas verticales, horizontales y diagonales con una serie de intercambios. La integración de múltiples tecnologías de ciudades inteligentes se puede ver a través de la implementación de **semáforos inteligentes**, ya que los autobuses recorren rutas diseñadas para optimizar el número de semáforos en verde. Además, cuando se **notifica una emergencia** en Barcelona, ​​la ruta aproximada del vehículo de emergencia se ingresa en el sistema de semáforos, poniendo todas las luces en verde a medida que el vehículo se acerca a través de una combinación de GPS y software de gestión de tráfico, lo que permite que los servicios de emergencia llegar al incidente sin demora. Gran parte de estos datos son administrados por la [Plataforma Sentilo](https://www.sentilo.io/).
+![Personas y tecnología en una Smart City](img/smart_city_human.png "Personas y tecnología en una Smart City")
 
-[https://en.wikipedia.org/wiki/List_of_smart_cities#Barcelona](https://en.wikipedia.org/wiki/List_of_smart_cities#Barcelona)
+!!! exercise "Ejercicio en clase · 5 minutos"
 
-## **Smart cities** también es comportamiento humano
+    En parejas, elegid un problema urbano (por ejemplo, el riego de parques, la accesibilidad del transporte o la recogida de residuos). Anotad:
 
-![Smart City comportamiento humano](img/smart_city_human.png "Smart City comportamiento humano")
+    1. ¿Qué se quiere mejorar?
+    2. ¿Qué datos podrían ayudar?
+    3. ¿Quién usaría esos datos y qué decisión tomaría?
 
-En las Smart Cities no es sólo el componente tecnológico, también es muy importante el componente humano. Una ciudad podrá ser calificado de inteligente en la medida que las inversiones que se realicen en capital humano (educación), en aspectos sociales, ​en infraestructuras de energía,​ tecnologías de comunicación e infraestructuras de transporte,​ contemplen y promuevan una calidad de vida elevada, un desarrollo económico-ambiental durable y sostenible, una gobernanza participativa,​ una gestión prudente y reflexiva de los recursos naturales, así como un buen aprovechamiento del tiempo de los ciudadanos. 
+    Comentad una posible limitación de la solución. No hace falta entregar el ejercicio.
 
-Tecnológicamente una Smart City se base en un conjunto de servicios (web) especializados
+## De los datos al geoservicio
 
-Si estos servicios contienen una componente geográfica (coordenadas), hablaremos de **GeoServicios**.
+Un **servicio web** permite que una aplicación solicite información o una función a otro sistema. La aplicación envía una petición y recibe una respuesta siguiendo unas reglas documentadas.
 
-## ¿Qué es un servicio y para qué sirve?
+Cuando el servicio trabaja con datos o funciones que tienen una componente geográfica —por ejemplo, coordenadas, geometrías o mapas—, hablamos de un **geoservicio**. En este curso consumiremos servicios para consultar datos urbanos y representarlos en mapas.
 
-Un servicio es una interfaz que recibe parámetros + valores y devuelve una respuesta formateada.
+Una **API** (interfaz de programación de aplicaciones) describe cómo puede comunicarse una aplicación con un servicio: qué peticiones acepta, qué parámetros se pueden enviar y qué respuestas devuelve. La documentación de una API explica esas reglas.
 
-Los parámetros y repuestas son conocidos y están documentados en formato de API.
+### Ejemplo: consultar estaciones de bicicletas
 
-### API - Application Programming Interface
+Imaginemos que una ciudad ofrece una API para consultar estaciones de bicicletas. Esta petición ficticia solicita las estaciones de un barrio:
 
-La interfaz de programación de aplicaciones, conocida también por la sigla **API**,​ es un conjunto de subrutinas, funciones y procedimientos que ofrece cierta biblioteca para ser utilizada por otro software. [^1]
+```http
+GET https://datos.ciudad.example/api/estaciones?barrio=Centro
+```
 
-El término API se usa a menudo para referirse a las **API web**, que permiten la comunicación entre computadoras que están unidas por Internet. También hay API para lenguajes de programación, bibliotecas de software, sistemas operativos de computadora y hardware de computadora.
+La respuesta podría ser un documento JSON como este:
 
-La documentación de la API generalmente se proporciona para facilitar el uso.
+```json
+{
+  "estaciones": [
+    {
+      "id": 42,
+      "nombre": "Plaza Central",
+      "latitud": 41.38,
+      "longitud": 2.17,
+      "bicicletas_disponibles": 6
+    }
+  ]
+}
+```
 
-Webs con enlaces a diferentes APIs
+En esta petición:
 
-https://rapidapi.com/
+- `GET` indica que queremos consultar información;
+- `/api/estaciones` identifica el recurso solicitado;
+- `barrio=Centro` es un parámetro que limita la consulta;
+- la respuesta contiene datos, incluida la localización de la estación.
 
-https://apislist.com/
+Los nombres y datos del ejemplo son ficticios. En una API real, la documentación especifica los parámetros disponibles y el formato de la respuesta.
 
-### HTTP
+!!! exercise "Ejercicio en clase · 5–10 minutos"
 
-El protocolo HTTP tiene diferentes métodos de interrogación.
+    Usad el ejemplo anterior para proponer una petición que solicite las estaciones de otro barrio. Después, indicad qué campo de la respuesta permitiría situar cada estación en un mapa y qué campo mostraríais en una ventana informativa.
 
-* GET
-* POST
-* UPDATE
-* DELETE
-* INSERT
+    No hace falta escribir código ni entregar el ejercicio.
 
-!!! note 
+## Peticiones HTTP
 
-    HTTP - GET es el más usado en APIs web
+Las APIs web suelen comunicarse mediante el protocolo HTTP. Algunos de sus métodos más habituales son:
 
-#### Tipos de peticiones HTTP - GET
+| Método | Uso habitual |
+|---|---|
+| `GET` | Consultar o recuperar información. |
+| `POST` | Enviar información o realizar una consulta que requiere un cuerpo de petición. |
+| `PUT` y `PATCH` | Crear o modificar un recurso, según las reglas del servicio. |
+| `DELETE` | Eliminar un recurso, si el servicio lo permite. |
 
-**KvP: (Key value Pair)**: después del **?** pasamos parámetro = valor y concatenamos con **&**.
+En este curso nos encontraremos sobre todo con peticiones `GET`. Algunas APIs usan `POST` para consultas más complejas. El comportamiento exacto depende de cada servicio y se debe comprobar en su documentación.
 
-Ejemplo: http://midominio.com/servidor/enpoint?parametro1=valor1&parametro2=valor=2
+### Parámetros en la URL
 
-**RESTful**: la URL define el recurso, dentro de una arquitectura REST.
+En muchas peticiones `GET`, los parámetros aparecen después de `?` y se escriben como pares `nombre=valor`. El símbolo `&` separa varios parámetros:
 
-Ejemplo: http://midominio.com/servidor/recurso.json
+```text
+https://datos.ciudad.example/api/incidencias?tipo=baches&estado=abierta
+```
 
-**RESTful and KvP**: la URL define el recurso, pero podemos filtrar recurso con parámetros.
+Aquí se solicitan incidencias de tipo `baches` cuyo estado sea `abierta`. Las APIs también pueden definir otros caminos y formas de consulta; por eso conviene revisar siempre su documentación.
 
-Ejemplo: http://midominio.com/servidor/recurso.json?parametro1=valor1 (Utilizada en APIs OpenData)  
+!!! exercise "Ejercicio en clase · 5 minutos"
 
-Muchos servicios y/o información relativa a Smart City, son expuestos  cómo OpenData (Datos Abiertos) en portales de administraciones públicas. Son las llamadas “Plataformas“ para la publicación y gestión de Open data.
+    En la URL del ejemplo, identificad el recurso y los dos parámetros. Cambiad uno de los valores para consultar otro tipo de incidencia o estado. ¿Qué información esperaríais recibir?
 
+    Es un ejercicio de lectura de URLs; no hace falta que el servicio ficticio exista ni entregar la respuesta.
 
-Temario
+## Relación con los datos abiertos
 
-* Introducción a las Smart Cities
-    * Conceptos Smart Cities
-    * Conceptos Open Data
-    * Conceptos sensores
-    * Tecnologías OpenData
-    
+Muchos ayuntamientos y administraciones publican datos mediante portales de **Open Data** o datos abiertos. Algunos ofrecen APIs para consultar los datos desde otras aplicaciones, además de opciones para descargarlos.
+
+En la siguiente página veremos qué son los datos abiertos y cómo se organizan sus portales. Más adelante consultaremos APIs de portales como Socrata y CKAN.
+
 ## Referencias
-[^1]: https://es.wikipedia.org/wiki/Interfaz_de_programaci%C3%B3n_de_aplicaciones
+
+- [Interfaz de programación de aplicaciones (Wikipedia)](https://es.wikipedia.org/wiki/Interfaz_de_programaci%C3%B3n_de_aplicaciones)

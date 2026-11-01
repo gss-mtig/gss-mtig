@@ -1,1218 +1,311 @@
-# Ejemplo Mobility
+# Isócronas para analizar la accesibilidad urbana
 
-## Creación de un visor que permita el cálculo de Isócronas
+Una **isócrona** representa las zonas que se pueden alcanzar desde un punto en un tiempo determinado y con un modo de desplazamiento concreto. En esta actividad consultamos [OpenRouteService](https://openrouteservice.org/), un servicio basado en datos de OpenStreetMap. Comparamos dos formas de consumirlo desde una aplicación Leaflet: el control del plugin `leaflet.reachability` y una petición propia con `fetch`.
 
-Algunos de los servicios que ofrecen el cálculo de Isócronas son: [Targomo](https://www.targomo.com/en/), [ISO4APP](https://www.iso4app.net/), [Openrouteservice](https://openrouteservice.org/) y [Graphhopper](https://www.graphhopper.com/)
+**Resultado final:** [abre el visor de isócronas](ejemplos/mobility-isochrones/index.html). El código completo que aparece más abajo es el mismo archivo `index.html` del visor.
 
-- Crear una carpeta con el nombre de *visor-mobility*.
-- Crear un archivo con el nombre de *index.html* dentro de la carpeta.
-- Abrir el archivo index.html con un editor de texto y copiar el siguiente código.
+## Qué hace el ejemplo
+
+El mapa empieza centrado en Barcelona. La persona que lo prueba introduce su propia clave de OpenRouteService. Puede activar el control de `leaflet.reachability`, que permite elegir sus parámetros y dibujar desde el mapa, o usar el formulario de la página, que envía una petición `POST` propia con `fetch`. Ambas opciones dibujan isócronas sobre Leaflet.
+
+La petición incluye coordenadas en orden **longitud, latitud**, el perfil de transporte y el intervalo en segundos. La respuesta depende de la red de calles y del perfil elegido: no es un círculo alrededor del origen.
+
+El tutorial anterior usaba `api.openrouteservice.org`. OpenRouteService está trasladando sus servicios a `api.heigit.org/openrouteservice`; esta versión usa el endpoint actual y las claves personales sirven para autenticar la petición.
+
+## Construir el visor paso a paso
+
+Los siguientes fragmentos muestran las partes principales de la aplicación. Añádelos al archivo `index.html` siguiendo el orden; al final encontrarás el archivo completo con el diseño, las comprobaciones de errores y las dos formas de consultar el servicio.
+
+### 1. Preparar el mapa y una capa GeoJSON
+
+El mapa necesita un elemento HTML con el identificador `map`. Leaflet lo convierte en un mapa interactivo y `L.geoJSON` será la capa donde mostraremos las isócronas que devuelva el servicio.
+
 ```html
-<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Ejemplo Isócronas Mapzen</title>
-  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
-  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-  <style>
-    #map {
-      height: 100%;
-      width: 100%;
-      position: absolute;
-    }
-  </style>
-</head>
-<body>
-  <div id="map"></div>
-
-  <script>
-    var map = L.map('map');
-
-    map.setView([41.3887, 2.1777], 13);
-
-    L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
-      attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-    }).addTo(map);
-  </script>
-</body>
-</html>
+<div id="map"></div>
 ```
 
-- Abrir el archivo index.html en el navegador para confirmar que se carga un mapa centrado en Barcelona.
+```js
+const map = L.map('map').setView([41.3874, 2.1686], 13);
+const isochrones = L.geoJSON([]).addTo(map);
 
-- Crear una API key. Al revisar la documentación de la API del servicio de Openrouteservice [^1] vemos que es necesario tener una API key para poder utilizarlo. Para crear la API key hay que darse de alta en la página de Openrouteservice, es un servicio gratuito que tiene unas cuotas de uso.
-
-- Crear una variable donde guardaremos nuestra API key. Escribir antes de la declaración de nuestro mapa
-
-```html hl_lines="22"
-<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Ejemplo Isócronas Mapzen</title>
-  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
-  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-  <style>
-    #map {
-      height: 100%;
-      width: 100%;
-      position: absolute;
-    }
-  </style>
-</head>
-<body>
-  <div id="map"></div>
-
-  <script>
-    var API_KEY_ORS = 'YOUR-API-KEY';
-    
-    var map = L.map('map');
-
-    map.setView([41.3887, 2.1777], 13);
-
-    L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
-      attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-    }).addTo(map);
-  </script>
-</body>
-</html>
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+  maxZoom: 19,
+  attribution: '&copy; OpenStreetMap contributors'
+}).addTo(map);
 ```
 
-- Cargar la respuesta del servicio utilizando el plugin de Leaflet llamado *leaflet.reachability* [^2]. Este plugin permite hacer una llamada al servicio de Openrouteservice y cargar la respuesta en un mapa. Modificar el archivo index.html para cargar el plugin en nuestra aplicación. 
+La coordenada inicial se escribe como `[latitud, longitud]`, que es el orden que espera Leaflet para centrar el mapa.
 
-```html hl_lines="10 11"
-<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Ejemplo Isócronas Mapzen</title>
-  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
-  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/trafforddatalab/leaflet.reachability@v2.0.1/leaflet.reachability.css"/>
-  <script src="https://cdn.jsdelivr.net/gh/trafforddatalab/leaflet.reachability@v2.0.1/leaflet.reachability.js"></script>
-  <style>
-    #map {
-      height: 100%;
-      width: 100%;
-      position: absolute;
-    }
-  </style>
-</head>
-<body>
-  <div id="map"></div>
+### 2. Añadir el control de `leaflet.reachability`
 
-  <script>
-    var API_KEY_ORS = 'YOUR-API-KEY';
+Incluye el CSS y el JavaScript del plugin en el `<head>` y después de Leaflet, respectivamente. La versión `v2.0.2` ya usa el endpoint actual de OpenRouteService. Al pulsar el botón de activación, el control recibe la clave introducida por el usuario:
 
-    var map = L.map('map');
+```js
+let reachabilityControl;
 
-    map.setView([41.3887, 2.1777], 13);
+activateControlButton.addEventListener('click', () => {
+  const apiKey = keyInput.value.trim();
+  if (!apiKey) return;
 
-    L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
-      attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-    }).addTo(map);
-  </script>
-</body>
-</html>
+  reachabilityControl = L.control.reachability({
+    apiKey,
+    position: 'topright',
+    collapsed: false
+  }).addTo(map);
+});
 ```
 
-- Agregar el control de Isócronas al mapa utilizando el plugin.
+El plugin gestiona la selección del perfil, el tiempo y la petición. El usuario activa su modo de dibujo en el control y elige el punto de origen sobre el mapa.
 
-```html hl_lines="34-38"
-<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Ejemplo Isócronas Mapzen</title>
-  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
-  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/trafforddatalab/leaflet.reachability@v2.0.1/leaflet.reachability.css"/>
-  <script src="https://cdn.jsdelivr.net/gh/trafforddatalab/leaflet.reachability@v2.0.1/leaflet.reachability.js"></script>
-  <style>
-    #map {
-      height: 100%;
-      width: 100%;
-      position: absolute;
-    }
-  </style>
-</head>
-<body>
-  <div id="map"></div>
+### 3. Construir una petición propia con `fetch`
 
-  <script>
-    var API_KEY_ORS = 'YOUR-API-KEY';
+Para comparar con el plugin, el mapa también permite consultar el servicio directamente. Leaflet entrega el clic como latitud y longitud, pero la API espera las coordenadas como **longitud, latitud**. El intervalo de tiempo se envía en segundos:
 
-    var map = L.map('map');
+```js
+const coordinates = [event.latlng.lng, event.latlng.lat];
+const rangeSeconds = Number(minutesInput.value) * 60;
 
-    map.setView([41.3887, 2.1777], 13);
-
-    L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
-      attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-    }).addTo(map);
-
-    // Initialise the reachability plugin
-    L.control.reachability({
-      // add settings/options here
-      apiKey: API_KEY_ORS
-    }).addTo(map);
-  </script>
-</body>
-</html>
+const response = await fetch(`${API_BASE}/${profileInput.value}`, {
+  method: 'POST',
+  headers: {
+    'Authorization': keyInput.value.trim(),
+    'Content-Type': 'application/json',
+    'Accept': 'application/geo+json'
+  },
+  body: JSON.stringify({
+    locations: [coordinates],
+    range_type: 'time',
+    range: [rangeSeconds],
+    location_type: 'start'
+  })
+});
 ```
 
-- Recargar el mapa y comprobar que aparece un el botón del control de Isócronas. Abrir la consola del desarrollador y ver las peticiones que se hacen al servicio de Openrouteservice. 
+`profileInput.value` elige entre caminar, ir en bicicleta o conducir. La respuesta es GeoJSON, así que podemos añadirla a la capa de Leaflet después de comprobar que la petición ha terminado correctamente.
 
-- Modificar la aplicación para que se haga el cálculo de la Isócrona cuando el usuario haga click en un punto del mapa sin utilizar el plugin. Para ello primero hay que detectar el evento click en el mapa.
+### 4. Comprobar y dibujar la respuesta
 
-```html hl_lines="40-42"
-<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Ejemplo Isócronas Mapzen</title>
-  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
-  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/trafforddatalab/leaflet.reachability@v2.0.1/leaflet.reachability.css"/>
-  <script src="https://cdn.jsdelivr.net/gh/trafforddatalab/leaflet.reachability@v2.0.1/leaflet.reachability.js"></script>
-  <style>
-    #map {
-      height: 100%;
-      width: 100%;
-      position: absolute;
-    }
-  </style>
-</head>
-<body>
-  <div id="map"></div>
+Una petición puede fallar por una clave incorrecta, un límite de uso o un problema de red. Comprobamos el estado HTTP y que haya entidades GeoJSON antes de actualizar el mapa:
 
-  <script>
-    var API_KEY_ORS = 'YOUR-API-KEY';
+```js
+const result = await response.json();
+if (!response.ok) {
+  throw new Error(result.error?.message || `Error HTTP ${response.status}`);
+}
+if (result.type !== 'FeatureCollection' || !result.features?.length) {
+  throw new Error('La respuesta no contiene isócronas GeoJSON.');
+}
 
-    var map = L.map('map');
-
-    map.setView([41.3887, 2.1777], 13);
-
-    L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
-      attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-    }).addTo(map);
-
-    // Initialise the reachability plugin
-    L.control.reachability({
-      // add settings/options here
-      apiKey: API_KEY_ORS
-    }).addTo(map);
-
-    map.on('click', async function(e){
-      console.log(e);
-    });
-  </script>
-</body>
-</html>
+isochrones.clearLayers();
+isochrones.addData(result);
 ```
 
-- Recargar la aplicación y abrir la consola del desarrollador. Hacer click sobre el mapa y ver que en la consola aparece el objeto del evento click. Inspeccionar este objeto y ver que tiene una propiedad llamada latlng que contiene las coordenadas donde se ha hecho el click.
+`clearLayers()` borra el resultado anterior antes de mostrar el nuevo. El código completo también añade un marcador en el punto elegido y comunica el resultado o el error en el panel.
 
-- Crear una función que tenga como parámetro una posición (coordenada lat lon) y genere una llamada al servicio de isócronas de Openrouteservice para que haga el cálculo en la coordenada indicada. Copiar lo siguiente al final de nuestro código
+### Probar el visor
 
-```html hl_lines="44-66"
-<!DOCTYPE html>
-<html>
+1. Abre [OpenRouteService](https://openrouteservice.org/) y crea una clave personal si todavía no tienes una.
+2. Abre el [visor de isócronas](ejemplos/mobility-isochrones/index.html) y pega la clave en el campo correspondiente.
+3. Pulsa **Activar control de Leaflet**. En el control que aparece arriba a la derecha, elige un perfil y un tiempo, activa el modo de dibujo y pulsa un punto del mapa.
+4. Elige otro origen y calcula otra isócrona con el formulario del panel. Compara ambos resultados y observa la diferencia entre usar un plugin y escribir la petición con `fetch`.
+
+La clave se introduce en el navegador y se envía a OpenRouteService como cabecera de autorización. Por eso cualquier persona con acceso al navegador puede inspeccionar la petición. Este patrón sirve para una demostración local y para aprender a consumir una API; una aplicación pública debería proteger la clave mediante un servidor propio.
+
+## Código completo
+
+Guarda el siguiente código como `index.html` y ábrelo desde un servidor local (por ejemplo, `python3 -m http.server`). Así se evita depender de cómo el navegador trata los archivos abiertos directamente desde el disco.
+
+```html
+<!doctype html>
+<html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Ejemplo Isócronas Mapzen</title>
-  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
-  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/trafforddatalab/leaflet.reachability@v2.0.1/leaflet.reachability.css"/>
-  <script src="https://cdn.jsdelivr.net/gh/trafforddatalab/leaflet.reachability@v2.0.1/leaflet.reachability.js"></script>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Isócronas con OpenRouteService</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/trafforddatalab/leaflet.reachability@v2.0.2/leaflet.reachability.css">
   <style>
-    #map {
-      height: 100%;
+    * { box-sizing: border-box; }
+    html, body { height: 100%; margin: 0; font: 16px/1.45 system-ui, sans-serif; color: #172033; }
+    #app {
+      display: grid;
+      grid-template-columns: minmax(320px, 380px) minmax(0, 1fr);
+      grid-template-rows: minmax(0, 1fr);
       width: 100%;
-      position: absolute;
+      height: 100vh;
+    }
+    aside { grid-column: 1; grid-row: 1; min-width: 0; overflow: auto; padding: 1.25rem; background: #f4f7fb; }
+    h1 { margin: 0 0 .5rem; font-size: 1.35rem; }
+    p { margin: .6rem 0; }
+    label { display: block; margin-top: 1rem; font-weight: 650; }
+    input, select, button { width: 100%; min-height: 2.6rem; margin-top: .35rem; padding: .45rem .6rem; font: inherit; }
+    button { border: 0; border-radius: .35rem; color: white; background: #1457a6; cursor: pointer; }
+    button:disabled { opacity: .6; cursor: wait; }
+    #status { min-height: 3.2rem; padding: .65rem; border-radius: .35rem; background: white; }
+    #map { grid-column: 2; grid-row: 1; min-width: 0; min-height: 0; height: 100vh; }
+    .note { font-size: .9rem; color: #475569; }
+    @media (max-width: 700px) {
+      #app { grid-template-columns: minmax(0, 1fr); grid-template-rows: minmax(320px, 55vh) auto; height: auto; min-height: 100vh; }
+      aside { grid-column: 1; grid-row: 2; max-height: none; border-top: 1px solid #d1d5db; }
+      #map { grid-column: 1; grid-row: 1; height: 55vh; min-height: 320px; max-height: 520px; }
     }
   </style>
 </head>
 <body>
-  <div id="map"></div>
+  <main id="app">
+    <aside>
+      <h1>¿Hasta dónde llego?</h1>
+      <p>Introduce tu clave y prueba dos formas de solicitar isócronas: el control Leaflet o una petición propia con <code>fetch</code>.</p>
 
+      <label for="api-key">Clave de OpenRouteService</label>
+      <input id="api-key" type="password" autocomplete="off" placeholder="Pega aquí tu clave personal">
+      <button id="activate-control" type="button">Activar control de Leaflet</button>
+      <p class="note">También puedes usar el control de alcance que aparece arriba a la derecha del mapa.</p>
+
+      <label for="profile">Modo de desplazamiento</label>
+      <select id="profile">
+        <option value="foot-walking">A pie</option>
+        <option value="cycling-regular">En bicicleta</option>
+        <option value="driving-car">En coche</option>
+      </select>
+
+      <label for="minutes">Tiempo máximo: <span id="minutes-label">15</span> minutos</label>
+      <input id="minutes" type="range" min="5" max="30" step="5" value="15">
+      <button id="clear" type="button">Borrar isócrona de fetch</button>
+      <p id="status" role="status" aria-live="polite">Haz clic en el mapa para elegir el punto de partida.</p>
+      <p class="note">La clave se usa desde este navegador para llamar a la API. No la compartas ni la guardes en una página pública.</p>
+    </aside>
+    <div id="map" aria-label="Mapa interactivo"></div>
+  </main>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/trafforddatalab/leaflet.reachability@v2.0.2/leaflet.reachability.js"></script>
   <script>
-    var API_KEY_ORS = 'YOUR-API-KEY';
+    const API_BASE = 'https://api.heigit.org/openrouteservice/v2/isochrones';
+    const map = L.map('map').setView([41.3874, 2.1686], 13);
+    const isochrones = L.geoJSON([], {
+      style: feature => ({
+        color: '#1457a6',
+        weight: 2,
+        fillColor: '#3388ff',
+        fillOpacity: Math.max(0.18, 0.5 - feature.properties.value / 9000)
+      })
+    }).addTo(map);
+    let originMarker;
 
-    var map = L.map('map');
-
-    map.setView([41.3887, 2.1777], 13);
-
-    L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
-      attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      maxZoom: 19,
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
     }).addTo(map);
 
-    // Initialise the reachability plugin
-    L.control.reachability({
-      // add settings/options here
-      apiKey: API_KEY_ORS
-    }).addTo(map);
+    const keyInput = document.querySelector('#api-key');
+    const profileInput = document.querySelector('#profile');
+    const minutesInput = document.querySelector('#minutes');
+    const minutesLabel = document.querySelector('#minutes-label');
+    const status = document.querySelector('#status');
+    const clearButton = document.querySelector('#clear');
+    const activateControlButton = document.querySelector('#activate-control');
+    let reachabilityControl;
 
-    map.on('click', async function(e){
-      console.log(e);
+    minutesInput.addEventListener('input', () => {
+      minutesLabel.textContent = minutesInput.value;
     });
 
-    async function getIsochrona(latlng) {
-      var lat = latlng.lat;
-      var lng = latlng.lng;
-      var url = 'https://api.openrouteservice.org/v2/isochrones/cycling-regular';
-      var json = {
-        locations: [[lng, lat]],
-        range_type: "time",
-        range: [1200],
-        interval: 300,
-        location_type: "start"
-      };
-      const response = await fetch(url, {
-        method: 'POST',
-        mode: 'cors',
-        headers: {
-          'Accept': 'application/json, application/geo+json, application/gpx+xml, img/png; charset=utf-8',
-          'Content-Type': 'application/json',
-          'Authorization': API_KEY_ORS
-        },
-        body: JSON.stringify(json)
-      });
-      return await response.json();
-    }
-  </script>
-</body>
-</html>
-```
-
-- Llamar a la función *getIsochrona* cuando se hace click en el mapa. Escribir al final de la función del click
-
-```html hl_lines="42 43"
-<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Ejemplo Isócronas Mapzen</title>
-  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
-  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/trafforddatalab/leaflet.reachability@v2.0.1/leaflet.reachability.css"/>
-  <script src="https://cdn.jsdelivr.net/gh/trafforddatalab/leaflet.reachability@v2.0.1/leaflet.reachability.js"></script>
-  <style>
-    #map {
-      height: 100%;
-      width: 100%;
-      position: absolute;
-    }
-  </style>
-</head>
-<body>
-  <div id="map"></div>
-
-  <script>
-    var API_KEY_ORS = 'YOUR-API-KEY';
-
-    var map = L.map('map');
-
-    map.setView([41.3887, 2.1777], 13);
-
-    L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
-      attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-    }).addTo(map);
-
-    // Initialise the reachability plugin
-    L.control.reachability({
-      // add settings/options here
-      apiKey: API_KEY_ORS
-    }).addTo(map);
-
-    map.on('click', async function(e){
-      console.log(e);
-      var data = await getIsochrona(e.latlng);
-      console.log(data);
+    clearButton.addEventListener('click', () => {
+      isochrones.clearLayers();
+      if (originMarker) map.removeLayer(originMarker);
+      originMarker = undefined;
+      status.textContent = 'Isócrona de fetch borrada. El control de Leaflet tiene su propio botón para borrar resultados.';
     });
 
-    async function getIsochrona(latlng) {
-      var lat = latlng.lat;
-      var lng = latlng.lng;
-      var url = 'https://api.openrouteservice.org/v2/isochrones/cycling-regular';
-      var json = {
-        locations: [[lng, lat]],
-        range_type: "time",
-        range: [1200],
-        interval: 300,
-        location_type: "start"
-      };
-      const response = await fetch(url, {
-        method: 'POST',
-        mode: 'cors',
-        headers: {
-          'Accept': 'application/json, application/geo+json, application/gpx+xml, img/png; charset=utf-8',
-          'Content-Type': 'application/json',
-          'Authorization': API_KEY_ORS
-        },
-        body: JSON.stringify(json)
-      });
-      return await response.json();
-    }
-  </script>
-</body>
-</html>
-```
+    activateControlButton.addEventListener('click', () => {
+      const apiKey = keyInput.value.trim();
+      if (!apiKey) {
+        status.textContent = 'Introduce tu clave antes de activar el control de Leaflet.';
+        keyInput.focus();
+        return;
+      }
 
-- Recargar la página y hacer click sobre el mapa para ver que en la consola aparece un GeoJSON que contiene la isócrona.
-
-- Agregar la una capa geojson que la iniciaremos vacía sin ningún elemento.
-
-```html hl_lines="40"
-<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Ejemplo Isócronas Mapzen</title>
-  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
-  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/trafforddatalab/leaflet.reachability@v2.0.1/leaflet.reachability.css"/>
-  <script src="https://cdn.jsdelivr.net/gh/trafforddatalab/leaflet.reachability@v2.0.1/leaflet.reachability.js"></script>
-  <style>
-    #map {
-      height: 100%;
-      width: 100%;
-      position: absolute;
-    }
-  </style>
-</head>
-<body>
-  <div id="map"></div>
-
-  <script>
-    var API_KEY_ORS = 'YOUR-API-KEY';
-
-    var map = L.map('map');
-
-    map.setView([41.3887, 2.1777], 13);
-
-    L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
-      attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-    }).addTo(map);
-
-    // Initialise the reachability plugin
-    L.control.reachability({
-      // add settings/options here
-      apiKey: API_KEY_ORS
-    }).addTo(map);
-
-    var geojsonLayer = new L.geoJSON().addTo(map);
-    
-    map.on('click', async function(e){
-      console.log(e);
-      var data = await getIsochrona(e.latlng);
-      console.log(data);
+      if (reachabilityControl) map.removeControl(reachabilityControl);
+      reachabilityControl = L.control.reachability({
+        apiKey,
+        position: 'topright',
+        collapsed: false
+      }).addTo(map);
+      status.textContent = 'Control de Leaflet activado. Pulsa su botón de dibujar y luego el mapa.';
     });
 
-    async function getIsochrona(latlng) {
-      var lat = latlng.lat;
-      var lng = latlng.lng;
-      var url = 'https://api.openrouteservice.org/v2/isochrones/cycling-regular';
-      var json = {
-        locations: [[lng, lat]],
-        range_type: "time",
-        range: [1200],
-        interval: 300,
-        location_type: "start"
-      };
-      const response = await fetch(url, {
-        method: 'POST',
-        mode: 'cors',
-        headers: {
-          'Accept': 'application/json, application/geo+json, application/gpx+xml, img/png; charset=utf-8',
-          'Content-Type': 'application/json',
-          'Authorization': API_KEY_ORS
-        },
-        body: JSON.stringify(json)
-      });
-      return await response.json();
-    }
-  </script>
-</body>
-</html>
-```
+    map.on('click', async event => {
+      const apiKey = keyInput.value.trim();
+      if (!apiKey) {
+        status.textContent = 'Introduce tu clave de OpenRouteService antes de elegir un punto.';
+        keyInput.focus();
+        return;
+      }
 
-- Utilizar el método addData para actualizar la capa geojsonLayer con la respuesta GeoJSON que retorna la API.
+      const coordinates = [event.latlng.lng, event.latlng.lat];
+      const rangeSeconds = Number(minutesInput.value) * 60;
+      status.textContent = 'Consultando OpenRouteService…';
+      clearButton.disabled = true;
 
-```html hl_lines="46"
-<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Ejemplo Isócronas Mapzen</title>
-  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
-  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/trafforddatalab/leaflet.reachability@v2.0.1/leaflet.reachability.css"/>
-  <script src="https://cdn.jsdelivr.net/gh/trafforddatalab/leaflet.reachability@v2.0.1/leaflet.reachability.js"></script>
-  <style>
-    #map {
-      height: 100%;
-      width: 100%;
-      position: absolute;
-    }
-  </style>
-</head>
-<body>
-  <div id="map"></div>
+      try {
+        const response = await fetch(`${API_BASE}/${profileInput.value}`, {
+          method: 'POST',
+          headers: {
+            'Authorization': apiKey,
+            'Content-Type': 'application/json',
+            'Accept': 'application/geo+json'
+          },
+          body: JSON.stringify({
+            locations: [coordinates],
+            range_type: 'time',
+            range: [rangeSeconds],
+            location_type: 'start'
+          })
+        });
 
-  <script>
-    var API_KEY_ORS = 'YOUR-API-KEY';
-
-    var map = L.map('map');
-
-    map.setView([41.3887, 2.1777], 13);
-
-    L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
-      attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-    }).addTo(map);
-
-    // Initialise the reachability plugin
-    L.control.reachability({
-      // add settings/options here
-      apiKey: API_KEY_ORS
-    }).addTo(map);
-
-    var geojsonLayer = new L.geoJSON().addTo(map);
-
-    map.on('click', async function(e){
-      console.log(e);
-      var data = await getIsochrona(e.latlng);
-      console.log(data);
-      geojsonLayer.addData(data);
-    });
-
-    async function getIsochrona(latlng) {
-      var lat = latlng.lat;
-      var lng = latlng.lng;
-      var url = 'https://api.openrouteservice.org/v2/isochrones/cycling-regular';
-      var json = {
-        locations: [[lng, lat]],
-        range_type: "time",
-        range: [1200],
-        interval: 300,
-        location_type: "start"
-      };
-      const response = await fetch(url, {
-        method: 'POST',
-        mode: 'cors',
-        headers: {
-          'Accept': 'application/json, application/geo+json, application/gpx+xml, img/png; charset=utf-8',
-          'Content-Type': 'application/json',
-          'Authorization': API_KEY_ORS
-        },
-        body: JSON.stringify(json)
-      });
-      return await response.json();
-    }
-  </script>
-</body>
-</html>
-```
-
-- Refrescar el mapa y hacer click sobre el mapa para comprobar que se dibuja una nueva línea isócrona.
-
-- Pintar la línea del color que indicamos. Por defecto se pinta la línea de color azul. Esto es debido a que el Leaflet no sabe de que color pintar la línea y utiliza el color por defecto. En la respuesta del servicio podemos ver que los elementos que nos retorna tienen unas propiedades (properties) en donde se listan una serie de atributos, uno de ellos es el *value* que corresponde con el valor del intervalo de tiempo. Lo que debemos hacer es decirle al leaflet que utilice esa propiedad para dar el color a la línea. Escribir lo siguiente en nuestra capa geojsonLayer.
-
-```html hl_lines="40-62"
-<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Ejemplo Isócronas Mapzen</title>
-  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
-  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/trafforddatalab/leaflet.reachability@v2.0.1/leaflet.reachability.css"/>
-  <script src="https://cdn.jsdelivr.net/gh/trafforddatalab/leaflet.reachability@v2.0.1/leaflet.reachability.js"></script>
-  <style>
-    #map {
-      height: 100%;
-      width: 100%;
-      position: absolute;
-    }
-  </style>
-</head>
-<body>
-  <div id="map"></div>
-
-  <script>
-    var API_KEY_ORS = 'YOUR-API-KEY';
-
-    var map = L.map('map');
-
-    map.setView([41.3887, 2.1777], 13);
-
-    L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
-      attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-    }).addTo(map);
-
-    // Initialise the reachability plugin
-    L.control.reachability({
-      // add settings/options here
-      apiKey: API_KEY_ORS
-    }).addTo(map);
-
-    var geojsonLayer = new L.geoJSON('', {
-      style: function (geoJsonFeature) {
-        var color = "#0000FF";
-        switch (geoJsonFeature.properties.value) {
-          case 300:
-            color = "#0000FF";
-            break;
-          case 600:
-            color = "#00FF00";
-            break;
-          case 900:
-            color = "#FF0000";
-            break;
-          case 1200:
-            color = "#FF00FF";
-            break;
-          default:
-            color = "#0000FF";
-            break;
+        const result = await response.json();
+        if (!response.ok) {
+          throw new Error(result.error?.message || `La API respondió con HTTP ${response.status}.`);
         }
-        return { color: color };
-      }
-    }).addTo(map);
-
-    map.on('click', async function(e){
-      console.log(e);
-      var data = await getIsochrona(e.latlng);
-      console.log(data);
-      geojsonLayer.addData(data);
-    });
-
-    async function getIsochrona(latlng) {
-      var lat = latlng.lat;
-      var lng = latlng.lng;
-      var url = 'https://api.openrouteservice.org/v2/isochrones/cycling-regular';
-      var json = {
-        locations: [[lng, lat]],
-        range_type: "time",
-        range: [1200],
-        interval: 300,
-        location_type: "start"
-      };
-      const response = await fetch(url, {
-        method: 'POST',
-        mode: 'cors',
-        headers: {
-          'Accept': 'application/json, application/geo+json, application/gpx+xml, img/png; charset=utf-8',
-          'Content-Type': 'application/json',
-          'Authorization': API_KEY_ORS
-        },
-        body: JSON.stringify(json)
-      });
-      return await response.json();
-    }
-  </script>
-</body>
-</html>
-```
-
-- Recargar el mapa y hacer click para confirmar que los polígonos se pintan de diferentes colores.
-
-## Agregar un buscador de direcciones y puntos de interés al mapa
-
-Para agregar un buscador utilizaremos el plugin de Leaflet *Leaflet.OpenCage.Search* [^4] desarrollado por OpenCage que permite de una forma fácil y rápida hacer llamadas al servicio de búsqueda de OpenCage Geocoder. Para ello hay que obtener un API_KEY en la página de OpenCage [^5]
-
-- Cargar la librería en nuestra aplicación.
-
-```html hl_lines="12 13"
-<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Ejemplo Isócronas Mapzen</title>
-  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
-  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/trafforddatalab/leaflet.reachability@v2.0.1/leaflet.reachability.css"/>
-  <script src="https://cdn.jsdelivr.net/gh/trafforddatalab/leaflet.reachability@v2.0.1/leaflet.reachability.js"></script>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/opencagedata/leaflet-opencage-geocoding@v2.0.0/dist/css/L.Control.OpenCageGeocoding.min.css" />
-  <script src="https://cdn.jsdelivr.net/gh/opencagedata/leaflet-opencage-geocoding@v2.0.0/dist/js/L.Control.OpenCageGeocoding.min.js"></script>
-  <style>
-    #map {
-      height: 100%;
-      width: 100%;
-      position: absolute;
-    }
-  </style>
-</head>
-<body>
-  <div id="map"></div>
-
-  <script>
-    var API_KEY_ORS = 'YOUR-API-KEY';
-
-    var map = L.map('map');
-
-    map.setView([41.3887, 2.1777], 13);
-
-    L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
-      attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-    }).addTo(map);
-
-    // Initialise the reachability plugin
-    L.control.reachability({
-      // add settings/options here
-      apiKey: API_KEY_ORS
-    }).addTo(map);
-
-    var geojsonLayer = new L.geoJSON('', {
-      style: function (geoJsonFeature) {
-        var color = "#0000FF";
-        switch (geoJsonFeature.properties.value) {
-          case 300:
-            color = "#0000FF";
-            break;
-          case 600:
-            color = "#00FF00";
-            break;
-          case 900:
-            color = "#FF0000";
-            break;
-          case 1200:
-            color = "#FF00FF";
-            break;
-          default:
-            color = "#0000FF";
-            break;
+        if (result.type !== 'FeatureCollection' || !result.features?.length) {
+          throw new Error('La respuesta no contiene isócronas en formato GeoJSON.');
         }
-        return { color: color };
+
+        isochrones.clearLayers();
+        isochrones.addData(result);
+        if (originMarker) map.removeLayer(originMarker);
+        originMarker = L.marker(event.latlng).addTo(map).bindPopup('Punto de partida');
+        status.textContent = `Isócrona calculada: ${minutesInput.value} minutos, ${profileInput.options[profileInput.selectedIndex].text.toLowerCase()}.`;
+      } catch (error) {
+        status.textContent = `No se pudo calcular la isócrona: ${error.message}`;
+      } finally {
+        clearButton.disabled = false;
       }
-    }).addTo(map);
-
-    map.on('click', async function(e){
-      console.log(e);
-      var data = await getIsochrona(e.latlng);
-      console.log(data);
-      geojsonLayer.addData(data);
     });
-
-    async function getIsochrona(latlng) {
-      var lat = latlng.lat;
-      var lng = latlng.lng;
-      var url = 'https://api.openrouteservice.org/v2/isochrones/cycling-regular';
-      var json = {
-        locations: [[lng, lat]],
-        range_type: "time",
-        range: [1200],
-        interval: 300,
-        location_type: "start"
-      };
-      const response = await fetch(url, {
-        method: 'POST',
-        mode: 'cors',
-        headers: {
-          'Accept': 'application/json, application/geo+json, application/gpx+xml, img/png; charset=utf-8',
-          'Content-Type': 'application/json',
-          'Authorization': API_KEY_ORS
-        },
-        body: JSON.stringify(json)
-      });
-      return await response.json();
-    }
   </script>
 </body>
 </html>
 ```
 
-- Crear la variable para la API key
+## Actividad breve en clase
 
-```html hl_lines="27"
-<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Ejemplo Isócronas Mapzen</title>
-  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
-  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/trafforddatalab/leaflet.reachability@v2.0.1/leaflet.reachability.css"/>
-  <script src="https://cdn.jsdelivr.net/gh/trafforddatalab/leaflet.reachability@v2.0.1/leaflet.reachability.js"></script>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/opencagedata/leaflet-opencage-geocoding@v2.0.0/dist/css/L.Control.OpenCageGeocoding.min.css" />
-  <script src="https://cdn.jsdelivr.net/gh/opencagedata/leaflet-opencage-geocoding@v2.0.0/dist/js/L.Control.OpenCageGeocoding.min.js"></script>
-  <style>
-    #map {
-      height: 100%;
-      width: 100%;
-      position: absolute;
-    }
-  </style>
-</head>
-<body>
-  <div id="map"></div>
+!!! question "5–10 minutos · sin entregar"
+    Elige un mismo origen y calcula una isócrona de 15 minutos a pie y en bicicleta. ¿Cuál cubre más superficie? Propón una razón relacionada con la red viaria o el perfil de desplazamiento. Después, cambia el origen a un punto en el borde de Barcelona y observa qué cambia.
 
-  <script>
-    var API_KEY_ORS = 'YOUR-API-KEY';
-    var API_KEY_OCG = 'TU_API_KEY_OPENCAGE';
+!!! exercise "Ejercicio entregable · 2 puntos"
+    Modifica la aplicación y entrega el archivo `index.html`:
 
-    var map = L.map('map');
+    1. Añade al selector un perfil válido de OpenRouteService que no aparezca en el ejemplo y comprueba que la petición directa lo utiliza (1 punto).
+    2. Modifica el intervalo de tiempo que permite elegir el control y comprueba que el parámetro `range` de la petición corresponde al nuevo valor (1 punto).
 
-    map.setView([41.3887, 2.1777], 13);
+## Ejercicio opcional para casa
 
-    L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
-      attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-    }).addTo(map);
-
-    // Initialise the reachability plugin
-    L.control.reachability({
-      // add settings/options here
-      apiKey: API_KEY_ORS
-    }).addTo(map);
-
-    var geojsonLayer = new L.geoJSON('', {
-      style: function (geoJsonFeature) {
-        var color = "#0000FF";
-        switch (geoJsonFeature.properties.value) {
-          case 300:
-            color = "#0000FF";
-            break;
-          case 600:
-            color = "#00FF00";
-            break;
-          case 900:
-            color = "#FF0000";
-            break;
-          case 1200:
-            color = "#FF00FF";
-            break;
-          default:
-            color = "#0000FF";
-            break;
-        }
-        return { color: color };
-      }
-    }).addTo(map);
-
-    map.on('click', async function(e){
-      console.log(e);
-      var data = await getIsochrona(e.latlng);
-      console.log(data);
-      geojsonLayer.addData(data);
-    });
-
-    async function getIsochrona(latlng) {
-      var lat = latlng.lat;
-      var lng = latlng.lng;
-      var url = 'https://api.openrouteservice.org/v2/isochrones/cycling-regular';
-      var json = {
-        locations: [[lng, lat]],
-        range_type: "time",
-        range: [1200],
-        interval: 300,
-        location_type: "start"
-      };
-      const response = await fetch(url, {
-        method: 'POST',
-        mode: 'cors',
-        headers: {
-          'Accept': 'application/json, application/geo+json, application/gpx+xml, img/png; charset=utf-8',
-          'Content-Type': 'application/json',
-          'Authorization': API_KEY_ORS
-        },
-        body: JSON.stringify(json)
-      });
-      return await response.json();
-    }
-  </script>
-</body>
-</html>
-```
-
-- Agregar el control al mapa. Para utilizar el servicio de búsqueda también es necesario pasar nuestra API key:
-
-```html hl_lines="43-47"
-<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Ejemplo Isócronas Mapzen</title>
-  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
-  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/trafforddatalab/leaflet.reachability@v2.0.1/leaflet.reachability.css"/>
-  <script src="https://cdn.jsdelivr.net/gh/trafforddatalab/leaflet.reachability@v2.0.1/leaflet.reachability.js"></script>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/opencagedata/leaflet-opencage-geocoding@v2.0.0/dist/css/L.Control.OpenCageGeocoding.min.css" />
-  <script src="https://cdn.jsdelivr.net/gh/opencagedata/leaflet-opencage-geocoding@v2.0.0/dist/js/L.Control.OpenCageGeocoding.min.js"></script>
-  <style>
-    #map {
-      height: 100%;
-      width: 100%;
-      position: absolute;
-    }
-  </style>
-</head>
-<body>
-  <div id="map"></div>
-
-  <script>
-    var API_KEY_ORS = 'YOUR-API-KEY';
-    var API_KEY_OCG = 'TU_API_KEY_OPENCAGE';
-
-    var map = L.map('map');
-
-    map.setView([41.3887, 2.1777], 13);
-
-    L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
-      attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-    }).addTo(map);
-
-    // Initialise the reachability plugin
-    L.control.reachability({
-      // add settings/options here
-      apiKey: API_KEY_ORS
-    }).addTo(map);
-
-    var options = {
-      key: API_KEY_OCG,
-      limit: 10,
-    };
-    var geocoder = L.Control.openCageGeocoding(options).addTo(map);
-
-    var geojsonLayer = new L.geoJSON('', {
-      style: function (geoJsonFeature) {
-        var color = "#0000FF";
-        switch (geoJsonFeature.properties.value) {
-          case 300:
-            color = "#0000FF";
-            break;
-          case 600:
-            color = "#00FF00";
-            break;
-          case 900:
-            color = "#FF0000";
-            break;
-          case 1200:
-            color = "#FF00FF";
-            break;
-          default:
-            color = "#0000FF";
-            break;
-        }
-        return { color: color };
-      }
-    }).addTo(map);
-
-    map.on('click', async function(e){
-      console.log(e);
-      var data = await getIsochrona(e.latlng);
-      console.log(data);
-      geojsonLayer.addData(data);
-    });
-
-    async function getIsochrona(latlng) {
-      var lat = latlng.lat;
-      var lng = latlng.lng;
-      var url = 'https://api.openrouteservice.org/v2/isochrones/cycling-regular';
-      var json = {
-        locations: [[lng, lat]],
-        range_type: "time",
-        range: [1200],
-        interval: 300,
-        location_type: "start"
-      };
-      const response = await fetch(url, {
-        method: 'POST',
-        mode: 'cors',
-        headers: {
-          'Accept': 'application/json, application/geo+json, application/gpx+xml, img/png; charset=utf-8',
-          'Content-Type': 'application/json',
-          'Authorization': API_KEY_ORS
-        },
-        body: JSON.stringify(json)
-      });
-      return await response.json();
-    }
-  </script>
-</body>
-</html>
-```
-
-- Recargar el mapa y comprobar que aparece el control.
-
-- Calcular las isócronas al seleccionar un resultado de la búsqueda. Modificar la función *_geocodeResultSelected* del control geocoder
-
-```html hl_lines="48-53"
-<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Ejemplo Isócronas Mapzen</title>
-  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
-  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/trafforddatalab/leaflet.reachability@v2.0.1/leaflet.reachability.css"/>
-  <script src="https://cdn.jsdelivr.net/gh/trafforddatalab/leaflet.reachability@v2.0.1/leaflet.reachability.js"></script>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/opencagedata/leaflet-opencage-geocoding@v2.0.0/dist/css/L.Control.OpenCageGeocoding.min.css" />
-  <script src="https://cdn.jsdelivr.net/gh/opencagedata/leaflet-opencage-geocoding@v2.0.0/dist/js/L.Control.OpenCageGeocoding.min.js"></script>
-  <style>
-    #map {
-      height: 100%;
-      width: 100%;
-      position: absolute;
-    }
-  </style>
-</head>
-<body>
-  <div id="map"></div>
-
-  <script>
-    var API_KEY_ORS = 'YOUR-API-KEY';
-    var API_KEY_OCG = 'TU_API_KEY_OPENCAGE';
-
-    var map = L.map('map');
-
-    map.setView([41.3887, 2.1777], 13);
-
-    L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
-      attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-    }).addTo(map);
-
-    // Initialise the reachability plugin
-    L.control.reachability({
-      // add settings/options here
-      apiKey: API_KEY_ORS
-    }).addTo(map);
-
-    var options = {
-      key: API_KEY_OCG,
-      limit: 10,
-    };
-    var geocoder = L.Control.openCageGeocoding(options).addTo(map);
-    geocoder._geocodeResultSelected = async function(result){
-      if (this.options.collapsed) {
-        this._collapse();
-      }
-      console.log(result);
-    };
-
-    var geojsonLayer = new L.geoJSON('', {
-      style: function (geoJsonFeature) {
-        var color = "#0000FF";
-        switch (geoJsonFeature.properties.value) {
-          case 300:
-            color = "#0000FF";
-            break;
-          case 600:
-            color = "#00FF00";
-            break;
-          case 900:
-            color = "#FF0000";
-            break;
-          case 1200:
-            color = "#FF00FF";
-            break;
-          default:
-            color = "#0000FF";
-            break;
-        }
-        return { color: color };
-      }
-    }).addTo(map);
-
-    map.on('click', async function(e){
-      console.log(e);
-      var data = await getIsochrona(e.latlng);
-      console.log(data);
-      geojsonLayer.addData(data);
-    });
-
-    async function getIsochrona(latlng) {
-      var lat = latlng.lat;
-      var lng = latlng.lng;
-      var url = 'https://api.openrouteservice.org/v2/isochrones/cycling-regular';
-      var json = {
-        locations: [[lng, lat]],
-        range_type: "time",
-        range: [1200],
-        interval: 300,
-        location_type: "start"
-      };
-      const response = await fetch(url, {
-        method: 'POST',
-        mode: 'cors',
-        headers: {
-          'Accept': 'application/json, application/geo+json, application/gpx+xml, img/png; charset=utf-8',
-          'Content-Type': 'application/json',
-          'Authorization': API_KEY_ORS
-        },
-        body: JSON.stringify(json)
-      });
-      return await response.json();
-    }
-  </script>
-</body>
-</html>
-```
-
-- Refrescar el mapa y abrir la consola de desarrolladores para comprobar que al seleccionar un resultado de la búsqueda aparece un objeto en la consola. Inspeccionar este objeto para ver que tiene una propiedad latlng que es lo que necesitamos para calcular las isócronas.
-
-- Llamar a nuestra función *getIsochrona* en la función del evento select para llamar a la API y luego refrescar la capa de *geojsonLayer*. Esto ya lo hemos hecho cuando el usuario hace click en el mapa. Copiar lo siguiente en la función
-
-```html hl_lines="53 54"
-<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Ejemplo Isócronas Mapzen</title>
-  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
-  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/trafforddatalab/leaflet.reachability@v2.0.1/leaflet.reachability.css"/>
-  <script src="https://cdn.jsdelivr.net/gh/trafforddatalab/leaflet.reachability@v2.0.1/leaflet.reachability.js"></script>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/opencagedata/leaflet-opencage-geocoding@v2.0.0/dist/css/L.Control.OpenCageGeocoding.min.css" />
-  <script src="https://cdn.jsdelivr.net/gh/opencagedata/leaflet-opencage-geocoding@v2.0.0/dist/js/L.Control.OpenCageGeocoding.min.js"></script>
-  <style>
-    #map {
-      height: 100%;
-      width: 100%;
-      position: absolute;
-    }
-  </style>
-</head>
-<body>
-  <div id="map"></div>
-
-  <script>
-    var API_KEY_ORS = 'YOUR-API-KEY';
-    var API_KEY_OCG = 'TU_API_KEY_OPENCAGE';
-
-    var map = L.map('map');
-
-    map.setView([41.3887, 2.1777], 13);
-
-    L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
-      attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-    }).addTo(map);
-
-    // Initialise the reachability plugin
-    L.control.reachability({
-      // add settings/options here
-      apiKey: API_KEY_ORS
-    }).addTo(map);
-
-    var options = {
-      key: API_KEY_OCG,
-      limit: 10,
-    };
-    var geocoder = L.Control.openCageGeocoding(options).addTo(map);
-    geocoder._geocodeResultSelected = async function(result){
-      if (this.options.collapsed) {
-        this._collapse();
-      }
-      console.log(result);
-      var data = await getIsochrona(result.center);
-      geojsonLayer.addData(data);
-    };
-
-    var geojsonLayer = new L.geoJSON('', {
-      style: function (geoJsonFeature) {
-        var color = "#0000FF";
-        switch (geoJsonFeature.properties.value) {
-          case 300:
-            color = "#0000FF";
-            break;
-          case 600:
-            color = "#00FF00";
-            break;
-          case 900:
-            color = "#FF0000";
-            break;
-          case 1200:
-            color = "#FF00FF";
-            break;
-          default:
-            color = "#0000FF";
-            break;
-        }
-        return { color: color };
-      }
-    }).addTo(map);
-
-    map.on('click', async function(e){
-      console.log(e);
-      var data = await getIsochrona(e.latlng);
-      console.log(data);
-      geojsonLayer.addData(data);
-    });
-
-    async function getIsochrona(latlng) {
-      var lat = latlng.lat;
-      var lng = latlng.lng;
-      var url = 'https://api.openrouteservice.org/v2/isochrones/cycling-regular';
-      var json = {
-        locations: [[lng, lat]],
-        range_type: "time",
-        range: [1200],
-        interval: 300,
-        location_type: "start"
-      };
-      const response = await fetch(url, {
-        method: 'POST',
-        mode: 'cors',
-        headers: {
-          'Accept': 'application/json, application/geo+json, application/gpx+xml, img/png; charset=utf-8',
-          'Content-Type': 'application/json',
-          'Authorization': API_KEY_ORS
-        },
-        body: JSON.stringify(json)
-      });
-      return await response.json();
-    }
-  </script>
-</body>
-</html>
-```
-		
-- Refrescar la página y al seleccionar un resultado de búsqueda comprobar que calcula las isócronas desde ese punto.
-
-![ejemplo isócronas](img/mapa_isocronas.png)
-*ejemplo isócronas*
-
-!!! question "Ejercicios 2 pts"
-	En la función de **crearUrlIsochrona** 
-	
-	1. Cambiar el modo de transporte *profile* (1 pt)
-	2. Cambiar el alcance *range* (1 pt)
-
-	Ayuda: En el siguiente enlace se pueden ver las diferentes opciones de la API https://openrouteservice.org/dev/#/api-docs/v2/isochrones/{profile}/post
-
+Modifica el ejemplo para permitir comparar dos perfiles desde el mismo origen, mostrando ambos polígonos con colores y transparencias distintas. Añade una leyenda que permita identificar cada perfil.
 
 ## Referencias
 
-[^1]: https://openrouteservice.org
-[^2]: https://github.com/traffordDataLab/leaflet.reachability
-[^4]: https://github.com/OpenCageData/leaflet-opencage-search
-[^5]: https://opencagedata.com/
+- [OpenRouteService: API de isócronas](https://openrouteservice.org/dev/#/api-docs/v2/isochrones/{profile}/post)
+- [Dominio actual de la API de OpenRouteService](https://api.heigit.org/openrouteservice/)
+- [Leaflet: documentación](https://leafletjs.com/reference.html)
+- [OpenStreetMap: atribución](https://www.openstreetmap.org/copyright)

@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Trenes FGC en tiempo real</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+  <style>
+    html, body { height: 100%; margin: 0; font-family: system-ui, sans-serif; }
+    #map { height: 100%; }
+    #estado { position: absolute; z-index: 1000; top: 12px; left: 60px; max-width: min(520px, calc(100vw - 100px)); padding: 9px 12px; border-radius: 6px; background: white; box-shadow: 0 1px 5px #5558; font-size: 14px; }
+    .popup-detalle { margin: 5px 0 0; }
+  </style>
+</head>
+<body>
+  <div id="estado" role="status">Conectando con los datos de FGC…</div>
+  <div id="map" aria-label="Mapa de posiciones de trenes FGC"></div>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script>
+    const TRENES_URL = "https://dadesobertes.fgc.cat/api/explore/v2.1/catalog/datasets/posicionament-dels-trens/exports/geojson?lang=es&timezone=Europe%2FMadrid";
+    const LINEAS_URL = "https://dadesobertes.fgc.cat/api/explore/v2.1/catalog/datasets/lineas-red-fgc/exports/json?lang=es&timezone=Europe%2FMadrid";
+    const INTERVALO_MS = 15_000;
+    const map = L.map("map").setView([41.55, 1.95], 8);
+    const coloresLinea = new Map();
+    const marcadores = new Map();
+    let actualizacionEnCurso = false;
+
+    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+      attribution: "&copy; <a href=\"https://www.openstreetmap.org/copyright\">OpenStreetMap contributors</a>",
+      maxZoom: 19
+    }).addTo(map);
+
+    async function cargarLineas() {
+      const respuesta = await fetch(LINEAS_URL);
+      if (!respuesta.ok) throw new Error(`Error al cargar líneas: ${respuesta.status}`);
+      const lineas = await respuesta.json();
+      lineas.forEach((linea) => {
+        if (linea.route_id && linea.route_color) {
+          coloresLinea.set(linea.route_id.toUpperCase(), `#${linea.route_color}`);
+        }
+      });
+    }
+
+    function colorTren(datos) {
+      return coloresLinea.get(String(datos.lin ?? "").toUpperCase()) ?? "#666666";
+    }
+
+    function contenidoPopup(datos) {
+      const contenedor = document.createElement("div");
+      const titulo = document.createElement("strong");
+      titulo.textContent = `Tren ${String(datos.ut ?? datos.id ?? "No disponible")}`;
+      const detalle = document.createElement("p");
+      detalle.className = "popup-detalle";
+      detalle.textContent = `Línea ${String(datos.lin ?? "No disponible")} · ${String(datos.origen ?? "No disponible")} → ${String(datos.desti ?? "No disponible")}`;
+      contenedor.append(titulo, detalle);
+      return contenedor;
+    }
+
+    function estiloTren(datos) {
+      const color = colorTren(datos);
+      return { radius: 7, color: "#ffffff", weight: 2, fillColor: color, fillOpacity: 0.9 };
+    }
+
+    async function actualizarTrenes() {
+      if (actualizacionEnCurso) return;
+      actualizacionEnCurso = true;
+      const estado = document.querySelector("#estado");
+      try {
+        const respuesta = await fetch(TRENES_URL, { cache: "no-store" });
+        if (!respuesta.ok) throw new Error(`Error al cargar trenes: ${respuesta.status}`);
+        const geojson = await respuesta.json();
+        if (!Array.isArray(geojson.features)) throw new Error("La respuesta no contiene una lista de entidades GeoJSON");
+        const vistos = new Set();
+
+        geojson.features.forEach((feature) => {
+          if (feature.geometry?.type !== "Point") return;
+          const datos = feature.properties ?? {};
+          const id = String(datos.id ?? datos.ut ?? "");
+          const coordenadas = feature.geometry.coordinates;
+          if (!id || !Array.isArray(coordenadas) || coordenadas.length < 2) return;
+          const [lng, lat] = coordenadas;
+          if (!Number.isFinite(lat) || !Number.isFinite(lng)) return;
+          vistos.add(id);
+          const posicion = L.latLng(lat, lng);
+          let marcador = marcadores.get(id);
+
+          if (!marcador) {
+            marcador = L.circleMarker(posicion, estiloTren(datos)).addTo(map);
+            marcador.bindPopup(contenidoPopup(datos));
+            marcadores.set(id, marcador);
+          } else {
+            marcador.setLatLng(posicion);
+            marcador.setStyle(estiloTren(datos));
+            marcador.setPopupContent(contenidoPopup(datos));
+          }
+        });
+
+        marcadores.forEach((marcador, id) => {
+          if (!vistos.has(id)) {
+            map.removeLayer(marcador);
+            marcadores.delete(id);
+          }
+        });
+
+        const hora = new Date().toLocaleTimeString("es-ES");
+        estado.textContent = `${vistos.size} trenes recibidos · última consulta: ${hora}`;
+      } catch (error) {
+        estado.textContent = `No se pudieron actualizar los trenes: ${error.message}`;
+      } finally {
+        actualizacionEnCurso = false;
+      }
+    }
+
+    async function iniciar() {
+      const estado = document.querySelector("#estado");
+      try {
+        await cargarLineas();
+        await actualizarTrenes();
+        window.setInterval(actualizarTrenes, INTERVALO_MS);
+      } catch (error) {
+        estado.textContent = `No se pudieron iniciar los datos de FGC: ${error.message}`;
+      }
+    }
+
+    iniciar();
+  </script>
+</body>
+</html>

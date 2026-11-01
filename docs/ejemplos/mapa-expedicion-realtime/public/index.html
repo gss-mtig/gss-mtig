@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>La expedición urbana de la clase</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+  <style>
+    * { box-sizing: border-box; }
+    html, body { height: 100%; margin: 0; font: 16px/1.45 system-ui, sans-serif; color: #172033; }
+    #app { display: grid; grid-template-columns: minmax(280px, 350px) minmax(0, 1fr); height: 100vh; }
+    aside { overflow: auto; padding: 1.1rem; background: #f5f8fc; border-right: 1px solid #d6dfeb; }
+    h1 { margin: 0 0 .45rem; font-size: 1.4rem; }
+    p { margin: .5rem 0; }
+    label { display: block; margin-top: .8rem; font-weight: 650; }
+    input, select, button { width: 100%; min-height: 2.5rem; margin-top: .3rem; padding: .5rem .6rem; font: inherit; }
+    button { border: 0; border-radius: .4rem; color: white; background: #1457a6; cursor: pointer; }
+    button:disabled { opacity: .5; cursor: not-allowed; }
+    #status { min-height: 2.6rem; margin-top: .8rem; padding: .55rem; border-radius: .35rem; background: white; }
+    #roster { padding-left: 1.4rem; }
+    #roster li { margin: .35rem 0; }
+    #map { min-width: 0; height: 100vh; }
+    .avatar-marker { display: grid; place-items: center; width: 38px; height: 38px; border: 2px solid white; border-radius: 50%; background: #1457a6; box-shadow: 0 1px 7px #17203366; font-size: 23px; }
+    .note { color: #475569; font-size: .9rem; }
+    @media (max-width: 700px) {
+      #app { grid-template-columns: minmax(0, 1fr); grid-template-rows: minmax(320px, 52vh) auto; height: auto; min-height: 100vh; }
+      #map { grid-column: 1; grid-row: 1; height: 52vh; min-height: 320px; }
+      aside { grid-column: 1; grid-row: 2; border-right: 0; border-top: 1px solid #d6dfeb; }
+    }
+  </style>
+</head>
+<body>
+  <main id="app">
+    <aside>
+      <h1>🧭 Expedición urbana</h1>
+      <p>Elige un alias y un avatar. Haz clic en el mapa para mover tu posición; el resto de la clase verá el cambio al instante.</p>
+
+      <form id="join-form">
+        <label for="name">Tu alias</label>
+        <input id="name" maxlength="24" placeholder="Por ejemplo, Alex" required>
+        <label for="avatar">Tu avatar</label>
+        <select id="avatar">
+          <option value="🦊">🦊 Zorro</option>
+          <option value="🐼">🐼 Panda</option>
+          <option value="🐢">🐢 Tortuga</option>
+          <option value="🐙">🐙 Pulpo</option>
+          <option value="🐝">🐝 Abeja</option>
+          <option value="🦉">🦉 Búho</option>
+        </select>
+        <button id="join-button" type="submit" disabled>Conectando…</button>
+      </form>
+
+      <p id="status" role="status" aria-live="polite">Conectando con el servidor…</p>
+      <h2>En la expedición: <span id="count">0</span></h2>
+      <ol id="roster"></ol>
+      <p class="note">La posición se simula con clics; la página no solicita tu ubicación GPS. Abre otra pestaña u otro equipo para simular más participantes.</p>
+    </aside>
+    <div id="map" aria-label="Mapa colaborativo de la clase"></div>
+  </main>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

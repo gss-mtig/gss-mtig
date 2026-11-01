@@ -1,942 +1,330 @@
-# Ejemplo Sentilo ACA
+# Consumo de sensores de la ACA con Sentilo
 
-## Acceso al servicio de sensores Sentilo de la ACA
+En esta práctica construiremos un mapa web con las ubicaciones de los embalses de Cataluña y mostraremos las últimas medidas al seleccionar un embalse. La Agencia Catalana del Agua (ACA) publica estos datos mediante su API REST basada en Sentilo.
 
-En el apartado de consulta de datos de la página de la ACA [^1] encontraremos un subapartado de datos en tiempo real, estos datos los sirven utilizando la plataforma de sensores Sentilo [^2]. Los sensores dan información sobre los diferentes embalses/pantanos que hay en Cataluña.
+**Resultado final:** [abre el ejemplo de Sentilo ACA](ejemplos/sentilo-aca/index.html).
 
-La página tiene un acceso a un mapa con los datos de los diferentes sensores [^3] este mapa es el que ofrece la plataforma de Sentilo y está basado en tecnología de Google Maps.
+La página ofrece una vista de referencia y, al ejecutarla en local, consulta la API actual.
 
-También encontraremos la documentación [^4] para usar la API, lo que nos permite acceder a los datos y generar nuestro propio visor.
+!!! note "Calidad y actualización de los datos"
 
-## Creación de un visor
+    La ACA indica que las medidas en tiempo real no están revisadas ni validadas y pueden contener errores. Úsalas para explorar el servicio; antes de tomar decisiones, comprueba el valor, la unidad, la fecha y la calidad de la medida.
 
-Para crear un visor de mapas utilizaremos la librería de mapas Leaflet [^5].  
+## 1. Entender la API y sus identificadores
 
-- Crear una carpeta con el nombre de *visor-aca*.
+La API ofrece dos consultas que usaremos:
 
-- Crear una carpeta con el nombre de *public* dentro de la carpeta visor-aca.
+1. El [catálogo de embalses](https://aplicacions.aca.gencat.cat/sdim2/apirest/catalog?componentType=embassament) describe las estaciones y las variables de sus sensores. Cada entrada incluye, entre otros campos, `provider`, `sensor`, `component`, `componentDesc`, `location` y `unit`.
+2. La consulta de [últimas medidas](https://aplicacions.aca.gencat.cat/sdim2/apirest/data/EMBASSAMENT-EST/083036-001-ANA023) usa el proveedor y el **identificador de la variable**. La respuesta incluye una lista `observations` con el valor y la marca de tiempo.
 
-- Crear un archivo con el nombre de *index.html* dentro de la carpeta public.
+La respuesta del catálogo es JSON, no GeoJSON. Además, `location` contiene dos números como texto en orden **latitud, longitud**. Para GeoJSON debemos convertirlos y guardarlos como **longitud, latitud**. Un embalse puede tener varias variables de sensor; las agruparemos por el identificador `component` para dibujar un único punto por estación y consultar cada variable al abrir su ficha.
 
-- Abrir el archivo index.html con un editor de texto y copiar el siguiente código.
+El endpoint de medidas documentado por la ACA es `GET /sdim2/apirest/data/{provider}/{sensor}`. En el resto de esta práctica usamos esta API en lugar de la antigua ruta del visor web `lastOb`.
 
-```html
-<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Ejemplo Sentilo ACA</title>
-  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
-  <style>
-    #map {
-        height: 100%;
-        width: 100%;
-        position: absolute;
-    }
-  </style>
-</head>
-<body>
+## 2. Preparar y ejecutar el ejemplo
 
-  <div id="map"></div>
+Instala [Node.js](https://nodejs.org/es/) versión 18 o posterior. Crea una carpeta `visor-aca` y copia dentro los cuatro archivos del [ejemplo descargable](ejemplos/sentilo-aca/archivos.md): `server.js`, `index.html`, `aca-data.js` y `aca-map.js`.
 
-  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-  <script>
-    var map = L.map('map');
-
-    map.setView([41.5087, 2.1777], 8);  
-
-    L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
-        attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-    }).addTo(map);
-  </script>
-</body>
-</html>
-```
-
-- Abrir el archivo index.html en el navegador para confirmar que se carga un mapa centrado en Cataluña.
-
-- Consultar la documentación de la API y buscar la url de descripción del servicio que es https://aplicacions.aca.gencat.cat/sdim2/apirest/catalog. Abrir esta url en el navegador y confirmar que responde un JSON con la información de los diferentes sensores.
-
-- Revisar el JSON de salida y buscar la propiedad *location* que indica las coordenadas de la ubicación del sensor. A pesar de que el JSON tiene coordenadas no es un GeoJSON y por lo tanto no lo podemos pintar automáticamente en nuestro mapa.
-
-- Cargar este JSON en nuestro mapa utilizando un plugin de Leaflet llamado *leaflet-ajax* [^6]. Este plugin permite hacer una llamada AJAX a un servicio que retorne un JSON y cargar la respuesta en un mapa. Para cargar este plugin debemos agregar lo siguiente justo después de donde hemos cargado el leaflet
-
-```html hl_lines="22"
-<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Ejemplo Sentilo ACA</title>
-  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
-  <style>
-    #map {
-        height: 100%;
-        width: 100%;
-        position: absolute;
-    }
-  </style>
-</head>
-<body>
-
-  <div id="map"></div>
-
-  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-ajax/2.1.0/leaflet.ajax.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-  <script>
-    var map = L.map('map');
-
-    map.setView([41.5087, 2.1777], 8);  
-
-    L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
-        attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-    }).addTo(map);
-  </script>
-</body>
-</html>
-```
-
-- Utilizar el plugin para agregar la capa al mapa llamando a la API de la ACA. Agregar lo siguiente al final de nuestro código:
-
-```html hl_lines="32"
-<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Ejemplo Sentilo ACA</title>
-  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
-  <style>
-    #map {
-        height: 100%;
-        width: 100%;
-        position: absolute;
-    }
-  </style>
-</head>
-<body>
-
-  <div id="map"></div>
-
-  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-ajax/2.1.0/leaflet.ajax.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-  <script>
-    var map = L.map('map');
-
-    map.setView([41.5087, 2.1777], 8);  
-
-    L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
-      attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-    }).addTo(map);
-
-    var geojsonLayer = new L.GeoJSON.AJAX('https://aplicacions.aca.gencat.cat/sdim2/apirest/catalog').addTo(map);
-  </script>
-</body>
-</html>
-```
-
-- Recargar la aplicación y comprobamos que no tenemos ningún dato en nuestro mapa. Esto es debido a que la API no retorna un GeoJSON. Por lo tanto tendremos que convertir la respuesta de la API en un GeoJSON. Para ello crearemos un proxy [^8] en nuestro servidor web que pueda hacer la llamada al servicio de la ACA y que nos devuelva el contenido.
-
-## Creación del proxy
-
-- Instalar Node.js [^9]. Descargar la última versión LTS y lo instalaremos con las opciones por defecto. Abrir la consola para verificar que se ha instalado correctamente y escribir
-
-```bash
-node -v
-```
-
-- Navegar hasta nuestra carpeta *visor-aca* y escribir:
+Abre una terminal en `visor-aca` e instala Express:
 
 ```bash
 npm init -y
+npm install express
 ```
 
-Con este comando estaremos creando el archivo *package.json* con los valores predeterminados.
-
-- Instalar las dependencias para crear nuestro servicio de proxy. En este caso utilizaremos Express [^10] como servidor web, el módulo http-proxy [^11] y el módulo de cors [^12].
-
-- Instalar el express y guardarlo en la lista de dependencias
+El servidor local entrega la página y consulta la API de la ACA. El navegador solo habla con `localhost`, así que no necesita hacer peticiones entre dominios. Desde la misma carpeta, arranca el servidor:
 
 ```bash
-npm install --save express http-proxy cors
+node server.js
 ```
 
-Al ejecutar este comando veremos que se crea una carpeta llamada *node_modules* donde se guardan los módulos instalados.
+Abre [http://localhost:3000](http://localhost:3000). Necesitas conexión a Internet para cargar el mapa base de OpenStreetMap y consultar los datos de la ACA.
 
-- Instalar el módulo nodemon [^8] de manera global.
+## 3. Servidor local y acceso a la API
 
-```bash
-npm install -g nodemon
-```
+`server.js` publica dos rutas locales: `/api/catalog` para las estaciones y `/api/data/{provider}/{sensor}` para consultar una variable. Comprueba los identificadores antes de construir la petición y reenvía al navegador la respuesta de la ACA.
 
-- Crear un archivo llamado *app.js* que servirá de proxy con el servicio de la ACA. Copiar lo siguiente en este archivo.
+### Código de `server.js`
 
 ```js
-var express  = require('express');
-var app      = express();
-var cors = require('cors');
-var httpProxy = require('http-proxy');
-var apiProxy = httpProxy.createProxyServer();
-var serverAca = 'https://aplicacions.aca.gencat.cat/sdim2/apirest/catalog';
+const express = require("express");
 
-app.use(cors());
-app.use(express.static('public'));
+const app = express();
+const port = process.env.PORT || 3000;
+const acaApi = "https://aplicacions.aca.gencat.cat/sdim2/apirest";
 
-app.all("/aca/*", function(req, res) {
-  console.log('redirecting to Server1');
-  apiProxy.web(req, res, {
-    target: serverAca,
-    changeOrigin: false, 
-    ignorePath: true
-  });
+app.use(express.static(__dirname));
+
+app.get("/api/catalog", async (_request, response) => {
+  await forwardJson(
+    `${acaApi}/catalog?componentType=embassament`,
+    response,
+  );
 });
 
-app.listen(3000);
-```
+app.get("/api/data/:provider/:sensor", async (request, response) => {
+  const { provider, sensor } = request.params;
+  const validId = /^[A-Za-z0-9_-]+$/;
 
-- Probar que nuestro proxy está funcionando, escribir:
+  if (!validId.test(provider) || !validId.test(sensor)) {
+    response.status(400).json({ error: "Identificador no válido." });
+    return;
+  }
 
-```bash
-nodemon app.js
-```
-
-- Abrir la url de nuestro proxy http://localhost:3000/aca/ en el navegador.
-
-- Escribir en el navegador http://localhost:3000 y ver nuestro mapa.
-
-### Modificar el mapa
-
-- Modificar el archivo index.html para que llame al proxy que hemos creado. Cambiar la url de la capa geojsonLayer *https://aplicacions.aca.gencat.cat/sdim2/apirest/catalog* por nuestro proxy *http://localhost:3000/aca/* (como el proxy y la aplicación están en el mismo servidor podríamos usar */aca/*).
-
-```html hl_lines="32"
-<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Ejemplo Sentilo ACA</title>
-  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
-  <style>
-    #map {
-        height: 100%;
-        width: 100%;
-        position: absolute;
-    }
-  </style>
-</head>
-<body>
-
-  <div id="map"></div>
-
-  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-ajax/2.1.0/leaflet.ajax.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-  <script>
-    var map = L.map('map');
-
-    map.setView([41.5087, 2.1777], 8);  
-
-    L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
-      attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-    }).addTo(map);
-
-    var geojsonLayer = new L.GeoJSON.AJAX('http://localhost:3000/aca/').addTo(map);
-  </script>
-</body>
-</html>
-```
-
-- Recargar la aplicación con Ctrl+F5 y vemos que el error ha desaparecido. Continuaremos sin ver ningún dato en nuestro mapa. Esto es debido a lo que ya mencionamos; que la API no retorna un GeoJSON. Por lo tanto tendremos que convertir la respuesta de la API en un GeoJSON.
-
-- Convertir la respuesta en un GeoJSON utilizando la opción *middleware* que ofrece la capa GeoJSON.AJAX. Esta opción permite crear una función donde se pueden manipular los datos antes de agregarlos al mapa. Crear la función que transforma los datos de Sentilo de la ACA en un GeoJSON. Escribir al final de nuestro código
-
-```html hl_lines="34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56 57 58 59 60"
-<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Ejemplo Sentilo ACA</title>
-  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
-  <style>
-    #map {
-        height: 100%;
-        width: 100%;
-        position: absolute;
-    }
-  </style>
-</head>
-<body>
-
-  <div id="map"></div>
-
-  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-ajax/2.1.0/leaflet.ajax.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-  <script>
-    var map = L.map('map');
-
-    map.setView([41.5087, 2.1777], 8);  
-
-    L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
-      attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-    }).addTo(map);
-
-    var geojsonLayer = new L.GeoJSON.AJAX('http://localhost:3000/aca/').addTo(map);
-
-    function sentiloAca2geoJSON(data){
-      var geojson = {
-        type: "FeatureCollection",
-        features: []
-      };
-      var sensors = data.providers[1].sensors;
-      for (var i = sensors.length - 1; i >= 0; i--) {
-        var sensor = sensors[i];
-        var location = sensor.location.split(" ");
-        var feature = {
-          type: 'Feature',
-          properties: {
-            description: sensor.description,
-            id: sensor.component,
-            nom: sensor.componentDesc,
-            info: sensor.componentAdditionalInfo,
-            unit: sensor.unit
-          },
-          geometry: {
-            type: 'Point',
-            coordinates: [location[1], location[0]]
-          }
-      };
-      geojson.features.push(feature);
-      }
-      return geojson;
-    }
-  </script>
-</body>
-</html>
-```
-
-- Modificar la capa geojsonLayer para que el middleware llame a nuestra función de transformación. Cambiar el código de la capa por lo siguiente:
-
-```html hl_lines="32 33 34 35 36"
-<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Ejemplo Sentilo ACA</title>
-  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
-  <style>
-    #map {
-        height: 100%;
-        width: 100%;
-        position: absolute;
-    }
-  </style>
-</head>
-<body>
-
-  <div id="map"></div>
-
-  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-ajax/2.1.0/leaflet.ajax.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-  <script>
-    var map = L.map('map');
-
-    map.setView([41.5087, 2.1777], 8);  
-
-    L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
-      attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-    }).addTo(map);
-
-    var geojsonLayer = new L.GeoJSON.AJAX('http://localhost:3000/aca/', {
-      middleware:function(data){
-        return sentiloAca2geoJSON(data);
-      }
-    }).addTo(map);
-
-    function sentiloAca2geoJSON(data){
-      var geojson = {
-        type: "FeatureCollection",
-        features: []
-      };
-      var sensors = data.providers[1].sensors;
-      for (var i = sensors.length - 1; i >= 0; i--) {
-        var sensor = sensors[i];
-        var location = sensor.location.split(" ");
-        var feature = {
-          type: 'Feature',
-          properties: {
-            description: sensor.description,
-            id: sensor.component,
-            nom: sensor.componentDesc,
-            info: sensor.componentAdditionalInfo,
-            unit: sensor.unit
-          },
-          geometry: {
-            type: 'Point',
-            coordinates: [location[1], location[0]]
-          }
-      };
-      geojson.features.push(feature);
-      }
-      return geojson;
-    }
-  </script>
-</body>
-</html>
-```
-
-- Recargar el mapa y ver los puntos de los embalses en el mapa.
-
-- Mostrar la información del punto. Agregar el evento click en cada unos de los puntos. Utilizar la opción de *onEachFeature* que ofrece las capa GeoJSON de Leaflet. Esta opción permite ejecutar una función en la creación de cada uno de los elementos de la capa. Es muy útil para agregar popups a los elementos ó para agregar eventos en los elementos.
-
-- Crear una función llamada *eachFeature* que recibe como parámetros un feature (elemento del GeoJSON) y un layer (elemento de Leaflet). La función sería la siguiente
-
-```html hl_lines="66 67 68 69 70 71"
-<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Ejemplo Sentilo ACA</title>
-  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
-  <style>
-    #map {
-        height: 100%;
-        width: 100%;
-        position: absolute;
-    }
-  </style>
-</head>
-<body>
-
-  <div id="map"></div>
-
-  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-ajax/2.1.0/leaflet.ajax.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-  <script>
-    var map = L.map('map');
-
-    map.setView([41.5087, 2.1777], 8);  
-
-    L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
-      attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-    }).addTo(map);
-
-    var geojsonLayer = new L.GeoJSON.AJAX('http://localhost:3000/aca/', {
-      middleware:function(data){
-        return sentiloAca2geoJSON(data);
-      }
-    }).addTo(map);
-
-    function sentiloAca2geoJSON(data){
-      var geojson = {
-        type: "FeatureCollection",
-        features: []
-      };
-      var sensors = data.providers[1].sensors;
-      for (var i = sensors.length - 1; i >= 0; i--) {
-        var sensor = sensors[i];
-        var location = sensor.location.split(" ");
-        var feature = {
-          type: 'Feature',
-          properties: {
-            description: sensor.description,
-            id: sensor.component,
-            nom: sensor.componentDesc,
-            info: sensor.componentAdditionalInfo,
-            unit: sensor.unit
-          },
-          geometry: {
-            type: 'Point',
-            coordinates: [location[1], location[0]]
-          }
-      };
-      geojson.features.push(feature);
-      }
-      return geojson;
-    }
-
-    function eachFeature(f,l){
-      l.on('click',function(ev){
-        console.log(f);
-        console.log(l);
-      });
-    }
-  </script>
-</body>
-</html>
-```
-
-- Llamar a la función eachFeature en la opción *onEachFeature* de la capa geojsonLayer. Escribir lo siguiente luego de la opción del middleware
-
-```html hl_lines="36"
-<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Ejemplo Sentilo ACA</title>
-  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
-  <style>
-    #map {
-        height: 100%;
-        width: 100%;
-        position: absolute;
-    }
-  </style>
-</head>
-<body>
-
-  <div id="map"></div>
-
-  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-ajax/2.1.0/leaflet.ajax.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-  <script>
-    var map = L.map('map');
-
-    map.setView([41.5087, 2.1777], 8);  
-
-    L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
-      attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-    }).addTo(map);
-
-    var geojsonLayer = new L.GeoJSON.AJAX('http://localhost:3000/aca/', {
-      middleware:function(data){
-        return sentiloAca2geoJSON(data);
-      }
-      ,onEachFeature: eachFeature
-    }).addTo(map);
-
-    function sentiloAca2geoJSON(data){
-      var geojson = {
-        type: "FeatureCollection",
-        features: []
-      };
-      var sensors = data.providers[1].sensors;
-      for (var i = sensors.length - 1; i >= 0; i--) {
-        var sensor = sensors[i];
-        var location = sensor.location.split(" ");
-        var feature = {
-          type: 'Feature',
-          properties: {
-            description: sensor.description,
-            id: sensor.component,
-            nom: sensor.componentDesc,
-            info: sensor.componentAdditionalInfo,
-            unit: sensor.unit
-          },
-          geometry: {
-            type: 'Point',
-            coordinates: [location[1], location[0]]
-          }
-      };
-      geojson.features.push(feature);
-      }
-      return geojson;
-    }
-
-    function eachFeature(f,l){
-      l.on('click',function(ev){
-        console.log(f);
-        console.log(l);
-      });
-    }
-  </script>
-</body>
-</html>
-```
-
-- Recargar el mapa y hacer click sobre un elemento. En la consola de desarrollador ver que aparecen 2 entradas una que corresponde al feature y otra al layer.
-
-- Llamar a la API de la ACA para pedir la última lectura del sensor y así obtener la información. La url para obtener la última lectura es https://aplicacions.aca.gencat.cat/sentilo-catalog-web/component/map/EMBASSAMENT-EST.*.<id_sensor>*/lastOb/.
-
-    Por ejemplo:
-
-    https://aplicacions.aca.gencat.cat/sentilo-catalog-web/component/map/EMBASSAMENT-EST.082687-001/lastOb/
-
-    Como estamos llamando una url que está fuera de nuestro dominio tenemos el mismo problema de CORS.
-
-### Modificar el proxy
-
-- Modificar nuestro proxy para obtener la información de un sensor. Escribir en nuestro archivo app.js justo debajo de la declaración de la variable *serverAca*
-
-```js hl_lines="7"
-var express  = require('express');
-var app      = express();
-var cors = require('cors');
-var httpProxy = require('http-proxy');
-var apiProxy = httpProxy.createProxyServer();
-var serverAca = 'https://aplicacions.aca.gencat.cat/sdim2/apirest/catalog';
-var serverAcaLastOb = 'https://aplicacions.aca.gencat.cat/sentilo-catalog-web/component/map/EMBASSAMENT-EST.';
-
-app.use(cors());
-app.use(express.static('public'));
-
-app.all("/aca/*", function(req, res) {
-  console.log('redirecting to Server1');
-  apiProxy.web(req, res, {
-    target: serverAca,
-    changeOrigin: false, 
-    ignorePath: true
-  });
+  const url = `${acaApi}/data/${encodeURIComponent(provider)}/${encodeURIComponent(sensor)}`;
+  await forwardJson(url, response);
 });
 
-app.listen(3000);
-```
+async function forwardJson(url, response) {
+  try {
+    const acaResponse = await fetch(url, {
+      headers: { Accept: "application/json" },
+    });
+    const body = await acaResponse.text();
+    const contentType = acaResponse.headers.get("content-type");
 
-- Agregar justo antes del app.listen el código que nos va a ser de proxy.
+    response.status(acaResponse.status);
+    if (contentType) response.set("content-type", contentType);
+    response.send(body);
+  } catch (error) {
+    console.error("No se pudo consultar la API de la ACA:", error);
+    response.status(502).json({ error: "No se pudo consultar la API de la ACA." });
+  }
+}
 
-```js hl_lines="21 22 23 24 25 26 27 28"
-var express  = require('express');
-var app      = express();
-var cors = require('cors');
-var httpProxy = require('http-proxy');
-var apiProxy = httpProxy.createProxyServer();
-var serverAca = 'https://aplicacions.aca.gencat.cat/sdim2/apirest/catalog';
-var serverAcaLastOb = 'https://aplicacions.aca.gencat.cat/sentilo-catalog-web/component/map/EMBASSAMENT-EST.';
-
-app.use(cors());
-app.use(express.static('public'));
-
-app.all("/aca/*", function(req, res) {
-  console.log('redirecting to Server1');
-  apiProxy.web(req, res, {
-    target: serverAca,
-    changeOrigin: false, 
-    ignorePath: true
-  });
+app.listen(port, () => {
+  console.log(`Visor disponible en http://localhost:${port}`);
 });
-
-app.all("/acalast/:id", function(req, res){
-  console.log('redirecting to Server2' + req.params.id);
-  apiProxy.web(req, res, {
-    target: serverAcaLastOb+req.params.id+'/lastOb/',
-    changeOrigin: false,
-    ignorePath: true
-  });
-});
-
-app.listen(3000);
 ```
 
-- Abrir la url http://localhost:3000/acalast/082687-001 en el navegador para comprobar que el proxy está funcionando correctamente.
+Express define rutas con `app.get`. El servidor usa `fetch`, disponible en Node.js 18 y versiones posteriores, para consultar la ACA. El catálogo es una consulta más lenta y menos volátil que las medidas; el navegador lo carga una vez al iniciar el mapa y solo consulta medidas cuando se selecciona un embalse.
 
-- Modificar la función que se llama al hacer click sobre un elemento del mapa para que llame a nuestro proxy. Esta función ejecutará una llamada ajax al proxy. Modificar la función *eachFeature* con el siguiente código
+## 4. Transformar el catálogo en GeoJSON
 
-```html hl_lines="69 70 71 72 73 74 75 76 77 78"
-<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Ejemplo Sentilo ACA</title>
-  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
-  <style>
-    #map {
-        height: 100%;
-        width: 100%;
-        position: absolute;
+`aca-data.js` busca el proveedor por su identificador, valida las coordenadas y agrupa las variables por embalse. La función se puede probar de forma independiente y también la utiliza el mapa.
+
+### Código de `aca-data.js`
+
+```js
+function catalogToGeoJSON(catalog) {
+  const provider = catalog?.providers?.find(
+    (item) => item.provider === "EMBASSAMENT-EST",
+  );
+
+  if (!provider) {
+    throw new Error("El catálogo no contiene el proveedor EMBASSAMENT-EST.");
+  }
+
+  const stations = new Map();
+
+  for (const sensor of provider.sensors || []) {
+    const coordinates = String(sensor.location || "")
+      .trim()
+      .split(/\s+/)
+      .map(Number);
+    const [latitude, longitude] = coordinates;
+    const component = sensor.component;
+
+    if (
+      coordinates.length !== 2 ||
+      !Number.isFinite(latitude) ||
+      !Number.isFinite(longitude) ||
+      latitude < 40 || latitude > 43 ||
+      longitude < 0 || longitude > 4 ||
+      !component ||
+      !sensor.sensor
+    ) {
+      continue;
     }
+
+    if (!stations.has(component)) {
+      stations.set(component, {
+        type: "Feature",
+        properties: {
+          provider: provider.provider,
+          component,
+          name: sensor.componentDesc || component,
+          sensors: [],
+        },
+        geometry: {
+          type: "Point",
+          coordinates: [longitude, latitude],
+        },
+      });
+    }
+
+    stations.get(component).properties.sensors.push({
+      id: sensor.sensor,
+      description: sensor.description || sensor.type || "Medida",
+      unit: sensor.unit || "",
+    });
+  }
+
+  return {
+    type: "FeatureCollection",
+    features: Array.from(stations.values()),
+  };
+}
+
+if (typeof module !== "undefined" && module.exports) {
+  module.exports = { catalogToGeoJSON };
+} else {
+  window.AcaSentilo = { catalogToGeoJSON };
+}
+```
+
+En el catálogo, `component` identifica la estación y `sensor` identifica una variable medida. Por eso el mapa crea una entidad GeoJSON por componente, pero conserva todos los identificadores de sensor para poder pedir sus medidas por separado. El módulo exporta la función para poder comprobar la transformación con Node.js.
+
+## 5. Dibujar los embalses y consultar sus medidas
+
+El archivo `index.html` prepara el mapa y carga los dos scripts. `aca-map.js` consulta el catálogo, dibuja un círculo por estación y, al hacer clic, solicita las últimas medidas de sus sensores.
+
+### Código de `index.html`
+
+```html
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Embalses de Cataluña · datos de la ACA</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+  <style>
+    html, body { height: 100%; margin: 0; font: 16px/1.4 system-ui, sans-serif; }
+    #map { height: 100%; }
+    #status {
+      position: absolute;
+      z-index: 1000;
+      top: 12px;
+      left: 12px;
+      max-width: min(390px, calc(100% - 48px));
+      padding: 10px 12px;
+      border-radius: 5px;
+      background: white;
+      box-shadow: 0 1px 5px #5558;
+    }
+    #preview { display: none; max-width: 100%; }
+    #preview img { display: block; width: min(100%, 900px); height: auto; }
   </style>
 </head>
 <body>
-
+  <div id="status" role="status">Cargando los datos de los embalses…</div>
   <div id="map"></div>
+  <figure id="preview">
+    <img src="preview.png" alt="Vista de referencia del mapa de embalses de Cataluña">
+    <figcaption>Vista de referencia. Para cargar medidas actuales, ejecuta el servidor local descrito en la lección.</figcaption>
+  </figure>
 
-  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-ajax/2.1.0/leaflet.ajax.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-  <script>
-    var map = L.map('map');
-
-    map.setView([41.5087, 2.1777], 8);  
-
-    L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
-      attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-    }).addTo(map);
-
-    var geojsonLayer = new L.GeoJSON.AJAX('http://localhost:3000/aca/', {
-      middleware:function(data){
-        return sentiloAca2geoJSON(data);
-      }
-      ,onEachFeature: eachFeature
-    }).addTo(map);
-
-    function sentiloAca2geoJSON(data){
-      var geojson = {
-        type: "FeatureCollection",
-        features: []
-      };
-      var sensors = data.providers[1].sensors;
-      for (var i = sensors.length - 1; i >= 0; i--) {
-        var sensor = sensors[i];
-        var location = sensor.location.split(" ");
-        var feature = {
-          type: 'Feature',
-          properties: {
-            description: sensor.description,
-            id: sensor.component,
-            nom: sensor.componentDesc,
-            info: sensor.componentAdditionalInfo,
-            unit: sensor.unit
-          },
-          geometry: {
-            type: 'Point',
-            coordinates: [location[1], location[0]]
-          }
-      };
-      geojson.features.push(feature);
-      }
-      return geojson;
-    }
-
-    function eachFeature(f,l){
-      l.on('click',function(ev){
-        var url = 'http://localhost:3000/acalast/'+f.properties.id;
-        fetch(url)
-        .then(function(response) {
-          response.json().then(function(data){
-            console.log(data);
-          });
-        })
-        .catch(function(myJson) {
-          console.log(myJson);
-        });
-      });
-    }
-  </script>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="aca-data.js"></script>
+  <script src="aca-map.js"></script>
 </body>
 </html>
 ```
 
-- Recargar el mapa y hacer click sobre un elemento para ver que en la consola del desarrollador aparece un objeto que contiene la respuesta del sensor con la información de la última lectura.
+### Código de `aca-map.js`
 
-- Crear una función llamada *popUp* para mostrar esta información en el mapa. La función recibe como parámetros un layer de Leaflet y unos datos del sensor. Esta función muestra un popup asociado al elemento con la información del sensor. Escribir después de la función eachFeature
+```js
+const map = L.map("map").setView([41.65, 1.5], 8);
+const statusElement = document.getElementById("status");
+const previewElement = document.getElementById("preview");
 
-```html hl_lines="82 83 84 85 86 87 88 89 90 91 92 93"
-<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Ejemplo Sentilo ACA</title>
-  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
-  <style>
-    #map {
-        height: 100%;
-        width: 100%;
-        position: absolute;
+L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
+  attribution: "© OpenStreetMap contributors",
+}).addTo(map);
+
+async function getJson(url) {
+  const response = await fetch(url);
+  if (!response.ok) throw new Error(`Error HTTP ${response.status}`);
+  return response.json();
+}
+
+async function loadStations() {
+  try {
+    const catalog = await getJson("/api/catalog");
+    const geojson = AcaSentilo.catalogToGeoJSON(catalog);
+
+    if (geojson.features.length === 0) {
+      throw new Error("El catálogo no contiene embalses con coordenadas válidas.");
     }
-  </style>
-</head>
-<body>
 
-  <div id="map"></div>
-
-  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-ajax/2.1.0/leaflet.ajax.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-  <script>
-    var map = L.map('map');
-
-    map.setView([41.5087, 2.1777], 8);  
-
-    L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
-      attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+    const layer = L.geoJSON(geojson, {
+      pointToLayer: (_feature, latlng) => L.circleMarker(latlng, {
+        radius: 7,
+        color: "#155e9a",
+        weight: 2,
+        fillColor: "#3b9ddd",
+        fillOpacity: 0.85,
+      }),
+      onEachFeature: (feature, marker) => {
+        marker.on("click", () => showStationReadings(feature, marker));
+      },
     }).addTo(map);
 
-    var geojsonLayer = new L.GeoJSON.AJAX('http://localhost:3000/aca/', {
-      middleware:function(data){
-        return sentiloAca2geoJSON(data);
-      }
-      ,onEachFeature: eachFeature
-    }).addTo(map);
+    map.fitBounds(layer.getBounds().pad(0.12));
+    statusElement.textContent = `${geojson.features.length} embalses cargados. Selecciona un punto para consultar las medidas.`;
+    previewElement.style.display = "none";
+  } catch (error) {
+    console.error(error);
+    statusElement.textContent = "La vista publicada muestra una captura de referencia. Para consultar la API, ejecuta server.js localmente.";
+    map.getContainer().style.display = "none";
+    previewElement.style.display = "block";
+  }
+}
 
-    function sentiloAca2geoJSON(data){
-      var geojson = {
-        type: "FeatureCollection",
-        features: []
-      };
-      var sensors = data.providers[1].sensors;
-      for (var i = sensors.length - 1; i >= 0; i--) {
-        var sensor = sensors[i];
-        var location = sensor.location.split(" ");
-        var feature = {
-          type: 'Feature',
-          properties: {
-            description: sensor.description,
-            id: sensor.component,
-            nom: sensor.componentDesc,
-            info: sensor.componentAdditionalInfo,
-            unit: sensor.unit
-          },
-          geometry: {
-            type: 'Point',
-            coordinates: [location[1], location[0]]
-          }
-      };
-      geojson.features.push(feature);
-      }
-      return geojson;
-    }
+async function showStationReadings(feature, marker) {
+  const popup = document.createElement("div");
+  const title = document.createElement("strong");
+  title.textContent = feature.properties.name;
+  popup.append(title);
 
-    function eachFeature(f,l){
-      l.on('click',function(ev){
-        var url = 'http://localhost:3000/acalast/'+f.properties.id;
-        fetch(url)
-        .then(function(response) {
-          response.json().then(function(data){
-            console.log(data);
-          });
-        })
-        .catch(function(myJson) {
-          console.log(myJson);
-        });
-      });
-    }
+  const message = document.createElement("p");
+  message.textContent = "Consultando las últimas medidas…";
+  popup.append(message);
+  marker.bindPopup(popup).openPopup();
 
-    function popUp(l, data){
-      var out = [];
-      out.push('<strong>'+data.componentDesc+'</strong>');
-        if (data.sensorLastObservations){
-          for (var i = data.sensorLastObservations.length - 1; i >= 0; i--) {
-            var observ = data.sensorLastObservations[i];
-            out.push(observ.sensorType+": "+observ.value+" "+observ.unit);
-          }
-        }
-        l.unbindPopup();
-        l.bindPopup(out.join("<br />")).togglePopup();
+  const readings = await Promise.allSettled(
+    feature.properties.sensors.map(async (sensor) => {
+      const provider = encodeURIComponent(feature.properties.provider);
+      const sensorId = encodeURIComponent(sensor.id);
+      const data = await getJson(`/api/data/${provider}/${sensorId}`);
+      return { sensor, observation: data.observations?.[0] };
+    }),
+  );
+
+  message.remove();
+  const list = document.createElement("ul");
+
+  for (const result of readings) {
+    const item = document.createElement("li");
+    if (result.status === "rejected") {
+      item.textContent = "No se pudo consultar una de las variables.";
+    } else {
+      const { sensor, observation } = result.value;
+      item.textContent = observation
+        ? `${sensor.description}: ${observation.value} ${sensor.unit} · ${observation.timestamp}`
+        : `${sensor.description}: no hay una medida disponible.`;
     }
-  </script>
-</body>
-</html>
+    list.append(item);
+  }
+
+  popup.append(list);
+}
+
+loadStations();
 ```
 
-- Llamar a la función popUp dentro de la función que se llama en el *success* de la llamada ajax. Escribir
+El mapa solo dibuja ubicaciones válidas. En la ficha, `Promise.allSettled` permite mostrar las variables disponibles aunque falle una consulta individual. El texto del popup se construye con `textContent`, y la fecha y unidad ayudan a interpretar cada valor.
 
-```html hl_lines="73"
-<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Ejemplo Sentilo ACA</title>
-  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
-  <style>
-    #map {
-        height: 100%;
-        width: 100%;
-        position: absolute;
-    }
-  </style>
-</head>
-<body>
+!!! question "Prueba breve en clase · 5–10 minutos"
 
-  <div id="map"></div>
-
-  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-ajax/2.1.0/leaflet.ajax.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-  <script>
-    var map = L.map('map');
-
-    map.setView([41.5087, 2.1777], 8);  
-
-    L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
-      attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-    }).addTo(map);
-
-    var geojsonLayer = new L.GeoJSON.AJAX('http://localhost:3000/aca/', {
-      middleware:function(data){
-        return sentiloAca2geoJSON(data);
-      }
-      ,onEachFeature: eachFeature
-    }).addTo(map);
-
-    function sentiloAca2geoJSON(data){
-      var geojson = {
-        type: "FeatureCollection",
-        features: []
-      };
-      var sensors = data.providers[1].sensors;
-      for (var i = sensors.length - 1; i >= 0; i--) {
-        var sensor = sensors[i];
-        var location = sensor.location.split(" ");
-        var feature = {
-          type: 'Feature',
-          properties: {
-            description: sensor.description,
-            id: sensor.component,
-            nom: sensor.componentDesc,
-            info: sensor.componentAdditionalInfo,
-            unit: sensor.unit
-          },
-          geometry: {
-            type: 'Point',
-            coordinates: [location[1], location[0]]
-          }
-      };
-      geojson.features.push(feature);
-      }
-      return geojson;
-    }
-
-    function eachFeature(f,l){
-      l.on('click',function(ev){
-        var url = 'http://localhost:3000/acalast/'+f.properties.id;
-        fetch(url)
-        .then(function(response) {
-          response.json().then(function(data){
-            popUp(l, data);
-          });
-        })
-        .catch(function(myJson) {
-          console.log(myJson);
-        });
-      });
-    }
-
-    function popUp(l, data){
-      var out = [];
-      out.push('<strong>'+data.componentDesc+'</strong>');
-        if (data.sensorLastObservations){
-          for (var i = data.sensorLastObservations.length - 1; i >= 0; i--) {
-            var observ = data.sensorLastObservations[i];
-            out.push(observ.sensorType+": "+observ.value+" "+observ.unit);
-          }
-        }
-        l.unbindPopup();
-        l.bindPopup(out.join("<br />")).togglePopup();
-    }
-  </script>
-</body>
-</html>
-```
-
-- Recargar la aplicación y clicar sobre un elemento. Debe aparecer un popup con la información de la última lectura del sensor.
-
-![ejemplo sentilo ACA](img/sentilo_aca.png)
-*ejemplo sentilo ACA*
+    Abrid la ficha de un embalse y buscad qué campos describen la variable, su unidad y el momento de observación. Después, cambiad el color o el tamaño de los círculos. No hace falta entregar esta prueba.
 
 ## Referencias
 
-[^1]: https://aca.gencat.cat/ca/laigua/consulta-de-dades/dades-obertes/cataleg-dades-obertes/
-[^2]: http://www.sentilo.io/wordpress/
-[^3]: https://aplicacions.aca.gencat.cat/sentilo-catalog-web/component/map
-[^4]: https://aca.gencat.cat/web/.content/20_Aigua/08_consulta_de_dades/01_dades_obertes/02_dades_obertes_temps_real/us_serveis_dades_API_REST.pdf
-[^5]: http://leafletjs.com/
-[^6]: https://github.com/calvinmetcalf/leaflet-ajax
-[^8]: https://es.wikipedia.org/wiki/Servidor_proxy
-[^9]: https://nodejs.org/es/
-[^10]: http://expressjs.com/
-[^11]: https://github.com/nodejitsu/node-http-proxy
-[^12]: https://www.npmjs.com/package/cors
+- [Datos abiertos en tiempo real de la ACA (catalán)](https://aca.gencat.cat/ca/laigua/consulta-de-dades/dades-obertes/dades-obertes-temps-real/)
+- [Manual de la API REST de la ACA (catalán)](https://aca.gencat.cat/web/.content/20_Aigua/08_consulta_de_dades/01_dades_obertes/02_dades_obertes_temps_real/us_serveis_dades_API_REST.pdf)
+- [Mapa oficial de sensores de la ACA](https://aplicacions.aca.gencat.cat/sentilo-catalog-web/component/map)
+- [Sentilo en el Centro de Transferencia de Tecnología de la Administración española](https://administracionelectronica.gob.es/ctt/sentilo)
+- [Documentación oficial de la API Sentilo (inglés)](https://sentilo.readthedocs.io/en/latest/api_docs.html)
+- [Leaflet: guía de inicio (inglés)](https://leafletjs.com/examples/quick-start/)

@@ -1,739 +1,422 @@
-# Ejemplo GTFS
+# 🚌 Ejemplo: representar un feed GTFS en un mapa
 
-## ¿Qué es la GTFS?
+**Resultado final:** [abre la vista previa del mapa de EMT València](ejemplos/gtfs-valencia/index.html). La vista previa usa una copia estática reducida del feed para dibujar más rápido; la aplicación local desarrollada en esta página descarga el feed publicado por EMT València al iniciarse.
 
-La Especificación general de feeds de transporte público (GTFS) define un formato común para los horarios de transporte público y la información geográfica asociada a ellos. Los "feeds" GTFS permiten que las empresas de transporte público publiquen sus datos de transporte y que los programadores escriban aplicaciones que consuman esos datos de manera interoperable [^1].
+En esta práctica convertiremos dos tablas de un feed GTFS en GeoJSON y las mostraremos con Leaflet: las paradas de `stops.txt` y los recorridos descritos en `shapes.txt`. Para leer el archivo ZIP usaremos Node.js en un servidor local. El servidor evita depender de que el navegador permita descargar directamente el ZIP desde el portal y entrega al mapa respuestas GeoJSON sencillas.
 
-## Creación de un visor que muestre las líneas y paradas de un GTFS
+## 1. GTFS estático y GTFS en tiempo real
 
-Para crear un visor de mapas utilizaremos la librería de mapas Leaflet [^2]. Y cargaremos los datos de portal de la Plataforma VLCi (Valencia SmartCity) [^3]     
+GTFS (General Transit Feed Specification) es una especificación abierta para publicar información de transporte público. Un feed **GTFS Schedule** o estático suele ser un archivo ZIP con tablas CSV: rutas, paradas, viajes, calendarios, horarios y, a menudo, geometrías de los recorridos. Las tablas se relacionan mediante identificadores como `route_id`, `trip_id`, `stop_id` y `shape_id`.
 
-- Crear una carpeta con el nombre de *visor-gtfs*.
+GTFS estático describe el servicio planificado. **GTFS Realtime** es otra especificación para comunicar cambios del servicio, alertas y posiciones de vehículos. La página anterior muestra un servicio de posiciones en tiempo real de FGC; aquí trabajamos con horarios y geometrías planificadas.
 
-- Crear una carpeta con el nombre de *public* dentro de la carpeta visor-gtfs.
+Consulta la [referencia oficial de GTFS Schedule en español](https://gtfs.org/es/documentation/schedule/reference/) y el [conjunto GTFS de EMT València](https://opendata.vlci.valencia.es/dataset/google-transit-lines-stops-bus-schedules). El portal publica el feed como ZIP bajo licencia CC BY 4.0. La URL directa utilizada por el ejemplo está en el código del servidor y puede cambiar si el portal reorganiza el recurso.
 
-- Crear un archivo con el nombre de *index.html* dentro de la carpeta public.
+## 2. Crear el mapa base
 
-- Abrir el archivo index.html con un editor de texto y copiar el siguiente código.
+Crea una carpeta llamada `visor-gtfs` con esta estructura. El proyecto incluye el servidor y los archivos del mapa:
+
+```text
+visor-gtfs/
+├── package.json
+├── server.js
+└── public/
+    ├── index.html
+    ├── app.js
+    └── style.css
+```
+
+El HTML carga Leaflet y el código de la aplicación. El objeto `GTFS_URLS` indica al mapa qué direcciones consultar; el servidor local ofrece las rutas `/api/stops` y `/api/shapes`.
 
 ```html
-<!DOCTYPE html>
-<html>
-<head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<meta http-equiv="X-UA-Compatible" content="ie=edge">
-	<title>Ejemplo GTFS</title>
-	<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
-	<style>
-		#map {
-			height: 100%;
-			width: 100%;
-			position: absolute;
-		}
-	</style>
-</head>
-<body>
-
-	<div id="map">
-
-	</div>
-
-	<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-	<script>
-		var map = L.map('map');
-
-		map.setView([39.4652, -0.3861], 13);  
-
-		L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
-			attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-		}).addTo(map);
-	</script>
-</body>
-</html>
+<div id="estado" role="status">Cargando feed GTFS…</div>
+<div id="map" aria-label="Mapa de paradas y recorridos de EMT València"></div>
+<script>
+  window.GTFS_URLS = { paradas: "/api/stops", lineas: "/api/shapes" };
+</script>
 ```
 
-- Abrir el archivo index.html en el navegador para confirmar que se carga un mapa centrado en Valencia.
+## 3. Preparar Node.js y las dependencias
 
-## Crear el proxy
-
-- Crear un archivo con el nombre de *package.json* dentro de la carpeta.
-
-- Abrir el archivo package.json con un editor de texto y copiar el siguiente código.
-
-```js
-{
-	"name": "visor-gtfs",
-	"version": "1.0.0",
-	"description": "",
-	"main": "index.js",
-	"scripts": {
-		"test": "echo \"Error: no test specified\" && exit 1"
-	},
-	"author": "",
-	"license": "ISC",
-	"dependencies": {
-		"assert": "^2.0.0",
-		"cors": "^2.8.5",
-		"express": "^4.17.1",
-		"fast-csv": "^3.4.0",
-		"request": "^2.88.0",
-		"yauzl": "^2.10.0"
-	}
-}
-```
-
-- Instalar Node.js [^4]. Descargar la última versión LTS y lo instalaremos con las opciones por defecto. Abrir la consola para verificar que se ha instalado correctamente y escribir
-
-```bash
-node -v
-```
-
-- Navegar hasta nuestra carpeta *visor-gtfs* y escribir:
+Instala [Node.js (versión 18 o posterior)](https://nodejs.org/es/). En la carpeta del proyecto ejecuta:
 
 ```bash
 npm install
+npm start
 ```
 
-Con este comando estamos instalando las dependencias declaradas en el archivo *package.json*
+El proyecto usa Express para el servidor, JSZip para abrir el feed ZIP y `csv-parse` para leer las tablas CSV. Son dependencias declaradas en `package.json`; no hace falta instalar herramientas globales como `nodemon`.
 
-Al ejecutar estos comandos veremos que se crea una carpeta llamada *node_modules* donde se guardan los módulos instalados.
+## 4. Descargar el ZIP y leer las tablas GTFS
 
-- Instalar el módulo nodemon [^8] de manera global.
-
-```bash
-npm install -g nodemon
-```
-
-- Crear un archivo llamado *app.js* que servirá de proxy con el servicio GTFS. Copiar lo siguiente en este archivo.
+El servidor descarga el feed una vez al iniciarse. Después abre el ZIP en memoria y busca `stops.txt` y `shapes.txt`, aunque el proveedor los haya colocado dentro de una carpeta. El parser CSV reconoce campos entre comillas y los encabezados de las tablas.
 
 ```js
-var express  = require('express');
-var app      = express();
-var cors = require('cors');
-var request = require('request');
-var path = require('path');
-var https = require('https');
-var fs = require('fs');
-var yauzl = require("yauzl");
+async function leerTabla(zip, nombre) {
+  const archivo = Object.values(zip.files).find(
+    (entrada) => !entrada.dir && entrada.name.split("/").pop() === nombre,
+  );
+  if (!archivo) throw new Error(`El feed GTFS no contiene ${nombre}`);
 
-app.use(cors());
-app.use(express.static('public'));
-
-app.listen(3000);
-```
-
-- Probar que nuestro proxy está funcionando, escribir:
-
-```bash
-nodemon app.js
-```
-
-- Escribir en el navegador http://localhost:3000 y ver nuestro mapa.
-
-- Crear un archivo llamado *gtfs2geojson.js*. Copiar en el archivo el código del siguiente enlace https://raw.githubusercontent.com/andrewharvey/gtfs2geojson/master/index.js este código convierte datos de un GTFS en un GeoJSON. Código basado en la librería https://github.com/andrewharvey/gtfs2geojson
-
-- Cargar en archivo en nuestra app.js. Escribir lo siguiente justo después de donde se carga el módulo yauzl
-
-```js hl_lines="9"
-var express  = require('express');
-var app      = express();
-var cors = require('cors');
-var request = require('request');
-var path = require('path');
-var https = require('https');
-var fs = require('fs');
-var yauzl = require("yauzl");
-var gtfs2geojson = require('./gtfs2geojson.js');
-
-app.use(cors());
-app.use(express.static('public'));
-
-app.listen(3000);
-```
-
-- Crear la variable que contiene la url del servicio GTFS de Líneas, paradas, horarios de autobuses de la EMT de Valencia [^5]. Escribir lo siguiente justo después de la variable *gtfs2geojson*
-
-```js hl_lines="11"
-var express  = require('express');
-var app      = express();
-var cors = require('cors');
-var request = require('request');
-var path = require('path');
-var https = require('https');
-var fs = require('fs');
-var yauzl = require("yauzl");
-var gtfs2geojson = require('./gtfs2geojson.js');
-
-const url = 'https://opendata.vlci.valencia.es/dataset/ab058cf8-ad3e-4d9c-ac89-0c6367ecf351/resource/c81b69e6-c082-44dc-acc6-66fc417b4e66/download/google_transit.zip';
-
-app.use(cors());
-app.use(express.static('public'));
-
-app.listen(3000);
-```
-
-- Crear una función llamada getZip para descargar un archivo. La función recibe como parámetro una url. Escribir lo siguiente al final del archivo app.js
-
-```js hl_lines="18 19 20 21 22 23 24 25 26 27 28"
-var express  = require('express');
-var app      = express();
-var cors = require('cors');
-var request = require('request');
-var path = require('path');
-var https = require('https');
-var fs = require('fs');
-var yauzl = require("yauzl");
-var gtfs2geojson = require('./gtfs2geojson.js');
-
-const url = 'https://opendata.vlci.valencia.es/dataset/ab058cf8-ad3e-4d9c-ac89-0c6367ecf351/resource/c81b69e6-c082-44dc-acc6-66fc417b4e66/download/google_transit.zip';
-
-app.use(cors());
-app.use(express.static('public'));
-
-app.listen(3000);
-
-function getZip(url){
-	return new Promise(function (resolve, reject) {
-		var file = fs.createWriteStream("gtfs.zip");
-		var request = https.get(url, function(response) {
-			response.pipe(file);
-		});
-		file.on('finish', function(){
-			resolve();
-		});
-	}); 
+  const texto = await archivo.async("string");
+  return parse(texto, {
+    bom: true,
+    columns: true,
+    skip_empty_lines: true,
+  });
 }
 ```
 
-- Crear una función que extrae un archivo de un zip. La función recibe como parámetro el nombre del archivo que se desea extraer. Escribir lo siguiente al final del archivo app.js
+## 5. Convertir paradas y recorridos a GeoJSON
 
-```js hl_lines="30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56 57 58 59"
-var express  = require('express');
-var app      = express();
-var cors = require('cors');
-var request = require('request');
-var path = require('path');
-var https = require('https');
-var fs = require('fs');
-var yauzl = require("yauzl");
-var gtfs2geojson = require('./gtfs2geojson.js');
+Cada fila válida de `stops.txt` se convierte en un punto GeoJSON. GTFS almacena primero longitud y luego latitud al crear las coordenadas GeoJSON: `[stop_lon, stop_lat]`.
 
-const url = 'https://opendata.vlci.valencia.es/dataset/ab058cf8-ad3e-4d9c-ac89-0c6367ecf351/resource/c81b69e6-c082-44dc-acc6-66fc417b4e66/download/google_transit.zip';
+En `shapes.txt`, varias filas con el mismo `shape_id` forman una línea. Las ordenamos por `shape_pt_sequence` antes de construir la geometría `LineString`. Así, el mapa dibuja cada recorrido en el orden correcto.
 
-app.use(cors());
-app.use(express.static('public'));
-
-app.listen(3000);
-
-function getZip(url){
-	return new Promise(function (resolve, reject) {
-		var file = fs.createWriteStream("gtfs.zip");
-		var request = https.get(url, function(response) {
-			response.pipe(file);
-		});
-		file.on('finish', function(){
-			resolve();
-		});
-	}); 
-}
-
-function leerZip(archivo){
-	return new Promise(function (resolve, reject) {
-		yauzl.open('gtfs.zip', {lazyEntries: true}, function(err, zipfile) {
-			if (err) throw err;
-			zipfile.readEntry();
-			zipfile.on("entry", function(entry) {
-			if (/\/$/.test(entry.fileName)) {
-				// Directory file names end with '/'.
-				// Note that entires for directories themselves are optional.
-				// An entry's fileName implicitly requires its parent directories to exist.
-				zipfile.readEntry();
-			} else {
-				// file entry
-				if(entry.fileName === archivo){
-				zipfile.openReadStream(entry, function(err, readStream) {
-					if (err) throw err;
-					var file = fs.createWriteStream(entry.fileName);
-					readStream.pipe(file); 
-					file.on('finish', function(){
-						resolve();
-					});
-				});
-				}else{
-				zipfile.readEntry();
-				}
-			}
-			});
-		});
-	}); 
-}
-```
-
-- Descargar el archivo GTFS y guardarlo en el ordenador. Escribir lo siguiente justo antes de la línea donde definimos el puerto por el cual escucha nuestro servidor
-
-```js hl_lines="16 17 18 19 20 21 22"
-var express  = require('express');
-var app      = express();
-var cors = require('cors');
-var request = require('request');
-var path = require('path');
-var https = require('https');
-var fs = require('fs');
-var yauzl = require("yauzl");
-var gtfs2geojson = require('./gtfs2geojson.js');
-
-const url = 'https://opendata.vlci.valencia.es/dataset/ab058cf8-ad3e-4d9c-ac89-0c6367ecf351/resource/c81b69e6-c082-44dc-acc6-66fc417b4e66/download/google_transit.zip';
-
-app.use(cors());
-app.use(express.static('public'));
-
-app.all("/getdata/*", function(req, res) {
-	getZip(url).then(function(){
-		Promise.all([leerZip('shapes.txt'),leerZip('stops.txt')]).then(values => {
-			res.json({"msg": "archivos descargados"});
-		});
-	});
+```js
+const grupos = new Map();
+puntosForma.forEach((punto) => {
+  if (!grupos.has(punto.shape_id)) grupos.set(punto.shape_id, []);
+  grupos.get(punto.shape_id).push({
+    secuencia: Number(punto.shape_pt_sequence),
+    coordenada: [Number(punto.shape_pt_lon), Number(punto.shape_pt_lat)],
+  });
 });
 
-app.listen(3000);
-
-function getZip(url){
-	return new Promise(function (resolve, reject) {
-		var file = fs.createWriteStream("gtfs.zip");
-		var request = https.get(url, function(response) {
-			response.pipe(file);
-		});
-		file.on('finish', function(){
-			resolve();
-		});
-	}); 
-}
-
-function leerZip(archivo){
-	return new Promise(function (resolve, reject) {
-		yauzl.open('gtfs.zip', {lazyEntries: true}, function(err, zipfile) {
-			if (err) throw err;
-			zipfile.readEntry();
-			zipfile.on("entry", function(entry) {
-			if (/\/$/.test(entry.fileName)) {
-				// Directory file names end with '/'.
-				// Note that entires for directories themselves are optional.
-				// An entry's fileName implicitly requires its parent directories to exist.
-				zipfile.readEntry();
-			} else {
-				// file entry
-				if(entry.fileName === archivo){
-				zipfile.openReadStream(entry, function(err, readStream) {
-					if (err) throw err;
-					var file = fs.createWriteStream(entry.fileName);
-					readStream.pipe(file); 
-					file.on('finish', function(){
-						resolve();
-					});
-				});
-				}else{
-				zipfile.readEntry();
-				}
-			}
-			});
-		});
-	}); 
-}
+const featuresLineas = [...grupos.entries()].map(([shapeId, puntos]) => {
+  puntos.sort((a, b) => a.secuencia - b.secuencia);
+  return {
+    type: "Feature",
+    properties: { shape_id: shapeId },
+    geometry: {
+      type: "LineString",
+      coordinates: puntos.map((punto) => punto.coordenada),
+    },
+  };
+});
 ```
 
-- Abrir la url http://localhost:3000/getdata/ en el navegador para comprobar que se han descargado correctamente los archivos *gtfs.zip*, *shapes.txt* y *stops.txt*.
+El código completo también descarta coordenadas no numéricas y geometrías con menos de dos puntos.
 
-- Leer los archivos GTFS y convertirlos a GeoJson. Escribir lo siguiente justo antes de la línea donde definimos el puerto por el cual escucha nuestro servidor
+## 6. Publicar los GeoJSON desde el servidor
 
-```js hl_lines="24 25 26 27 28 29 30 31 32 33 34"
-var express  = require('express');
-var app      = express();
-var cors = require('cors');
-var request = require('request');
-var path = require('path');
-var https = require('https');
-var fs = require('fs');
-var yauzl = require("yauzl");
-var gtfs2geojson = require('./gtfs2geojson.js');
+Una vez convertidas las tablas, Express las devuelve desde dos rutas. La página del mapa consume estas rutas con `fetch` y dibuja las respuestas mediante `L.geoJSON`.
 
-const url = 'https://opendata.vlci.valencia.es/dataset/ab058cf8-ad3e-4d9c-ac89-0c6367ecf351/resource/c81b69e6-c082-44dc-acc6-66fc417b4e66/download/google_transit.zip';
-
-app.use(cors());
-app.use(express.static('public'));
-
-app.all("/getdata/*", function(req, res) {
-	getZip(url).then(function(){
-		Promise.all([leerZip('shapes.txt'),leerZip('stops.txt')]).then(values => {
-			res.json({"msg": "archivos descargados"});
-		});
-	});
+```js
+app.get("/api/stops", (req, res) => {
+  res.json(datosGTFS.paradas);
 });
 
-app.all("/stops/*", function(req, res) {
-	gtfs2geojson.stops(fs.readFileSync('stops.txt', 'utf8'), function(result){
-		res.json(result);
-	});
+app.get("/api/shapes", (req, res) => {
+  res.json(datosGTFS.lineas);
 });
+```
 
-app.all("/shapes/*", function(req, res) {
-	gtfs2geojson.lines(fs.readFileSync('shapes.txt', 'utf8'), function(result){
-		res.json(result);
-	});
-});
+Al abrir `http://localhost:3000` se muestran las paradas y los recorridos. Puedes pulsar una parada para ver su nombre y código. Los colores de los recorridos ayudan a distinguir geometrías; se asignan en el navegador para esta demostración y no representan necesariamente el color oficial de cada línea.
 
-app.listen(3000);
+> **Atribución:** los datos de transporte proceden de EMT València / Ajuntament de València y se publican con licencia [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/deed.es). La cartografía base es de OpenStreetMap.
 
-function getZip(url){
-	return new Promise(function (resolve, reject) {
-		var file = fs.createWriteStream("gtfs.zip");
-		var request = https.get(url, function(response) {
-			response.pipe(file);
-		});
-		file.on('finish', function(){
-			resolve();
-		});
-	}); 
-}
+## Actividad breve en clase (5–10 minutos)
 
-function leerZip(archivo){
-	return new Promise(function (resolve, reject) {
-		yauzl.open('gtfs.zip', {lazyEntries: true}, function(err, zipfile) {
-			if (err) throw err;
-			zipfile.readEntry();
-			zipfile.on("entry", function(entry) {
-			if (/\/$/.test(entry.fileName)) {
-				// Directory file names end with '/'.
-				// Note that entires for directories themselves are optional.
-				// An entry's fileName implicitly requires its parent directories to exist.
-				zipfile.readEntry();
-			} else {
-				// file entry
-				if(entry.fileName === archivo){
-				zipfile.openReadStream(entry, function(err, readStream) {
-					if (err) throw err;
-					var file = fs.createWriteStream(entry.fileName);
-					readStream.pipe(file); 
-					file.on('finish', function(){
-						resolve();
-					});
-				});
-				}else{
-				zipfile.readEntry();
-				}
-			}
-			});
-		});
-	}); 
+🟦 **Explora las tablas**
+
+Abre el conjunto de EMT València y localiza `stops.txt`, `shapes.txt` y `trips.txt`. ¿Qué identificador permite agrupar los puntos que forman una geometría? ¿Por qué no se puede deducir el horario de paso de un autobús solo mirando `shapes.txt`?
+
+## Código completo
+
+Los siguientes archivos forman el proyecto ejecutable. Guarda cada bloque con el nombre que indica el encabezado.
+
+### `package.json`
+
+```json
+{
+  "name": "visor-gtfs-valencia",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Visor didáctico de datos GTFS de EMT València",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "csv-parse": "7.0.3",
+    "express": "5.3.0",
+    "jszip": "3.10.2"
+  }
 }
 ```
 
-- Abrir la url http://localhost:3000/stops/ en el navegador para comprobar que se muestra un GeoJson con la información de las paradas. 
+### `server.js`
 
-## Modificar el mapa
+```js
+const path = require("node:path");
+const express = require("express");
+const JSZip = require("jszip");
+const { parse } = require("csv-parse/sync");
 
-- Cargar este JSON en nuestro mapa utilizando un plugin de Leaflet llamado *leaflet-ajax* [^6]. Este plugin permite hacer una llamada AJAX a un servicio que retorne un JSON y cargar la respuesta en un mapa. Para cargar este plugin debemos agregar lo siguiente justo después de donde hemos cargado el leaflet
+const FEED_URL =
+  process.env.GTFS_URL ||
+  "https://opendata.vlci.valencia.es/dataset/ab058cf8-ad3e-4d9c-ac89-0c6367ecf351/resource/c81b69e6-c082-44dc-acc6-66fc417b4e66/download/google_transit.zip";
+const PORT = Number(process.env.PORT || 3000);
+const app = express();
 
-```html hl_lines="24"
+async function leerTabla(zip, nombre) {
+  const archivo = Object.values(zip.files).find(
+    (entrada) => !entrada.dir && entrada.name.split("/").pop() === nombre,
+  );
+  if (!archivo) throw new Error(`El feed GTFS no contiene ${nombre}`);
+
+  const texto = await archivo.async("string");
+  return parse(texto, {
+    bom: true,
+    columns: true,
+    skip_empty_lines: true,
+  });
+}
+
+function crearGeoJSON(paradas, puntosForma) {
+  const featuresParadas = paradas.flatMap((parada) => {
+    const lat = Number(parada.stop_lat);
+    const lon = Number(parada.stop_lon);
+    if (!parada.stop_id || !Number.isFinite(lat) || !Number.isFinite(lon))
+      return [];
+    return [
+      {
+        type: "Feature",
+        id: parada.stop_id,
+        properties: {
+          stop_id: parada.stop_id,
+          stop_name: parada.stop_name || "Parada sin nombre",
+        },
+        geometry: { type: "Point", coordinates: [lon, lat] },
+      },
+    ];
+  });
+
+  const grupos = new Map();
+  puntosForma.forEach((punto) => {
+    const lat = Number(punto.shape_pt_lat);
+    const lon = Number(punto.shape_pt_lon);
+    if (!punto.shape_id || !Number.isFinite(lat) || !Number.isFinite(lon))
+      return;
+    if (!grupos.has(punto.shape_id)) grupos.set(punto.shape_id, []);
+    grupos.get(punto.shape_id).push({
+      secuencia: Number(punto.shape_pt_sequence),
+      coordenada: [lon, lat],
+    });
+  });
+
+  const featuresLineas = [...grupos.entries()].flatMap(([shapeId, puntos]) => {
+    puntos.sort((a, b) => a.secuencia - b.secuencia);
+    if (puntos.length < 2) return [];
+    return [
+      {
+        type: "Feature",
+        id: shapeId,
+        properties: { shape_id: shapeId },
+        geometry: {
+          type: "LineString",
+          coordinates: puntos.map((punto) => punto.coordenada),
+        },
+      },
+    ];
+  });
+
+  return {
+    paradas: { type: "FeatureCollection", features: featuresParadas },
+    lineas: { type: "FeatureCollection", features: featuresLineas },
+  };
+}
+
+async function cargarFeed() {
+  const respuesta = await fetch(FEED_URL, {
+    signal: AbortSignal.timeout(30_000),
+  });
+  if (!respuesta.ok)
+    throw new Error(`El portal GTFS respondió HTTP ${respuesta.status}`);
+  const zip = await JSZip.loadAsync(await respuesta.arrayBuffer());
+  const [paradas, puntosForma] = await Promise.all([
+    leerTabla(zip, "stops.txt"),
+    leerTabla(zip, "shapes.txt"),
+  ]);
+  return crearGeoJSON(paradas, puntosForma);
+}
+
+app.use(express.static(path.join(__dirname, "public")));
+
+let datosGTFS;
+app.get("/api/stops", (req, res) => {
+  if (!datosGTFS)
+    return res.status(503).json({ error: "El feed todavía se está cargando" });
+  res.json(datosGTFS.paradas);
+});
+app.get("/api/shapes", (req, res) => {
+  if (!datosGTFS)
+    return res.status(503).json({ error: "El feed todavía se está cargando" });
+  res.json(datosGTFS.lineas);
+});
+
+cargarFeed()
+  .then((datos) => {
+    datosGTFS = datos;
+    app.listen(PORT, () => {
+      console.log(`Visor GTFS listo en http://localhost:${PORT}`);
+      console.log(
+        `${datos.paradas.features.length} paradas y ${datos.lineas.features.length} recorridos cargados`,
+      );
+    });
+  })
+  .catch((error) => {
+    console.error(`No se pudo cargar el feed GTFS: ${error.message}`);
+    process.exitCode = 1;
+  });
+```
+
+### `public/index.html`
+
+```html
 <!DOCTYPE html>
-<html>
-<head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<meta http-equiv="X-UA-Compatible" content="ie=edge">
-	<title>Ejemplo GTFS</title>
-	<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
-	<style>
-		#map {
-			height: 100%;
-			width: 100%;
-			position: absolute;
-		}
-	</style>
-</head>
-<body>
-
-	<div id="map">
-
-	</div>
-
-	<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-ajax/2.1.0/leaflet.ajax.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-	<script>
-		var map = L.map('map');
-
-		map.setView([39.4652, -0.3861], 13);  
-
-		L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
-			attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-		}).addTo(map);
-	</script>
-</body>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Visor GTFS de EMT València</title>
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div id="estado" role="status">Cargando feed GTFS…</div>
+    <div
+      id="map"
+      aria-label="Mapa de paradas y recorridos de EMT València"
+    ></div>
+    <script>
+      window.GTFS_URLS = { paradas: "/api/stops", lineas: "/api/shapes" };
+    </script>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="app.js"></script>
+  </body>
 </html>
 ```
 
-- Utilizar el plugin para agregar la capa de paradas al mapa llamando a nuestro servidor. Agregar lo siguiente al final de nuestro código:
+### `public/app.js`
 
-```html hl_lines="34 35 36 37 38 39 40 41 42 43 44 45 46 47 48"
-<!DOCTYPE html>
-<html>
-<head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<meta http-equiv="X-UA-Compatible" content="ie=edge">
-	<title>Ejemplo GTFS</title>
-	<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
-	<style>
-		#map {
-			height: 100%;
-			width: 100%;
-			position: absolute;
-		}
-	</style>
-</head>
-<body>
+```js
+const map = L.map("map").setView([39.4652, -0.3861], 12);
+const estado = document.querySelector("#estado");
 
-	<div id="map">
+L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+  attribution:
+    '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap contributors</a>',
+  maxZoom: 19,
+}).addTo(map);
+map.attributionControl.addAttribution(
+  '<a href="https://opendata.vlci.valencia.es/dataset/google-transit-lines-stops-bus-schedules">Datos EMT València</a> · <a href="https://creativecommons.org/licenses/by/4.0/deed.es">CC BY 4.0</a>',
+);
 
-	</div>
+function colorDeLinea(shapeId) {
+  let hash = 0;
+  for (const caracter of shapeId)
+    hash = (hash * 31 + caracter.charCodeAt(0)) >>> 0;
+  return `hsl(${hash % 360} 72% 42%)`;
+}
 
-	<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-ajax/2.1.0/leaflet.ajax.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-	<script>
-		var map = L.map('map');
+function popupParada(datos) {
+  const contenido = document.createElement("div");
+  const nombre = document.createElement("strong");
+  nombre.textContent = datos.stop_name || "Parada sin nombre";
+  const id = document.createElement("div");
+  id.textContent = `Código: ${datos.stop_id || "No disponible"}`;
+  contenido.append(nombre, id);
+  return contenido;
+}
 
-		map.setView([39.4652, -0.3861], 13);  
+async function cargarGeoJSON(url) {
+  const respuesta = await fetch(url);
+  if (!respuesta.ok)
+    throw new Error(`Error HTTP ${respuesta.status} al consultar ${url}`);
+  const datos = await respuesta.json();
+  if (datos.type !== "FeatureCollection" || !Array.isArray(datos.features)) {
+    throw new Error(`La respuesta de ${url} no tiene estructura GeoJSON`);
+  }
+  return datos;
+}
 
-		L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
-			attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-		}).addTo(map);
+async function iniciarVisor() {
+  try {
+    const [datosLineas, datosParadas] = await Promise.all([
+      cargarGeoJSON(window.GTFS_URLS.lineas),
+      cargarGeoJSON(window.GTFS_URLS.paradas),
+    ]);
 
-		var geojsonParadas = new L.GeoJSON.AJAX('/stops/',{
-            pointToLayer: function (feature, latlng) {                    
-                return new L.CircleMarker(latlng, {
-                    radius: 5,
-                    fillColor: "#A30000",
-                    color: "#A30000",
-                    weight: 1,
-                    opacity: 1,
-                    fillOpacity: 0.8
-                });
-            },
-            onEachFeature: function (feature, layer) {
-                layer.bindPopup(feature.properties.stop_name);
-            }
-        }).addTo(map);
-	</script>
-</body>
-</html>
+    const lineas = L.geoJSON(datosLineas, {
+      style: (feature) => ({
+        color: colorDeLinea(String(feature.properties?.shape_id || "ruta")),
+        weight: 3,
+        opacity: 0.75,
+      }),
+    }).addTo(map);
+
+    const paradas = L.geoJSON(datosParadas, {
+      pointToLayer: (feature, latlng) =>
+        L.circleMarker(latlng, {
+          radius: 4,
+          fillColor: "#a30000",
+          color: "#ffffff",
+          weight: 1,
+          fillOpacity: 0.9,
+        }),
+      onEachFeature: (feature, layer) =>
+        layer.bindPopup(popupParada(feature.properties || {})),
+    }).addTo(map);
+
+    const bounds = L.featureGroup([lineas, paradas]).getBounds();
+    if (bounds.isValid()) map.fitBounds(bounds.pad(0.04));
+    estado.textContent = `${datosLineas.features.length} recorridos y ${datosParadas.features.length} paradas · feed GTFS estático`;
+  } catch (error) {
+    estado.textContent = `No se pudieron cargar los datos: ${error.message}`;
+  }
+}
+
+iniciarVisor();
 ```
 
-- Recargar el mapa y comprobar que aparecen los puntos de las paradas en el mapa.
+### `public/style.css`
 
-- Utilizar el plugin para agregar la capa de líneas al mapa llamando a nuestro servidor. Agregar lo siguiente al final de nuestro código:
-
-```html hl_lines="50 51 52"
-<!DOCTYPE html>
-<html>
-<head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<meta http-equiv="X-UA-Compatible" content="ie=edge">
-	<title>Ejemplo GTFS</title>
-	<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
-	<style>
-		#map {
-			height: 100%;
-			width: 100%;
-			position: absolute;
-		}
-	</style>
-</head>
-<body>
-
-	<div id="map">
-
-	</div>
-
-	<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-ajax/2.1.0/leaflet.ajax.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-	<script>
-		var map = L.map('map');
-
-		map.setView([39.4652, -0.3861], 13);  
-
-		L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
-			attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-		}).addTo(map);
-
-		var geojsonParadas = new L.GeoJSON.AJAX('/stops/',{
-            pointToLayer: function (feature, latlng) {                    
-                return new L.CircleMarker(latlng, {
-                    radius: 5,
-                    fillColor: "#A30000",
-                    color: "#A30000",
-                    weight: 1,
-                    opacity: 1,
-                    fillOpacity: 0.8
-                });
-            },
-            onEachFeature: function (feature, layer) {
-                layer.bindPopup(feature.properties.stop_name);
-            }
-        }).addTo(map);
-
-		var geojsonLineas = new L.GeoJSON.AJAX('/shapes/',{
-           
-        }).addTo(map);
-	</script>
-</body>
-</html>
+```css
+html,
+body,
+#map {
+  height: 100%;
+  margin: 0;
+}
+body {
+  font-family: system-ui, sans-serif;
+}
+#estado {
+  position: absolute;
+  z-index: 1000;
+  top: 12px;
+  left: 60px;
+  max-width: min(520px, calc(100vw - 100px));
+  padding: 9px 12px;
+  border-radius: 6px;
+  background: #fff;
+  box-shadow: 0 1px 5px #5558;
+  font-size: 14px;
+}
 ```
 
-- Recargar el mapa y comprobar que aparecen las líneas del bus en el mapa.
+!!! exercise "Ejercicio entregable · 2,5 puntos"
 
-- Cargar la librería de manipulación de colores **chroma.js** [^7]. Escribir lo siguiente después de donde cargamos el plugin de leaflet.ajax
+    1. Carga en el visor el feed GTFS estático de [FGC](https://dadesobertes.fgc.cat/explore/assets/gtfs_zip/?flg=es-es) y centra el mapa en Cataluña para que se vea la red (1 punto).
+    2. Añade un popup a las líneas que muestre el valor de `shape_id` (0,5 puntos).
+    3. Añade al mapa los trenes en tiempo real de FGC (1 punto).
 
-```html hl_lines="25"
-<!DOCTYPE html>
-<html>
-<head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<meta http-equiv="X-UA-Compatible" content="ie=edge">
-	<title>Ejemplo GTFS</title>
-	<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
-	<style>
-		#map {
-			height: 100%;
-			width: 100%;
-			position: absolute;
-		}
-	</style>
-</head>
-<body>
-
-	<div id="map">
-
-	</div>
-
-	<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-ajax/2.1.0/leaflet.ajax.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/chroma-js/2.0.6/chroma.min.js"></script>
-	<script>
-		var map = L.map('map');
-
-		map.setView([39.4652, -0.3861], 13);  
-
-		L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
-			attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-		}).addTo(map);
-
-		var geojsonParadas = new L.GeoJSON.AJAX('/stops/',{
-            pointToLayer: function (feature, latlng) {                    
-                return new L.CircleMarker(latlng, {
-                    radius: 5,
-                    fillColor: "#A30000",
-                    color: "#A30000",
-                    weight: 1,
-                    opacity: 1,
-                    fillOpacity: 0.8
-                });
-            },
-            onEachFeature: function (feature, layer) {
-                layer.bindPopup(feature.properties.stop_name);
-            }
-        }).addTo(map);
-
-		var geojsonLineas = new L.GeoJSON.AJAX('/shapes/',{
-           
-        }).addTo(map);
-	</script>
-</body>
-</html>
-```
-
-- Dar estilo a la capa de líneas generando un color aleatorio. Escribir lo siguiente en las opciones de la capa geojsonLineas
-
-```html hl_lines="52 53 54"
-<!DOCTYPE html>
-<html>
-<head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<meta http-equiv="X-UA-Compatible" content="ie=edge">
-	<title>Ejemplo GTFS</title>
-	<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
-	<style>
-		#map {
-			height: 100%;
-			width: 100%;
-			position: absolute;
-		}
-	</style>
-</head>
-<body>
-
-	<div id="map">
-
-	</div>
-
-	<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-ajax/2.1.0/leaflet.ajax.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/chroma-js/2.0.6/chroma.min.js"></script>
-	<script>
-		var map = L.map('map');
-
-		map.setView([39.4652, -0.3861], 13);  
-
-		L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
-			attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-		}).addTo(map);
-
-		var geojsonParadas = new L.GeoJSON.AJAX('/stops/',{
-            pointToLayer: function (feature, latlng) {                    
-                return new L.CircleMarker(latlng, {
-                    radius: 5,
-                    fillColor: "#A30000",
-                    color: "#A30000",
-                    weight: 1,
-                    opacity: 1,
-                    fillOpacity: 0.8
-                });
-            },
-            onEachFeature: function (feature, layer) {
-                layer.bindPopup(feature.properties.stop_name);
-            }
-        }).addTo(map);
-
-		var geojsonLineas = new L.GeoJSON.AJAX('/shapes/',{
-           	style: function(geoJsonFeature){
-            	return {color: chroma.random(), opacity: 0.5};
-       		}
-        }).addTo(map);
-	</script>
-</body>
-</html>
-```
-	
-- Recargar el mapa y comprobar que aparecen las líneas del bus en el mapa con colores aleatorios.
-
-![ejemplo gtfs](img/mapa_gtfs.png)
-*ejemplo gtfs*
-
-!!! question "Ejercicios 2,5 pts"
-	1. Cargar datos del gtfs de FGC https://www.fgc.cat/es/opendata/ y centrar en mapa en Catalunya para que se vean los datos(1 pt)
-	
-	2. Mostrar un popup con información de la propiedad *shape_id* al hacer click en la capa de líneas (0,5 pt)
-
-	3. Mostrar los trenes en tiempo real (1 pt)
-
-## Referencias
-
-[^1]: https://developers.google.com/transit/gtfs/?hl=es-419
-[^2]: http://leafletjs.com/
-[^3]: https://opendata.vlci.valencia.es
-[^4]: https://nodejs.org/es/
-[^5]: http://gobiernoabierto.valencia.es/es/dataset/?id=google-transit-lineas-paradas-horarios-de-autobuses
-[^6]: https://github.com/calvinmetcalf/leaflet-ajax
-[^7]: https://github.com/gka/chroma.js/
+    El código de la práctica termina antes de estos cambios: tendrás que investigar el feed y completar las tres tareas. Puedes consultar el [ejemplo anterior de posiciones FGC en tiempo real](19_ejemplo_fgc_realtime.md) como referencia para el tercer apartado.

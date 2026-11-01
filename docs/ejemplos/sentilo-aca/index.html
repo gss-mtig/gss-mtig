@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Embalses de Cataluña · datos de la ACA</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+  <style>
+    html, body { height: 100%; margin: 0; font: 16px/1.4 system-ui, sans-serif; }
+    #map { height: 100%; }
+    #status {
+      position: absolute;
+      z-index: 1000;
+      top: 12px;
+      left: 12px;
+      max-width: min(390px, calc(100% - 48px));
+      padding: 10px 12px;
+      border-radius: 5px;
+      background: white;
+      box-shadow: 0 1px 5px #5558;
+    }
+    #preview { display: none; max-width: 100%; }
+    #preview img { display: block; width: min(100%, 900px); height: auto; }
+  </style>
+</head>
+<body>
+  <div id="status" role="status">Cargando los datos de los embalses…</div>
+  <div id="map"></div>
+  <figure id="preview">
+    <img src="preview.png" alt="Vista de referencia del mapa de embalses de Cataluña">
+    <figcaption>Vista de referencia. Para cargar medidas actuales, ejecuta el servidor local descrito en la lección.</figcaption>
+  </figure>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="aca-data.js"></script>
+  <script src="aca-map.js"></script>
+</body>
+</html>
