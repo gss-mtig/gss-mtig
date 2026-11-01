@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Vista previa · Expedición urbana</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+  <style>
+    * { box-sizing: border-box; }
+    html, body { height: 100%; margin: 0; font: 16px/1.45 system-ui, sans-serif; color: #172033; }
+    #app { display: grid; grid-template-columns: minmax(280px, 350px) minmax(0, 1fr); height: 100vh; }
+    aside { padding: 1.1rem; background: #f5f8fc; border-right: 1px solid #d6dfeb; }
+    h1 { margin: 0 0 .5rem; font-size: 1.4rem; }
+    #map { min-width: 0; height: 100vh; }
+    .avatar-marker { display: grid; place-items: center; width: 38px; height: 38px; border: 2px solid white; border-radius: 50%; background: #1457a6; box-shadow: 0 1px 7px #17203366; font-size: 23px; }
+    .note { padding: .7rem; border-radius: .4rem; background: white; }
+    @media (max-width: 700px) {
+      #app { grid-template-columns: minmax(0, 1fr); grid-template-rows: minmax(320px, 52vh) auto; height: auto; min-height: 100vh; }
+      #map { grid-column: 1; grid-row: 1; height: 52vh; min-height: 320px; }
+      aside { grid-column: 1; grid-row: 2; border-right: 0; border-top: 1px solid #d6dfeb; }
+    }
+  </style>
+</head>
+<body>
+  <main id="app">
+    <aside>
+      <h1>🧭 Expedición urbana</h1>
+      <p>En la aplicación completa, cada persona elige un alias y mueve su avatar haciendo clic en el mapa.</p>
+      <p><strong>En la expedición: 3</strong></p>
+      <ol>
+        <li>🦊 Alba — en el mapa</li>
+        <li>🐼 Marc — en el mapa</li>
+        <li>🐢 Sam — en el mapa</li>
+      </ol>
+      <p class="note">Vista previa estática. Para compartir posiciones en tiempo real, ejecuta el servidor local como se explica en el tutorial.</p>
+    </aside>
+    <div id="map" aria-label="Vista previa del mapa colaborativo"></div>
+  </main>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script>
+    const map = L.map("map").setView([41.387, 2.177], 13);
+    L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
+      attribution: "© OpenStreetMap contributors",
+      maxZoom: 19,
+    }).addTo(map);
+
+    const explorers = [
+      { name: "Alba", avatar: "🦊", position: [41.387, 2.17] },
+      { name: "Marc", avatar: "🐼", position: [41.391, 2.181] },
+      { name: "Sam", avatar: "🐢", position: [41.38, 2.19] },
+    ];
+
+    explorers.forEach((explorer) => {
+      const icon = L.divIcon({
+        className: "",
+        html: `<span class="avatar-marker">${explorer.avatar}</span>`,
+        iconSize: [38, 38],
+        iconAnchor: [19, 19],
+      });
+      L.marker(explorer.position, { icon })
+        .addTo(map)
+        .bindPopup(`${explorer.avatar} ${explorer.name}`);
+    });
+  </script>
+</body>
+</html>

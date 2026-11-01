@@ -15,14 +15,17 @@
         <link rel="canonical" href="https://gss-mtig.github.io/gss-mtig/1_introduccion_a_las_smart_cities/">
       
       
-        <link rel="prev" href="..">
+        <link rel="prev" href="../guia_del_curso/">
       
       
         <link rel="next" href="../2_introduccion_open_data/">
       
       
+        
+      
+      
       <link rel="icon" href="../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.22">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
     
     
       
@@ -30,7 +33,7 @@
       
     
     
-      <link rel="stylesheet" href="../assets/stylesheets/main.84d31ad4.min.css">
+      <link rel="stylesheet" href="../assets/stylesheets/main.ec1eaa64.min.css">
       
       
 
@@ -53,7 +56,6 @@
     
       
 
-    
     
     
   </head>
@@ -229,9 +231,41 @@
   
   
   <span class="md-ellipsis">
+    
+  
     Home
+  
+
     
   </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../guia_del_curso/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Guía del curso
+  
+
+    
+  </span>
+  
   
 
       </a>
@@ -260,9 +294,14 @@
   
   
   <span class="md-ellipsis">
+    
+  
     1. Introducción a las Smart Cities
+  
+
     
   </span>
+  
   
 
           <span class="md-nav__icon md-icon"></span>
@@ -273,9 +312,14 @@
   
   
   <span class="md-ellipsis">
+    
+  
     1. Introducción a las Smart Cities
+  
+
     
   </span>
+  
   
 
       </a>
@@ -296,19 +340,34 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#smart-cities-es-tecnologia-de-la-informacion" class="md-nav__link">
+  <a href="#que-entendemos-por-smart-city" class="md-nav__link">
     <span class="md-ellipsis">
-      Smart cities es tecnología de la información
+      
+        ¿Qué entendemos por Smart City?
+      
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Smart cities es tecnología de la información">
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#de-los-datos-al-geoservicio" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        De los datos al geoservicio
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="De los datos al geoservicio">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#smart-city-ejemplo-barcelona" class="md-nav__link">
+  <a href="#ejemplo-consultar-estaciones-de-bicicletas" class="md-nav__link">
     <span class="md-ellipsis">
-      Smart city: ejemplo Barcelona
+      
+        Ejemplo: consultar estaciones de bicicletas
+      
     </span>
   </a>
   
@@ -320,66 +379,50 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#smart-cities-tambien-es-comportamiento-humano" class="md-nav__link">
+  <a href="#peticiones-http" class="md-nav__link">
     <span class="md-ellipsis">
-      Smart cities también es comportamiento humano
+      
+        Peticiones HTTP
+      
     </span>
   </a>
+  
+    <nav class="md-nav" aria-label="Peticiones HTTP">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#parametros-en-la-url" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Parámetros en la URL
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#que-es-un-servicio-y-para-que-sirve" class="md-nav__link">
+  <a href="#relacion-con-los-datos-abiertos" class="md-nav__link">
     <span class="md-ellipsis">
-      ¿Qué es un servicio y para qué sirve?
+      
+        Relación con los datos abiertos
+      
     </span>
   </a>
-  
-    <nav class="md-nav" aria-label="¿Qué es un servicio y para qué sirve?">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#api-application-programming-interface" class="md-nav__link">
-    <span class="md-ellipsis">
-      API - Application Programming Interface
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#http" class="md-nav__link">
-    <span class="md-ellipsis">
-      HTTP
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="HTTP">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#tipos-de-peticiones-http-get" class="md-nav__link">
-    <span class="md-ellipsis">
-      Tipos de peticiones HTTP - GET
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
         <li class="md-nav__item">
   <a href="#referencias" class="md-nav__link">
     <span class="md-ellipsis">
-      Referencias
+      
+        Referencias
+      
     </span>
   </a>
   
@@ -405,9 +448,14 @@
   
   
   <span class="md-ellipsis">
+    
+  
     2. Introducción al Open data
+  
+
     
   </span>
+  
   
 
       </a>
@@ -430,26 +478,35 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
         
           
-          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
             
   
   
   <span class="md-ellipsis">
+    
+  
     Servicios Open data
+  
+
     
   </span>
+  
   
 
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
             <span class="md-nav__icon md-icon"></span>
-            Servicios Open data
+            
+  
+    Servicios Open data
+  
+
           </label>
           <ul class="md-nav__list" data-md-scrollfix>
             
@@ -460,14 +517,75 @@
   
   
     <li class="md-nav__item">
-      <a href="../2_1_apis_y_servicios_open_data/" class="md-nav__link">
+      <a href="../2_1_api_socrata/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
-    2.1. API servicios Open data (CKAN y SOCRATA)
+    
+  
+    2.1. API de Socrata
+  
+
     
   </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../2_2_api_ckan_opcional/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2.2. CKAN (opcional)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../2_3_consideraciones_open_data/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    2.3. Evaluar datos y servicios
+  
+
+    
+  </span>
+  
   
 
       </a>
@@ -490,36 +608,19 @@
   
   
     <li class="md-nav__item">
-      <a href="../3_conceptos_vector_tiles/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    3. Conceptos Vector Tiles
-    
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-    
-      
-      
-  
-  
-  
-  
-    <li class="md-nav__item">
       <a href="../4_visualizacion_kepler/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
-    4. Visualización con Kepler.gl
+    
+  
+    3. Visualización con Kepler.gl
+  
+
     
   </span>
+  
   
 
       </a>
@@ -539,75 +640,14 @@
   
   
   <span class="md-ellipsis">
-    5. Herramientas de visualización de datos
+    
+  
+    4. Herramientas de visualización de datos
+  
+
     
   </span>
   
-
-      </a>
-    </li>
-  
-
-    
-      
-      
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../6_conceptos_geoservicios/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    6. Conceptos básicos de Geoservicios
-    
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-    
-      
-      
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../7_ejemplo_servicio_wms/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    7. Ejemplo servicio WMS
-    
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-    
-      
-      
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../8_consideraciones_servicios_opendata/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    8. Consideraciones sobre servicios Open data
-    
-  </span>
   
 
       </a>
@@ -627,31 +667,14 @@
   
   
   <span class="md-ellipsis">
-    9. Ejemplo servicio aparcamientos PMR Zaragoza
     
-  </span>
   
-
-      </a>
-    </li>
+    5. API municipal y mapa web
   
 
     
-      
-      
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../9_ejemplo_servicio_bicing_bcn/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    9. Ejemplo servicio bicing Barcelona
-    
   </span>
+  
   
 
       </a>
@@ -671,9 +694,14 @@
   
   
   <span class="md-ellipsis">
-    10. Ejemplo servicio bicing Barcelona (VectorTiles)
+    
+  
+    6. Bicing con MapLibre y Vector Tiles
+  
+
     
   </span>
+  
   
 
       </a>
@@ -693,9 +721,14 @@
   
   
   <span class="md-ellipsis">
-    11. Consideraciones sobre servicios de Sensores
+    
+  
+    7. Sensores urbanos: SOS, Sentilo y calidad de los datos
+  
+
     
   </span>
+  
   
 
       </a>
@@ -715,9 +748,14 @@
   
   
   <span class="md-ellipsis">
-    12. Ejemplo Sentilo ACA
+    
+  
+    8. Consumo de sensores de la ACA con Sentilo
+  
+
     
   </span>
+  
   
 
       </a>
@@ -737,9 +775,14 @@
   
   
   <span class="md-ellipsis">
-    13. Geoservicios realtime
+    
+  
+    9. Geoservicios para localización y movilidad
+  
+
     
   </span>
+  
   
 
       </a>
@@ -759,9 +802,14 @@
   
   
   <span class="md-ellipsis">
-    14. Herramientas de visualización geoservicios
+    
+  
+    10. Elegir herramientas para visualizar datos geográficos
+  
+
     
   </span>
+  
   
 
       </a>
@@ -775,18 +823,106 @@
   
   
   
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_14" >
+        
+          
+          <label class="md-nav__link" for="__nav_14" id="__nav_14_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Geocodificación
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_14_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_14">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Geocodificación
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
     <li class="md-nav__item">
       <a href="../15_ejemplo_geocodificador/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
-    16. Ejemplo Geocodificador
+    
+  
+    11. OpenCage
+  
+
     
   </span>
   
+  
 
       </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../15_ejemplo_geocodificador_icgc/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    11.1. Geocodificador ICGC (opcional)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
     </li>
   
 
@@ -803,9 +939,14 @@
   
   
   <span class="md-ellipsis">
-    17. Ejemplo Mobility
+    
+  
+    12. Ejemplo de Mobility
+  
+
     
   </span>
+  
   
 
       </a>
@@ -825,9 +966,14 @@
   
   
   <span class="md-ellipsis">
-    18. Ejemplo servicio realtime para compartir la ubicación
+    
+  
+    13. Mapa colaborativo: expedición urbana en tiempo real
+  
+
     
   </span>
+  
   
 
       </a>
@@ -847,9 +993,14 @@
   
   
   <span class="md-ellipsis">
-    19. Ejemplo Trenes realtime
+    
+  
+    14. Ejemplo de trenes FGC en tiempo real
+  
+
     
   </span>
+  
   
 
       </a>
@@ -869,9 +1020,14 @@
   
   
   <span class="md-ellipsis">
-    20. Ejemplo GTFS
+    
+  
+    15. Ejemplo de GTFS con EMT València
+  
+
     
   </span>
+  
   
 
       </a>
@@ -906,19 +1062,34 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#smart-cities-es-tecnologia-de-la-informacion" class="md-nav__link">
+  <a href="#que-entendemos-por-smart-city" class="md-nav__link">
     <span class="md-ellipsis">
-      Smart cities es tecnología de la información
+      
+        ¿Qué entendemos por Smart City?
+      
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Smart cities es tecnología de la información">
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#de-los-datos-al-geoservicio" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        De los datos al geoservicio
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="De los datos al geoservicio">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#smart-city-ejemplo-barcelona" class="md-nav__link">
+  <a href="#ejemplo-consultar-estaciones-de-bicicletas" class="md-nav__link">
     <span class="md-ellipsis">
-      Smart city: ejemplo Barcelona
+      
+        Ejemplo: consultar estaciones de bicicletas
+      
     </span>
   </a>
   
@@ -930,66 +1101,50 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#smart-cities-tambien-es-comportamiento-humano" class="md-nav__link">
+  <a href="#peticiones-http" class="md-nav__link">
     <span class="md-ellipsis">
-      Smart cities también es comportamiento humano
+      
+        Peticiones HTTP
+      
     </span>
   </a>
+  
+    <nav class="md-nav" aria-label="Peticiones HTTP">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#parametros-en-la-url" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Parámetros en la URL
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#que-es-un-servicio-y-para-que-sirve" class="md-nav__link">
+  <a href="#relacion-con-los-datos-abiertos" class="md-nav__link">
     <span class="md-ellipsis">
-      ¿Qué es un servicio y para qué sirve?
+      
+        Relación con los datos abiertos
+      
     </span>
   </a>
-  
-    <nav class="md-nav" aria-label="¿Qué es un servicio y para qué sirve?">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#api-application-programming-interface" class="md-nav__link">
-    <span class="md-ellipsis">
-      API - Application Programming Interface
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#http" class="md-nav__link">
-    <span class="md-ellipsis">
-      HTTP
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="HTTP">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#tipos-de-peticiones-http-get" class="md-nav__link">
-    <span class="md-ellipsis">
-      Tipos de peticiones HTTP - GET
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
         <li class="md-nav__item">
   <a href="#referencias" class="md-nav__link">
     <span class="md-ellipsis">
-      Referencias
+      
+        Referencias
+      
     </span>
   </a>
   
@@ -1005,6 +1160,7 @@
           
           
             <div class="md-content" data-md-component="content">
+              
               <article class="md-content__inner md-typeset">
                 
                   
@@ -1015,70 +1171,102 @@
 
 
 <h1 id="introduccion-a-las-smart-cities">Introducción a las Smart Cities</h1>
-<blockquote>
-<p>Una ciudad inteligente es un área urbana que utiliza <strong>diferentes tipos de sensores electrónicos</strong> de recopilación de datos para suministrar información utilizada para administrar recursos de manera eficiente. Esto incluye datos recopilados de <strong>ciudadanos, dispositivos</strong> y activos que se procesan y analizan para monitorear y administrar el tráfico y los sistemas de transporte, centrales eléctricas, redes de suministro de agua, gestión de desechos, cumplimiento de la ley, sistemas de información, escuelas, bibliotecas, hospitales y otros <strong>servicios</strong> comunitarios.</p>
-<p><a href="https://es.wikipedia.org/wiki/Ciudad_inteligente">https://es.wikipedia.org/wiki/Ciudad_inteligente</a></p>
-</blockquote>
-<h2 id="smart-cities-es-tecnologia-de-la-informacion"><strong>Smart cities</strong> es tecnología de la información</h2>
-<p><img alt="Componentes de Smart City" src="../img/smart_city.png" title="Componentes de Smart City" /></p>
-<h3 id="smart-city-ejemplo-barcelona"><strong>Smart city:</strong> ejemplo Barcelona</h3>
-<p>Barcelona ha establecido una serie de proyectos que pueden considerarse aplicaciones de 'ciudad inteligente' dentro de su estrategia <a href="https://ajuntament.barcelona.cat/imi/es/proyectos/cityos">"CityOS"</a>. Por ejemplo, se ha implementado <strong>tecnología de sensores en el sistema de riego</strong> del Parc del Centre de Poblenou, donde se transmiten datos en tiempo real a los equipos de jardinería sobre el nivel de agua necesario para las plantas. Barcelona también ha diseñado una <strong>nueva red de autobuses</strong> basada en el análisis de datos de los flujos de tráfico más comunes en Barcelona, ​​utilizando principalmente rutas verticales, horizontales y diagonales con una serie de intercambios. La integración de múltiples tecnologías de ciudades inteligentes se puede ver a través de la implementación de <strong>semáforos inteligentes</strong>, ya que los autobuses recorren rutas diseñadas para optimizar el número de semáforos en verde. Además, cuando se <strong>notifica una emergencia</strong> en Barcelona, ​​la ruta aproximada del vehículo de emergencia se ingresa en el sistema de semáforos, poniendo todas las luces en verde a medida que el vehículo se acerca a través de una combinación de GPS y software de gestión de tráfico, lo que permite que los servicios de emergencia llegar al incidente sin demora. Gran parte de estos datos son administrados por la <a href="https://www.sentilo.io/">Plataforma Sentilo</a>.</p>
-<p><a href="https://en.wikipedia.org/wiki/List_of_smart_cities#Barcelona">https://en.wikipedia.org/wiki/List_of_smart_cities#Barcelona</a></p>
-<h2 id="smart-cities-tambien-es-comportamiento-humano"><strong>Smart cities</strong> también es comportamiento humano</h2>
-<p><img alt="Smart City comportamiento humano" src="../img/smart_city_human.png" title="Smart City comportamiento humano" /></p>
-<p>En las Smart Cities no es sólo el componente tecnológico, también es muy importante el componente humano. Una ciudad podrá ser calificado de inteligente en la medida que las inversiones que se realicen en capital humano (educación), en aspectos sociales, ​en infraestructuras de energía,​ tecnologías de comunicación e infraestructuras de transporte,​ contemplen y promuevan una calidad de vida elevada, un desarrollo económico-ambiental durable y sostenible, una gobernanza participativa,​ una gestión prudente y reflexiva de los recursos naturales, así como un buen aprovechamiento del tiempo de los ciudadanos. </p>
-<p>Tecnológicamente una Smart City se base en un conjunto de servicios (web) especializados</p>
-<p>Si estos servicios contienen una componente geográfica (coordenadas), hablaremos de <strong>GeoServicios</strong>.</p>
-<h2 id="que-es-un-servicio-y-para-que-sirve">¿Qué es un servicio y para qué sirve?</h2>
-<p>Un servicio es una interfaz que recibe parámetros + valores y devuelve una respuesta formateada.</p>
-<p>Los parámetros y repuestas son conocidos y están documentados en formato de API.</p>
-<h3 id="api-application-programming-interface">API - Application Programming Interface</h3>
-<p>La interfaz de programación de aplicaciones, conocida también por la sigla <strong>API</strong>,​ es un conjunto de subrutinas, funciones y procedimientos que ofrece cierta biblioteca para ser utilizada por otro software. <sup id="fnref:1"><a class="footnote-ref" href="#fn:1">1</a></sup></p>
-<p>El término API se usa a menudo para referirse a las <strong>API web</strong>, que permiten la comunicación entre computadoras que están unidas por Internet. También hay API para lenguajes de programación, bibliotecas de software, sistemas operativos de computadora y hardware de computadora.</p>
-<p>La documentación de la API generalmente se proporciona para facilitar el uso.</p>
-<p>Webs con enlaces a diferentes APIs</p>
-<p><a href="https://rapidapi.com/">https://rapidapi.com/</a></p>
-<p><a href="https://apislist.com/">https://apislist.com/</a></p>
-<h3 id="http">HTTP</h3>
-<p>El protocolo HTTP tiene diferentes métodos de interrogación.</p>
-<ul>
-<li>GET</li>
-<li>POST</li>
-<li>UPDATE</li>
-<li>DELETE</li>
-<li>INSERT</li>
-</ul>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>HTTP - GET es el más usado en APIs web</p>
-</div>
-<h4 id="tipos-de-peticiones-http-get">Tipos de peticiones HTTP - GET</h4>
-<p><strong>KvP: (Key value Pair)</strong>: después del <strong>?</strong> pasamos parámetro = valor y concatenamos con <strong>&amp;</strong>.</p>
-<p>Ejemplo: <a href="http://midominio.com/servidor/enpoint?parametro1=valor1&amp;parametro2=valor=2">http://midominio.com/servidor/enpoint?parametro1=valor1&amp;parametro2=valor=2</a></p>
-<p><strong>RESTful</strong>: la URL define el recurso, dentro de una arquitectura REST.</p>
-<p>Ejemplo: <a href="http://midominio.com/servidor/recurso.json">http://midominio.com/servidor/recurso.json</a></p>
-<p><strong>RESTful and KvP</strong>: la URL define el recurso, pero podemos filtrar recurso con parámetros.</p>
-<p>Ejemplo: <a href="http://midominio.com/servidor/recurso.json?parametro1=valor1">http://midominio.com/servidor/recurso.json?parametro1=valor1</a> (Utilizada en APIs OpenData)  </p>
-<p>Muchos servicios y/o información relativa a Smart City, son expuestos  cómo OpenData (Datos Abiertos) en portales de administraciones públicas. Son las llamadas “Plataformas“ para la publicación y gestión de Open data.</p>
-<p>Temario</p>
-<ul>
-<li>Introducción a las Smart Cities<ul>
-<li>Conceptos Smart Cities</li>
-<li>Conceptos Open Data</li>
-<li>Conceptos sensores</li>
-<li>Tecnologías OpenData</li>
-</ul>
-</li>
-</ul>
-<h2 id="referencias">Referencias</h2>
-<div class="footnote">
-<hr />
+<h2 id="que-entendemos-por-smart-city">¿Qué entendemos por Smart City?</h2>
+<p>Una <strong>Smart City</strong> o ciudad inteligente utiliza información, tecnología y participación ciudadana para mejorar servicios y responder a necesidades urbanas. No consiste solo en instalar sensores: también importa qué problema se quiere resolver, quién usa la información y cómo afecta la solución a las personas.</p>
+<p><img alt="Componentes de una Smart City" src="../img/smart_city.png" title="Componentes de una Smart City" /></p>
+<p>Por ejemplo, una ciudad puede medir la humedad del suelo de un parque para ayudar a decidir cuándo regar. El sensor produce datos, pero el servicio solo es útil si esos datos llegan a los equipos responsables y les ayudan a tomar una decisión.</p>
+<p>La tecnología es una parte del sistema. También hay que considerar la gestión, la sostenibilidad, la accesibilidad, la privacidad y las necesidades de quienes viven y trabajan en la ciudad.</p>
+<p><img alt="Personas y tecnología en una Smart City" src="../img/smart_city_human.png" title="Personas y tecnología en una Smart City" /></p>
+<div class="admonition exercise">
+<p class="admonition-title">Ejercicio en clase · 5 minutos</p>
+<p>En parejas, elegid un problema urbano (por ejemplo, el riego de parques, la accesibilidad del transporte o la recogida de residuos). Anotad:</p>
 <ol>
-<li id="fn:1">
-<p><a href="https://es.wikipedia.org/wiki/Interfaz_de_programaci%C3%B3n_de_aplicaciones">https://es.wikipedia.org/wiki/Interfaz_de_programaci%C3%B3n_de_aplicaciones</a>&#160;<a class="footnote-backref" href="#fnref:1" title="Jump back to footnote 1 in the text">&#8617;</a></p>
-</li>
+<li>¿Qué se quiere mejorar?</li>
+<li>¿Qué datos podrían ayudar?</li>
+<li>¿Quién usaría esos datos y qué decisión tomaría?</li>
 </ol>
+<p>Comentad una posible limitación de la solución. No hace falta entregar el ejercicio.</p>
 </div>
+<h2 id="de-los-datos-al-geoservicio">De los datos al geoservicio</h2>
+<p>Un <strong>servicio web</strong> permite que una aplicación solicite información o una función a otro sistema. La aplicación envía una petición y recibe una respuesta siguiendo unas reglas documentadas.</p>
+<p>Cuando el servicio trabaja con datos o funciones que tienen una componente geográfica —por ejemplo, coordenadas, geometrías o mapas—, hablamos de un <strong>geoservicio</strong>. En este curso consumiremos servicios para consultar datos urbanos y representarlos en mapas.</p>
+<p>Una <strong>API</strong> (interfaz de programación de aplicaciones) describe cómo puede comunicarse una aplicación con un servicio: qué peticiones acepta, qué parámetros se pueden enviar y qué respuestas devuelve. La documentación de una API explica esas reglas.</p>
+<h3 id="ejemplo-consultar-estaciones-de-bicicletas">Ejemplo: consultar estaciones de bicicletas</h3>
+<p>Imaginemos que una ciudad ofrece una API para consultar estaciones de bicicletas. Esta petición ficticia solicita las estaciones de un barrio:</p>
+<div class="highlight"><pre><span></span><code><span class="err">GET https://datos.ciudad.example/api/estaciones?barrio=Centro</span>
+</code></pre></div>
+<p>La respuesta podría ser un documento JSON como este:</p>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">"estaciones"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">42</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">"nombre"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Plaza Central"</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">"latitud"</span><span class="p">:</span><span class="w"> </span><span class="mf">41.38</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">"longitud"</span><span class="p">:</span><span class="w"> </span><span class="mf">2.17</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">"bicicletas_disponibles"</span><span class="p">:</span><span class="w"> </span><span class="mi">6</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">]</span>
+<span class="p">}</span>
+</code></pre></div>
+<p>En esta petición:</p>
+<ul>
+<li><code>GET</code> indica que queremos consultar información;</li>
+<li><code>/api/estaciones</code> identifica el recurso solicitado;</li>
+<li><code>barrio=Centro</code> es un parámetro que limita la consulta;</li>
+<li>la respuesta contiene datos, incluida la localización de la estación.</li>
+</ul>
+<p>Los nombres y datos del ejemplo son ficticios. En una API real, la documentación especifica los parámetros disponibles y el formato de la respuesta.</p>
+<div class="admonition exercise">
+<p class="admonition-title">Ejercicio en clase · 5–10 minutos</p>
+<p>Usad el ejemplo anterior para proponer una petición que solicite las estaciones de otro barrio. Después, indicad qué campo de la respuesta permitiría situar cada estación en un mapa y qué campo mostraríais en una ventana informativa.</p>
+<p>No hace falta escribir código ni entregar el ejercicio.</p>
+</div>
+<h2 id="peticiones-http">Peticiones HTTP</h2>
+<p>Las APIs web suelen comunicarse mediante el protocolo HTTP. Algunos de sus métodos más habituales son:</p>
+<table>
+<thead>
+<tr>
+<th>Método</th>
+<th>Uso habitual</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>GET</code></td>
+<td>Consultar o recuperar información.</td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td>Enviar información o realizar una consulta que requiere un cuerpo de petición.</td>
+</tr>
+<tr>
+<td><code>PUT</code> y <code>PATCH</code></td>
+<td>Crear o modificar un recurso, según las reglas del servicio.</td>
+</tr>
+<tr>
+<td><code>DELETE</code></td>
+<td>Eliminar un recurso, si el servicio lo permite.</td>
+</tr>
+</tbody>
+</table>
+<p>En este curso nos encontraremos sobre todo con peticiones <code>GET</code>. Algunas APIs usan <code>POST</code> para consultas más complejas. El comportamiento exacto depende de cada servicio y se debe comprobar en su documentación.</p>
+<h3 id="parametros-en-la-url">Parámetros en la URL</h3>
+<p>En muchas peticiones <code>GET</code>, los parámetros aparecen después de <code>?</code> y se escriben como pares <code>nombre=valor</code>. El símbolo <code>&amp;</code> separa varios parámetros:</p>
+<div class="highlight"><pre><span></span><code>https://datos.ciudad.example/api/incidencias?tipo=baches&amp;estado=abierta
+</code></pre></div>
+<p>Aquí se solicitan incidencias de tipo <code>baches</code> cuyo estado sea <code>abierta</code>. Las APIs también pueden definir otros caminos y formas de consulta; por eso conviene revisar siempre su documentación.</p>
+<div class="admonition exercise">
+<p class="admonition-title">Ejercicio en clase · 5 minutos</p>
+<p>En la URL del ejemplo, identificad el recurso y los dos parámetros. Cambiad uno de los valores para consultar otro tipo de incidencia o estado. ¿Qué información esperaríais recibir?</p>
+<p>Es un ejercicio de lectura de URLs; no hace falta que el servicio ficticio exista ni entregar la respuesta.</p>
+</div>
+<h2 id="relacion-con-los-datos-abiertos">Relación con los datos abiertos</h2>
+<p>Muchos ayuntamientos y administraciones publican datos mediante portales de <strong>Open Data</strong> o datos abiertos. Algunos ofrecen APIs para consultar los datos desde otras aplicaciones, además de opciones para descargarlos.</p>
+<p>En la siguiente página veremos qué son los datos abiertos y cómo se organizan sus portales. Más adelante consultaremos APIs de portales como Socrata y CKAN.</p>
+<h2 id="referencias">Referencias</h2>
+<ul>
+<li><a href="https://es.wikipedia.org/wiki/Interfaz_de_programaci%C3%B3n_de_aplicaciones">Interfaz de programación de aplicaciones (Wikipedia)</a></li>
+</ul>
 
 
 
@@ -1127,10 +1315,11 @@
     
     
       
-      <script id="__config" type="application/json">{"base": "..", "features": [], "search": "../assets/javascripts/workers/search.973d3a69.min.js", "tags": null, "translations": {"clipboard.copied": "Copiado al portapapeles", "clipboard.copy": "Copiar al portapapeles", "search.result.more.one": "1 m\u00e1s en esta p\u00e1gina", "search.result.more.other": "# m\u00e1s en esta p\u00e1gina", "search.result.none": "No se encontraron documentos", "search.result.one": "1 documento encontrado", "search.result.other": "# documentos encontrados", "search.result.placeholder": "Teclee para comenzar b\u00fasqueda", "search.result.term.missing": "Falta", "select.version": "Seleccionar versi\u00f3n"}, "version": null}</script>
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": [], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copiado al portapapeles", "clipboard.copy": "Copiar al portapapeles", "search.result.more.one": "1 m\u00e1s en esta p\u00e1gina", "search.result.more.other": "# m\u00e1s en esta p\u00e1gina", "search.result.none": "No se encontraron documentos", "search.result.one": "1 documento encontrado", "search.result.other": "# documentos encontrados", "search.result.placeholder": "Teclee para comenzar b\u00fasqueda", "search.result.term.missing": "Falta", "select.version": "Seleccionar versi\u00f3n"}, "version": null}</script>
     
     
-      <script src="../assets/javascripts/bundle.f55a23d4.min.js"></script>
+      <script src="../assets/javascripts/bundle.d7400e89.min.js"></script>
       
     
   </body>

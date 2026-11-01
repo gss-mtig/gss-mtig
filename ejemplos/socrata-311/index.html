@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Consulta de avisos 311 | Ejemplo de API Socrata</title>
+  <style>
+    :root { color-scheme: light; font-family: system-ui, sans-serif; color: #182230; background: #f3f6f8; }
+    body { margin: 0; }
+    main { max-width: 980px; margin: 2rem auto; padding: 0 1rem; }
+    .panel { background: white; border: 1px solid #d8e0e7; border-radius: 12px; padding: 1.25rem; margin: 1rem 0; }
+    h1 { margin-bottom: .4rem; font-size: clamp(1.6rem, 4vw, 2.2rem); }
+    h2 { font-size: 1.2rem; margin-top: 0; }
+    p { line-height: 1.55; }
+    .controls { display: flex; flex-wrap: wrap; gap: 1rem; align-items: end; }
+    label { display: grid; gap: .35rem; font-weight: 650; }
+    select, button { font: inherit; padding: .65rem .8rem; border: 1px solid #8998a7; border-radius: 6px; background: white; }
+    button { color: white; background: #075985; border-color: #075985; cursor: pointer; font-weight: 700; }
+    button:hover { background: #0c4a6e; }
+    button:focus-visible, select:focus-visible, a:focus-visible { outline: 3px solid #f59e0b; outline-offset: 2px; }
+    #status { min-height: 1.5rem; }
+    .table-wrap { overflow-x: auto; }
+    table { width: 100%; border-collapse: collapse; font-size: .94rem; }
+    th, td { border-bottom: 1px solid #d8e0e7; padding: .7rem .55rem; text-align: left; vertical-align: top; }
+    th { background: #eef3f6; }
+    code { overflow-wrap: anywhere; }
+    .small { color: #4a5968; font-size: .92rem; }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>Avisos ciudadanos 311 de Nueva York</h1>
+    <p>Esta página consulta el conjunto público de solicitudes municipales 311 mediante la API de Socrata y presenta algunos registros en una tabla.</p>
+
+    <section class="panel" aria-labelledby="controls-title">
+      <h2 id="controls-title">Configura la consulta</h2>
+      <div class="controls">
+        <label for="borough">Distrito
+          <select id="borough">
+            <option value="">Todos</option>
+            <option value="MANHATTAN" selected>Manhattan</option>
+            <option value="BROOKLYN">Brooklyn</option>
+            <option value="QUEENS">Queens</option>
+            <option value="BRONX">Bronx</option>
+            <option value="STATEN ISLAND">Staten Island</option>
+          </select>
+        </label>
+        <label for="limit">Número de registros
+          <select id="limit">
+            <option>5</option>
+            <option>10</option>
+            <option>20</option>
+          </select>
+        </label>
+        <button id="search" type="button">Consultar API</button>
+      </div>
+      <p id="status" role="status" aria-live="polite">Preparando la consulta…</p>
+      <p class="small">La respuesta muestra como máximo el número de registros elegido, ordenados por fecha de creación más reciente.</p>
+    </section>
+
+    <section class="panel" aria-labelledby="results-title">
+      <h2 id="results-title">Resultados recibidos</h2>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>Fecha</th><th>Tipo de aviso</th><th>Distrito</th><th>Coordenadas</th><th>Identificador</th></tr>
+          </thead>
+          <tbody id="resultados"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="panel">
+      <h2>La petición a la API</h2>
+      <p>La página construye una URL con los campos, el filtro y el límite seleccionados. Puedes abrir esa URL para ver la respuesta JSON original:</p>
+      <p><a id="api-link" href="https://data.cityofnewyork.us/resource/erm2-nwe9.json?$limit=5" target="_blank" rel="noopener">Abrir la consulta JSON</a></p>
+      <p class="small">Fuente: <a href="https://data.cityofnewyork.us/Social-Services/311-Service-Requests-from-2020-to-Present/erm2-nwe9" target="_blank" rel="noopener">NYC Open Data · 311 Service Requests</a>.</p>
+    </section>
+  </main>
+
+  <script>
+    const endpoint = "https://data.cityofnewyork.us/resource/erm2-nwe9.json";
+    const fields = "unique_key,created_date,complaint_type,borough,latitude,longitude";
+    const boroughSelect = document.querySelector("#borough");
+    const limitSelect = document.querySelector("#limit");
+    const status = document.querySelector("#status");
+    const results = document.querySelector("#resultados");
+    const apiLink = document.querySelector("#api-link");
+
+    function buildRequestUrl() {
+      const url = new URL(endpoint);
+      url.searchParams.set("$select", fields);
+      if (boroughSelect.value) {
+        url.searchParams.set("$where", `borough = '${boroughSelect.value}'`);
+      }
+      url.searchParams.set("$order", "created_date DESC");
+      url.searchParams.set("$limit", limitSelect.value);
+      return url;
+    }
+
+    function addCell(row, value) {
+      const cell = document.createElement("td");
+      cell.textContent = value || "Sin dato";
+      row.append(cell);
+    }
+
+    async function loadRecords() {
+      const url = buildRequestUrl();
+      apiLink.href = url.href;
+      results.replaceChildren();
+      status.textContent = "Consultando el portal de datos…";
+
+      try {
+        const response = await fetch(url);
+        if (!response.ok) throw new Error(`Error HTTP ${response.status}`);
+        const records = await response.json();
+
+        for (const record of records) {
+          const row = document.createElement("tr");
+          const coordinates = record.latitude && record.longitude
+            ? `${record.latitude}, ${record.longitude}`
+            : "Sin coordenadas";
+          addCell(row, record.created_date);
+          addCell(row, record.complaint_type);
+          addCell(row, record.borough);
+          addCell(row, coordinates);
+          addCell(row, record.unique_key);
+          results.append(row);
+        }
+
+        status.textContent = records.length
+          ? `La API ha devuelto ${records.length} registros.`
+          : "La consulta no ha devuelto registros. Prueba otro distrito.";
+      } catch (error) {
+        status.textContent = `No se pudieron cargar los datos: ${error.message}. Comprueba tu conexión e inténtalo de nuevo.`;
+      }
+    }
+
+    document.querySelector("#search").addEventListener("click", loadRecords);
+    loadRecords();
+  </script>
+</body>
+</html>

@@ -1,0 +1,183 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Disponibilidad de Bicing · MapLibre</title>
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/maplibre-gl@5.12.0/dist/maplibre-gl.css"
+    />
+    <style>
+      html,
+      body,
+      #map {
+        height: 100%;
+        margin: 0;
+      }
+      #status {
+        position: absolute;
+        z-index: 1;
+        top: 12px;
+        left: 12px;
+        max-width: min(360px, calc(100% - 48px));
+        padding: 8px 10px;
+        border-radius: 4px;
+        background: white;
+        font:
+          14px/1.4 system-ui,
+          sans-serif;
+      }
+      .station-popup {
+        white-space: pre-line;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="map"></div>
+    <div id="status" role="status">Cargando estaciones…</div>
+
+    <script src="https://unpkg.com/maplibre-gl@5.12.0/dist/maplibre-gl.js"></script>
+    <script>
+      const map = new maplibregl.Map({
+        container: "map",
+        style: "https://geoserveis.icgc.cat/contextmaps/icgc.json",
+        center: [2.17, 41.39],
+        zoom: 12,
+      });
+
+      map.addControl(new maplibregl.NavigationControl(), "top-right");
+
+      const informationUrl =
+        "https://api.citybik.es/gbfs/2/bicing/station_information.json";
+      const statusUrl =
+        "https://api.citybik.es/gbfs/2/bicing/station_status.json";
+      const statusElement = document.getElementById("status");
+
+      async function updateStations() {
+        statusElement.textContent = "Actualizando disponibilidad…";
+
+        try {
+          const responses = await Promise.all([
+            fetch(informationUrl),
+            fetch(statusUrl),
+          ]);
+
+          if (!responses[0].ok || !responses[1].ok) {
+            throw new Error("La API no ha podido devolver los dos feeds.");
+          }
+
+          const [information, status] = await Promise.all(
+            responses.map((response) => response.json()),
+          );
+
+          const statusById = new Map(
+            status.data.stations.map((station) => [
+              station.station_id,
+              station,
+            ]),
+          );
+
+          const features = information.data.stations.map((station) => {
+            const currentStatus = statusById.get(station.station_id);
+            const bikes = currentStatus?.num_bikes_available ?? 0;
+            const docks = currentStatus?.num_docks_available ?? 0;
+
+            return {
+              type: "Feature",
+              properties: {
+                id: station.station_id,
+                name: station.name,
+                capacity: bikes + docks,
+                bikes,
+                docks,
+              },
+              geometry: {
+                type: "Point",
+                coordinates: [station.lon, station.lat],
+              },
+            };
+          });
+
+          const stationsGeoJSON = {
+            type: "FeatureCollection",
+            features,
+          };
+
+          const source = map.getSource("bicing-stations");
+          if (source) {
+            source.setData(stationsGeoJSON);
+          } else {
+            map.addSource("bicing-stations", {
+              type: "geojson",
+              data: stationsGeoJSON,
+            });
+
+            map.addLayer({
+              id: "bicing-points",
+              type: "circle",
+              source: "bicing-stations",
+              paint: {
+                "circle-radius": [
+                  "interpolate",
+                  ["linear"],
+                  ["get", "capacity"],
+                  0,
+                  4,
+                  50,
+                  11,
+                ],
+                "circle-color": [
+                  "interpolate",
+                  ["linear"],
+                  ["get", "bikes"],
+                  0,
+                  "#d73027",
+                  20,
+                  "#1a9850",
+                ],
+                "circle-stroke-color": "#ffffff",
+                "circle-stroke-width": 1,
+              },
+            });
+
+            map.on("click", "bicing-points", (event) => {
+              const feature = event.features?.[0];
+              if (!feature) return;
+
+              const content = document.createElement("div");
+              content.className = "station-popup";
+              content.textContent =
+                `${feature.properties.name}\n` +
+                `Bicicletas disponibles: ${feature.properties.bikes}\n` +
+                `Anclajes disponibles: ${feature.properties.docks}`;
+
+              new maplibregl.Popup()
+                .setLngLat(feature.geometry.coordinates)
+                .setDOMContent(content)
+                .addTo(map);
+            });
+
+            map.on("mouseenter", "bicing-points", () => {
+              map.getCanvas().style.cursor = "pointer";
+            });
+            map.on("mouseleave", "bicing-points", () => {
+              map.getCanvas().style.cursor = "";
+            });
+          }
+
+          statusElement.textContent = `${features.length} estaciones · actualización cada minuto`;
+        } catch (error) {
+          console.error(error);
+          statusElement.textContent =
+            "No se han podido cargar los datos. Revisa la conexión o la consola.";
+        }
+      }
+
+      map.on("load", () => {
+        updateStations();
+        window.setInterval(updateStations, 60_000);
+      });
+    </script>
+  </body>
+</html>

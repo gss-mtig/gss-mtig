@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Aparcamientos PMR de Zaragoza</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+  <style>
+    html, body, #map { height: 100%; margin: 0; }
+  </style>
+</head>
+<body>
+  <div id="map"></div>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script>
+    const map = L.map('map').setView([41.65, -0.88], 13);
+
+    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '&copy; OpenStreetMap contributors'
+    }).addTo(map);
+
+    const url = 'https://www.zaragoza.es/sede/servicio/urbanismo-infraestructuras/equipamiento/aparcamiento-personas-discapacidad.geojson?srsname=wgs84&start=0&rows=50';
+
+    fetch(url)
+      .then(response => response.json())
+      .then(data => {
+        data.features.forEach(feature => {
+          if (!feature.geometry || feature.geometry.type !== 'Point') return;
+
+          const [longitud, latitud] = feature.geometry.coordinates;
+          const propiedades = feature.properties;
+
+          const marker = L.marker([latitud, longitud]).addTo(map);
+          marker.bindPopup(
+            `<strong>${propiedades.tipo_reserva || 'Aparcamiento PMR'}</strong><br>
+             Dirección: ${propiedades.calle_1 || 'No disponible'}, ${propiedades.num_calle1 || 's/n'}<br>
+             Plazas: ${propiedades.plazas ?? 'No disponible'}`
+          );
+        });
+      })
+      .catch(error => console.error('No se pudieron cargar los datos:', error));
+  </script>
+</body>
+</html>
