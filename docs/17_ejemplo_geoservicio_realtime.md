@@ -539,3 +539,5 @@ Añade un botón **Centrar en la expedición** que ajuste el mapa para mostrar a
 - [Node.js: sitio oficial en español](https://nodejs.org/es/)
 - [Leaflet: referencia de la API (inglés)](https://leafletjs.com/reference.html)
 - [OpenStreetMap: atribución](https://www.openstreetmap.org/copyright)
+
+**Siguiente:** [Trenes FGC en tiempo real](19_ejemplo_fgc_realtime.md).

@@ -389,9 +389,15 @@ Guarda el archivo completo como `index.html`. Este es el mismo código del [viso
 - [MapLibre GL JS: guía de migración desde Leaflet (inglés)](https://maplibre.org/maplibre-gl-js/docs/guides/leaflet-migration-guide/)
 - [MapLibre GL JS: actualizar una fuente GeoJSON (inglés)](https://maplibre.org/maplibre-gl-js/docs/API/classes/GeoJSONSource/)
 
-!!! question "Ejercicio entregable · 2 puntos"
+## Ejercicio entregable
 
-    Modifica el estilo de los puntos de las estaciones y entrega el archivo `index.html` actualizado:
+!!! question "Personalizar la simbología de las estaciones de Bicing — 2 puntos"
+
+    Modifica el estilo de los puntos de las estaciones en `index.html` y comprueba los cambios en el mapa:
 
     1. Cambia los valores de la expresión `circle-radius` para ajustar los rangos del tamaño de los puntos según la capacidad estimada de cada estación (1 punto).
     2. Cambia los valores de la expresión `circle-color` para definir un rango de colores distinto según las bicicletas disponibles (1 punto).
+
+    **Entrega:** el archivo `index.html` actualizado y una captura del mapa donde se aprecien los tamaños y colores modificados.
+
+**Siguiente:** [Sensores urbanos: SOS, Sentilo y calidad de los datos](11_consideraciones_servicios_realtime_sensores.md).

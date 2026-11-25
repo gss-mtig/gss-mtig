@@ -45,3 +45,5 @@ En este curso usaremos Kepler.gl para explorar datos, Leaflet para construir map
 - [MapLibre GL JS: documentación oficial (inglés)](https://maplibre.org/maplibre-gl-js/docs/)
 - [Kepler.gl: documentación oficial (inglés)](https://docs.kepler.gl/)
 - [Instamaps del ICGC](https://www.instamaps.cat/)
+
+**Siguiente:** [Geocodificación con OpenCage](15_ejemplo_geocodificador.md).

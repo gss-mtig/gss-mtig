@@ -76,3 +76,5 @@ Estas cautelas no hacen que el servicio de la ACA sea un mal ejemplo: su aviso s
 - [Documentación FROST: consultas y más ejemplos SensorThings (inglés)](https://fraunhoferiosb.github.io/FROST-Server/sensorthingsapi/3_GettingData.html)
 - [Portal de datos abiertos en tiempo real de la ACA (catalán)](https://aca.gencat.cat/ca/laigua/consulta-de-dades/dades-obertes/dades-obertes-temps-real/)
 - [Sentilo en el Centro de Transferencia de Tecnología de la Administración española](https://administracionelectronica.gob.es/ctt/sentilo)
+
+**Siguiente:** [Consumo de sensores de la ACA con Sentilo](12_ejemplo_sentilo_aca.md).

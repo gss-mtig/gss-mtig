@@ -413,10 +413,18 @@ body {
 }
 ```
 
-!!! exercise "Ejercicio entregable · 2,5 puntos"
+## Ejercicio entregable
 
-    1. Carga en el visor el feed GTFS estático de [FGC](https://dadesobertes.fgc.cat/explore/assets/gtfs_zip/?flg=es-es) y centra el mapa en Cataluña para que se vea la red (1 punto).
+!!! question "Adaptar el visor GTFS a FGC y añadir trenes en tiempo real — 3 puntos"
+
+    1. Sustituye el feed de EMT València por el [feed GTFS estático de FGC](https://dadesobertes.fgc.cat/explore/assets/gtfs_zip/?flg=es-es), adapta la lectura de `stops.txt` y `shapes.txt` si hace falta y ajusta el centro y zoom para mostrar la red en Cataluña (1 punto).
     2. Añade un popup a las líneas que muestre el valor de `shape_id` (0,5 puntos).
-    3. Añade al mapa los trenes en tiempo real de FGC (1 punto).
+    3. Añade al mapa las posiciones actuales de los trenes de FGC y actualízalas al volver a consultar su servicio en tiempo real (1,5 puntos).
 
     El código de la práctica termina antes de estos cambios: tendrás que investigar el feed y completar las tres tareas. Puedes consultar el [ejemplo anterior de posiciones FGC en tiempo real](19_ejemplo_fgc_realtime.md) como referencia para el tercer apartado.
+
+    **Entrega:** un ZIP del proyecto completo con `package.json`, `package-lock.json`, `server.js` y los archivos de `public/` (`index.html`, `app.js` y `style.css`). Incluye un `LEEME.txt` con los pasos para instalar y ejecutar el visor, y una captura donde se vean los recorridos GTFS y los trenes en el mapa. No incluyas `node_modules/`.
+
+    **Criterios:** feed FGC y mapa centrado en Cataluña (1 punto); popup con `shape_id` (0,5 puntos); posiciones de FGC mostradas y actualizadas desde el servicio en tiempo real (1,5 puntos).
+
+**Siguiente:** [Puntos de recarga eléctrica con OpenStreetMap](ejemplo_overpass_recarga.md).

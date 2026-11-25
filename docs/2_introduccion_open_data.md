@@ -182,3 +182,5 @@ El modelo de cinco estrellas de [datos abiertos enlazados](https://datos.gob.es/
 - [Infraestructura de Datos Espaciales de España (IDEE)](https://www.idee.es/)
 - [Federar un catálogo con datos.gob.es](https://datos.gob.es/es/preguntas-frecuentes/como-federar-mi-catalogo-de-datos-abiertos-con-datosgobes)
 - [DataPortals.org: directorio internacional de portales](https://dataportals.org/about/)
+
+**Siguiente:** [API de Socrata](2_1_api_socrata.md).

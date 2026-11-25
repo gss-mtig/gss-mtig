@@ -315,3 +315,5 @@ Guarda este contenido como `index.html` dentro de `fgc-realtime`. Abre el archiv
 - [Datos abiertos de FGC: líneas de la red](https://dadesobertes.fgc.cat/explore/assets/lineas-red-fgc/?flg=es-es).
 - [Documentación de la API de exploración de FGC](https://dadesobertes.fgc.cat/api-console/explore/v2.1/).
 - [Leaflet: guía de inicio rápido](https://leafletjs.com/examples/quick-start/).
+
+**Siguiente:** [GTFS con EMT València](18_ejemplo_gtfs.md).

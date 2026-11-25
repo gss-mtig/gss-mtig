@@ -189,12 +189,16 @@ map.on("click", async (event) => {
 
     Busca una dirección con municipio, por ejemplo **Carrer Nou 10, Girona**, y después haz clic en el mapa. Compara el formato y los atributos de la respuesta con OpenCage. Comprueba que GeoJSON almacena las coordenadas como longitud-latitud aunque Leaflet muestre los marcadores en el lugar correcto.
 
-!!! exercise "Ejercicio entregable · 2 puntos"
+## Práctica opcional
 
-    Modifica la aplicación y entrega los archivos `index.html` y `app.js`:
+!!! question "Explorar más resultados del Geocodificador ICGC — actividad opcional"
 
-    1. Muestra la propiedad `layer` del resultado junto con la etiqueta o dirección en el popup (1 punto).
-    2. En la búsqueda inversa, representa los tres primeros resultados como marcadores y abre automáticamente solo el popup del primero (1 punto).
+    Si quieres practicar, modifica la aplicación:
+
+    1. Muestra la propiedad `layer` de cada resultado junto con su etiqueta o dirección en el popup.
+    2. Al hacer clic en el mapa, representa como marcadores hasta los tres primeros resultados de la búsqueda inversa y abre automáticamente solo el popup del primero.
+
+    Es una actividad opcional: no tiene puntuación y no hace falta entregar archivos ni capturas.
 
 ## Referencias
 
@@ -203,3 +207,5 @@ map.on("click", async (event) => {
 - [Parámetros de búsqueda directa](https://openicgc.github.io/geocodificador-doc_es/parametres_cerca.es/)
 - [Parámetros de búsqueda inversa](https://openicgc.github.io/geocodificador-doc_es/parametres_invers.es/)
 - [Leaflet: referencia de la API (inglés)](https://leafletjs.com/reference.html)
+
+**Siguiente:** [Isócronas con OpenRouteService](16_ejemplo_mobility.md).

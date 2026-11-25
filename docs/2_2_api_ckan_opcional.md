@@ -41,3 +41,5 @@ En ambos casos, la API permite automatizar el acceso a datos publicados en el po
 - [Documentación de la Action API de CKAN (inglés)](https://docs.ckan.org/en/latest/api/index.html)
 - [Acción `package_search` (inglés)](https://docs.ckan.org/en/latest/api/index.html#ckan.logic.action.get.package_search)
 - [Acción `resource_search` (inglés)](https://docs.ckan.org/en/latest/api/index.html#ckan.logic.action.get.resource_search)
+
+**Siguiente:** [Evaluar datos y servicios Open Data](2_3_consideraciones_open_data.md).

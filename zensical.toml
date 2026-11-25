@@ -1,0 +1,62 @@
+[project]
+site_name = "Geoservicios para Smart Cities"
+site_url = "https://gss-mtig.github.io/gss-mtig/"
+site_description = "Geoservicios para Smart Cities."
+site_author = "gss-mtig"
+repo_url = "https://github.com/gss-mtig/gss-mtig"
+use_directory_urls = true
+exclude_docs = """
+node_modules/
+3_conceptos_vector_tiles.md
+6_conceptos_geoservicios.md
+7_ejemplo_servicio_wms.md
+ejemplos/utilizacion-servicio-opendata/javascripts/vendor/slickgrid/2.2/README.md
+"""
+not_in_nav = """
+ejemplos/sentilo-aca/archivos.md
+ejemplos/mapa-expedicion-realtime/README.md
+"""
+nav = [
+  { "Home" = "index.md" },
+  { "Guía del curso" = "guia_del_curso.md" },
+  { "1. Introducción a las Smart Cities" = "1_introduccion_a_las_smart_cities.md" },
+  { "2. Introducción al Open data" = "2_introduccion_open_data.md" },
+  { "Servicios Open data" = [
+    { "2.1. API de Socrata" = "2_1_api_socrata.md" },
+    { "2.2. CKAN (opcional)" = "2_2_api_ckan_opcional.md" },
+    { "2.3. Evaluar datos y servicios" = "2_3_consideraciones_open_data.md" },
+  ]},
+  { "3. Visualización con Kepler.gl" = "4_visualizacion_kepler.md" },
+  { "4. Herramientas de visualización de datos" = "5_herramientas_visualizacion_datos.md" },
+  { "5. API municipal y mapa web" = "8_ejemplo_parking_movilidad_reducida_zaragoza.md" },
+  { "6. Bicing con MapLibre y Vector Tiles" = "10_ejemplo_servicio_bicing_bcn_vt.md" },
+  { "7. Sensores urbanos: SOS, Sentilo y calidad de los datos" = "11_consideraciones_servicios_realtime_sensores.md" },
+  { "8. Consumo de sensores de la ACA con Sentilo" = "12_ejemplo_sentilo_aca.md" },
+  { "9. Geoservicios para localización y movilidad" = "13_geoservicios_realtime.md" },
+  { "10. Elegir herramientas para visualizar datos geográficos" = "14_herramientas_visualizacion_geoservicios.md" },
+  { "Geocodificación" = [
+    { "11. OpenCage" = "15_ejemplo_geocodificador.md" },
+    { "11.1. Geocodificador ICGC (opcional)" = "15_ejemplo_geocodificador_icgc.md" },
+  ]},
+  { "12. Ejemplo de Mobility" = "16_ejemplo_mobility.md" },
+  { "13. Mapa colaborativo: expedición urbana en tiempo real" = "17_ejemplo_geoservicio_realtime.md" },
+  { "14. Ejemplo de trenes FGC en tiempo real" = "19_ejemplo_fgc_realtime.md" },
+  { "15. Ejemplo de GTFS con EMT València" = "18_ejemplo_gtfs.md" },
+  { "16. Puntos de recarga eléctrica con OpenStreetMap" = "ejemplo_overpass_recarga.md" },
+]
+
+[project.theme]
+variant = "classic"
+language = "es"
+
+[project.markdown_extensions]
+admonition = {}
+"pymdownx.magiclink" = {}
+"pymdownx.superfences" = {}
+footnotes = {}
+attr_list = {}
+codehilite = { linenums = true }
+"pymdownx.emoji" = { emoji_index = "zensical.extensions.emoji.twemoji", emoji_generator = "zensical.extensions.emoji.to_svg" }
+
+[project.plugins.search]
+

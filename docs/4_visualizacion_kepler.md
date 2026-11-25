@@ -48,3 +48,5 @@ Kepler.gl procesa los archivos cargados en el navegador. La aplicación de demos
 - [Exportar datos e imágenes (inglés)](https://docs.kepler.gl/docs/user-guides/k-save-and-export)
 - [Ficha del conjunto de accidentes en Open Data BCN](https://opendata-ajuntament.barcelona.cat/data/es/dataset/accidents-gu-bcn)
 - [Metadatos del conjunto en datos.gob.es (español)](https://datos.gob.es/es/catalogo/l01080193-accidentes-gestionados-por-la-guardia-urbana-en-la-ciudad-de-barcelona)
+
+**Siguiente:** [Herramientas de visualización de datos](5_herramientas_visualizacion_datos.md).

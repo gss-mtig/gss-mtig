@@ -28,3 +28,5 @@ El ejemplo de FGC permite observar posiciones de trenes que se refrescan periód
 - [OpenRouteService: servicios de rutas, isócronas y geocodificación (inglés)](https://openrouteservice.org/)
 - [Datos abiertos de FGC: posicionamiento de trenes](https://dadesobertes.fgc.cat/explore/dataset/posicionament-dels-trens/api/)
 - [Bicing Barcelona: ejemplo con datos de estaciones](10_ejemplo_servicio_bicing_bcn_vt.md)
+
+**Siguiente:** [Elegir herramientas para visualizar datos geográficos](14_herramientas_visualizacion_geoservicios.md).

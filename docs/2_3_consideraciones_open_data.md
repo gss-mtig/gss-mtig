@@ -59,3 +59,5 @@ Una visualización puede hacer visibles patrones y también amplificar sesgos, v
 - [USGS: feeds de terremotos en GeoJSON (inglés)](https://earthquake.usgs.gov/earthquakes/feed/v1.0/geojson.php)
 - [USGS: documentación de feeds y notificaciones (inglés)](https://earthquake.usgs.gov/earthquakes/feed/v1.0/)
 - [AEMET OpenData: información del servicio (español)](https://opendata.aemet.es/centrodedescargas/info)
+
+**Siguiente:** [Visualización con Kepler.gl](4_visualizacion_kepler.md).

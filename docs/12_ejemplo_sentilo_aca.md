@@ -328,3 +328,5 @@ El mapa solo dibuja ubicaciones válidas. En la ficha, `Promise.allSettled` perm
 - [Sentilo en el Centro de Transferencia de Tecnología de la Administración española](https://administracionelectronica.gob.es/ctt/sentilo)
 - [Documentación oficial de la API Sentilo (inglés)](https://sentilo.readthedocs.io/en/latest/api_docs.html)
 - [Leaflet: guía de inicio (inglés)](https://leafletjs.com/examples/quick-start/)
+
+**Siguiente:** [Geoservicios para localización y movilidad](13_geoservicios_realtime.md).

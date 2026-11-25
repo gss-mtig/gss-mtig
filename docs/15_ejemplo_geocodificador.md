@@ -109,67 +109,160 @@ marker.openPopup();
 ```html
 <!doctype html>
 <html lang="es">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Geocodificación con OpenCage</title>
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/opencagedata/leaflet-opencage-geocoding@v2.1.0/dist/css/L.Control.OpenCageGeocoding.min.css">
-  <style>
-    * { box-sizing: border-box; }
-    html, body { height: 100%; margin: 0; font: 16px/1.45 system-ui, sans-serif; }
-    #app {
-      display: grid;
-      grid-template-columns: minmax(320px, 380px) minmax(0, 1fr);
-      grid-template-rows: minmax(0, 1fr);
-      width: 100%;
-      height: 100vh;
-    }
-    aside { grid-column: 1; grid-row: 1; min-width: 0; overflow: auto; padding: 1rem; border-right: 1px solid #d1d5db; }
-    h1 { margin-top: 0; font-size: 1.4rem; }
-    label { display: block; margin: 1rem 0 .3rem; font-weight: 600; }
-    input, button { width: 100%; padding: .65rem; font: inherit; }
-    button { cursor: pointer; }
-    form button { margin-top: .6rem; }
-    #status { min-height: 3rem; padding: .5rem 0; }
-    #results { padding-left: 1.5rem; }
-    #results li { margin: .5rem 0; }
-    #results button { text-align: left; border: 1px solid #d1d5db; border-radius: .3rem; background: #fff; }
-    #results button:hover { background: #f3f4f6; }
-    #map { grid-column: 2; grid-row: 1; min-width: 0; min-height: 0; height: 100vh; }
-    .note { font-size: .9rem; color: #374151; }
-    @media (max-width: 700px) {
-      #app { grid-template-columns: minmax(0, 1fr); grid-template-rows: minmax(320px, 55vh) auto; height: auto; min-height: 100vh; }
-      aside { grid-column: 1; grid-row: 2; border-right: 0; border-top: 1px solid #d1d5db; }
-      #map { grid-column: 1; grid-row: 1; height: 55vh; min-height: 320px; max-height: 520px; }
-    }
-  </style>
-</head>
-<body>
-  <main id="app">
-    <aside>
-      <h1>Geocodificador OpenCage</h1>
-      <p>Compara dos formas de buscar: el control de OpenCage sobre el mapa y una petición propia a la API desde este formulario. Haz clic en el mapa para probar la búsqueda inversa.</p>
-      <form id="key-form">
-        <label for="api-key">Tu clave API de OpenCage</label>
-        <input id="api-key" type="password" autocomplete="off" placeholder="Pega tu clave para esta sesión" required>
-        <button type="submit">Activar buscador</button>
-      </form>
-      <form id="search-form">
-        <label for="query">Búsqueda directa mediante petición a la API</label>
-        <input id="query" value="Plaça de Catalunya, Barcelona" required>
-        <button type="submit">Consultar la API</button>
-      </form>
-      <p class="note">La clave solo se mantiene en esta página mientras está abierta. No la guardes en el código ni compartas una clave personal en una web pública.</p>
-      <div id="status" role="status" aria-live="polite">Introduce tu clave para añadir el control de búsqueda al mapa.</div>
-      <ol id="results"></ol>
-    </aside>
-    <div id="map" aria-label="Mapa interactivo"></div>
-  </main>
-  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-  <script src="https://cdn.jsdelivr.net/gh/opencagedata/leaflet-opencage-geocoding@v2.1.0/dist/js/L.Control.OpenCageGeocoding.min.js"></script>
-  <script src="app.js"></script>
-</body>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Geocodificación con OpenCage</title>
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/gh/opencagedata/leaflet-opencage-geocoding@v2.1.0/dist/css/L.Control.OpenCageGeocoding.min.css"
+    />
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        height: 100%;
+        margin: 0;
+        font:
+          16px/1.45 system-ui,
+          sans-serif;
+      }
+      #app {
+        display: grid;
+        grid-template-columns: minmax(320px, 380px) minmax(0, 1fr);
+        grid-template-rows: minmax(0, 1fr);
+        width: 100%;
+        height: 100vh;
+      }
+      aside {
+        grid-column: 1;
+        grid-row: 1;
+        min-width: 0;
+        overflow: auto;
+        padding: 1rem;
+        border-right: 1px solid #d1d5db;
+      }
+      h1 {
+        margin-top: 0;
+        font-size: 1.4rem;
+      }
+      label {
+        display: block;
+        margin: 1rem 0 0.3rem;
+        font-weight: 600;
+      }
+      input,
+      button {
+        width: 100%;
+        padding: 0.65rem;
+        font: inherit;
+      }
+      button {
+        cursor: pointer;
+      }
+      form button {
+        margin-top: 0.6rem;
+      }
+      #status {
+        min-height: 3rem;
+        padding: 0.5rem 0;
+      }
+      #results {
+        padding-left: 1.5rem;
+      }
+      #results li {
+        margin: 0.5rem 0;
+      }
+      #results button {
+        text-align: left;
+        border: 1px solid #d1d5db;
+        border-radius: 0.3rem;
+        background: #fff;
+      }
+      #results button:hover {
+        background: #f3f4f6;
+      }
+      #map {
+        grid-column: 2;
+        grid-row: 1;
+        min-width: 0;
+        min-height: 0;
+        height: 100vh;
+      }
+      .note {
+        font-size: 0.9rem;
+        color: #374151;
+      }
+      @media (max-width: 700px) {
+        #app {
+          grid-template-columns: minmax(0, 1fr);
+          grid-template-rows: minmax(320px, 55vh) auto;
+          height: auto;
+          min-height: 100vh;
+        }
+        aside {
+          grid-column: 1;
+          grid-row: 2;
+          border-right: 0;
+          border-top: 1px solid #d1d5db;
+        }
+        #map {
+          grid-column: 1;
+          grid-row: 1;
+          height: 55vh;
+          min-height: 320px;
+          max-height: 520px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main id="app">
+      <aside>
+        <h1>Geocodificador OpenCage</h1>
+        <p>
+          Compara dos formas de buscar: el control de OpenCage sobre el mapa y
+          una petición propia a la API desde este formulario. Haz clic en el
+          mapa para probar la búsqueda inversa.
+        </p>
+        <form id="key-form">
+          <label for="api-key">Tu clave API de OpenCage</label>
+          <input
+            id="api-key"
+            type="password"
+            autocomplete="off"
+            placeholder="Pega tu clave para esta sesión"
+            required
+          />
+          <button type="submit">Activar buscador</button>
+        </form>
+        <form id="search-form">
+          <label for="query">Búsqueda directa mediante petición a la API</label>
+          <input id="query" value="Plaça de Catalunya, Barcelona" required />
+          <button type="submit">Consultar la API</button>
+        </form>
+        <p class="note">
+          La clave solo se mantiene en esta página mientras está abierta. No la
+          guardes en el código ni compartas una clave personal en una web
+          pública.
+        </p>
+        <div id="status" role="status" aria-live="polite">
+          Introduce tu clave para añadir el control de búsqueda al mapa.
+        </div>
+        <ol id="results"></ol>
+      </aside>
+      <div id="map" aria-label="Mapa interactivo"></div>
+    </main>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/opencagedata/leaflet-opencage-geocoding@v2.1.0/dist/js/L.Control.OpenCageGeocoding.min.js"></script>
+    <script src="app.js"></script>
+  </body>
 </html>
 ```
 
@@ -194,13 +287,16 @@ L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
 
 function makePopupContent(result) {
   const address = document.createElement("div");
-  address.textContent = result.formatted || "No se encontró una dirección formateada.";
+  address.textContent =
+    result.formatted || "No se encontró una dirección formateada.";
   return address;
 }
 
 async function requestOpenCage(parameters) {
   if (!activeApiKey) {
-    throw new Error("Introduce tu clave y activa el buscador antes de consultar la API.");
+    throw new Error(
+      "Introduce tu clave y activa el buscador antes de consultar la API.",
+    );
   }
 
   const url = new URL(apiEndpoint);
@@ -224,7 +320,8 @@ function showForwardResults(results) {
   forwardMarkers.clearLayers();
 
   if (results.length === 0) {
-    statusElement.textContent = "No se encontraron resultados. Prueba con otra dirección o topónimo.";
+    statusElement.textContent =
+      "No se encontraron resultados. Prueba con otra dirección o topónimo.";
     return;
   }
 
@@ -256,7 +353,8 @@ function showForwardResults(results) {
   } else {
     statusElement.textContent = `${coordinates.length} resultado(s) encontrados con fetch.`;
     if (coordinates.length === 1) map.setView(coordinates[0], 16);
-    if (coordinates.length > 1) map.fitBounds(coordinates, { padding: [24, 24] });
+    if (coordinates.length > 1)
+      map.fitBounds(coordinates, { padding: [24, 24] });
   }
 }
 
@@ -278,25 +376,29 @@ document.getElementById("key-form").addEventListener("submit", (event) => {
     errorMessage: "No se encontraron resultados.",
     collapsed: false,
   }).addTo(map);
-  statusElement.textContent = "Buscador activo. Usa el control del mapa, el formulario o haz clic en el mapa.";
+  statusElement.textContent =
+    "Buscador activo. Usa el control del mapa, el formulario o haz clic en el mapa.";
 });
 
-document.getElementById("search-form").addEventListener("submit", async (event) => {
-  event.preventDefault();
-  const query = queryInput.value.trim();
-  if (query.length < 2) {
-    statusElement.textContent = "Escribe al menos dos caracteres para buscar.";
-    return;
-  }
+document
+  .getElementById("search-form")
+  .addEventListener("submit", async (event) => {
+    event.preventDefault();
+    const query = queryInput.value.trim();
+    if (query.length < 2) {
+      statusElement.textContent =
+        "Escribe al menos dos caracteres para buscar.";
+      return;
+    }
 
-  statusElement.textContent = "Consultando la API con fetch…";
-  try {
-    const results = await requestOpenCage({ q: query, limit: "5" });
-    showForwardResults(results);
-  } catch (error) {
-    statusElement.textContent = error.message;
-  }
-});
+    statusElement.textContent = "Consultando la API con fetch…";
+    try {
+      const results = await requestOpenCage({ q: query, limit: "5" });
+      showForwardResults(results);
+    } catch (error) {
+      statusElement.textContent = error.message;
+    }
+  });
 
 map.on("click", async (event) => {
   statusElement.textContent = "Consultando la dirección más cercana…";
@@ -305,7 +407,8 @@ map.on("click", async (event) => {
     const results = await requestOpenCage({ q: query });
     const result = results[0];
     if (!result) {
-      statusElement.textContent = "No se encontró una dirección cercana a ese punto.";
+      statusElement.textContent =
+        "No se encontró una dirección cercana a ese punto.";
       return;
     }
 
@@ -332,10 +435,15 @@ map.on("click", async (event) => {
 
     Busca **Plaça de Catalunya, Barcelona** con el control del mapa y luego con el formulario. Compara cómo se inicia cada búsqueda y qué resultados aparecen. Después, haz clic en otra zona del mapa para consultar la dirección más cercana.
 
-!!! exercise "Ejercicio entregable · 2 puntos"
+## Ejercicio entregable
 
-    1. Añade al popup el municipio (`components.municipality`; si no existe, prueba con `components.city`). (1 punto)
-    2. Añade la confianza, la categoría (`components._category`) y el tipo (`components._type`), gestionando los campos que no estén presentes. (1 punto)
+!!! question "Ampliar la información del popup de OpenCage — 1 punto"
+
+    En el popup de la búsqueda inversa, muestra la confianza (`confidence`), la categoría (`_category`) y el tipo (`_type`). Si alguno de esos campos no está presente, indícalo sin dejar el popup vacío ni provocar un error.
+
+    **Entrega:** el archivo `index.html` actualizado y una captura de un popup de búsqueda inversa con esos atributos. No incluyas la clave de API en el archivo ni en la captura.
+
+    **Criterio:** se muestran los tres atributos y la aplicación gestiona los campos ausentes (1 punto).
 
 ## Geocodificador del ICGC (opcional)
 
@@ -347,3 +455,5 @@ Para practicar con un servicio público centrado en Cataluña, consulta el [ejem
 - [OpenCage: control de geocodificación para Leaflet (inglés)](https://github.com/OpenCageData/leaflet-opencage-geocoding)
 - [OpenCage: página de cuenta y claves](https://opencagedata.com/)
 - [Leaflet: referencia de la API (inglés)](https://leafletjs.com/reference.html)
+
+**Siguiente:** [Geocodificador ICGC (opcional)](15_ejemplo_geocodificador_icgc.md).

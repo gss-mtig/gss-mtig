@@ -55,3 +55,5 @@ Una herramienta sofisticada no corrige datos incompletos ni una pregunta mal pla
 - [Aprender a usar Tableau (español)](https://www.tableau.com/es-es/learn)
 - [Visualizaciones en Qlik Cloud (español)](https://help.qlik.com/es-ES/cloud-services/Subsystems/Hub/Content/Sense_Hub/Visualizations/visualizations-visualizing-data.htm)
 - [Guía de Kepler.gl: cargar datos (inglés)](https://docs.kepler.gl/docs/user-guides/b-kepler-gl-workflow/a-add-data-to-the-map)
+
+**Siguiente:** [API municipal y mapa web: aparcamientos PMR de Zaragoza](8_ejemplo_parking_movilidad_reducida_zaragoza.md).

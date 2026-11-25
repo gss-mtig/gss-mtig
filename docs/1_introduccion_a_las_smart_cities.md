@@ -107,3 +107,5 @@ En la siguiente página veremos qué son los datos abiertos y cómo se organizan
 ## Referencias
 
 - [Interfaz de programación de aplicaciones (Wikipedia)](https://es.wikipedia.org/wiki/Interfaz_de_programaci%C3%B3n_de_aplicaciones)
+
+**Siguiente:** [Introducción al Open Data](2_introduccion_open_data.md).

@@ -293,11 +293,15 @@ Guarda el siguiente código como `index.html` y ábrelo desde un servidor local 
 !!! question "5–10 minutos · sin entregar"
     Elige un mismo origen y calcula una isócrona de 15 minutos a pie y en bicicleta. ¿Cuál cubre más superficie? Propón una razón relacionada con la red viaria o el perfil de desplazamiento. Después, cambia el origen a un punto en el borde de Barcelona y observa qué cambia.
 
-!!! exercise "Ejercicio entregable · 2 puntos"
-    Modifica la aplicación y entrega el archivo `index.html`:
+## Ejercicio entregable
 
-    1. Añade al selector un perfil válido de OpenRouteService que no aparezca en el ejemplo y comprueba que la petición directa lo utiliza (1 punto).
-    2. Modifica el intervalo de tiempo que permite elegir el control y comprueba que el parámetro `range` de la petición corresponde al nuevo valor (1 punto).
+!!! question "Ampliar los perfiles y tiempos de viaje de las isócronas — 2 puntos"
+    Modifica `index.html` y comprueba que cada opción nueva llega correctamente a la petición directa:
+
+    1. Añade al selector un perfil válido de OpenRouteService que no aparezca en el ejemplo y verifica que se utiliza al calcular la isócrona (1 punto).
+    2. Cambia el rango de duraciones del control deslizante y verifica que la duración seleccionada se envía, convertida a segundos, en el parámetro `range` (1 punto).
+
+    **Entrega:** el archivo `index.html` actualizado y una captura del mapa que muestre una isócrona calculada con el perfil y la duración añadidos o modificados. No incluyas la clave de API en el archivo ni en la captura.
 
 ## Ejercicio opcional para casa
 
@@ -309,3 +313,5 @@ Modifica el ejemplo para permitir comparar dos perfiles desde el mismo origen, m
 - [Dominio actual de la API de OpenRouteService](https://api.heigit.org/openrouteservice/)
 - [Leaflet: documentación](https://leafletjs.com/reference.html)
 - [OpenStreetMap: atribución](https://www.openstreetmap.org/copyright)
+
+**Siguiente:** [Mapa colaborativo: expedición urbana en tiempo real](17_ejemplo_geoservicio_realtime.md).

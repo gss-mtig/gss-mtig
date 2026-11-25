@@ -13,96 +13,38 @@
 * API servicios Open data (CKAN y SOCRATA)
 * Conceptos VectorTiles
 * Visualización con Kepler.gl
-
-
 * Herramientas de visualización de datos
 * Conceptos básicos de Geoservicios
 * Servicios realtime Open data
-* Ejemplo servicio bicing Barcelona (se podría adaptar a vector tiles)
+* Ejemplo servicio bicing Barcelona
 * Servicios realtime sensores
-* Ejemplo sensores port Barcelona
 * Ejemplo Sentilo ACA
 * Geoservicios realtime
 * Herramientas de visualización geoservicios
 * Ejemplo de Geocodificador
-* Ejemplo Isócronas (cambiar por https://openrouteservice.org o https://graphhopper.com)
-* Ejemplo Creación de geoservicio realtime para compartir ubicación del usuario
-* Ejemplo GTFS (Google transit)
+* Ejemplo Isócronas
+* Ejemplo de geoservicio realtime para compartir ubicación
+* Ejemplo GTFS (Google Transit)
 
-## Entorno
+## Entorno de documentación
 
-Se puede crear un entorno para generar la documentación instalando [venv](https://docs.python.org/3/library/venv.html#)
+El sitio se genera con [Zensical](https://zensical.org/), usando `zensical.toml` como configuración y `docs/` como carpeta de contenidos.
 
-Para crear el *enviroment* abrir la consola y escribir
-
-```bash
-python3 -m venv mkdocs
-```
-
-Para activar el nuevo *enviroment* escribir
+Para crear el entorno e instalar las dependencias fijadas en `pyproject.toml`:
 
 ```bash
-source mkdocs/bin/activate
+python3 -m venv .venv
+source .venv/bin/activate
+python -m pip install .
 ```
 
+### Previsualizar y compilar
 
-Se puede crear un entorno para generar la documentación instalando [Anaconda](https://www.anaconda.com/)
+- `zensical serve`: inicia el servidor local con recarga automática.
+- `zensical build`: genera el sitio estático en `site/`.
 
-Una vez instalado el Anaconda crear un *enviroment* donde instalar el mkdocs
+### Publicación en GitHub Pages
 
-Para crear el *enviroment* abrir la consola de Anaconda y escribir
-```bash
-conda create --name <NOMBRE_DEL_ENVIROMENT>
-```
+GitHub Actions compila y publica el sitio automáticamente al subir cambios a `main` o `master` que afecten a la documentación o su configuración. También se puede iniciar manualmente desde la pestaña **Actions**, con el workflow **Publicar documentación**. El sitio se despliega desde un artefacto de compilación; no hace falta actualizar la rama `gh-pages`.
 
-Para activar el nuevo *enviroment* escribir
-```bash
-conda activate <NOMBRE_DEL_ENVIROMENT>
-```
-
-### Herramienta de documentación
-
-Se usa [mkdocs](http://mkdocs.org) con el tema [mkdocs-material](https://squidfunk.github.io/mkdocs-material/).
-
-Desinstalar versiones anteriores de mkdocs:
-
-```bash
-    sudo pip uninstall mkdocs
-```
-
-E instalar con el comando:
-
-```bash
-python -m pip install mkdocs mkdocs-material
-```
-
-### Comandos mkdocs
-
-* `mkdocs serve`: Arranca un servidor web con auto-recarga.
-* `mkdocs build`: Compila la documentación en html.
-* `mkdocs gh-deploy`: Publica la documentación en gh-pages.
-
-#### Nota
-    
-1. git subtree split --prefix site -b gh-pages # create a local gh-pages branch containing the splitted output folder
-2. git push -f origin gh-pages:gh-pages # force the push of the gh-pages branch to the remote gh-pages branch at origin
-3. git branch -D gh-pages # delete the local gh-pages because you will need it: ref
-
-Para publicar en gh-pages
-
-1. mkdocs build
-2. ghp-import site
-3. git push origin gh-pages
-
-### Layout
-
-    mkdocs.yml    # El fichero de configuración.
-    docs/
-        index.md  # La portada.
-        ...       # Otras páginas en markdown, imágenes, etc.
-
-### Markdown
-
-* Chuleta rápida sobre links, imágenes y tablas en markdown: http://www.mkdocs.org/user-guide/writing-your-docs/#linking-documents
-* [Especificación Markdown](http://spec.commonmark.org/0.28/) completa.
-* Visual Studio Code ofrece una vista de Preview que va mostrando el resultado del markdown en tiempo real sin tener que salir del editor.
+Como configuración inicial, selecciona **Settings → Pages → Build and deployment → Source → GitHub Actions** en GitHub. Después, cada cambio subido a la rama principal iniciará el despliegue automáticamente ([instrucciones oficiales](https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site)).

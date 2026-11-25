@@ -52,3 +52,5 @@ En Geoservicios se usarán datos y APIs para resolver preguntas de aplicación u
 ## Trabajo práctico
 
 Las prácticas se realizan en casa y amplían las demostraciones de clase. En cada una se indicará qué servicio se consume, qué resultado se espera y qué aspectos de los datos conviene analizar. Además de que el mapa funcione, se tendrá en cuenta que puedas explicar de dónde vienen los datos, cómo se actualizan y qué limitaciones tienen.
+
+**Siguiente:** [Introducción a las Smart Cities](1_introduccion_a_las_smart_cities.md).

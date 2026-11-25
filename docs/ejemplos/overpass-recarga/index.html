@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Puntos de recarga eléctrica</title>
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    />
+    <style>
+      html,
+      body,
+      #map {
+        height: 100%;
+        margin: 0;
+      }
+      body {
+        font-family: system-ui, sans-serif;
+      }
+      #panel {
+        position: absolute;
+        z-index: 1000;
+        top: 12px;
+        left: 60px;
+        max-width: min(360px, calc(100vw - 100px));
+        padding: 10px 12px;
+        border-radius: 6px;
+        background: #fff;
+        box-shadow: 0 1px 5px #5558;
+      }
+      #panel p {
+        margin: 6px 0;
+      }
+      #buscar {
+        min-height: 2.5rem;
+        padding: 6px 12px;
+        border: 0;
+        border-radius: 4px;
+        color: #fff;
+        background: #1457a6;
+        font: inherit;
+        cursor: pointer;
+      }
+      #buscar:disabled {
+        opacity: 0.6;
+        cursor: wait;
+      }
+      #estado {
+        font-size: 0.9rem;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="panel">
+      <strong>Puntos de recarga eléctrica</strong>
+      <p>Acerca o aleja el mapa y pulsa el botón para consultar esa zona.</p>
+      <button id="buscar" type="button">Buscar en esta zona</button>
+      <p id="estado" role="status" aria-live="polite">
+        Elige una zona del mapa para empezar.
+      </p>
+    </div>
+    <div id="map" aria-label="Mapa de puntos de recarga eléctrica"></div>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script>
+      const OVERPASS_URL = "https://overpass-api.de/api/interpreter";
+      const map = L.map("map").setView([41.3874, 2.1686], 13);
+      const resultsLayer = L.layerGroup().addTo(map);
+      const button = document.querySelector("#buscar");
+      const status = document.querySelector("#estado");
+
+      L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
+        maxZoom: 19,
+        attribution:
+          '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap contributors</a>',
+      }).addTo(map);
+
+      function makePopup(tags) {
+        const content = document.createElement("div");
+        const title = document.createElement("strong");
+        title.textContent = tags.name || "Punto de recarga sin nombre";
+        content.append(title);
+
+        const connectors = Object.entries(tags)
+          .filter(([key]) => key.startsWith("socket:") && !key.endsWith(":output"))
+          .map(([key, value]) => `${key.replace("socket:", "")} : ${value}`);
+        const details = [
+          connectors.length
+            ? `Conectores: ${connectors.join(", ")}`
+            : "Conectores: no indicados",
+          `Acceso: ${tags.access || "no indicado"}`,
+        ];
+
+        for (const detail of details) {
+          const line = document.createElement("div");
+          line.textContent = detail;
+          content.append(line);
+        }
+        return content;
+      }
+
+      function elementPosition(element) {
+        if (element.type === "node") return [element.lat, element.lon];
+        if (element.center) return [element.center.lat, element.center.lon];
+        return null;
+      }
+
+      async function searchVisibleArea() {
+        const bounds = map.getBounds();
+        const bbox = [
+          bounds.getSouth(),
+          bounds.getWest(),
+          bounds.getNorth(),
+          bounds.getEast(),
+        ].join(",");
+        const query = `[out:json][timeout:25];(node["amenity"="charging_station"](${bbox});way["amenity"="charging_station"](${bbox});relation["amenity"="charging_station"](${bbox}););out center tags;`;
+
+        button.disabled = true;
+        resultsLayer.clearLayers();
+        status.textContent = "Consultando OpenStreetMap…";
+
+        try {
+          const response = await fetch(OVERPASS_URL, {
+            method: "POST",
+            body: new URLSearchParams({ data: query }),
+          });
+          if (!response.ok) {
+            throw new Error(`El servicio respondió HTTP ${response.status}.`);
+          }
+
+          const data = await response.json();
+          if (data.remark) throw new Error(data.remark);
+          if (!Array.isArray(data.elements)) {
+            throw new Error("La respuesta no contiene una lista de resultados.");
+          }
+
+          let count = 0;
+          for (const element of data.elements) {
+            const position = elementPosition(element);
+            if (!position || !element.tags) continue;
+            L.circleMarker(position, {
+              radius: 7,
+              color: "#ffffff",
+              weight: 2,
+              fillColor: "#1976a5",
+              fillOpacity: 0.9,
+            })
+              .bindPopup(makePopup(element.tags))
+              .addTo(resultsLayer);
+            count += 1;
+          }
+
+          const timestamp = data.osm3s?.timestamp_osm_base;
+          status.textContent = timestamp
+            ? `${count} puntos · datos OSM consultados: ${timestamp}`
+            : `${count} puntos encontrados en esta zona.`;
+        } catch (error) {
+          status.textContent = `No se pudieron consultar los datos. Espera un momento y vuelve a intentarlo. (${error.message})`;
+        } finally {
+          button.disabled = false;
+        }
+      }
+
+      button.addEventListener("click", searchVisibleArea);
+    </script>
+  </body>
+</html>

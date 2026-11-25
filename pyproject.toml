@@ -1,0 +1,15 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "gss-mtig-docs"
+version = "0.1.0"
+description = "Documentación del curso Geoservicios para Smart Cities"
+requires-python = ">=3.11"
+dependencies = [
+  "zensical==0.0.74",
+]
+
+[tool.setuptools]
+packages = []

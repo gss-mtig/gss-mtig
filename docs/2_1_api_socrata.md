@@ -226,3 +226,5 @@ El bloque siguiente contiene **el archivo HTML completo**: estructura de la pág
 - [Guía de inicio para consumir la API SODA (inglés)](https://dev.socrata.com/consumers/getting-started.html)
 - [Consultas con SoQL (inglés)](https://dev.socrata.com/docs/queries/)
 - [Tokens de aplicación y límites de uso (inglés)](https://dev.socrata.com/docs/app-tokens.html)
+
+**Siguiente:** [CKAN (opcional)](2_2_api_ckan_opcional.md).
